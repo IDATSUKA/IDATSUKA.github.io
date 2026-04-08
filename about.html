@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — IDATSUKA</title>
+  <meta name="description" content="東京を拠点に活動するデザイナー Idatsuka のプロフィール。">
+  <link rel="canonical" href="https://idatsuka.com/about.html">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23060608'/><text x='16' y='23' text-anchor='middle' font-size='20' font-family='sans-serif' font-weight='700' fill='%2300d4ff'>I</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=Noto+Sans+JP:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #060608; --bg2: #0d0d10;
+      --fg: #ffffff; --muted: #484858;
+      --accent: #00d4ff; --hot: #ff3864;
+      --border: rgba(255,255,255,0.07);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg); color: var(--fg);
+      font-family: 'Space Grotesk', 'Noto Sans JP', sans-serif;
+      overflow-x: hidden; -webkit-font-smoothing: antialiased;
+    }
+    nav {
+      position: fixed; top: 0; inset-inline: 0; z-index: 200;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.6rem 3.5rem;
+      background: rgba(6,6,8,.9); backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .logo { font-size: 1.1rem; font-weight: 700; text-decoration: none; color: var(--fg); }
+    .logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      color: var(--muted); text-decoration: none;
+      font-size: .75rem; letter-spacing: .12em; text-transform: uppercase;
+      transition: color .2s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--fg); }
+
+    /* PAGE HEADER */
+    .page-header {
+      padding: 10rem 3.5rem 5rem;
+      border-bottom: 1px solid var(--border);
+      display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: end;
+    }
+    .page-header .eyebrow {
+      font-size: .72rem; letter-spacing: .3em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 1rem; display: block;
+    }
+    .page-header h1 {
+      font-size: clamp(3.5rem, 10vw, 10rem);
+      font-weight: 700; letter-spacing: -.04em; line-height: .88;
+    }
+    .page-header-desc {
+      font-size: 1rem; line-height: 2; color: rgba(255,255,255,.5);
+      align-self: end;
+    }
+
+    /* SECTIONS */
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 3.5rem; }
+    section { padding: 6rem 0; border-bottom: 1px solid var(--border); }
+    section:last-of-type { border-bottom: none; }
+
+    .section-label {
+      font-size: .68rem; letter-spacing: .25em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 3rem; display: block;
+    }
+
+    /* BIO */
+    .bio-grid { display: grid; grid-template-columns: 1fr 1.6fr; gap: 6rem; }
+    .bio-photo {
+      aspect-ratio: 3/4;
+      background: linear-gradient(135deg, rgba(0,212,255,.08), rgba(255,56,100,.05));
+      border: 1px solid var(--border); position: relative;
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: .6rem;
+    }
+    .bio-photo-hint { font-size: .65rem; letter-spacing: .25em; color: rgba(255,255,255,.2); text-transform: uppercase; }
+    .bio-photo svg { opacity: .15; }
+    .corner { position: absolute; width: 16px; height: 16px; border-color: var(--accent); border-style: solid; opacity: .4; }
+    .corner.tl { top: 10px; left: 10px; border-width: 1px 0 0 1px; }
+    .corner.tr { top: 10px; right: 10px; border-width: 1px 1px 0 0; }
+    .corner.bl { bottom: 10px; left: 10px; border-width: 0 0 1px 1px; }
+    .corner.br { bottom: 10px; right: 10px; border-width: 0 1px 1px 0; }
+    .bio-text p {
+      font-size: 1rem; line-height: 2; color: rgba(255,255,255,.6);
+      margin-bottom: 1.4rem;
+    }
+    .bio-text p strong { color: var(--fg); }
+    .bio-text p:last-child { margin-bottom: 0; }
+
+    /* SKILLS */
+    .skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); }
+    .skill-item {
+      background: var(--bg); padding: 1.8rem;
+    }
+    .skill-item-name { font-size: .95rem; font-weight: 600; margin-bottom: .4rem; }
+    .skill-item-tools { font-size: .78rem; color: var(--muted); line-height: 1.7; }
+
+    /* CAREER */
+    .timeline { position: relative; }
+    .tl-item {
+      display: grid; grid-template-columns: 12rem 1fr;
+      gap: 3rem; padding: 3rem 0; border-bottom: 1px solid var(--border);
+    }
+    .tl-item:last-child { border-bottom: none; }
+    .tl-period { font-size: .75rem; letter-spacing: .1em; color: var(--muted); padding-top: .2rem; }
+    .tl-role { font-size: 1.3rem; font-weight: 600; margin-bottom: .3rem; }
+    .tl-company { font-size: .85rem; color: var(--accent); margin-bottom: .9rem; }
+    .tl-desc { font-size: .88rem; line-height: 1.9; color: rgba(255,255,255,.5); }
+
+    /* CTA */
+    .about-cta {
+      padding: 6rem 3.5rem; text-align: center;
+    }
+    .about-cta-title {
+      font-size: clamp(2rem, 5vw, 5rem);
+      font-weight: 700; letter-spacing: -.04em; margin-bottom: 2rem;
+    }
+    .about-cta-title em { color: var(--hot); font-style: normal; }
+    .btn-outline {
+      display: inline-flex; align-items: center; gap: .5rem;
+      padding: .85rem 2rem; border: 1px solid var(--accent);
+      color: var(--accent); text-decoration: none;
+      font-size: .75rem; letter-spacing: .14em; text-transform: uppercase;
+      transition: background .25s, color .25s;
+    }
+    .btn-outline:hover { background: var(--accent); color: var(--bg); }
+
+    /* REVEAL */
+    .rv { opacity: 0; transform: translateY(20px); transition: opacity .6s ease, transform .6s ease; }
+    .rv.on { opacity: 1; transform: translateY(0); }
+
+    /* FOOTER */
+    footer {
+      padding: 1.6rem 3.5rem; border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    footer p { font-size: .68rem; color: var(--muted); }
+    .footer-links { display: flex; gap: 2rem; list-style: none; }
+    .footer-links a {
+      font-size: .68rem; letter-spacing: .1em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none; transition: color .2s;
+    }
+    .footer-links a:hover { color: var(--fg); }
+
+    @media (max-width: 900px) {
+      nav { padding: 1.3rem 1.5rem; }
+      .nav-links { display: none; }
+      .page-header { padding: 8rem 1.5rem 3rem; grid-template-columns: 1fr; gap: 1.5rem; }
+      .container { padding: 0 1.5rem; }
+      .bio-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .bio-photo { aspect-ratio: 16/9; }
+      .skills-grid { grid-template-columns: 1fr 1fr; }
+      .tl-item { grid-template-columns: 1fr; gap: .5rem; }
+      .about-cta { padding: 4rem 1.5rem; }
+      footer { flex-direction: column; gap: .8rem; text-align: center; }
+      .footer-links { justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">I<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="works.html">Works</a></li>
+    <li><a href="about.html" class="active">About</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+</nav>
+
+<header class="page-header">
+  <div>
+    <span class="eyebrow">Profile</span>
+    <h1>About.</h1>
+  </div>
+  <p class="page-header-desc">
+    東京を拠点に活動するデザイナー。<br>
+    ダークな世界に光を見出すことが、私のデザインの出発点です。
+  </p>
+</header>
+
+<main>
+
+  <!-- BIO -->
+  <section>
+    <div class="container">
+      <span class="section-label rv">01 — Biography</span>
+      <div class="bio-grid">
+        <div class="bio-photo rv" role="img" aria-label="Idatsuka プロフィール写真">
+          <div class="corner tl"></div><div class="corner tr"></div>
+          <div class="corner bl"></div><div class="corner br"></div>
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1">
+            <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+          </svg>
+          <span class="bio-photo-hint">Photo Here</span>
+        </div>
+        <div class="bio-text rv">
+          <p>東京を拠点に活動する<strong>デザイナー、Idatsuka</strong>です。UI/UXデザイン、ブランディング、Webデザインを専門としています。</p>
+          <p>私のデザインの哲学は「<strong>矛盾の中に宿る美しさ</strong>」です。ダークな背景の中に鮮烈な光が差し込むように、相反する要素が融合したとき、最も強いデザインが生まれると信じています。</p>
+          <p>クライアントのビジョンを形にすることに情熱を注ぎながら、常に新しい表現を探求し続けています。デザインは見た目だけでなく、<strong>感情を動かす力</strong>を持つべきだと考えています。</p>
+          <p>音楽、アンダーグラウンドカルチャー、建築からインスピレーションを受け、それをデジタルの世界に翻訳することが私の仕事です。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section style="background: var(--bg2);">
+    <div class="container">
+      <span class="section-label rv">02 — Skills</span>
+      <div class="skills-grid rv">
+        <div class="skill-item">
+          <div class="skill-item-name">UI / UX Design</div>
+          <div class="skill-item-tools">Figma · Prototyping<br>User Research · IA</div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-item-name">Branding</div>
+          <div class="skill-item-tools">Logo Design · Identity<br>Brand Guidelines</div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-item-name">Web Design</div>
+          <div class="skill-item-tools">HTML · CSS · JS<br>Responsive Design</div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-item-name">Motion Design</div>
+          <div class="skill-item-tools">After Effects · Lottie<br>CSS Animation</div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-item-name">Illustration</div>
+          <div class="skill-item-tools">Procreate · Illustrator<br>Digital Art</div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-item-name">Photography</div>
+          <div class="skill-item-tools">Art Direction<br>Lightroom · Capture</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CAREER -->
+  <section>
+    <div class="container">
+      <span class="section-label rv">03 — Career</span>
+      <div class="timeline">
+        <div class="tl-item rv">
+          <div class="tl-period">2022 — Present</div>
+          <div>
+            <h2 class="tl-role">Senior UI/UX Designer</h2>
+            <p class="tl-company">Company Name · Tokyo</p>
+            <p class="tl-desc">デジタルプロダクトのデザイン全般を担当。デザインシステムの構築、チームのデザイン品質向上をリード。ユーザーリサーチからビジュアルデザインまで一貫して担当。</p>
+          </div>
+        </div>
+        <div class="tl-item rv">
+          <div class="tl-period">2019 — 2022</div>
+          <div>
+            <h2 class="tl-role">UI Designer</h2>
+            <p class="tl-company">Previous Company · Tokyo</p>
+            <p class="tl-desc">スタートアップのプロダクトデザインを担当。ゼロからプロダクトのビジュアルを設計し、PMFに大きく貢献。ユーザー数を2年間で10倍に成長させることに寄与。</p>
+          </div>
+        </div>
+        <div class="tl-item rv">
+          <div class="tl-period">2015 — 2019</div>
+          <div>
+            <h2 class="tl-role">Graphic Designer</h2>
+            <p class="tl-company">Design Studio · Tokyo</p>
+            <p class="tl-desc">ブランディング、印刷物、Webデザインなど幅広いプロジェクトを経験。さまざまなクライアントの課題に向き合いながら、デザインの本質を学んだ。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- CTA -->
+<div class="about-cta rv">
+  <h2 class="about-cta-title">一緒に<em>つくろう。</em></h2>
+  <a href="contact.html" class="btn-outline">Get in Touch →</a>
+</div>
+
+<footer>
+  <p>© 2025 Idatsuka. All rights reserved.</p>
+  <ul class="footer-links">
+    <li><a href="works.html">Works</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+</footer>
+
+<script>
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.rv').forEach(el => io.observe(el));
+</script>
+</body>
+</html>

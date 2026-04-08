@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Works — IDATSUKA</title>
+  <meta name="description" content="IDATSUKA のポートフォリオ・制作実績一覧。">
+  <link rel="canonical" href="https://idatsuka.com/works.html">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23060608'/><text x='16' y='23' text-anchor='middle' font-size='20' font-family='sans-serif' font-weight='700' fill='%2300d4ff'>I</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=Noto+Sans+JP:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #060608; --bg2: #0d0d10;
+      --fg: #ffffff; --muted: #484858;
+      --accent: #00d4ff; --hot: #ff3864;
+      --border: rgba(255,255,255,0.07);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg); color: var(--fg);
+      font-family: 'Space Grotesk', 'Noto Sans JP', sans-serif;
+      overflow-x: hidden; -webkit-font-smoothing: antialiased;
+    }
+    nav {
+      position: fixed; top: 0; inset-inline: 0; z-index: 200;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.6rem 3.5rem;
+      background: rgba(6,6,8,.9); backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .logo { font-size: 1.1rem; font-weight: 700; text-decoration: none; color: var(--fg); }
+    .logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      color: var(--muted); text-decoration: none;
+      font-size: .75rem; letter-spacing: .12em; text-transform: uppercase;
+      transition: color .2s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--fg); }
+
+    /* PAGE HEADER */
+    .page-header {
+      padding: 10rem 3.5rem 5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .page-header .eyebrow {
+      font-size: .72rem; letter-spacing: .3em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 1rem; display: block;
+    }
+    .page-header h1 {
+      font-size: clamp(3.5rem, 10vw, 10rem);
+      font-weight: 700; letter-spacing: -.04em; line-height: .88;
+    }
+
+    /* FILTER */
+    .filter-bar {
+      padding: 1.5rem 3.5rem; border-bottom: 1px solid var(--border);
+      display: flex; gap: 1.5rem; flex-wrap: wrap;
+    }
+    .filter-btn {
+      background: none; border: none; cursor: pointer;
+      font-family: inherit; font-size: .72rem; letter-spacing: .12em; text-transform: uppercase;
+      color: var(--muted); padding: .3rem 0;
+      border-bottom: 1px solid transparent;
+      transition: color .2s, border-color .2s;
+    }
+    .filter-btn:hover, .filter-btn.active { color: var(--fg); border-color: var(--accent); }
+
+    /* WORKS GRID */
+    .works-container { padding: 0 3.5rem 6rem; }
+    .works-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr);
+      gap: 1px; background: var(--border);
+      margin-top: 1px;
+    }
+    .work-card {
+      background: var(--bg); padding: 3rem;
+      display: flex; flex-direction: column;
+      text-decoration: none; color: var(--fg);
+      transition: background .25s;
+      position: relative;
+    }
+    .work-card:hover { background: var(--bg2); }
+    .work-card-num {
+      font-size: .68rem; letter-spacing: .15em; color: var(--muted);
+      margin-bottom: 2.5rem;
+    }
+    .work-card-thumb {
+      aspect-ratio: 16/9; margin-bottom: 2rem;
+      position: relative; overflow: hidden;
+    }
+    .work-card:nth-child(1) .work-card-thumb { background: linear-gradient(135deg,#0f0c29,#302b63,#24243e); }
+    .work-card:nth-child(2) .work-card-thumb { background: linear-gradient(135deg,#1a1a2e,#0f3460,#533483); }
+    .work-card:nth-child(3) .work-card-thumb { background: linear-gradient(135deg,#0d0d0d,#222,#3a3a3a); }
+    .work-card:nth-child(4) .work-card-thumb { background: linear-gradient(135deg,#0b0c10,#1f2833,#0d7680); }
+    .work-card:nth-child(5) .work-card-thumb { background: linear-gradient(135deg,#1a0533,#3d1a7a,#6b21a8); }
+    .work-card:nth-child(6) .work-card-thumb { background: linear-gradient(135deg,#0a1628,#1e3a5f,#0d4a6b); }
+    .work-card-thumb-inner {
+      position: absolute; inset: 0;
+      background: rgba(0,212,255,.03);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .work-card-thumb-label {
+      font-size: .65rem; letter-spacing: .25em; text-transform: uppercase;
+      color: rgba(255,255,255,.2);
+    }
+    .work-card-cat {
+      font-size: .68rem; letter-spacing: .2em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: .5rem;
+    }
+    .work-card-title {
+      font-size: clamp(1.3rem, 2.5vw, 2rem); font-weight: 700;
+      letter-spacing: -.02em; margin-bottom: .8rem;
+    }
+    .work-card-desc {
+      font-size: .88rem; line-height: 1.9;
+      color: rgba(255,255,255,.5); flex: 1;
+    }
+    .work-card-meta {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-top: 2rem; padding-top: 1.2rem;
+      border-top: 1px solid var(--border);
+    }
+    .work-card-year { font-size: .7rem; color: var(--muted); letter-spacing: .1em; }
+    .work-card-arrow { color: var(--muted); transition: color .2s, transform .2s; }
+    .work-card:hover .work-card-arrow { color: var(--accent); transform: translateX(4px); }
+
+    /* REVEAL */
+    .rv { opacity: 0; transform: translateY(20px); transition: opacity .6s ease, transform .6s ease; }
+    .rv.on { opacity: 1; transform: translateY(0); }
+
+    /* FOOTER */
+    footer {
+      padding: 1.6rem 3.5rem; border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    footer p { font-size: .68rem; color: var(--muted); }
+    .footer-links { display: flex; gap: 2rem; list-style: none; }
+    .footer-links a {
+      font-size: .68rem; letter-spacing: .1em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none; transition: color .2s;
+    }
+    .footer-links a:hover { color: var(--fg); }
+
+    @media (max-width: 900px) {
+      nav { padding: 1.3rem 1.5rem; }
+      .nav-links { display: none; }
+      .page-header { padding: 8rem 1.5rem 3rem; }
+      .filter-bar { padding: 1.2rem 1.5rem; }
+      .works-container { padding: 0 1.5rem 4rem; }
+      .works-grid { grid-template-columns: 1fr; }
+      .work-card { padding: 2rem 1.5rem; }
+      footer { flex-direction: column; gap: .8rem; text-align: center; }
+      .footer-links { justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">I<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="works.html" class="active">Works</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+</nav>
+
+<header class="page-header">
+  <span class="eyebrow">Portfolio</span>
+  <h1>Works.</h1>
+</header>
+
+<div class="filter-bar">
+  <button class="filter-btn active">All</button>
+  <button class="filter-btn">UI / UX</button>
+  <button class="filter-btn">Branding</button>
+  <button class="filter-btn">Web Design</button>
+  <button class="filter-btn">Motion</button>
+</div>
+
+<main class="works-container">
+  <div class="works-grid">
+
+    <article class="work-card rv" id="proj01">
+      <span class="work-card-num">01</span>
+      <div class="work-card-thumb">
+        <div class="work-card-thumb-inner">
+          <span class="work-card-thumb-label">Image Here</span>
+        </div>
+      </div>
+      <p class="work-card-cat">UI / UX Design</p>
+      <h2 class="work-card-title">Project Name</h2>
+      <p class="work-card-desc">アプリのUI/UXデザインを担当。ユーザーリサーチからプロトタイプまで一貫して設計し、使いやすさと美しさを両立させた。</p>
+      <div class="work-card-meta">
+        <span class="work-card-year">2024</span>
+        <span class="work-card-arrow">→</span>
+      </div>
+    </article>
+
+    <article class="work-card rv" id="proj02">
+      <span class="work-card-num">02</span>
+      <div class="work-card-thumb">
+        <div class="work-card-thumb-inner">
+          <span class="work-card-thumb-label">Image Here</span>
+        </div>
+      </div>
+      <p class="work-card-cat">Branding</p>
+      <h2 class="work-card-title">Brand Identity</h2>
+      <p class="work-card-desc">スタートアップのブランドアイデンティティを構築。ロゴ、カラーパレット、タイポグラフィからガイドラインまで制作。</p>
+      <div class="work-card-meta">
+        <span class="work-card-year">2024</span>
+        <span class="work-card-arrow">→</span>
+      </div>
+    </article>
+
+    <article class="work-card rv" id="proj03">
+      <span class="work-card-num">03</span>
+      <div class="work-card-thumb">
+        <div class="work-card-thumb-inner">
+          <span class="work-card-thumb-label">Image Here</span>
+        </div>
+      </div>
+      <p class="work-card-cat">Web Design</p>
+      <h2 class="work-card-title">Website Redesign</h2>
+      <p class="work-card-desc">企業サイトのリデザイン。情報設計を見直し、コンバージョン率を大幅に改善するデザインを実現。</p>
+      <div class="work-card-meta">
+        <span class="work-card-year">2023</span>
+        <span class="work-card-arrow">→</span>
+      </div>
+    </article>
+
+    <article class="work-card rv" id="proj04">
+      <span class="work-card-num">04</span>
+      <div class="work-card-thumb">
+        <div class="work-card-thumb-inner">
+          <span class="work-card-thumb-label">Image Here</span>
+        </div>
+      </div>
+      <p class="work-card-cat">Motion Design</p>
+      <h2 class="work-card-title">Motion Graphics</h2>
+      <p class="work-card-desc">ブランドビデオのモーショングラフィックスを担当。世界観を動きで表現し、視聴者に強い印象を与えた。</p>
+      <div class="work-card-meta">
+        <span class="work-card-year">2023</span>
+        <span class="work-card-arrow">→</span>
+      </div>
+    </article>
+
+    <article class="work-card rv" id="proj05">
+      <span class="work-card-num">05</span>
+      <div class="work-card-thumb">
+        <div class="work-card-thumb-inner">
+          <span class="work-card-thumb-label">Image Here</span>
+        </div>
+      </div>
+      <p class="work-card-cat">UI / UX Design</p>
+      <h2 class="work-card-title">Dashboard Design</h2>
+      <p class="work-card-desc">SaaSプロダクトのダッシュボードUI設計。複雑なデータをシンプルに可視化するデザインシステムを構築。</p>
+      <div class="work-card-meta">
+        <span class="work-card-year">2022</span>
+        <span class="work-card-arrow">→</span>
+      </div>
+    </article>
+
+    <article class="work-card rv" id="proj06">
+      <span class="work-card-num">06</span>
+      <div class="work-card-thumb">
+        <div class="work-card-thumb-inner">
+          <span class="work-card-thumb-label">Image Here</span>
+        </div>
+      </div>
+      <p class="work-card-cat">Branding</p>
+      <h2 class="work-card-title">Visual Identity</h2>
+      <p class="work-card-desc">アパレルブランドのビジュアルアイデンティティ。コレクションのコンセプトを視覚言語に翻訳した。</p>
+      <div class="work-card-meta">
+        <span class="work-card-year">2022</span>
+        <span class="work-card-arrow">→</span>
+      </div>
+    </article>
+
+  </div>
+</main>
+
+<footer>
+  <p>© 2025 Idatsuka. All rights reserved.</p>
+  <ul class="footer-links">
+    <li><a href="works.html">Works</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+</footer>
+
+<script>
+  // Filter buttons
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+  // Scroll reveal
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.rv').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
