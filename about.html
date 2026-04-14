@@ -6,7 +6,7 @@
   <title>About — IDATSUKA</title>
   <meta name="description" content="東京を拠点に活動するデザイナー Idatsuka のプロフィール。">
   <link rel="canonical" href="https://idatsuka.com/about.html">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%230a0a0a'/><text x='16' y='22' text-anchor='middle' font-size='18' font-family='system-ui' font-weight='600' fill='%23c4a882'>I</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%230a0a0a'/><text x='16' y='22' text-anchor='middle' font-size='18' font-family='sans-serif' font-weight='600' fill='%23c9a87c'>I</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
@@ -15,24 +15,26 @@
 <body>
 
 <nav>
-  <a href="/" class="logo">IDATSUKA</a>
+  <a href="/" class="logo">Idatsuka</a>
   <ul class="nav-links">
-    <li><a href="works.html">Works</a></li>
     <li><a href="about.html" class="active">About</a></li>
+    <li><a href="works.html">Works</a></li>
     <li><a href="blog.html">Blog</a></li>
     <li><a href="contact.html">Contact</a></li>
   </ul>
 </nav>
 
-<header class="page-header page-header--split">
-  <div>
-    <span class="eyebrow">Profile</span>
-    <h1>About.</h1>
+<header class="page-header">
+  <div class="page-header-grid">
+    <div>
+      <span class="label">Profile</span>
+      <h1>About.</h1>
+    </div>
+    <p class="page-header-desc">
+      東京を拠点に活動するデザイナー。<br>
+      ダークな世界に光を見出すことが、私のデザインの出発点です。
+    </p>
   </div>
-  <p class="page-header-desc">
-    東京を拠点に活動するデザイナー。<br>
-    ダークな世界に光を見出すことが、私のデザインの出発点です。
-  </p>
 </header>
 
 <main>
@@ -40,13 +42,13 @@
   <!-- Bio -->
   <section>
     <div class="container">
-      <span class="s-label rv">01 — Biography</span>
+      <span class="label rv">01 — Biography</span>
       <div class="bio-grid">
         <div class="bio-photo rv" role="img" aria-label="Idatsuka プロフィール写真">
           <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1">
             <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
           </svg>
-          <span class="bio-photo-hint">Photo</span>
+          <span class="bio-photo-hint">Photo Here</span>
         </div>
         <div class="bio-text rv">
           <p>東京を拠点に活動する<strong>デザイナー、Idatsuka</strong>です。UI/UXデザイン、ブランディング、Webデザインを専門としています。</p>
@@ -59,9 +61,9 @@
   </section>
 
   <!-- Skills -->
-  <section style="background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+  <section style="background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
     <div class="container">
-      <span class="s-label rv">02 — Skills</span>
+      <span class="label rv">02 — Skills</span>
       <div class="skills-grid rv">
         <div class="skill-item">
           <div class="skill-item-name">UI / UX Design</div>
@@ -94,8 +96,8 @@
   <!-- Career -->
   <section>
     <div class="container">
-      <span class="s-label rv">03 — Career</span>
-      <div class="timeline">
+      <span class="label rv">03 — Career</span>
+      <div class="about-timeline">
         <div class="tl-item rv">
           <div class="tl-year">2022 — Present</div>
           <div>
@@ -126,7 +128,6 @@
 
 </main>
 
-<!-- CTA -->
 <div class="about-cta rv">
   <h2 class="about-cta-title">一緒に<em>つくろう。</em></h2>
   <a href="contact.html" class="btn">Get in Touch</a>
@@ -135,18 +136,18 @@
 <footer>
   <p>&copy; 2025 Idatsuka</p>
   <ul class="footer-links">
-    <li><a href="works.html">Works</a></li>
     <li><a href="about.html">About</a></li>
+    <li><a href="works.html">Works</a></li>
     <li><a href="blog.html">Blog</a></li>
     <li><a href="contact.html">Contact</a></li>
   </ul>
 </footer>
 
 <script>
-  const io = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.rv').forEach(el => io.observe(el));
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.rv').forEach(el => io.observe(el));
 </script>
 </body>
 </html>

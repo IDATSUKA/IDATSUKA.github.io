@@ -6,7 +6,7 @@
   <title>Blog — IDATSUKA</title>
   <meta name="description" content="IDATSUKA のブログ・ノート。デザイン、カルチャー、思考の断片。">
   <link rel="canonical" href="https://idatsuka.com/blog.html">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%230a0a0a'/><text x='16' y='22' text-anchor='middle' font-size='18' font-family='system-ui' font-weight='600' fill='%23c4a882'>I</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%230a0a0a'/><text x='16' y='22' text-anchor='middle' font-size='18' font-family='sans-serif' font-weight='600' fill='%23c9a87c'>I</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
@@ -15,17 +15,17 @@
 <body>
 
 <nav>
-  <a href="/" class="logo">IDATSUKA</a>
+  <a href="/" class="logo">Idatsuka</a>
   <ul class="nav-links">
-    <li><a href="works.html">Works</a></li>
     <li><a href="about.html">About</a></li>
+    <li><a href="works.html">Works</a></li>
     <li><a href="blog.html" class="active">Blog</a></li>
     <li><a href="contact.html">Contact</a></li>
   </ul>
 </nav>
 
 <header class="page-header">
-  <span class="eyebrow">Blog / Notes</span>
+  <span class="label">Blog / Notes</span>
   <h1>Writing.</h1>
 </header>
 
@@ -43,7 +43,7 @@
   <!-- Featured -->
   <a href="#" class="featured-post rv">
     <div class="featured-thumb">
-      <span>Image</span>
+      <span class="featured-thumb-label">Image Here</span>
     </div>
     <div class="featured-content">
       <p class="featured-badge">Featured</p>
@@ -70,7 +70,7 @@
       <span class="post-num">01</span>
       <div>
         <span class="post-tag">Process</span>
-        <h2 class="post-item-title">デザインシステムを0から構築する — 実践的アプローチ</h2>
+        <h2 class="post-title">デザインシステムを0から構築する — 実践的アプローチ</h2>
         <p class="post-excerpt">スタートアップにおいてデザインシステムをゼロから立ち上げた経験から学んだこと。</p>
       </div>
       <div class="post-meta">
@@ -83,7 +83,7 @@
       <span class="post-num">02</span>
       <div>
         <span class="post-tag">Culture</span>
-        <h2 class="post-item-title">Tokyo Underground — 東京の地下に流れるエネルギー</h2>
+        <h2 class="post-title">Tokyo Underground — 東京の地下に流れるエネルギー</h2>
         <p class="post-excerpt">渋谷、新宿、六本木。東京のクラブシーンが私のデザインに与え続けるもの。</p>
       </div>
       <div class="post-meta">
@@ -96,7 +96,7 @@
       <span class="post-num">03</span>
       <div>
         <span class="post-tag">Design</span>
-        <h2 class="post-item-title">タイポグラフィは感情だ — 字間と行間の詩学</h2>
+        <h2 class="post-title">タイポグラフィは感情だ — 字間と行間の詩学</h2>
         <p class="post-excerpt">たった1pxの違いが、テキストの印象を完全に変える。タイポグラフィへの偏執的なこだわり。</p>
       </div>
       <div class="post-meta">
@@ -109,7 +109,7 @@
       <span class="post-num">04</span>
       <div>
         <span class="post-tag">Process</span>
-        <h2 class="post-item-title">クライアントとのコミュニケーション — デザイナーの言語</h2>
+        <h2 class="post-title">クライアントとのコミュニケーション — デザイナーの言語</h2>
         <p class="post-excerpt">「もっとポップに」「なんかいい感じに」を翻訳するためのフレームワーク。</p>
       </div>
       <div class="post-meta">
@@ -122,7 +122,7 @@
       <span class="post-num">05</span>
       <div>
         <span class="post-tag">Design</span>
-        <h2 class="post-item-title">ブランキングの美学 — 余白が語るもの</h2>
+        <h2 class="post-title">ブランキングの美学 — 余白が語るもの</h2>
         <p class="post-excerpt">何も置かないことで生まれる緊張感。余白はデザインの沈黙ではなく、最も雄弁な要素だ。</p>
       </div>
       <div class="post-meta">
@@ -130,13 +130,12 @@
         <span class="post-read">5 min</span>
       </div>
     </a>
-
   </div>
 
   <!-- Short Notes -->
   <div class="notes-section">
     <div class="notes-inner rv">
-      <span class="s-label">Short Notes</span>
+      <span class="label">Short Notes</span>
       <div class="notes-grid">
         <div class="note-card">
           <span class="note-card-label">Note</span>
@@ -177,24 +176,24 @@
 <footer>
   <p>&copy; 2025 Idatsuka</p>
   <ul class="footer-links">
-    <li><a href="works.html">Works</a></li>
     <li><a href="about.html">About</a></li>
+    <li><a href="works.html">Works</a></li>
     <li><a href="blog.html">Blog</a></li>
     <li><a href="contact.html">Contact</a></li>
   </ul>
 </footer>
 
 <script>
-  document.querySelectorAll('.tag-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.tag-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-    });
+document.querySelectorAll('.tag-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tag-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
   });
-  const io = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.rv').forEach(el => io.observe(el));
+});
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.rv').forEach(el => io.observe(el));
 </script>
 </body>
 </html>

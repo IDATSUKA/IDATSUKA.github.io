@@ -4,32 +4,28 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- SEO -->
   <title>IDATSUKA — Designer</title>
   <meta name="description" content="東京を拠点に活動するデザイナー Idatsuka のポートフォリオ。UI/UX・ブランディング・Webデザインのお仕事はお気軽にご相談ください。">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://idatsuka.com/">
 
-  <!-- OGP -->
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://idatsuka.com/">
-  <meta property="og:title" content="IDATSUKA — Designer">
+  <meta property="og:type"        content="website">
+  <meta property="og:url"         content="https://idatsuka.com/">
+  <meta property="og:title"       content="IDATSUKA — Designer">
   <meta property="og:description" content="東京を拠点に活動するデザイナー Idatsuka のポートフォリオ。UI/UX・ブランディング・Webデザイン。">
-  <meta property="og:image" content="https://idatsuka.com/og.png">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="IDATSUKA — Designer">
-  <meta name="twitter:description" content="東京を拠点に活動するデザイナー Idatsuka のポートフォリオ。">
-  <meta name="twitter:image" content="https://idatsuka.com/og.png">
+  <meta property="og:image"       content="https://idatsuka.com/og.png">
+  <meta name="twitter:card"       content="summary_large_image">
+  <meta name="twitter:title"      content="IDATSUKA — Designer">
+  <meta name="twitter:description"content="東京を拠点に活動するデザイナー Idatsuka のポートフォリオ。">
+  <meta name="twitter:image"      content="https://idatsuka.com/og.png">
 
-  <!-- Favicon -->
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%230a0a0a'/><text x='16' y='22' text-anchor='middle' font-size='18' font-family='system-ui' font-weight='600' fill='%23c4a882'>I</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%230a0a0a'/><text x='16' y='22' text-anchor='middle' font-size='18' font-family='sans-serif' font-weight='600' fill='%23c9a87c'>I</text></svg>">
 
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 
-  <!-- Structured Data -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -46,14 +42,11 @@
     ]
   }
   </script>
-
-  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- Nav -->
 <nav>
-  <a href="/" class="logo">IDATSUKA</a>
+  <a href="/" class="logo">Idatsuka</a>
   <ul class="nav-links">
     <li><a href="about.html">About</a></li>
     <li><a href="works.html">Works</a></li>
@@ -63,11 +56,12 @@
 </nav>
 
 <!-- Hero -->
-<section class="hero" id="hero">
+<section id="hero">
   <div class="hero-inner">
-    <p class="hero-label">Designer / Tokyo</p>
+    <p class="hero-label">Designer — Tokyo</p>
     <h1 class="hero-name">IDATSUKA</h1>
-    <p class="hero-sub">UI/UX Design, Branding, Web Design</p>
+    <div class="hero-line" aria-hidden="true"></div>
+    <p class="hero-sub">UI/UX, Branding, Web Design</p>
     <div class="hero-cta">
       <a href="works.html" class="btn">View Works</a>
     </div>
@@ -79,27 +73,27 @@
 </section>
 
 <!-- About -->
-<section class="home-about" id="about">
+<section class="home-about">
   <div class="container">
     <div class="about-grid">
 
       <div class="about-photo rv" role="img" aria-label="Idatsuka のプロフィール写真">
         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-        <span>Photo</span>
+        <span class="about-photo-hint">Photo Here</span>
       </div>
 
       <div class="about-bio">
-        <p class="s-label rv">About</p>
-        <h2 class="s-title rv">Hello,<br>I'm Idatsuka.</h2>
-        <p class="rv">東京を拠点に活動する<strong>デザイナー</strong>です。UI/UXデザイン、ブランディング、Webデザインを専門とし、ユーザーの心を動かす体験をつくることにこだわっています。</p>
-        <p class="rv">デザインは単なる見た目の美しさではなく、<strong>問題を解決し、感情を動かす力</strong>だと考えています。クライアントのビジョンを形にするために、常に新しいアプローチを探求し続けています。</p>
-        <div class="skills rv">
-          <div class="skill">UI / UX</div>
-          <div class="skill">Branding</div>
-          <div class="skill">Figma</div>
-          <div class="skill">Motion</div>
-          <div class="skill">Web Design</div>
-          <div class="skill">Illustration</div>
+        <span class="label rv">About</span>
+        <h2 class="rv" style="font-size:clamp(2.2rem,5vw,4rem);font-weight:600;letter-spacing:-.03em;line-height:.95;margin-bottom:2.5rem;">Hello,<br>I'm Idatsuka.</h2>
+        <p class="body-text rv">東京を拠点に活動する<strong>デザイナー</strong>です。UI/UXデザイン、ブランディング、Webデザインを専門とし、ユーザーの心を動かす体験をつくることにこだわっています。</p>
+        <p class="body-text rv">デザインは単なる見た目の美しさではなく、<strong>問題を解決し、感情を動かす力</strong>だと考えています。クライアントのビジョンを形にするために、常に新しいアプローチを探求し続けています。</p>
+        <div class="skills-row rv">
+          <span class="skill-tag">UI / UX</span>
+          <span class="skill-tag">Branding</span>
+          <span class="skill-tag">Figma</span>
+          <span class="skill-tag">Motion</span>
+          <span class="skill-tag">Web Design</span>
+          <span class="skill-tag">Illustration</span>
         </div>
       </div>
 
@@ -110,66 +104,52 @@
 <!-- Works -->
 <section id="works">
   <div class="container">
-    <p class="s-label rv">Selected Works</p>
-    <h2 class="s-title rv">Projects.</h2>
+    <span class="label rv">Selected Works</span>
+    <h2 class="rv" style="font-size:clamp(2.2rem,5vw,4.5rem);font-weight:600;letter-spacing:-.03em;line-height:.95;margin-bottom:3.5rem;">Projects.</h2>
   </div>
-  <div class="works-grid" role="list">
+  <div class="works-grid-home" role="list">
 
-    <article class="work-card rv" role="listitem">
-      <div class="work-card-inner">
-        <span class="work-num" aria-hidden="true">01</span>
-        <div>
-          <p class="work-tag">UI / UX Design</p>
-          <h3 class="work-title">Project Name</h3>
-          <p class="work-desc">アプリのUI/UXデザインを担当。ユーザーリサーチからプロトタイプまで一貫して設計。</p>
-        </div>
-      </div>
+    <article class="work-card-home rv" role="listitem">
+      <span class="work-card-num">01</span>
+      <div class="work-card-thumb"></div>
+      <p class="work-card-cat">UI / UX Design</p>
+      <h3 class="work-card-title">Project Name</h3>
+      <p class="work-card-desc">アプリのUI/UXデザインを担当。ユーザーリサーチからプロトタイプまで一貫して設計。</p>
     </article>
 
-    <article class="work-card rv" role="listitem">
-      <div class="work-card-inner">
-        <span class="work-num" aria-hidden="true">02</span>
-        <div>
-          <p class="work-tag">Branding</p>
-          <h3 class="work-title">Brand Identity</h3>
-          <p class="work-desc">スタートアップのブランドアイデンティティを構築。ロゴからガイドラインまで制作。</p>
-        </div>
-      </div>
+    <article class="work-card-home rv" role="listitem">
+      <span class="work-card-num">02</span>
+      <div class="work-card-thumb"></div>
+      <p class="work-card-cat">Branding</p>
+      <h3 class="work-card-title">Brand Identity</h3>
+      <p class="work-card-desc">スタートアップのブランドアイデンティティを構築。ロゴからガイドラインまで制作。</p>
     </article>
 
-    <article class="work-card rv" role="listitem">
-      <div class="work-card-inner">
-        <span class="work-num" aria-hidden="true">03</span>
-        <div>
-          <p class="work-tag">Web Design</p>
-          <h3 class="work-title">Website Redesign</h3>
-          <p class="work-desc">企業サイトのリデザイン。コンバージョン率を大幅に改善するデザインを実現。</p>
-        </div>
-      </div>
+    <article class="work-card-home rv" role="listitem">
+      <span class="work-card-num">03</span>
+      <div class="work-card-thumb"></div>
+      <p class="work-card-cat">Web Design</p>
+      <h3 class="work-card-title">Website Redesign</h3>
+      <p class="work-card-desc">企業サイトのリデザイン。コンバージョン率を大幅に改善するデザインを実現。</p>
     </article>
 
-    <article class="work-card rv" role="listitem">
-      <div class="work-card-inner">
-        <span class="work-num" aria-hidden="true">04</span>
-        <div>
-          <p class="work-tag">Motion Design</p>
-          <h3 class="work-title">Motion Graphics</h3>
-          <p class="work-desc">ブランドビデオのモーショングラフィックスを担当。世界観を動きで表現。</p>
-        </div>
-      </div>
+    <article class="work-card-home rv" role="listitem">
+      <span class="work-card-num">04</span>
+      <div class="work-card-thumb"></div>
+      <p class="work-card-cat">Motion Design</p>
+      <h3 class="work-card-title">Motion Graphics</h3>
+      <p class="work-card-desc">ブランドビデオのモーショングラフィックスを担当。世界観を動きで表現。</p>
     </article>
 
   </div>
 </section>
 
-<div class="divider"></div>
-
 <!-- Career -->
-<section class="home-career" id="career">
+<section class="home-career">
   <div class="container">
-    <p class="s-label rv">Career</p>
-    <h2 class="s-title rv">Experience.</h2>
-    <div class="timeline">
+    <span class="label rv">Career</span>
+    <h2 class="rv" style="font-size:clamp(2.2rem,5vw,4.5rem);font-weight:600;letter-spacing:-.03em;line-height:.95;margin-bottom:3.5rem;">Experience.</h2>
+    <div class="timeline-home">
 
       <div class="tl-item rv">
         <p class="tl-year">2022 — Present</p>
@@ -203,11 +183,11 @@
 </section>
 
 <!-- Contact -->
-<section class="home-contact" id="contact">
+<section class="home-contact">
   <div class="container">
-    <div class="contact-inner">
-      <p class="s-label rv">Contact</p>
-      <h2 class="s-title rv">Let's work<br>together.</h2>
+    <div>
+      <span class="label rv">Contact</span>
+      <h2 class="rv" style="font-size:clamp(2.2rem,5vw,4.5rem);font-weight:600;letter-spacing:-.03em;line-height:.95;margin-bottom:2rem;">Let's work<br>together.</h2>
       <a href="mailto:hello@idatsuka.com" class="contact-email rv">hello@idatsuka.com</a>
 
       <ul class="socials rv" aria-label="SNS リンク">
@@ -217,7 +197,7 @@
         <li><a href="https://behance.net/idatsuka" target="_blank" rel="noopener">Behance</a></li>
       </ul>
 
-      <form class="contact-form rv" id="contactForm" novalidate>
+      <form class="contact-form-home rv" id="contactForm" novalidate>
         <div class="fg">
           <label for="f-name">Name</label>
           <input id="f-name" type="text" placeholder="お名前" required autocomplete="name">
@@ -230,14 +210,13 @@
           <label for="f-msg">Message</label>
           <textarea id="f-msg" placeholder="プロジェクトについてお聞かせください..." required></textarea>
         </div>
-        <button class="btn-fill" type="submit" id="btn-label">Send Message</button>
+        <button class="btn-filled" type="submit">Send Message</button>
         <p class="form-msg" id="form-msg" role="status">お問い合わせありがとうございます。近日中にご連絡いたします。</p>
       </form>
     </div>
   </div>
 </section>
 
-<!-- Footer -->
 <footer>
   <p>&copy; 2025 Idatsuka</p>
   <ul class="footer-links">
@@ -249,26 +228,17 @@
 </footer>
 
 <script>
-/* Nav scroll */
-const nav = document.getElementById('nav');
-
-/* Scroll Reveal */
 const io = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); }
-  });
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
 }, { threshold: .1 });
 document.querySelectorAll('.rv').forEach(el => io.observe(el));
 
-/* Contact Form */
 document.getElementById('contactForm').addEventListener('submit', e => {
   e.preventDefault();
-  const btn = document.getElementById('btn-label');
   const msg = document.getElementById('form-msg');
-  btn.textContent = '送信しました';
   msg.style.display = 'block';
   e.target.reset();
-  setTimeout(() => { btn.textContent = 'Send Message'; msg.style.display = 'none'; }, 5000);
+  setTimeout(() => { msg.style.display = 'none'; }, 5000);
 });
 </script>
 </body>

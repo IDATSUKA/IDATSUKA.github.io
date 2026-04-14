@@ -6,7 +6,7 @@
   <title>Contact — IDATSUKA</title>
   <meta name="description" content="IDATSUKA へのお問い合わせ。プロジェクトのご依頼はこちらから。">
   <link rel="canonical" href="https://idatsuka.com/contact.html">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%230a0a0a'/><text x='16' y='22' text-anchor='middle' font-size='18' font-family='system-ui' font-weight='600' fill='%23c4a882'>I</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%230a0a0a'/><text x='16' y='22' text-anchor='middle' font-size='18' font-family='sans-serif' font-weight='600' fill='%23c9a87c'>I</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
@@ -15,24 +15,26 @@
 <body>
 
 <nav>
-  <a href="/" class="logo">IDATSUKA</a>
+  <a href="/" class="logo">Idatsuka</a>
   <ul class="nav-links">
-    <li><a href="works.html">Works</a></li>
     <li><a href="about.html">About</a></li>
+    <li><a href="works.html">Works</a></li>
     <li><a href="blog.html">Blog</a></li>
     <li><a href="contact.html" class="active">Contact</a></li>
   </ul>
 </nav>
 
-<header class="page-header page-header--split">
-  <div>
-    <span class="eyebrow">Contact</span>
-    <h1>Let's<br>Talk.</h1>
+<header class="page-header">
+  <div class="page-header-grid">
+    <div>
+      <span class="label">Contact</span>
+      <h1>Let's<br>Talk.</h1>
+    </div>
+    <p class="page-header-desc">
+      プロジェクトのご依頼、コラボレーション、<br>
+      その他のお問い合わせはこちらから。
+    </p>
   </div>
-  <p class="page-header-desc">
-    プロジェクトのご依頼、コラボレーション、<br>
-    その他のお問い合わせはこちらから。
-  </p>
 </header>
 
 <main>
@@ -40,7 +42,7 @@
 
     <!-- Sidebar -->
     <aside class="rv">
-      <span class="s-label">01 — Info</span>
+      <span class="label">01 — Info</span>
 
       <div class="contact-info-item">
         <p class="contact-info-label">Email</p>
@@ -67,7 +69,7 @@
 
     <!-- Form -->
     <div class="rv">
-      <span class="s-label">02 — Message</span>
+      <span class="label">02 — Message</span>
 
       <form id="contactForm" novalidate>
         <div class="form-row-split">
@@ -99,11 +101,11 @@
           <textarea class="form-textarea" id="message" name="message" placeholder="プロジェクトの内容、ご予算、スケジュールなどをご記入ください。" required></textarea>
         </div>
 
-        <button type="submit" class="btn-fill">Send Message</button>
+        <button type="submit" class="btn-filled">Send Message</button>
       </form>
 
       <div class="form-success" id="successMsg">
-        <div class="form-success-icon">&#10003;</div>
+        <div class="form-success-icon">&check;</div>
         <h3>メッセージを受け取りました</h3>
         <p>2〜3営業日以内にご連絡いたします。</p>
       </div>
@@ -113,7 +115,7 @@
 
   <!-- SNS -->
   <div class="sns-section rv">
-    <span class="s-label">03 — Social</span>
+    <span class="label">03 — Social</span>
     <div class="sns-grid">
       <a href="https://instagram.com/idatsuka" target="_blank" rel="noopener" class="sns-item">
         <span class="sns-item-platform">Instagram</span>
@@ -142,24 +144,24 @@
 <footer>
   <p>&copy; 2025 Idatsuka</p>
   <ul class="footer-links">
-    <li><a href="works.html">Works</a></li>
     <li><a href="about.html">About</a></li>
+    <li><a href="works.html">Works</a></li>
     <li><a href="blog.html">Blog</a></li>
     <li><a href="contact.html">Contact</a></li>
   </ul>
 </footer>
 
 <script>
-  document.getElementById('contactForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    this.style.display = 'none';
-    document.getElementById('successMsg').style.display = 'block';
-  });
+document.getElementById('contactForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  this.style.display = 'none';
+  document.getElementById('successMsg').style.display = 'block';
+});
 
-  const io = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.rv').forEach(el => io.observe(el));
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.rv').forEach(el => io.observe(el));
 </script>
 </body>
 </html>
