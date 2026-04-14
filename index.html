@@ -4,32 +4,32 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- ── SEO ── -->
+  <!-- SEO -->
   <title>IDATSUKA — Designer</title>
   <meta name="description" content="東京を拠点に活動するデザイナー Idatsuka のポートフォリオ。UI/UX・ブランディング・Webデザインのお仕事はお気軽にご相談ください。">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://idatsuka.com/">
 
-  <!-- ── OGP / SNS ── -->
-  <meta property="og:type"        content="website">
-  <meta property="og:url"         content="https://idatsuka.com/">
-  <meta property="og:title"       content="IDATSUKA — Designer">
+  <!-- OGP -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://idatsuka.com/">
+  <meta property="og:title" content="IDATSUKA — Designer">
   <meta property="og:description" content="東京を拠点に活動するデザイナー Idatsuka のポートフォリオ。UI/UX・ブランディング・Webデザイン。">
-  <meta property="og:image"       content="https://idatsuka.com/og.png">
-  <meta name="twitter:card"       content="summary_large_image">
-  <meta name="twitter:title"      content="IDATSUKA — Designer">
-  <meta name="twitter:description"content="東京を拠点に活動するデザイナー Idatsuka のポートフォリオ。">
-  <meta name="twitter:image"      content="https://idatsuka.com/og.png">
+  <meta property="og:image" content="https://idatsuka.com/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="IDATSUKA — Designer">
+  <meta name="twitter:description" content="東京を拠点に活動するデザイナー Idatsuka のポートフォリオ。">
+  <meta name="twitter:image" content="https://idatsuka.com/og.png">
 
-  <!-- ── Favicon (SVG inline) ── -->
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23060608'/><text x='16' y='23' text-anchor='middle' font-size='20' font-family='sans-serif' font-weight='700' fill='%2300d4ff'>I</text></svg>">
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%230a0a0a'/><text x='16' y='22' text-anchor='middle' font-size='18' font-family='system-ui' font-weight='600' fill='%23c4a882'>I</text></svg>">
 
-  <!-- ── Fonts ── -->
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
 
-  <!-- ── Structured Data ── -->
+  <!-- Structured Data -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -47,382 +47,45 @@
   }
   </script>
 
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg:     #060608;
-      --bg2:    #0d0d10;
-      --fg:     #eeeeee;
-      --muted:  #5a5a6a;
-      --accent: #00d4ff;
-      --violet: #8b5cf6;
-      --border: rgba(255,255,255,0.07);
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      background: var(--bg);
-      color: var(--fg);
-      font-family: 'Space Grotesk', 'Noto Sans JP', sans-serif;
-      overflow-x: hidden;
-      cursor: none;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    /* ── Noise ── */
-    .noise {
-      position: fixed; inset: 0; pointer-events: none; z-index: 400; opacity: .028;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
-    }
-
-    /* ── Cursor ── */
-    .cur, .ring {
-      position: fixed; border-radius: 50%;
-      pointer-events: none; z-index: 9999;
-      transform: translate(-50%,-50%);
-    }
-    .cur  { width: 7px; height: 7px; background: var(--accent); }
-    .ring {
-      width: 38px; height: 38px;
-      border: 1.5px solid rgba(0,212,255,.32);
-      transition: width .22s, height .22s, border-color .22s;
-      z-index: 9998;
-    }
-    .ring.hover { width: 62px; height: 62px; border-color: rgba(0,212,255,.7); }
-
-    /* ── Nav ── */
-    nav {
-      position: fixed; top: 0; inset-inline: 0;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 1.6rem 3.5rem; z-index: 200;
-      transition: background .4s, backdrop-filter .4s, border-bottom .4s;
-    }
-    nav.scrolled {
-      background: rgba(6,6,8,.85);
-      backdrop-filter: blur(20px) saturate(1.5);
-      border-bottom: 1px solid var(--border);
-    }
-    .logo { font-size: 1.3rem; font-weight: 700; letter-spacing: -.02em; text-decoration: none; color: var(--fg); }
-    .logo em { color: var(--accent); font-style: normal; }
-
-    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
-    .nav-links a {
-      color: var(--muted); text-decoration: none;
-      font-size: .78rem; letter-spacing: .1em; text-transform: uppercase;
-      transition: color .2s; position: relative;
-    }
-    .nav-links a::after {
-      content: ''; position: absolute; bottom: -3px; left: 0;
-      width: 0; height: 1px; background: var(--accent); transition: width .3s;
-    }
-    .nav-links a:hover { color: var(--fg); }
-    .nav-links a:hover::after { width: 100%; }
-
-    /* ── Hero ── */
-    #hero {
-      height: 100vh; display: flex; align-items: center; justify-content: center;
-      position: relative; overflow: hidden;
-    }
-    .hero-glow {
-      position: absolute; inset: 0; pointer-events: none;
-      background:
-        radial-gradient(ellipse 60% 65% at 15% 55%, rgba(139,92,246,.09) 0%, transparent 60%),
-        radial-gradient(ellipse 55% 60% at 85% 45%, rgba(0,212,255,.06) 0%, transparent 60%);
-    }
-    .grid-bg {
-      position: absolute; inset: 0;
-      background-image:
-        linear-gradient(rgba(255,255,255,.017) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.017) 1px, transparent 1px);
-      background-size: 64px 64px;
-    }
-    .hero-inner { text-align: center; position: relative; z-index: 2; }
-
-    .hero-eyebrow {
-      display: inline-flex; align-items: center; gap: .75rem;
-      font-size: .7rem; letter-spacing: .35em; text-transform: uppercase; color: var(--accent);
-      margin-bottom: 1.8rem; opacity: 0; animation: fadeUp .7s forwards .2s;
-    }
-    .hero-eyebrow::before, .hero-eyebrow::after {
-      content: ''; width: 28px; height: 1px; background: var(--accent); opacity: .45;
-    }
-
-    .hero-name {
-      font-size: clamp(4.5rem, 13vw, 13rem);
-      font-weight: 700; letter-spacing: -.045em; line-height: .9;
-      margin-bottom: 2rem;
-    }
-    .hero-name .ch {
-      display: inline-block;
-      opacity: 0; transform: translateY(60px) rotate(3deg);
-      animation: charIn .55s cubic-bezier(.22,1,.36,1) forwards;
-    }
-    .hero-sub {
-      font-size: clamp(.85rem, 1.6vw, 1rem);
-      color: var(--muted); font-weight: 300; letter-spacing: .14em;
-      opacity: 0; animation: fadeUp .7s forwards 1.25s;
-    }
-    .hero-cta {
-      margin-top: 2.8rem;
-      opacity: 0; animation: fadeUp .7s forwards 1.5s;
-    }
-    .hero-cta a {
-      display: inline-flex; align-items: center; gap: .6rem;
-      padding: .85rem 2rem; border: 1px solid rgba(0,212,255,.35);
-      color: var(--accent); text-decoration: none;
-      font-size: .78rem; letter-spacing: .16em; text-transform: uppercase;
-      transition: background .3s, border-color .3s, color .3s;
-    }
-    .hero-cta a:hover {
-      background: rgba(0,212,255,.08); border-color: var(--accent);
-    }
-
-    .hero-scroll {
-      position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
-      display: flex; flex-direction: column; align-items: center; gap: .4rem;
-      opacity: 0; animation: fadeUp .7s forwards 1.8s;
-    }
-    .hero-scroll span { font-size: .63rem; letter-spacing: .25em; text-transform: uppercase; color: var(--muted); }
-    .scroll-bar {
-      width: 1px; height: 48px;
-      background: linear-gradient(to bottom, var(--accent), transparent);
-      transform-origin: top; animation: scrollAnim 2.4s ease-in-out infinite 2.2s;
-    }
-
-    @keyframes scrollAnim {
-      0%   { transform: scaleY(0); transform-origin: top; }
-      50%  { transform: scaleY(1); transform-origin: top; }
-      50.1%{ transform-origin: bottom; }
-      100% { transform: scaleY(0); transform-origin: bottom; }
-    }
-    @keyframes charIn {
-      to { opacity: 1; transform: translateY(0) rotate(0deg); }
-    }
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(18px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ── Shared ── */
-    section { padding: 9rem 0; }
-    .container { max-width: 1200px; margin: 0 auto; padding: 0 3.5rem; }
-    .s-label { font-size: .66rem; letter-spacing: .32em; text-transform: uppercase; color: var(--accent); margin-bottom: .9rem; }
-    .s-title { font-size: clamp(2.8rem, 6vw, 5.5rem); font-weight: 700; letter-spacing: -.035em; line-height: .95; margin-bottom: 4.5rem; }
-
-    /* ── Reveal ── */
-    .rv {
-      opacity: 0; transform: translateY(36px);
-      transition: opacity .85s cubic-bezier(.22,1,.36,1), transform .85s cubic-bezier(.22,1,.36,1);
-    }
-    .rv.on { opacity: 1; transform: translateY(0); }
-
-    /* ── About ── */
-    #about { background: var(--bg2); }
-    .about-grid { display: grid; grid-template-columns: 1fr 1.55fr; gap: 7rem; align-items: start; }
-
-    .about-photo {
-      aspect-ratio: 3/4; position: relative;
-      background: linear-gradient(135deg, rgba(139,92,246,.12), rgba(0,212,255,.08));
-      border: 1px solid var(--border); overflow: hidden;
-    }
-    .photo-hint {
-      position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
-      font-size: .63rem; letter-spacing: .3em; color: rgba(255,255,255,.16); text-transform: uppercase;
-      flex-direction: column; gap: .5rem;
-    }
-    .photo-hint svg { opacity: .2; }
-    .corner { position: absolute; width: 18px; height: 18px; border-color: var(--accent); border-style: solid; }
-    .corner.tl { top: 12px; left: 12px; border-width: 1px 0 0 1px; }
-    .corner.tr { top: 12px; right: 12px; border-width: 1px 1px 0 0; }
-    .corner.bl { bottom: 12px; left: 12px; border-width: 0 0 1px 1px; }
-    .corner.br { bottom: 12px; right: 12px; border-width: 0 1px 1px 0; }
-
-    .about-bio p { font-size: 1rem; line-height: 1.95; color: rgba(238,238,238,.65); margin-bottom: 1.4rem; }
-    .about-bio p strong { color: var(--fg); font-weight: 600; }
-
-    .skills { display: grid; grid-template-columns: repeat(3,1fr); gap: .8rem; margin-top: 2.5rem; }
-    .skill {
-      padding: .68rem 1rem; border: 1px solid var(--border);
-      font-size: .76rem; letter-spacing: .06em; text-align: center;
-      color: var(--muted); transition: border-color .25s, color .25s;
-    }
-    .skill:hover { border-color: var(--accent); color: var(--accent); }
-
-    /* ── Works ── */
-    #works .container { padding-bottom: 0; }
-    .works-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 2px; }
-    .work-card { position: relative; aspect-ratio: 4/3; overflow: hidden; }
-    .work-thumb { width: 100%; height: 100%; transition: transform .7s cubic-bezier(.23,1,.32,1); }
-
-    .work-card:nth-child(1) .work-thumb { background: linear-gradient(135deg,#0f0c29,#302b63,#24243e); }
-    .work-card:nth-child(2) .work-thumb { background: linear-gradient(135deg,#1a1a2e,#0f3460,#533483); }
-    .work-card:nth-child(3) .work-thumb { background: linear-gradient(135deg,#0d0d0d,#222,#3a3a3a); }
-    .work-card:nth-child(4) .work-thumb { background: linear-gradient(135deg,#0b0c10,#1f2833,#0d7680); }
-    .work-card:hover .work-thumb { transform: scale(1.045); }
-
-    .work-overlay {
-      position: absolute; inset: 0;
-      background: linear-gradient(to top, rgba(0,0,0,.93) 0%, rgba(0,0,0,.25) 60%, transparent 100%);
-      display: flex; flex-direction: column; justify-content: flex-end;
-      padding: 2.2rem 2.4rem; opacity: 0; transition: opacity .4s;
-    }
-    .work-card:hover .work-overlay { opacity: 1; }
-    .work-tag { font-size: .63rem; letter-spacing: .22em; text-transform: uppercase; color: var(--accent); margin-bottom: .4rem; }
-    .work-title { font-size: 1.5rem; font-weight: 600; margin-bottom: .4rem; }
-    .work-desc { font-size: .82rem; color: rgba(255,255,255,.55); line-height: 1.65; }
-    .work-num { position: absolute; top: 1.4rem; right: 1.6rem; font-size: .63rem; letter-spacing: .12em; color: rgba(255,255,255,.14); }
-
-    /* ── Divider ── */
-    .divider {
-      height: 1px;
-      background: linear-gradient(to right, transparent, rgba(0,212,255,.3), rgba(139,92,246,.3), transparent);
-    }
-
-    /* ── Career ── */
-    #career { background: var(--bg2); }
-    .timeline { position: relative; padding-left: 3.2rem; }
-    .timeline::before {
-      content: ''; position: absolute; left: 0; top: 0; bottom: 0;
-      width: 1px; background: linear-gradient(to bottom, var(--accent), rgba(0,212,255,.05));
-    }
-    .tl-item { position: relative; padding-bottom: 4rem; }
-    .tl-item:last-child { padding-bottom: 0; }
-    .tl-dot {
-      position: absolute; left: -3.56rem; top: .3rem;
-      width: 10px; height: 10px; border-radius: 50%;
-      background: var(--accent); box-shadow: 0 0 14px var(--accent);
-    }
-    .tl-year { font-size: .7rem; letter-spacing: .18em; text-transform: uppercase; color: var(--accent); margin-bottom: .35rem; }
-    .tl-role { font-size: 1.45rem; font-weight: 600; margin-bottom: .2rem; }
-    .tl-company { font-size: .88rem; color: var(--muted); margin-bottom: .9rem; }
-    .tl-desc { font-size: .87rem; line-height: 1.88; color: rgba(238,238,238,.48); max-width: 580px; }
-
-    /* ── Contact ── */
-    #contact { position: relative; overflow: hidden; }
-    .contact-glow {
-      position: absolute; inset: 0; pointer-events: none;
-      background: radial-gradient(ellipse 65% 75% at 50% 50%, rgba(139,92,246,.07) 0%, transparent 70%);
-    }
-    .contact-inner { position: relative; z-index: 2; text-align: center; }
-
-    .contact-email {
-      display: inline-block; margin: 1.2rem 0 0;
-      font-size: clamp(1.3rem, 3.2vw, 2.6rem); font-weight: 600; letter-spacing: -.02em;
-      color: var(--fg); text-decoration: none; position: relative; transition: color .3s;
-    }
-    .contact-email::after {
-      content: ''; position: absolute; bottom: -3px; left: 0; width: 100%;
-      height: 1px; background: linear-gradient(to right, var(--accent), var(--violet));
-      transform: scaleX(0); transition: transform .4s;
-    }
-    .contact-email:hover { color: var(--accent); }
-    .contact-email:hover::after { transform: scaleX(1); }
-
-    .socials { display: flex; justify-content: center; flex-wrap: wrap; gap: 1.8rem; list-style: none; margin-top: 3rem; }
-    .socials a { font-size: .72rem; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color .2s; }
-    .socials a:hover { color: var(--accent); }
-
-    .contact-form { max-width: 540px; margin: 4rem auto 0; text-align: left; }
-    .fg { margin-bottom: 1.35rem; }
-    .fg label { display: block; font-size: .68rem; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); margin-bottom: .42rem; }
-    .fg input, .fg textarea {
-      width: 100%; background: transparent; border: 1px solid var(--border);
-      padding: .85rem 1rem; color: var(--fg); font-family: inherit; font-size: .92rem;
-      transition: border-color .2s; outline: none; cursor: none; appearance: none;
-    }
-    .fg textarea { height: 130px; resize: none; }
-    .fg input:focus, .fg textarea:focus { border-color: var(--accent); }
-    .fg input::placeholder, .fg textarea::placeholder { color: rgba(255,255,255,.2); }
-
-    .btn {
-      position: relative; overflow: hidden; display: inline-flex; align-items: center; gap: .7rem;
-      padding: .95rem 2.4rem; background: transparent; border: 1px solid var(--accent);
-      color: var(--accent); font-family: inherit; font-size: .76rem; letter-spacing: .18em;
-      text-transform: uppercase; cursor: none; transition: color .3s;
-    }
-    .btn::before {
-      content: ''; position: absolute; inset: 0; background: var(--accent);
-      transform: translateX(-101%); transition: transform .3s;
-    }
-    .btn:hover { color: var(--bg); }
-    .btn:hover::before { transform: translateX(0); }
-    .btn span { position: relative; z-index: 1; }
-
-    .form-msg {
-      display: none; margin-top: 1rem; padding: .75rem 1rem;
-      border: 1px solid rgba(0,212,255,.3); font-size: .82rem;
-      color: var(--accent); letter-spacing: .05em;
-    }
-
-    /* ── Footer ── */
-    footer {
-      padding: 1.8rem 3.5rem; border-top: 1px solid var(--border);
-      display: flex; justify-content: space-between; align-items: center;
-    }
-    footer p { font-size: .7rem; color: var(--muted); }
-
-    /* ── Responsive ── */
-    @media (max-width: 900px) {
-      nav { padding: 1.3rem 1.5rem; }
-      .container { padding: 0 1.5rem; }
-      .nav-links { display: none; }
-      .about-grid { grid-template-columns: 1fr; gap: 3rem; }
-      .about-photo { aspect-ratio: 16/9; }
-      .works-grid { grid-template-columns: 1fr; }
-      .skills { grid-template-columns: repeat(2,1fr); }
-      footer { flex-direction: column; gap: .6rem; text-align: center; }
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="noise"></div>
-<div class="cur"  id="cur"></div>
-<div class="ring" id="ring"></div>
-
-<!-- ── Nav ──────────────────────────────────── -->
-<nav id="nav">
-  <a href="#hero" class="logo">I<em>.</em></a>
+<!-- Nav -->
+<nav>
+  <a href="/" class="logo">IDATSUKA</a>
   <ul class="nav-links">
-    <li><a href="#about">About</a></li>
-    <li><a href="#works">Works</a></li>
-    <li><a href="#career">Career</a></li>
-    <li><a href="#contact">Contact</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="works.html">Works</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="contact.html">Contact</a></li>
   </ul>
 </nav>
 
-<!-- ── Hero ──────────────────────────────────── -->
-<section id="hero">
-  <div class="hero-glow"></div>
-  <div class="grid-bg"></div>
+<!-- Hero -->
+<section class="hero" id="hero">
   <div class="hero-inner">
-    <p class="hero-eyebrow">Designer &amp; Visual Creator</p>
-    <h1 class="hero-name" id="hname" aria-label="IDATSUKA"></h1>
-    <p class="hero-sub">— Creating experiences that resonate —</p>
+    <p class="hero-label">Designer / Tokyo</p>
+    <h1 class="hero-name">IDATSUKA</h1>
+    <p class="hero-sub">UI/UX Design, Branding, Web Design</p>
     <div class="hero-cta">
-      <a href="#works">View Works</a>
+      <a href="works.html" class="btn">View Works</a>
     </div>
   </div>
   <div class="hero-scroll" aria-hidden="true">
     <span>Scroll</span>
-    <div class="scroll-bar"></div>
+    <div class="scroll-line"></div>
   </div>
 </section>
 
-<!-- ── About ──────────────────────────────────── -->
-<section id="about">
+<!-- About -->
+<section class="home-about" id="about">
   <div class="container">
     <div class="about-grid">
 
       <div class="about-photo rv" role="img" aria-label="Idatsuka のプロフィール写真">
-        <div class="corner tl"></div><div class="corner tr"></div>
-        <div class="corner bl"></div><div class="corner br"></div>
-        <div class="photo-hint">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-          <span>Photo Here</span>
-        </div>
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        <span>Photo</span>
       </div>
 
       <div class="about-bio">
@@ -430,13 +93,13 @@
         <h2 class="s-title rv">Hello,<br>I'm Idatsuka.</h2>
         <p class="rv">東京を拠点に活動する<strong>デザイナー</strong>です。UI/UXデザイン、ブランディング、Webデザインを専門とし、ユーザーの心を動かす体験をつくることにこだわっています。</p>
         <p class="rv">デザインは単なる見た目の美しさではなく、<strong>問題を解決し、感情を動かす力</strong>だと考えています。クライアントのビジョンを形にするために、常に新しいアプローチを探求し続けています。</p>
-        <div class="skills">
-          <div class="skill rv">UI / UX</div>
-          <div class="skill rv">Branding</div>
-          <div class="skill rv">Figma</div>
-          <div class="skill rv">Motion</div>
-          <div class="skill rv">Web Design</div>
-          <div class="skill rv">Illustration</div>
+        <div class="skills rv">
+          <div class="skill">UI / UX</div>
+          <div class="skill">Branding</div>
+          <div class="skill">Figma</div>
+          <div class="skill">Motion</div>
+          <div class="skill">Web Design</div>
+          <div class="skill">Illustration</div>
         </div>
       </div>
 
@@ -444,7 +107,7 @@
   </div>
 </section>
 
-<!-- ── Works ──────────────────────────────────── -->
+<!-- Works -->
 <section id="works">
   <div class="container">
     <p class="s-label rv">Selected Works</p>
@@ -453,88 +116,94 @@
   <div class="works-grid" role="list">
 
     <article class="work-card rv" role="listitem">
-      <div class="work-thumb"></div>
-      <span class="work-num" aria-hidden="true">01</span>
-      <div class="work-overlay">
-        <p class="work-tag">UI / UX Design</p>
-        <h3 class="work-title">Project Name</h3>
-        <p class="work-desc">アプリのUI/UXデザインを担当。ユーザーリサーチからプロトタイプまで一貫して設計。</p>
+      <div class="work-card-inner">
+        <span class="work-num" aria-hidden="true">01</span>
+        <div>
+          <p class="work-tag">UI / UX Design</p>
+          <h3 class="work-title">Project Name</h3>
+          <p class="work-desc">アプリのUI/UXデザインを担当。ユーザーリサーチからプロトタイプまで一貫して設計。</p>
+        </div>
       </div>
     </article>
 
     <article class="work-card rv" role="listitem">
-      <div class="work-thumb"></div>
-      <span class="work-num" aria-hidden="true">02</span>
-      <div class="work-overlay">
-        <p class="work-tag">Branding</p>
-        <h3 class="work-title">Brand Identity</h3>
-        <p class="work-desc">スタートアップのブランドアイデンティティを構築。ロゴからガイドラインまで制作。</p>
+      <div class="work-card-inner">
+        <span class="work-num" aria-hidden="true">02</span>
+        <div>
+          <p class="work-tag">Branding</p>
+          <h3 class="work-title">Brand Identity</h3>
+          <p class="work-desc">スタートアップのブランドアイデンティティを構築。ロゴからガイドラインまで制作。</p>
+        </div>
       </div>
     </article>
 
     <article class="work-card rv" role="listitem">
-      <div class="work-thumb"></div>
-      <span class="work-num" aria-hidden="true">03</span>
-      <div class="work-overlay">
-        <p class="work-tag">Web Design</p>
-        <h3 class="work-title">Website Redesign</h3>
-        <p class="work-desc">企業サイトのリデザイン。コンバージョン率を大幅に改善するデザインを実現。</p>
+      <div class="work-card-inner">
+        <span class="work-num" aria-hidden="true">03</span>
+        <div>
+          <p class="work-tag">Web Design</p>
+          <h3 class="work-title">Website Redesign</h3>
+          <p class="work-desc">企業サイトのリデザイン。コンバージョン率を大幅に改善するデザインを実現。</p>
+        </div>
       </div>
     </article>
 
     <article class="work-card rv" role="listitem">
-      <div class="work-thumb"></div>
-      <span class="work-num" aria-hidden="true">04</span>
-      <div class="work-overlay">
-        <p class="work-tag">Motion Design</p>
-        <h3 class="work-title">Motion Graphics</h3>
-        <p class="work-desc">ブランドビデオのモーショングラフィックスを担当。世界観を動きで表現。</p>
+      <div class="work-card-inner">
+        <span class="work-num" aria-hidden="true">04</span>
+        <div>
+          <p class="work-tag">Motion Design</p>
+          <h3 class="work-title">Motion Graphics</h3>
+          <p class="work-desc">ブランドビデオのモーショングラフィックスを担当。世界観を動きで表現。</p>
+        </div>
       </div>
     </article>
 
   </div>
 </section>
 
-<div class="divider" role="separator"></div>
+<div class="divider"></div>
 
-<!-- ── Career ──────────────────────────────────── -->
-<section id="career">
+<!-- Career -->
+<section class="home-career" id="career">
   <div class="container">
     <p class="s-label rv">Career</p>
     <h2 class="s-title rv">Experience.</h2>
     <div class="timeline">
 
       <div class="tl-item rv">
-        <div class="tl-dot" aria-hidden="true"></div>
         <p class="tl-year">2022 — Present</p>
-        <h3 class="tl-role">Senior UI/UX Designer</h3>
-        <p class="tl-company">Company Name, Tokyo</p>
-        <p class="tl-desc">デジタルプロダクトのデザイン全般を担当。デザインシステムの構築やチームのデザイン品質向上に貢献。</p>
+        <div>
+          <h3 class="tl-role">Senior UI/UX Designer</h3>
+          <p class="tl-company">Company Name, Tokyo</p>
+          <p class="tl-desc">デジタルプロダクトのデザイン全般を担当。デザインシステムの構築やチームのデザイン品質向上に貢献。</p>
+        </div>
       </div>
 
       <div class="tl-item rv">
-        <div class="tl-dot" aria-hidden="true"></div>
         <p class="tl-year">2019 — 2022</p>
-        <h3 class="tl-role">UI Designer</h3>
-        <p class="tl-company">Previous Company, Tokyo</p>
-        <p class="tl-desc">スタートアップのプロダクトデザインを担当。ゼロからプロダクトのビジュアルを設計し、PMFに貢献。</p>
+        <div>
+          <h3 class="tl-role">UI Designer</h3>
+          <p class="tl-company">Previous Company, Tokyo</p>
+          <p class="tl-desc">スタートアップのプロダクトデザインを担当。ゼロからプロダクトのビジュアルを設計し、PMFに貢献。</p>
+        </div>
       </div>
 
       <div class="tl-item rv">
-        <div class="tl-dot" aria-hidden="true"></div>
         <p class="tl-year">2015 — 2019</p>
-        <h3 class="tl-role">Graphic Designer</h3>
-        <p class="tl-company">Design Studio, Tokyo</p>
-        <p class="tl-desc">ブランディング、印刷物、Webデザインなど幅広いプロジェクトを経験。デザインの基礎をここで培った。</p>
+        <div>
+          <h3 class="tl-role">Graphic Designer</h3>
+          <p class="tl-company">Design Studio, Tokyo</p>
+          <p class="tl-desc">ブランディング、印刷物、Webデザインなど幅広いプロジェクトを経験。デザインの基礎をここで培った。</p>
+        </div>
       </div>
 
     </div>
   </div>
 </section>
 
-<!-- ── Contact ──────────────────────────────────── -->
-<section id="contact">
-  <div class="contact-glow" aria-hidden="true"></div>
+<!-- Contact -->
+<section class="home-contact" id="contact">
   <div class="container">
     <div class="contact-inner">
       <p class="s-label rv">Contact</p>
@@ -542,10 +211,10 @@
       <a href="mailto:hello@idatsuka.com" class="contact-email rv">hello@idatsuka.com</a>
 
       <ul class="socials rv" aria-label="SNS リンク">
-        <li><a href="https://twitter.com/idatsuka"       target="_blank" rel="noopener">Twitter / X</a></li>
-        <li><a href="https://instagram.com/idatsuka"     target="_blank" rel="noopener">Instagram</a></li>
-        <li><a href="https://linkedin.com/in/idatsuka"   target="_blank" rel="noopener">LinkedIn</a></li>
-        <li><a href="https://behance.net/idatsuka"       target="_blank" rel="noopener">Behance</a></li>
+        <li><a href="https://twitter.com/idatsuka" target="_blank" rel="noopener">Twitter / X</a></li>
+        <li><a href="https://instagram.com/idatsuka" target="_blank" rel="noopener">Instagram</a></li>
+        <li><a href="https://linkedin.com/in/idatsuka" target="_blank" rel="noopener">LinkedIn</a></li>
+        <li><a href="https://behance.net/idatsuka" target="_blank" rel="noopener">Behance</a></li>
       </ul>
 
       <form class="contact-form rv" id="contactForm" novalidate>
@@ -561,65 +230,45 @@
           <label for="f-msg">Message</label>
           <textarea id="f-msg" placeholder="プロジェクトについてお聞かせください..." required></textarea>
         </div>
-        <button class="btn" type="submit"><span id="btn-label">Send Message →</span></button>
+        <button class="btn-fill" type="submit" id="btn-label">Send Message</button>
         <p class="form-msg" id="form-msg" role="status">お問い合わせありがとうございます。近日中にご連絡いたします。</p>
       </form>
     </div>
   </div>
 </section>
 
-<!-- ── Footer ──────────────────────────────────── -->
+<!-- Footer -->
 <footer>
-  <p>© 2024 Idatsuka. All rights reserved.</p>
-  <p>Designed &amp; Coded with care in Tokyo</p>
+  <p>&copy; 2025 Idatsuka</p>
+  <ul class="footer-links">
+    <li><a href="about.html">About</a></li>
+    <li><a href="works.html">Works</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
 </footer>
 
 <script>
-/* ── Custom Cursor ── */
-const cur  = document.getElementById('cur');
-const ring = document.getElementById('ring');
-let mx=0, my=0, rx=0, ry=0;
-document.addEventListener('mousemove', e => {
-  mx = e.clientX; my = e.clientY;
-  cur.style.left = mx+'px'; cur.style.top = my+'px';
-});
-(function tick(){
-  rx += (mx-rx)*.11; ry += (my-ry)*.11;
-  ring.style.left = rx+'px'; ring.style.top = ry+'px';
-  requestAnimationFrame(tick);
-})();
-document.querySelectorAll('a,button,.work-card,.skill,.btn').forEach(el=>{
-  el.addEventListener('mouseenter',()=>ring.classList.add('hover'));
-  el.addEventListener('mouseleave',()=>ring.classList.remove('hover'));
-});
+/* Nav scroll */
+const nav = document.getElementById('nav');
 
-/* ── Hero Name ── */
-'IDATSUKA'.split('').forEach((c,i)=>{
-  const s=document.createElement('span');
-  s.className='ch'; s.textContent=c;
-  s.style.animationDelay=(.42+i*.065)+'s';
-  document.getElementById('hname').appendChild(s);
-});
+/* Scroll Reveal */
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); }
+  });
+}, { threshold: .1 });
+document.querySelectorAll('.rv').forEach(el => io.observe(el));
 
-/* ── Nav scroll ── */
-const nav=document.getElementById('nav');
-window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>40),{passive:true});
-
-/* ── Scroll Reveal ── */
-const io=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('on'); io.unobserve(e.target); } });
-},{threshold:.1});
-document.querySelectorAll('.rv').forEach(el=>io.observe(el));
-
-/* ── Contact Form ── */
-document.getElementById('contactForm').addEventListener('submit', e=>{
+/* Contact Form */
+document.getElementById('contactForm').addEventListener('submit', e => {
   e.preventDefault();
-  const btn=document.getElementById('btn-label');
-  const msg=document.getElementById('form-msg');
-  btn.textContent='送信しました ✓';
-  msg.style.display='block';
+  const btn = document.getElementById('btn-label');
+  const msg = document.getElementById('form-msg');
+  btn.textContent = '送信しました';
+  msg.style.display = 'block';
   e.target.reset();
-  setTimeout(()=>{ btn.textContent='Send Message →'; msg.style.display='none'; },5000);
+  setTimeout(() => { btn.textContent = 'Send Message'; msg.style.display = 'none'; }, 5000);
 });
 </script>
 </body>

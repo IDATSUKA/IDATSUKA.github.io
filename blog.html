@@ -6,239 +6,16 @@
   <title>Blog — IDATSUKA</title>
   <meta name="description" content="IDATSUKA のブログ・ノート。デザイン、カルチャー、思考の断片。">
   <link rel="canonical" href="https://idatsuka.com/blog.html">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23060608'/><text x='16' y='23' text-anchor='middle' font-size='20' font-family='sans-serif' font-weight='700' fill='%2300d4ff'>I</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%230a0a0a'/><text x='16' y='22' text-anchor='middle' font-size='18' font-family='system-ui' font-weight='600' fill='%23c4a882'>I</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=Noto+Sans+JP:wght@300;400&display=swap" rel="stylesheet">
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --bg: #060608; --bg2: #0d0d10;
-      --fg: #ffffff; --muted: #484858;
-      --accent: #00d4ff; --hot: #ff3864;
-      --border: rgba(255,255,255,0.07);
-    }
-    html { scroll-behavior: smooth; }
-    body {
-      background: var(--bg); color: var(--fg);
-      font-family: 'Space Grotesk', 'Noto Sans JP', sans-serif;
-      overflow-x: hidden; -webkit-font-smoothing: antialiased;
-    }
-    nav {
-      position: fixed; top: 0; inset-inline: 0; z-index: 200;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 1.6rem 3.5rem;
-      background: rgba(6,6,8,.9); backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--border);
-    }
-    .logo { font-size: 1.1rem; font-weight: 700; text-decoration: none; color: var(--fg); }
-    .logo span { color: var(--accent); }
-    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
-    .nav-links a {
-      color: var(--muted); text-decoration: none;
-      font-size: .75rem; letter-spacing: .12em; text-transform: uppercase;
-      transition: color .2s;
-    }
-    .nav-links a:hover, .nav-links a.active { color: var(--fg); }
-
-    /* PAGE HEADER */
-    .page-header {
-      padding: 10rem 3.5rem 5rem;
-      border-bottom: 1px solid var(--border);
-    }
-    .page-header .eyebrow {
-      font-size: .72rem; letter-spacing: .3em; text-transform: uppercase;
-      color: var(--accent); margin-bottom: 1rem; display: block;
-    }
-    .page-header h1 {
-      font-size: clamp(3.5rem, 10vw, 10rem);
-      font-weight: 700; letter-spacing: -.04em; line-height: .88;
-    }
-
-    /* TAG FILTER */
-    .tag-bar {
-      padding: 1.5rem 3.5rem; border-bottom: 1px solid var(--border);
-      display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;
-    }
-    .tag-label {
-      font-size: .65rem; letter-spacing: .2em; text-transform: uppercase;
-      color: var(--muted); margin-right: .5rem;
-    }
-    .tag-btn {
-      background: none; border: 1px solid var(--border); cursor: pointer;
-      font-family: inherit; font-size: .68rem; letter-spacing: .12em; text-transform: uppercase;
-      color: var(--muted); padding: .3rem .8rem;
-      transition: color .2s, border-color .2s, background .2s;
-    }
-    .tag-btn:hover, .tag-btn.active {
-      color: var(--bg); background: var(--accent); border-color: var(--accent);
-    }
-
-    /* FEATURED POST */
-    .featured-post {
-      display: grid; grid-template-columns: 1fr 1fr;
-      border-bottom: 1px solid var(--border);
-      text-decoration: none; color: var(--fg);
-      transition: background .25s;
-    }
-    .featured-post:hover { background: var(--bg2); }
-    .featured-thumb {
-      aspect-ratio: 16/10;
-      background: linear-gradient(135deg,#0f0c29,#302b63,#24243e);
-      position: relative; overflow: hidden;
-    }
-    .featured-thumb-inner {
-      position: absolute; inset: 0;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .featured-thumb-label {
-      font-size: .65rem; letter-spacing: .25em; text-transform: uppercase;
-      color: rgba(255,255,255,.2);
-    }
-    .featured-content {
-      padding: 4rem 3.5rem;
-      display: flex; flex-direction: column; justify-content: center;
-    }
-    .featured-badge {
-      font-size: .62rem; letter-spacing: .25em; text-transform: uppercase;
-      color: var(--hot); margin-bottom: 1.5rem;
-    }
-    .featured-tag {
-      display: inline-block;
-      font-size: .62rem; letter-spacing: .2em; text-transform: uppercase;
-      color: var(--accent); border: 1px solid rgba(0,212,255,.3);
-      padding: .2rem .6rem; margin-bottom: 1.2rem;
-    }
-    .featured-title {
-      font-size: clamp(1.4rem, 3vw, 2.2rem); font-weight: 700;
-      letter-spacing: -.02em; margin-bottom: 1rem; line-height: 1.2;
-    }
-    .featured-excerpt {
-      font-size: .9rem; line-height: 1.9;
-      color: rgba(255,255,255,.5); margin-bottom: 2rem;
-    }
-    .featured-meta {
-      display: flex; gap: 2rem;
-      font-size: .68rem; letter-spacing: .1em; text-transform: uppercase;
-      color: var(--muted);
-    }
-
-    /* POSTS LIST */
-    .posts-container { padding: 0 3.5rem 6rem; }
-    .posts-header {
-      padding: 3rem 0 2rem;
-      border-bottom: 1px solid var(--border);
-      font-size: .65rem; letter-spacing: .25em; text-transform: uppercase;
-      color: var(--muted); display: flex; justify-content: space-between;
-    }
-
-    .post-item {
-      display: grid; grid-template-columns: 6rem 1fr auto;
-      gap: 2rem; align-items: start;
-      padding: 2.5rem 0; border-bottom: 1px solid var(--border);
-      text-decoration: none; color: var(--fg);
-      transition: background .2s;
-    }
-    .post-item:last-child { border-bottom: none; }
-    .post-item:hover .post-item-title { color: var(--accent); }
-    .post-num {
-      font-size: .68rem; letter-spacing: .12em; color: var(--muted);
-      padding-top: .2rem;
-    }
-    .post-tag {
-      font-size: .62rem; letter-spacing: .2em; text-transform: uppercase;
-      color: var(--accent); margin-bottom: .5rem; display: block;
-    }
-    .post-item-title {
-      font-size: 1.15rem; font-weight: 600; letter-spacing: -.01em;
-      margin-bottom: .5rem; transition: color .2s;
-    }
-    .post-excerpt {
-      font-size: .82rem; color: rgba(255,255,255,.4); line-height: 1.8;
-    }
-    .post-meta {
-      text-align: right; flex-shrink: 0;
-    }
-    .post-date {
-      font-size: .68rem; color: var(--muted); letter-spacing: .08em;
-      display: block; margin-bottom: .4rem;
-    }
-    .post-read {
-      font-size: .62rem; letter-spacing: .15em; text-transform: uppercase;
-      color: var(--muted);
-    }
-
-    /* NOTE CARDS (short form) */
-    .notes-section {
-      background: var(--bg2); border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-    }
-    .notes-inner {
-      padding: 5rem 3.5rem; max-width: 1200px; margin: 0 auto;
-    }
-    .section-label {
-      font-size: .68rem; letter-spacing: .25em; text-transform: uppercase;
-      color: var(--accent); margin-bottom: 2.5rem; display: block;
-    }
-    .notes-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: 1px; background: var(--border);
-    }
-    .note-card {
-      background: var(--bg2); padding: 2rem;
-      display: flex; flex-direction: column;
-    }
-    .note-card-label {
-      font-size: .62rem; letter-spacing: .2em; text-transform: uppercase;
-      color: var(--hot); margin-bottom: 1rem;
-    }
-    .note-card-text {
-      font-size: .92rem; line-height: 1.85;
-      color: rgba(255,255,255,.6); flex: 1;
-    }
-    .note-card-date {
-      font-size: .65rem; color: var(--muted); margin-top: 1.5rem;
-    }
-
-    /* REVEAL */
-    .rv { opacity: 0; transform: translateY(20px); transition: opacity .6s ease, transform .6s ease; }
-    .rv.on { opacity: 1; transform: translateY(0); }
-
-    /* FOOTER */
-    footer {
-      padding: 1.6rem 3.5rem; border-top: 1px solid var(--border);
-      display: flex; justify-content: space-between; align-items: center;
-    }
-    footer p { font-size: .68rem; color: var(--muted); }
-    .footer-links { display: flex; gap: 2rem; list-style: none; }
-    .footer-links a {
-      font-size: .68rem; letter-spacing: .1em; text-transform: uppercase;
-      color: var(--muted); text-decoration: none; transition: color .2s;
-    }
-    .footer-links a:hover { color: var(--fg); }
-
-    @media (max-width: 900px) {
-      nav { padding: 1.3rem 1.5rem; }
-      .nav-links { display: none; }
-      .page-header { padding: 8rem 1.5rem 3rem; }
-      .tag-bar { padding: 1.2rem 1.5rem; }
-      .featured-post { grid-template-columns: 1fr; }
-      .featured-content { padding: 2.5rem 1.5rem; }
-      .posts-container { padding: 0 1.5rem 4rem; }
-      .post-item { grid-template-columns: 1fr; gap: .5rem; }
-      .post-num { display: none; }
-      .post-meta { text-align: left; }
-      .notes-inner { padding: 3rem 1.5rem; }
-      .notes-grid { grid-template-columns: 1fr; }
-      footer { flex-direction: column; gap: .8rem; text-align: center; }
-      .footer-links { justify-content: center; }
-    }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <nav>
-  <a href="/" class="logo">I<span>.</span></a>
+  <a href="/" class="logo">IDATSUKA</a>
   <ul class="nav-links">
     <li><a href="works.html">Works</a></li>
     <li><a href="about.html">About</a></li>
@@ -263,15 +40,13 @@
 
 <main>
 
-  <!-- FEATURED -->
+  <!-- Featured -->
   <a href="#" class="featured-post rv">
     <div class="featured-thumb">
-      <div class="featured-thumb-inner">
-        <span class="featured-thumb-label">Image Here</span>
-      </div>
+      <span>Image</span>
     </div>
     <div class="featured-content">
-      <p class="featured-badge">★ Featured</p>
+      <p class="featured-badge">Featured</p>
       <span class="featured-tag">Design</span>
       <h2 class="featured-title">ダークの中に宿る光 — 矛盾するデザインの力</h2>
       <p class="featured-excerpt">
@@ -284,7 +59,7 @@
     </div>
   </a>
 
-  <!-- POSTS -->
+  <!-- Posts -->
   <div class="posts-container rv">
     <div class="posts-header">
       <span>All Posts</span>
@@ -358,10 +133,10 @@
 
   </div>
 
-  <!-- SHORT NOTES -->
+  <!-- Short Notes -->
   <div class="notes-section">
     <div class="notes-inner rv">
-      <span class="section-label">Short Notes</span>
+      <span class="s-label">Short Notes</span>
       <div class="notes-grid">
         <div class="note-card">
           <span class="note-card-label">Note</span>
@@ -400,7 +175,7 @@
 </main>
 
 <footer>
-  <p>© 2025 Idatsuka. All rights reserved.</p>
+  <p>&copy; 2025 Idatsuka</p>
   <ul class="footer-links">
     <li><a href="works.html">Works</a></li>
     <li><a href="about.html">About</a></li>
@@ -410,14 +185,12 @@
 </footer>
 
 <script>
-  // Tag filter
   document.querySelectorAll('.tag-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.tag-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
     });
   });
-  // Scroll reveal
   const io = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
   }, { threshold: 0.1 });
