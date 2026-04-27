@@ -22,7 +22,15 @@
     <li><a href="blog.html">Blog</a></li>
     <li><a href="contact.html" class="active">Contact</a></li>
   </ul>
+  <button class="menu-toggle" id="menuToggle" aria-label="メニュー"><span></span><span></span><span></span></button>
 </nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="about.html">About</a>
+  <a href="works.html">Works</a>
+  <a href="blog.html">Blog</a>
+  <a href="contact.html" class="active">Contact</a>
+</div>
 
 <header class="page-header">
   <div class="page-header-grid">
@@ -71,7 +79,7 @@
     <div class="rv">
       <span class="label">02 — Message</span>
 
-      <form id="contactForm" novalidate>
+      <form id="contactForm" action="https://formspree.io/f/example" method="POST">
         <div class="form-row-split">
           <div>
             <label class="form-label" for="name">Name</label>
@@ -152,6 +160,16 @@
 </footer>
 
 <script>
+document.getElementById('menuToggle').addEventListener('click', function() {
+  this.classList.toggle('open');
+  document.getElementById('mobileMenu').classList.toggle('open');
+});
+document.querySelectorAll('.mobile-menu a').forEach(a => {
+  a.addEventListener('click', () => {
+    document.getElementById('menuToggle').classList.remove('open');
+    document.getElementById('mobileMenu').classList.remove('open');
+  });
+});
 document.getElementById('contactForm').addEventListener('submit', function(e) {
   e.preventDefault();
   this.style.display = 'none';
