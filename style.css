@@ -705,6 +705,308 @@ footer p { font-size: .68rem; color: var(--dim); }
 .sns-item:hover .sns-item-arrow { color: var(--accent); transform: translateX(3px); }
 
 /* ═══════════════════════════════════════════
+   PROJECT DETAIL PAGES
+   ═══════════════════════════════════════════ */
+
+.project-hero {
+  padding: 10rem 3rem 4rem;
+  border-bottom: 1px solid var(--border);
+}
+.project-hero .label { margin-bottom: 1rem; }
+.project-hero h1 {
+  font-size: clamp(2.5rem, 7vw, 6rem); font-weight: 600;
+  letter-spacing: -.04em; line-height: .92; margin-bottom: 1.5rem;
+}
+.project-hero-desc {
+  font-size: 1rem; line-height: 1.9; color: var(--fg-dim);
+  max-width: 600px; margin-bottom: 2.5rem;
+}
+.project-meta-grid {
+  display: flex; gap: 3rem; flex-wrap: wrap;
+}
+.project-meta-item {}
+.project-meta-label {
+  font-size: .6rem; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--dim); margin-bottom: .3rem;
+}
+.project-meta-value {
+  font-size: .88rem; color: var(--fg);
+}
+
+/* Project Key Visual */
+.project-visual {
+  position: relative; overflow: hidden;
+  aspect-ratio: 21/9;
+  border-bottom: 1px solid var(--border);
+}
+
+/* Project Sections */
+.project-section {
+  padding: 5rem 3rem;
+  max-width: 1100px; margin: 0 auto;
+  border-bottom: 1px solid var(--border);
+}
+.project-section:last-of-type { border-bottom: none; }
+
+.project-two-col {
+  display: grid; grid-template-columns: 1fr 1.6fr; gap: 4rem;
+}
+.project-two-col .label { margin-bottom: .8rem; }
+.project-body p {
+  font-size: .95rem; line-height: 2; color: var(--fg-dim); margin-bottom: 1.2rem;
+}
+.project-body p strong { color: var(--fg); font-weight: 500; }
+
+/* Gallery */
+.project-gallery {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1px; background: var(--border);
+}
+.project-gallery-item {
+  aspect-ratio: 4/3; position: relative; overflow: hidden;
+}
+.project-gallery-full {
+  aspect-ratio: 21/9; position: relative; overflow: hidden;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+/* Stats */
+.project-stats {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: var(--border);
+}
+.stat-item {
+  background: var(--bg); padding: 2.5rem; text-align: center;
+}
+.stat-number {
+  font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 600;
+  letter-spacing: -.03em; color: var(--accent);
+  margin-bottom: .3rem;
+}
+.stat-label {
+  font-size: .68rem; letter-spacing: .15em; text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* Project Nav */
+.project-nav {
+  display: grid; grid-template-columns: 1fr 1fr;
+  border-top: 1px solid var(--border);
+}
+.project-nav a {
+  padding: 3rem; display: flex; flex-direction: column;
+  gap: .4rem; text-decoration: none; color: var(--fg);
+  transition: background .3s;
+}
+.project-nav a:last-child {
+  text-align: right; border-left: 1px solid var(--border);
+}
+.project-nav a:hover { background: var(--bg2); }
+.project-nav-label {
+  font-size: .6rem; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--dim);
+}
+.project-nav-title {
+  font-size: 1.1rem; font-weight: 600;
+  transition: color .25s;
+}
+.project-nav a:hover .project-nav-title { color: var(--accent); }
+
+
+/* ═══════════════════════════════════════════
+   CSS ART — Project Thumbnails
+   ═══════════════════════════════════════════ */
+
+/* 01: KUROMOJI — Tea Branding (dark green + gold) */
+.art-01 {
+  background: linear-gradient(160deg, #0a1a0f 0%, #152818 40%, #0d1a0a 100%);
+  position: relative;
+}
+.art-01::before {
+  content: ''; position: absolute;
+  width: 45%; height: 80%; right: 8%; top: 10%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(201,168,124,.1) 0%, transparent 70%);
+}
+.art-01::after {
+  content: '黒文字'; position: absolute;
+  bottom: 12%; left: 8%;
+  font-size: clamp(2rem, 5vw, 4.5rem); font-weight: 700;
+  color: rgba(201,168,124,.07); letter-spacing: .05em;
+  font-family: 'Noto Sans JP', sans-serif;
+}
+.art-01-circle {
+  position: absolute; top: 15%; right: 12%;
+  width: clamp(80px, 18vw, 220px); height: clamp(80px, 18vw, 220px);
+  border-radius: 50%;
+  border: 1px solid rgba(201,168,124,.15);
+}
+.art-01-line {
+  position: absolute; top: 50%; left: 6%;
+  width: 30%; height: 1px;
+  background: linear-gradient(to right, rgba(201,168,124,.3), transparent);
+}
+
+/* 02: Neon District — App UI (purple + neon) */
+.art-02 {
+  background: linear-gradient(135deg, #0c0618 0%, #1a0f30 50%, #0d0820 100%);
+  position: relative;
+}
+.art-02::before {
+  content: ''; position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, transparent 49.5%, rgba(160,100,255,.06) 49.5%, rgba(160,100,255,.06) 50.5%, transparent 50.5%),
+    linear-gradient(0deg, transparent 49.5%, rgba(160,100,255,.04) 49.5%, rgba(160,100,255,.04) 50.5%, transparent 50.5%);
+  background-size: 60px 60px;
+}
+.art-02::after {
+  content: ''; position: absolute;
+  width: 50%; height: 60%;
+  left: 25%; top: 20%;
+  background: radial-gradient(ellipse, rgba(200,80,200,.08) 0%, transparent 60%);
+}
+.art-02-block {
+  position: absolute; bottom: 15%; right: 10%;
+  width: clamp(60px, 12vw, 140px); height: clamp(80px, 16vw, 180px);
+  border: 1px solid rgba(160,100,255,.2);
+  background: rgba(160,100,255,.03);
+}
+.art-02-dot {
+  position: absolute; top: 18%; left: 15%;
+  width: 8px; height: 8px; border-radius: 50%;
+  background: rgba(255,80,180,.4);
+  box-shadow: 0 0 20px rgba(255,80,180,.3);
+}
+
+/* 03: SORA — Architecture Web (concrete + blue) */
+.art-03 {
+  background: linear-gradient(145deg, #0e1012 0%, #181c1f 50%, #0c0f11 100%);
+  position: relative;
+}
+.art-03::before {
+  content: ''; position: absolute;
+  bottom: 0; left: 0; right: 0; height: 60%;
+  background:
+    linear-gradient(0deg, rgba(100,160,210,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(100,160,210,.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+.art-03-rect {
+  position: absolute; bottom: 20%; left: 10%;
+  width: 35%; height: 55%;
+  border: 1px solid rgba(100,160,210,.12);
+}
+.art-03-rect2 {
+  position: absolute; bottom: 12%; left: 30%;
+  width: 25%; height: 40%;
+  background: rgba(100,160,210,.04);
+  border-left: 2px solid rgba(100,160,210,.15);
+}
+.art-03-text {
+  position: absolute; top: 15%; right: 10%;
+  font-size: clamp(1.5rem, 4vw, 3.5rem); font-weight: 300;
+  letter-spacing: .2em; color: rgba(100,160,210,.08);
+  text-transform: uppercase;
+}
+
+/* 04: Pulse — Music Motion (warm red + orange) */
+.art-04 {
+  background: linear-gradient(135deg, #140a08 0%, #1f1210 50%, #100808 100%);
+  position: relative; overflow: hidden;
+}
+.art-04::before {
+  content: ''; position: absolute;
+  width: clamp(150px, 35vw, 400px); height: clamp(150px, 35vw, 400px);
+  left: 50%; top: 50%; transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(220,100,60,.08) 0%, transparent 70%);
+}
+.art-04-ring1 {
+  position: absolute; left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  width: clamp(80px, 18vw, 200px); height: clamp(80px, 18vw, 200px);
+  border-radius: 50%;
+  border: 1px solid rgba(220,100,60,.15);
+}
+.art-04-ring2 {
+  position: absolute; left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  width: clamp(130px, 28vw, 320px); height: clamp(130px, 28vw, 320px);
+  border-radius: 50%;
+  border: 1px solid rgba(220,100,60,.08);
+}
+.art-04-ring3 {
+  position: absolute; left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  width: clamp(180px, 38vw, 440px); height: clamp(180px, 38vw, 440px);
+  border-radius: 50%;
+  border: 1px solid rgba(220,100,60,.04);
+}
+
+/* 05: Mono — Journal App (pure monochrome) */
+.art-05 {
+  background: #080808;
+  position: relative;
+}
+.art-05::before {
+  content: ''; position: absolute;
+  left: 8%; top: 15%;
+  width: 40%; height: 70%;
+  border: 1px solid rgba(255,255,255,.06);
+}
+.art-05::after {
+  content: ''; position: absolute;
+  right: 10%; top: 25%;
+  width: 30%; height: 50%;
+  background: rgba(255,255,255,.02);
+  border-left: 3px solid rgba(255,255,255,.08);
+}
+.art-05-line1 {
+  position: absolute; top: 35%; left: 15%;
+  width: 25%; height: 1px;
+  background: rgba(255,255,255,.1);
+}
+.art-05-line2 {
+  position: absolute; top: 45%; left: 15%;
+  width: 18%; height: 1px;
+  background: rgba(255,255,255,.06);
+}
+.art-05-line3 {
+  position: absolute; top: 55%; left: 15%;
+  width: 22%; height: 1px;
+  background: rgba(255,255,255,.04);
+}
+
+/* 06: KADO — Flower Studio (cream + blush) */
+.art-06 {
+  background: linear-gradient(150deg, #12100e 0%, #1a1614 50%, #0f0d0b 100%);
+  position: relative;
+}
+.art-06::before {
+  content: ''; position: absolute;
+  width: clamp(120px, 28vw, 300px); height: clamp(160px, 36vw, 400px);
+  right: 15%; top: 10%;
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  background: radial-gradient(ellipse, rgba(200,150,140,.06) 0%, transparent 70%);
+  border: 1px solid rgba(200,150,140,.08);
+}
+.art-06::after {
+  content: '華'; position: absolute;
+  bottom: 15%; left: 10%;
+  font-size: clamp(3rem, 8vw, 7rem); font-weight: 300;
+  color: rgba(200,150,140,.06);
+  font-family: 'Noto Sans JP', sans-serif;
+}
+.art-06-stem {
+  position: absolute; bottom: 25%; right: 30%;
+  width: 1px; height: 40%;
+  background: linear-gradient(to top, rgba(200,150,140,.15), transparent);
+}
+
+
+/* ═══════════════════════════════════════════
    RESPONSIVE
    ═══════════════════════════════════════════ */
 @media (max-width: 900px) {
@@ -752,6 +1054,16 @@ footer p { font-size: .68rem; color: var(--dim); }
   footer { flex-direction: column; gap: .8rem; text-align: center; padding: 1.5rem; }
   .footer-links { justify-content: center; }
   .skills-row { justify-content: center; }
+
+  .project-hero { padding: 7rem 1.5rem 3rem; }
+  .project-section { padding: 3.5rem 1.5rem; }
+  .project-two-col { grid-template-columns: 1fr; gap: 2rem; }
+  .project-gallery { grid-template-columns: 1fr; }
+  .project-stats { grid-template-columns: 1fr; }
+  .project-nav a { padding: 2rem 1.5rem; }
+  .project-visual { aspect-ratio: 16/9; }
+  .timeline-home .tl-item { padding-left: 1rem; }
+  .about-timeline .tl-item { padding-left: 1rem; }
 }
 
 @media (max-width: 480px) {
