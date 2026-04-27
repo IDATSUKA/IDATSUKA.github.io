@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>デザインシステムを0から構築する — IDATSUKA</title>
+  <meta name="description" content="スタートアップでデザインシステムをゼロから構築した経験と実践的なアプローチ。">
+  <link rel="canonical" href="https://idatsuka.com/blog-01.html">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%230a0a0a'/><text x='16' y='22' text-anchor='middle' font-size='18' font-family='sans-serif' font-weight='600' fill='%23c9a87c'>I</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">Idatsuka<span class="logo-dot">.</span></a>
+  <ul class="nav-links">
+    <li><a href="about.html">About</a></li>
+    <li><a href="works.html">Works</a></li>
+    <li><a href="blog.html" class="active">Blog</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <button class="menu-toggle" id="menuToggle" aria-label="メニュー"><span></span><span></span><span></span></button>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="about.html">About</a>
+  <a href="works.html">Works</a>
+  <a href="blog.html" class="active">Blog</a>
+  <a href="contact.html">Contact</a>
+</div>
+
+<header class="article-header">
+  <div class="article-meta">
+    <span class="article-tag">Process</span>
+    <span class="article-date">2025.02.28</span>
+    <span class="article-read">6 min read</span>
+  </div>
+  <h1>デザインシステムを0から構築する — 実践的アプローチ</h1>
+  <p class="article-header-desc">スタートアップでデザインシステムをゼロから構築した経験と、そこから得た実践的な学び。完璧を目指すのではなく、使われるシステムを目指した記録。</p>
+</header>
+
+<article class="article-body">
+
+  <p>「デザインシステムを作ってほしい」。プロダクトマネージャーからその言葉を聞いたとき、正直なところ身が引き締まる思いだった。当時、私が所属していたスタートアップはシリーズBの調達を終えたばかりで、エンジニアチームは半年で3倍に膨れ上がっていた。デザイナーは私を含めて3人。プロダクトのUIは、良く言えば「多様」、悪く言えば「カオス」だった。</p>
+
+  <p>同じ「確認ダイアログ」なのに画面によってボタンの色が違う。フォントサイズのバリエーションは数え切れない。新しいメンバーが入るたびに「このボタン、どのスタイルが正解ですか？」という質問がSlackに流れる。デザインシステムの必要性は、もはや明らかだった。</p>
+
+  <h2>なぜデザインシステムが必要だったのか</h2>
+
+  <p>最大の理由は<strong>チームのスケーリング</strong>だった。3人のデザイナーが暗黙知で共有していたルールは、チームが拡大するにつれて機能しなくなっていた。口頭で「あのページのあのボタンを参考にして」と伝えるやり方では、もう限界だった。</p>
+
+  <p>さらに、エンジニアとのコミュニケーションコストも膨大になっていた。デザインレビューのたびに「ここのpaddingは何px？」「この色のカラーコードは？」といった質問が飛び交い、本質的な議論に時間を割けなくなっていた。デザインシステムは、こうした摩擦をなくすための<strong>共通言語</strong>になるはずだった。</p>
+
+  <h2>Phase 1 — 監査と棚卸し</h2>
+
+  <p>最初にやったことは、既存UIの全スクリーンショットを撮り、使われているコンポーネントを徹底的に洗い出すことだった。ボタン、入力フィールド、カード、モーダル、ナビゲーション — すべてをFigma上に並べた。</p>
+
+  <p>結果は衝撃的だった。ボタンだけで<strong>23種類</strong>のバリエーションが存在していた。色、サイズ、角丸、フォントウェイト — 微妙に異なるボタンが画面ごとに散在していた。この「一貫性のなさの可視化」こそが、チーム全体にデザインシステムの必要性を理解してもらう最も効果的な方法だった。</p>
+
+  <ul>
+    <li>ボタン: 23バリエーション → 目標: 5パターンに統合</li>
+    <li>カラーパレット: 47色 → 目標: 12色のセマンティックカラー</li>
+    <li>フォントサイズ: 18種類 → 目標: 8段階のタイプスケール</li>
+    <li>スペーシング: 不統一 → 目標: 4pxグリッドベース</li>
+  </ul>
+
+  <h2>Phase 2 — トークンから始める</h2>
+
+  <p>コンポーネントをいきなり作り始めたい衝動を抑え、まず<strong>Design Tokens</strong>から着手した。色、タイポグラフィ、スペーシング、シャドウ、ボーダー — これらの最小単位を定義することが、システム全体の土台になる。</p>
+
+  <p>色については、プリミティブカラー（Gray-100, Blue-500など）とセマンティックカラー（text-primary, bg-danger など）の二層構造を採用した。こうすることで、将来的にダークモード対応やブランドカラーの変更にも柔軟に対応できる。</p>
+
+  <p>タイポグラフィは、Major Third（1.25倍）のスケール比を基準に8段階のサイズを定義した。行間、字間もすべてトークン化し、「見出しっぽいサイズ」ではなく「Heading-L」という明確な名前で呼べるようにした。</p>
+
+  <blockquote>
+    「完璧なシステムを目指すな。使われるシステムを目指せ。」
+  </blockquote>
+
+  <p>これは当時のテックリードが言った言葉で、私のデザインシステム構築の哲学になった。完璧な命名規則や網羅的なドキュメントを追い求めるより、まず開発チームが日常的に使えるものを作ることが最優先だった。</p>
+
+  <h2>Phase 3 — コンポーネント化</h2>
+
+  <p>トークンが固まった後、いよいよコンポーネントの設計に入った。基本的な考え方は<strong>Atomic Design</strong>に沿ったが、厳格にAtoms/Molecules/Organismsの分類に縛られることはしなかった。</p>
+
+  <p>理由はシンプルで、「このコンポーネントはAtomかMoleculeか」という議論に時間を費やすより、実際にプロダクトで使われるパターンを素早く整備する方が価値があったからだ。最終的には「基本コンポーネント」「複合コンポーネント」「パターン」という3層構造に落ち着いた。</p>
+
+  <p>各コンポーネントには必ず以下を定義した:</p>
+
+  <ul>
+    <li>バリアント（サイズ、カラー、状態）</li>
+    <li>インタラクション仕様（ホバー、フォーカス、ディセーブル）</li>
+    <li>アクセシビリティ要件（コントラスト比、キーボード操作）</li>
+    <li>使用ガイドライン（Do / Don't）</li>
+  </ul>
+
+  <h2>運用のリアル</h2>
+
+  <p>デザインシステムは「作って終わり」ではない。むしろ、運用フェーズこそが本番だ。私たちが特に注力したのは以下の3点だった。</p>
+
+  <p><strong>ドキュメント</strong>は、Storybookを活用してコンポーネントの実装とドキュメントを一体化させた。Figmaのコンポーネントとコードの同期を維持するために、週1回のデザイン×エンジニアリングの同期ミーティングも設けた。</p>
+
+  <p><strong>オンボーディング</strong>では、新メンバーが入社した初日にデザインシステムのウォークスルーセッションを実施した。30分のセッションだが、これだけで「どこを見ればいいか」が明確になり、立ち上がりが格段に速くなった。</p>
+
+  <p><strong>更新サイクル</strong>は、2週間のスプリント内に「デザインシステムの改善」枠を必ず確保した。プロダクト開発の中で見つかった不足や改善点を、定期的にシステムにフィードバックする仕組みだ。</p>
+
+  <h2>振り返りと学び</h2>
+
+  <p>1年間の運用を経て、最も大きな学びは<strong>「最初から完璧を目指さない」</strong>ということだった。デザインシステムは生き物だ。プロダクトが進化すれば、システムも進化しなければならない。</p>
+
+  <p>もうひとつ重要なのは、<strong>使う人と一緒に育てる</strong>ということ。デザイナーだけでなく、エンジニア、PM、時にはQAチームからのフィードバックがシステムを強くする。「これ使いにくい」「このパターンが欲しい」という声こそが、デザインシステムの最良の養分だ。</p>
+
+  <hr>
+
+  <p>デザインシステムの構築は、華やかなビジュアルデザインとは異なる地味な作業の連続だ。しかし、チーム全体のデザイン品質を底上げし、コミュニケーションコストを劇的に削減するその効果は、計り知れない。もしあなたがデザインシステムの構築を任されたら — まず完璧を手放すことから始めてほしい。</p>
+
+</article>
+
+<div class="article-footer">
+  <a href="blog.html" class="article-back">&larr; Back to Blog</a>
+</div>
+
+<footer>
+  <p>&copy; 2025 Idatsuka</p>
+  <ul class="footer-links">
+    <li><a href="about.html">About</a></li>
+    <li><a href="works.html">Works</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+</footer>
+
+<script>
+document.getElementById('menuToggle').addEventListener('click', function() {
+  this.classList.toggle('open');
+  document.getElementById('mobileMenu').classList.toggle('open');
+});
+document.querySelectorAll('.mobile-menu a').forEach(a => {
+  a.addEventListener('click', () => {
+    document.getElementById('menuToggle').classList.remove('open');
+    document.getElementById('mobileMenu').classList.remove('open');
+  });
+});
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.rv').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
