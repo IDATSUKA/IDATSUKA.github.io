@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="600" height="800">
+  <defs>
+    <!-- Background gradient -->
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#131312"/>
+      <stop offset="100%" stop-color="#1a1918"/>
+    </linearGradient>
+
+    <!-- Warm glow behind figure -->
+    <radialGradient id="figureGlow" cx="50%" cy="38%" r="30%">
+      <stop offset="0%" stop-color="#c9a87c" stop-opacity="0.08"/>
+      <stop offset="60%" stop-color="#c9a87c" stop-opacity="0.03"/>
+      <stop offset="100%" stop-color="#c9a87c" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Secondary ambient glow -->
+    <radialGradient id="ambientGlow" cx="50%" cy="55%" r="50%">
+      <stop offset="0%" stop-color="#c9a87c" stop-opacity="0.025"/>
+      <stop offset="100%" stop-color="#0a0a0a" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Silhouette gradient -->
+    <linearGradient id="silhouetteGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2a2826"/>
+      <stop offset="100%" stop-color="#1e1d1b"/>
+    </linearGradient>
+
+    <!-- Head gradient -->
+    <radialGradient id="headGrad" cx="50%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#302e2b"/>
+      <stop offset="100%" stop-color="#252422"/>
+    </radialGradient>
+
+    <!-- Noise filter -->
+    <filter id="profileNoise" x="0%" y="0%" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="3" seed="5" stitchTiles="stitch" result="n"/>
+      <feColorMatrix type="saturate" values="0" in="n" result="gn"/>
+      <feComponentTransfer in="gn" result="faded">
+        <feFuncA type="linear" slope="0.04"/>
+      </feComponentTransfer>
+      <feBlend in="SourceGraphic" in2="faded" mode="screen"/>
+    </filter>
+
+    <!-- Soft edge for silhouette -->
+    <filter id="softEdge">
+      <feGaussianBlur stdDeviation="1.5"/>
+    </filter>
+
+    <!-- Vignette -->
+    <radialGradient id="profileVignette" cx="50%" cy="45%" r="55%">
+      <stop offset="0%" stop-color="#0a0a0a" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.5"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="600" height="800" fill="url(#bgGrad)"/>
+
+  <!-- Ambient glow -->
+  <rect width="600" height="800" fill="url(#ambientGlow)"/>
+
+  <!-- Warm glow behind figure -->
+  <ellipse cx="300" cy="310" rx="200" ry="250" fill="url(#figureGlow)"/>
+
+  <!-- Abstract figure group -->
+  <g filter="url(#profileNoise)">
+
+    <!-- Shoulders: curved trapezoid shape -->
+    <path d="M 160,520 C 170,440 220,400 270,390 L 330,390 C 380,400 430,440 440,520 L 460,620 C 460,640 440,660 420,660 L 180,660 C 160,660 140,640 140,620 Z"
+          fill="url(#silhouetteGrad)" opacity="0.85"/>
+
+    <!-- Neck -->
+    <rect x="272" y="340" width="56" height="60" rx="8" fill="#2c2a28" opacity="0.8"/>
+
+    <!-- Head: circle -->
+    <circle cx="300" cy="285" r="72" fill="url(#headGrad)" opacity="0.9"/>
+
+    <!-- Subtle highlight rim on head (warm accent) -->
+    <circle cx="300" cy="285" r="72" fill="none" stroke="#c9a87c" stroke-width="0.8" opacity="0.12"/>
+
+    <!-- Subtle shoulder highlight -->
+    <path d="M 200,460 C 220,420 260,400 300,395 C 340,400 380,420 400,460"
+          fill="none" stroke="#c9a87c" stroke-width="0.6" opacity="0.1"/>
+  </g>
+
+  <!-- Vignette overlay -->
+  <rect width="600" height="800" fill="url(#profileVignette)"/>
+
+  <!-- Thin border -->
+  <rect x="1" y="1" width="598" height="798" rx="0" fill="none" stroke="#c9a87c" stroke-width="1" opacity="0.08"/>
+
+  <!-- "I." monogram bottom-right -->
+  <text x="560" y="770" text-anchor="end"
+        font-family="'Georgia', 'Times New Roman', serif" font-size="24" font-weight="400"
+        font-style="italic" fill="#c9a87c" opacity="0.35">I.</text>
+</svg>

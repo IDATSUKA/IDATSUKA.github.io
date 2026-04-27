@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <!-- Noise texture filter -->
+    <filter id="noise" x="0%" y="0%" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" result="noise"/>
+      <feColorMatrix type="saturate" values="0" in="noise" result="grayNoise"/>
+      <feBlend in="SourceGraphic" in2="grayNoise" mode="multiply" result="blended"/>
+      <feComponentTransfer in="blended">
+        <feFuncA type="linear" slope="1"/>
+      </feComponentTransfer>
+    </filter>
+
+    <!-- Subtle radial glow behind text -->
+    <radialGradient id="glow" cx="50%" cy="50%" r="35%">
+      <stop offset="0%" stop-color="#c9a87c" stop-opacity="0.04"/>
+      <stop offset="100%" stop-color="#c9a87c" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Very faint vignette -->
+    <radialGradient id="vignette" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="#0a0a0a" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.4"/>
+    </radialGradient>
+
+    <!-- Noise overlay filter -->
+    <filter id="noiseOverlay" x="0%" y="0%" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" seed="2" stitchTiles="stitch" result="n"/>
+      <feColorMatrix type="saturate" values="0" in="n" result="gn"/>
+      <feComponentTransfer in="gn" result="faded">
+        <feFuncA type="linear" slope="0.03"/>
+      </feComponentTransfer>
+      <feBlend in="SourceGraphic" in2="faded" mode="screen"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#0a0a0a"/>
+
+  <!-- Noise texture on background -->
+  <rect width="1200" height="630" fill="#111110" opacity="0.15" filter="url(#noise)"/>
+
+  <!-- Warm radial glow -->
+  <rect width="1200" height="630" fill="url(#glow)"/>
+
+  <!-- Vignette -->
+  <rect width="1200" height="630" fill="url(#vignette)"/>
+
+  <!-- Content group with noise overlay -->
+  <g filter="url(#noiseOverlay)">
+    <!-- Main title -->
+    <text x="600" y="285" text-anchor="middle" dominant-baseline="middle"
+          font-family="'Helvetica Neue', 'Arial', sans-serif" font-size="72" font-weight="600"
+          letter-spacing="-2" fill="#ede8e1">IDATSUKA</text>
+
+    <!-- Gold accent line -->
+    <line x1="560" y1="318" x2="640" y2="318" stroke="#c9a87c" stroke-width="1.5" opacity="0.6"/>
+
+    <!-- Subtitle -->
+    <text x="600" y="358" text-anchor="middle" dominant-baseline="middle"
+          font-family="'Helvetica Neue', 'Arial', sans-serif" font-size="18" font-weight="300"
+          letter-spacing="4" fill="#6e6862">Designer — Tokyo</text>
+  </g>
+</svg>

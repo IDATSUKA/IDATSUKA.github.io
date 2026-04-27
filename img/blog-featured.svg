@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" width="1200" height="750">
+  <defs>
+    <!-- Central warm light radial gradient -->
+    <radialGradient id="lightCore" cx="50%" cy="48%" r="25%">
+      <stop offset="0%" stop-color="#c9a87c" stop-opacity="0.35"/>
+      <stop offset="30%" stop-color="#c9a87c" stop-opacity="0.15"/>
+      <stop offset="60%" stop-color="#c9a87c" stop-opacity="0.04"/>
+      <stop offset="100%" stop-color="#0a0a0a" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Wider ambient warmth -->
+    <radialGradient id="ambientWarm" cx="50%" cy="48%" r="45%">
+      <stop offset="0%" stop-color="#c9a87c" stop-opacity="0.06"/>
+      <stop offset="100%" stop-color="#0a0a0a" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Dark shapes gradient left -->
+    <linearGradient id="darkShapeL" x1="0" y1="0" x2="1" y2="0.5">
+      <stop offset="0%" stop-color="#050505"/>
+      <stop offset="100%" stop-color="#0e0d0c"/>
+    </linearGradient>
+
+    <!-- Dark shapes gradient right -->
+    <linearGradient id="darkShapeR" x1="1" y1="0" x2="0" y2="0.5">
+      <stop offset="0%" stop-color="#050505"/>
+      <stop offset="100%" stop-color="#0e0d0c"/>
+    </linearGradient>
+
+    <!-- Blur for light source -->
+    <filter id="lightBlur">
+      <feGaussianBlur stdDeviation="40"/>
+    </filter>
+
+    <!-- Stronger blur for outer glow -->
+    <filter id="outerGlow">
+      <feGaussianBlur stdDeviation="80"/>
+    </filter>
+
+    <!-- Subtle blur for shapes -->
+    <filter id="shapeBlur">
+      <feGaussianBlur stdDeviation="3"/>
+    </filter>
+
+    <!-- Noise texture -->
+    <filter id="blogNoise" x="0%" y="0%" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="4" seed="8" stitchTiles="stitch" result="n"/>
+      <feColorMatrix type="saturate" values="0" in="n" result="gn"/>
+      <feComponentTransfer in="gn" result="faded">
+        <feFuncA type="linear" slope="0.035"/>
+      </feComponentTransfer>
+      <feBlend in="SourceGraphic" in2="faded" mode="screen"/>
+    </filter>
+
+    <!-- Vignette -->
+    <radialGradient id="blogVignette" cx="50%" cy="48%" r="60%">
+      <stop offset="0%" stop-color="#0a0a0a" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.6"/>
+    </radialGradient>
+
+    <!-- Vertical light rays filter -->
+    <filter id="rayBlur">
+      <feGaussianBlur stdDeviation="2 30"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="750" fill="#0a0a0a"/>
+
+  <!-- Outer glow (very diffused warm light) -->
+  <ellipse cx="600" cy="360" rx="300" ry="250" fill="#c9a87c" opacity="0.07" filter="url(#outerGlow)"/>
+
+  <!-- Main light source (blurred warm glow) -->
+  <ellipse cx="600" cy="360" rx="120" ry="100" fill="#c9a87c" opacity="0.25" filter="url(#lightBlur)"/>
+
+  <!-- Bright center point -->
+  <ellipse cx="600" cy="360" rx="40" ry="35" fill="#ede8e1" opacity="0.15" filter="url(#lightBlur)"/>
+
+  <!-- Ambient warmth layer -->
+  <rect width="1200" height="750" fill="url(#ambientWarm)"/>
+
+  <!-- Abstract dark shapes: converging masses that frame the light -->
+
+  <!-- Left dark mass -->
+  <path d="M 0,0 L 420,0 C 380,150 350,280 380,360 C 350,440 380,570 420,750 L 0,750 Z"
+        fill="url(#darkShapeL)" opacity="0.9" filter="url(#shapeBlur)"/>
+
+  <!-- Right dark mass -->
+  <path d="M 1200,0 L 780,0 C 820,150 850,280 820,360 C 850,440 820,570 780,750 L 1200,750 Z"
+        fill="url(#darkShapeR)" opacity="0.9" filter="url(#shapeBlur)"/>
+
+  <!-- Top dark mass -->
+  <path d="M 420,0 L 780,0 C 740,80 680,140 640,180 L 560,180 C 520,140 460,80 420,0 Z"
+        fill="#070706" opacity="0.7" filter="url(#shapeBlur)"/>
+
+  <!-- Bottom dark mass -->
+  <path d="M 420,750 L 780,750 C 740,670 680,610 640,570 L 560,570 C 520,610 460,670 420,750 Z"
+        fill="#070706" opacity="0.7" filter="url(#shapeBlur)"/>
+
+  <!-- Subtle vertical light rays through the gap -->
+  <rect x="580" y="100" width="2" height="550" fill="#c9a87c" opacity="0.04" filter="url(#rayBlur)"/>
+  <rect x="610" y="80" width="1.5" height="590" fill="#c9a87c" opacity="0.03" filter="url(#rayBlur)"/>
+  <rect x="620" y="120" width="1" height="510" fill="#c9a87c" opacity="0.025" filter="url(#rayBlur)"/>
+  <rect x="570" y="130" width="1" height="490" fill="#c9a87c" opacity="0.02" filter="url(#rayBlur)"/>
+
+  <!-- Central light gradient overlay -->
+  <rect width="1200" height="750" fill="url(#lightCore)"/>
+
+  <!-- "光" watermark character -->
+  <text x="600" y="390" text-anchor="middle" dominant-baseline="middle"
+        font-family="'Hiragino Mincho ProN', 'Yu Mincho', 'MS Mincho', serif"
+        font-size="220" fill="#c9a87c" opacity="0.03">光</text>
+
+  <!-- Vignette -->
+  <rect width="1200" height="750" fill="url(#blogVignette)"/>
+
+  <!-- Noise texture overlay -->
+  <rect width="1200" height="750" fill="#0a0a0a" opacity="0.01" filter="url(#blogNoise)"/>
+</svg>

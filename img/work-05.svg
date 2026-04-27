@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <defs>
+    <!-- Subtle page shadow -->
+    <filter id="pageShadow" x="-20%" y="-20%" width="150%" height="150%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="18" result="shadow"/>
+      <feOffset dx="8" dy="8" in="shadow" result="offsetShadow"/>
+      <feFlood flood-color="#000000" flood-opacity="0.35" result="color"/>
+      <feComposite in="color" in2="offsetShadow" operator="in" result="coloredShadow"/>
+      <feMerge>
+        <feMergeNode in="coloredShadow"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Very subtle ambient glow -->
+    <filter id="ambientGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="60"/>
+    </filter>
+
+    <!-- Cursor blink glow -->
+    <filter id="cursorGlow" x="-100%" y="-20%" width="300%" height="140%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="4"/>
+    </filter>
+
+    <!-- Noise texture -->
+    <filter id="monoNoise" x="0%" y="0%" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch" result="noise"/>
+      <feColorMatrix type="saturate" values="0" in="noise" result="mono"/>
+      <feBlend in="SourceGraphic" in2="mono" mode="soft-light" result="blended"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.06"/>
+      </feComponentTransfer>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#080808"/>
+
+  <!-- Noise overlay -->
+  <rect width="1200" height="630" filter="url(#monoNoise)" fill="#181818" opacity="0.3"/>
+
+  <!-- Very faint ambient light near the page -->
+  <ellipse cx="380" cy="315" rx="300" ry="250" fill="#ffffff" opacity="0.012" filter="url(#ambientGlow)"/>
+
+  <!-- Ghost/offset rectangle (behind, slightly offset) -->
+  <rect x="244" y="138" width="280" height="374" rx="2"
+        fill="none" stroke="rgba(255,255,255,0.025)" stroke-width="0.5"/>
+
+  <!-- Main page rectangle -->
+  <rect x="230" y="128" width="280" height="374" rx="2"
+        fill="#0e0e0e" stroke="rgba(255,255,255,0.06)" stroke-width="0.7"
+        filter="url(#pageShadow)"/>
+
+  <!-- Inner margin lines (text lines) -->
+  <!-- Line 1 -->
+  <line x1="262" y1="190" x2="460" y2="190"
+        stroke="rgba(255,255,255,0.14)" stroke-width="0.8" stroke-linecap="round"/>
+
+  <!-- Line 2 -->
+  <line x1="262" y1="218" x2="440" y2="218"
+        stroke="rgba(255,255,255,0.10)" stroke-width="0.8" stroke-linecap="round"/>
+
+  <!-- Line 3 -->
+  <line x1="262" y1="246" x2="420" y2="246"
+        stroke="rgba(255,255,255,0.06)" stroke-width="0.8" stroke-linecap="round"/>
+
+  <!-- Line 4 (barely visible) -->
+  <line x1="262" y1="274" x2="370" y2="274"
+        stroke="rgba(255,255,255,0.03)" stroke-width="0.8" stroke-linecap="round"/>
+
+  <!-- Cursor / caret -->
+  <g>
+    <line x1="262" y1="300" x2="262" y2="318"
+          stroke="rgba(255,255,255,0.35)" stroke-width="1.2" stroke-linecap="round"/>
+    <!-- Cursor glow -->
+    <line x1="262" y1="300" x2="262" y2="318"
+          stroke="rgba(255,255,255,0.15)" stroke-width="1.2" stroke-linecap="round"
+          filter="url(#cursorGlow)"/>
+  </g>
+
+  <!-- Minimal dot accent — a period at end of first line -->
+  <circle cx="464" cy="190" r="1.2" fill="rgba(255,255,255,0.10)"/>
+
+  <!-- Second ghost rectangle further offset (very faint) -->
+  <rect x="258" y="148" width="280" height="374" rx="2"
+        fill="none" stroke="rgba(255,255,255,0.012)" stroke-width="0.4"/>
+
+  <!-- Faint horizontal rule at bottom of page -->
+  <line x1="262" y1="472" x2="478" y2="472"
+        stroke="rgba(255,255,255,0.025)" stroke-width="0.5"/>
+
+  <!-- MONO text — very faint, right side -->
+  <text x="820" y="340" text-anchor="middle"
+        font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+        font-size="11" font-weight="300" letter-spacing="16"
+        fill="rgba(255,255,255,0.04)">MONO</text>
+
+  <!-- Sparse dots in negative space -->
+  <circle cx="750" cy="200" r="0.6" fill="rgba(255,255,255,0.03)"/>
+  <circle cx="900" cy="420" r="0.6" fill="rgba(255,255,255,0.03)"/>
+  <circle cx="1020" cy="280" r="0.6" fill="rgba(255,255,255,0.025)"/>
+</svg>
