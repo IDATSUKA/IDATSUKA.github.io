@@ -1,114 +1,58 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-label="KADO">
   <defs>
-    <!-- Warm blush radial glow around flower -->
-    <radialGradient id="blushGlow" cx="50%" cy="38%" r="30%">
-      <stop offset="0%"   stop-color="#c8917a" stop-opacity="0.10"/>
-      <stop offset="40%"  stop-color="#a06858" stop-opacity="0.05"/>
-      <stop offset="100%" stop-color="#12100e" stop-opacity="0"/>
-    </radialGradient>
-
-    <!-- Petal fill gradient -->
-    <radialGradient id="petalFill" cx="50%" cy="40%" r="50%">
-      <stop offset="0%"   stop-color="#d4a090" stop-opacity="0.14"/>
-      <stop offset="60%"  stop-color="#b8806e" stop-opacity="0.08"/>
-      <stop offset="100%" stop-color="#8a5c4e" stop-opacity="0.03"/>
-    </radialGradient>
-
-    <!-- Stem gradient (fades toward base) -->
-    <linearGradient id="stemGrad" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%"   stop-color="rgba(200,150,140,0.22)"/>
-      <stop offset="100%" stop-color="rgba(200,150,140,0.05)"/>
+    <linearGradient id="d-bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0e0c12"/>
+      <stop offset="1" stop-color="#171420"/>
     </linearGradient>
-
-    <!-- Gaussian blur for the glow -->
-    <filter id="glowBlur" x="-50%" y="-50%" width="200%" height="200%">
-      <feGaussianBlur in="SourceGraphic" stdDeviation="45"/>
-    </filter>
-
-    <!-- Softer blur for petal -->
-    <filter id="petalBlur" x="-30%" y="-30%" width="160%" height="160%">
-      <feGaussianBlur in="SourceGraphic" stdDeviation="8"/>
-    </filter>
-
-    <!-- Subtle noise texture -->
-    <filter id="organicNoise" x="0%" y="0%" width="100%" height="100%">
-      <feTurbulence type="fractalNoise" baseFrequency="0.5" numOctaves="5" seed="3" stitchTiles="stitch" result="noise"/>
-      <feColorMatrix type="saturate" values="0" in="noise" result="mono"/>
-      <feBlend in="SourceGraphic" in2="mono" mode="overlay" result="blended"/>
-      <feComponentTransfer>
-        <feFuncA type="linear" slope="0.08"/>
-      </feComponentTransfer>
-    </filter>
-
-    <!-- Tiny glow for accent dots -->
-    <filter id="dotGlow" x="-100%" y="-100%" width="300%" height="300%">
-      <feGaussianBlur in="SourceGraphic" stdDeviation="2"/>
+    <linearGradient id="d-stem" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="rgba(200,160,220,0.05)"/>
+      <stop offset="1" stop-color="rgba(200,160,220,0.45)"/>
+    </linearGradient>
+    <radialGradient id="d-petalGlow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="rgba(215,180,235,0.35)"/>
+      <stop offset="1" stop-color="rgba(215,180,235,0)"/>
+    </radialGradient>
+    <linearGradient id="d-base" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="rgba(200,160,220,0)"/>
+      <stop offset="0.5" stop-color="rgba(200,160,220,0.45)"/>
+      <stop offset="1" stop-color="rgba(200,160,220,0)"/>
+    </linearGradient>
+    <filter id="d-blur" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="16"/>
     </filter>
   </defs>
 
-  <!-- Background -->
-  <rect width="1200" height="630" fill="#12100e"/>
+  <rect width="1200" height="630" fill="url(#d-bg)"/>
 
-  <!-- Noise texture overlay -->
-  <rect width="1200" height="630" filter="url(#organicNoise)" fill="#1e1814" opacity="0.35"/>
+  <!-- kanji watermark -->
+  <text x="850" y="400" text-anchor="middle" font-family="'Hiragino Mincho ProN','Yu Mincho',serif" font-size="380" fill="#e9eef4" opacity="0.04">華</text>
 
-  <!-- Blush glow behind flower area -->
-  <rect width="1200" height="630" fill="url(#blushGlow)"/>
+  <!-- soft lavender glow at bloom -->
+  <circle cx="640" cy="160" r="120" fill="url(#d-petalGlow)" filter="url(#d-blur)"/>
 
-  <!-- Extra concentrated warm glow -->
-  <ellipse cx="600" cy="230" rx="180" ry="140" fill="#c8917a" opacity="0.06" filter="url(#glowBlur)"/>
+  <!-- elegant curved stem rising from bottom-center -->
+  <path d="M600 500 C600 420, 540 380, 565 300 C588 228, 640 210, 640 160" fill="none" stroke="url(#d-stem)" stroke-width="2" stroke-linecap="round"/>
+  <!-- secondary leaf curve -->
+  <path d="M585 360 C540 340, 510 345, 480 320" fill="none" stroke="rgba(200,160,220,0.18)" stroke-width="1.2" stroke-linecap="round"/>
 
-  <!-- Large background kanji character "華" -->
-  <text x="600" y="400" text-anchor="middle"
-        font-family="'Hiragino Mincho ProN', 'Yu Mincho', 'MS Mincho', serif"
-        font-size="380" font-weight="400"
-        fill="rgba(200,160,140,0.05)">華</text>
+  <!-- organic petal ellipses -->
+  <ellipse cx="640" cy="150" rx="34" ry="16" transform="rotate(-28 640 150)" fill="rgba(215,180,235,0.20)" stroke="rgba(215,180,235,0.45)" stroke-width="1"/>
+  <ellipse cx="660" cy="170" rx="22" ry="10" transform="rotate(22 660 170)" fill="rgba(215,180,235,0.10)" stroke="rgba(215,180,235,0.25)" stroke-width="0.8"/>
+  <circle cx="640" cy="158" r="2.5" fill="rgba(240,225,250,0.8)"/>
 
-  <!-- Stem — elegant curved line rising from bottom center -->
-  <path d="M 600,590 C 600,500 590,440 585,380 C 580,320 592,270 600,220"
-        fill="none" stroke="url(#stemGrad)" stroke-width="1.4"
-        stroke-linecap="round"/>
+  <!-- floating bud -->
+  <circle cx="500" cy="240" r="3" fill="rgba(215,180,235,0.4)"/>
+  <circle cx="730" cy="260" r="2" fill="rgba(215,180,235,0.25)"/>
 
-  <!-- Secondary thin stem branch -->
-  <path d="M 594,320 C 588,290 580,265 572,245"
-        fill="none" stroke="rgba(200,150,140,0.10)" stroke-width="0.8"
-        stroke-linecap="round"/>
+  <!-- thin horizontal base line with centered dot -->
+  <rect x="320" y="500" width="560" height="1" fill="url(#d-base)"/>
+  <circle cx="600" cy="500" r="3.5" fill="rgba(215,180,235,0.65)"/>
+  <circle cx="600" cy="500" r="9" fill="none" stroke="rgba(215,180,235,0.20)" stroke-width="1"/>
 
-  <!-- Petal shape — organic ellipse at top of stem -->
-  <ellipse cx="600" cy="200" rx="42" ry="60"
-           fill="url(#petalFill)" stroke="rgba(200,150,140,0.10)" stroke-width="0.7"
-           transform="rotate(-8, 600, 200)"/>
+  <!-- quiet vertical hairline, restraint -->
+  <line x1="180" y1="120" x2="180" y2="300" stroke="rgba(200,160,220,0.12)" stroke-width="1"/>
 
-  <!-- Inner petal layer (slightly smaller, offset) -->
-  <ellipse cx="598" cy="205" rx="28" ry="44"
-           fill="rgba(210,160,140,0.06)" stroke="rgba(200,150,140,0.06)" stroke-width="0.5"
-           transform="rotate(-5, 598, 205)"/>
-
-  <!-- Blurred petal glow underneath -->
-  <ellipse cx="600" cy="200" rx="50" ry="65"
-           fill="rgba(200,140,120,0.08)" filter="url(#petalBlur)"/>
-
-  <!-- Secondary petal on the branch -->
-  <ellipse cx="568" cy="238" rx="18" ry="28"
-           fill="rgba(200,150,140,0.06)" stroke="rgba(200,150,140,0.06)" stroke-width="0.5"
-           transform="rotate(-20, 568, 238)"/>
-
-  <!-- Thin horizontal base line (geometric accent) -->
-  <line x1="520" y1="560" x2="680" y2="560"
-        stroke="rgba(200,150,140,0.08)" stroke-width="0.6" stroke-linecap="round"/>
-
-  <!-- Small accent dot at base -->
-  <circle cx="600" cy="560" r="2" fill="rgba(200,150,140,0.12)"/>
-  <circle cx="600" cy="560" r="2" fill="rgba(200,150,140,0.08)" filter="url(#dotGlow)"/>
-
-  <!-- Stamen/pistil tiny dots at flower center -->
-  <circle cx="600" cy="182" r="1.2" fill="rgba(220,170,150,0.18)"/>
-  <circle cx="596" cy="188" r="0.8" fill="rgba(215,165,145,0.14)"/>
-  <circle cx="604" cy="186" r="0.9" fill="rgba(218,168,148,0.15)"/>
-
-  <!-- KADO text -->
-  <text x="600" y="610" text-anchor="middle"
-        font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
-        font-size="11" font-weight="300" letter-spacing="14"
-        fill="rgba(200,150,140,0.10)">KADO</text>
+  <!-- title -->
+  <text x="120" y="567" font-family="'Helvetica Neue',Arial,sans-serif" font-size="22" font-weight="300" letter-spacing="14" fill="#e9eef4" opacity="0.8">KADO</text>
+  <text x="120" y="594" font-family="'Helvetica Neue',Arial,sans-serif" font-size="11" font-weight="300" letter-spacing="6" fill="rgba(215,180,235,0.5)">IKEBANA STUDIO — VISUAL IDENTITY</text>
 </svg>

@@ -1,63 +1,81 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-label="IDATSUKA — Designer, Tokyo">
   <defs>
-    <!-- Noise texture filter -->
-    <filter id="noise" x="0%" y="0%" width="100%" height="100%">
-      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" result="noise"/>
-      <feColorMatrix type="saturate" values="0" in="noise" result="grayNoise"/>
-      <feBlend in="SourceGraphic" in2="grayNoise" mode="multiply" result="blended"/>
-      <feComponentTransfer in="blended">
-        <feFuncA type="linear" slope="1"/>
-      </feComponentTransfer>
+    <radialGradient id="og-glow" cx="50%" cy="0%" r="75%">
+      <stop offset="0%" stop-color="#6fd4e8" stop-opacity=".05"/>
+      <stop offset="55%" stop-color="#6fd4e8" stop-opacity=".02"/>
+      <stop offset="100%" stop-color="#6fd4e8" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="og-corner-glow" cx="100%" cy="100%" r="80%">
+      <stop offset="0%" stop-color="#6fd4e8" stop-opacity=".025"/>
+      <stop offset="100%" stop-color="#6fd4e8" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="og-line" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#6fd4e8" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#6fd4e8" stop-opacity=".7"/>
+      <stop offset="100%" stop-color="#6fd4e8" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="og-glass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity=".03"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity=".015"/>
+    </linearGradient>
+    <linearGradient id="og-edge" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#ffffff" stop-opacity=".12"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <pattern id="og-grid" width="80" height="80" patternUnits="userSpaceOnUse">
+      <path d="M 80 0 L 0 0 0 80" fill="none" stroke="rgba(255,255,255,.02)" stroke-width="1"/>
+    </pattern>
+    <filter id="og-blur-soft" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="6"/>
     </filter>
-
-    <!-- Subtle radial glow behind text -->
-    <radialGradient id="glow" cx="50%" cy="50%" r="35%">
-      <stop offset="0%" stop-color="#c9a87c" stop-opacity="0.04"/>
-      <stop offset="100%" stop-color="#c9a87c" stop-opacity="0"/>
-    </radialGradient>
-
-    <!-- Very faint vignette -->
-    <radialGradient id="vignette" cx="50%" cy="50%" r="60%">
-      <stop offset="0%" stop-color="#0a0a0a" stop-opacity="0"/>
-      <stop offset="100%" stop-color="#000000" stop-opacity="0.4"/>
-    </radialGradient>
-
-    <!-- Noise overlay filter -->
-    <filter id="noiseOverlay" x="0%" y="0%" width="100%" height="100%">
-      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" seed="2" stitchTiles="stitch" result="n"/>
-      <feColorMatrix type="saturate" values="0" in="n" result="gn"/>
-      <feComponentTransfer in="gn" result="faded">
-        <feFuncA type="linear" slope="0.03"/>
-      </feComponentTransfer>
-      <feBlend in="SourceGraphic" in2="faded" mode="screen"/>
+    <filter id="og-blur-wide" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="22"/>
+    </filter>
+    <filter id="og-noise" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" stitchTiles="stitch" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .04 0"/>
     </filter>
   </defs>
 
-  <!-- Background -->
-  <rect width="1200" height="630" fill="#0a0a0a"/>
+  <!-- base -->
+  <rect width="1200" height="630" fill="#05070a"/>
+  <rect width="1200" height="630" fill="url(#og-grid)"/>
+  <rect width="1200" height="630" fill="url(#og-glow)"/>
+  <rect width="1200" height="630" fill="url(#og-corner-glow)"/>
 
-  <!-- Noise texture on background -->
-  <rect width="1200" height="630" fill="#111110" opacity="0.15" filter="url(#noise)"/>
+  <!-- ambient geometry -->
+  <circle cx="600" cy="120" r="240" fill="#6fd4e8" opacity=".04" filter="url(#og-blur-wide)"/>
+  <line x1="0" y1="80" x2="1200" y2="80" stroke="url(#og-edge)" stroke-width="1"/>
+  <line x1="0" y1="550" x2="1200" y2="550" stroke="url(#og-edge)" stroke-width="1"/>
+  <rect x="1010" y="430" width="120" height="120" fill="none" stroke="rgba(111,212,232,.10)" stroke-width="1" transform="rotate(15 1070 490)"/>
+  <rect x="70" y="90" width="80" height="80" fill="none" stroke="rgba(255,255,255,.05)" stroke-width="1" transform="rotate(-12 110 130)"/>
+  <circle cx="1090" cy="130" r="3" fill="#6fd4e8" opacity=".35"/>
+  <circle cx="150" cy="500" r="2" fill="#6fd4e8" opacity=".25"/>
+  <circle cx="980" cy="520" r="1.5" fill="#e9eef4" opacity=".2"/>
 
-  <!-- Warm radial glow -->
-  <rect width="1200" height="630" fill="url(#glow)"/>
+  <!-- frosted glass panel -->
+  <rect x="240" y="170" width="720" height="290" rx="14" fill="url(#og-glass)" stroke="rgba(255,255,255,.08)" stroke-width="1"/>
+  <line x1="280" y1="170" x2="920" y2="170" stroke="url(#og-line)" stroke-width="1" opacity=".35"/>
+  <!-- corner ticks on panel -->
+  <path d="M 240 196 L 240 184 Q 240 170 254 170 L 266 170" fill="none" stroke="rgba(111,212,232,.4)" stroke-width="1.5"/>
+  <path d="M 960 434 L 960 446 Q 960 460 946 460 L 934 460" fill="none" stroke="rgba(111,212,232,.4)" stroke-width="1.5"/>
 
-  <!-- Vignette -->
-  <rect width="1200" height="630" fill="url(#vignette)"/>
+  <!-- name -->
+  <text x="600" y="306" text-anchor="middle" font-family="'Helvetica Neue', Helvetica, Arial, 'Hiragino Kaku Gothic ProN', sans-serif" font-size="76" font-weight="600" fill="#e9eef4" letter-spacing="-1">IDATSUKA</text>
+  <!-- cyan glow echo behind text -->
+  <text x="600" y="306" text-anchor="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="76" font-weight="600" fill="#6fd4e8" letter-spacing="-1" opacity=".18" filter="url(#og-blur-soft)">IDATSUKA</text>
 
-  <!-- Content group with noise overlay -->
-  <g filter="url(#noiseOverlay)">
-    <!-- Main title -->
-    <text x="600" y="285" text-anchor="middle" dominant-baseline="middle"
-          font-family="'Helvetica Neue', 'Arial', sans-serif" font-size="72" font-weight="600"
-          letter-spacing="-2" fill="#ede8e1">IDATSUKA</text>
+  <!-- divider line -->
+  <rect x="560" y="344" width="80" height="2" fill="#6fd4e8" opacity=".7"/>
+  <rect x="560" y="344" width="80" height="2" fill="#6fd4e8" opacity=".5" filter="url(#og-blur-soft)"/>
 
-    <!-- Gold accent line -->
-    <line x1="560" y1="318" x2="640" y2="318" stroke="#c9a87c" stroke-width="1.5" opacity="0.6"/>
+  <!-- subtitle -->
+  <text x="600" y="400" text-anchor="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="22" font-weight="400" fill="#66717d" letter-spacing="6">DESIGNER&#8201;&#8212;&#8201;TOKYO</text>
 
-    <!-- Subtitle -->
-    <text x="600" y="358" text-anchor="middle" dominant-baseline="middle"
-          font-family="'Helvetica Neue', 'Arial', sans-serif" font-size="18" font-weight="300"
-          letter-spacing="4" fill="#6e6862">Designer — Tokyo</text>
-  </g>
+  <!-- footer mark -->
+  <text x="600" y="586" text-anchor="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" fill="#66717d" letter-spacing="4" opacity=".7">IDATSUKA.GITHUB.IO</text>
+
+  <!-- noise overlay -->
+  <rect width="1200" height="630" filter="url(#og-noise)" opacity=".5"/>
 </svg>

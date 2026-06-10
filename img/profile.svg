@@ -1,96 +1,98 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="600" height="800">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="600" height="800" role="img" aria-label="Profile placeholder">
   <defs>
-    <!-- Background gradient -->
-    <linearGradient id="bgGrad" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#131312"/>
-      <stop offset="100%" stop-color="#1a1918"/>
+    <linearGradient id="pf-bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0a0e14"/>
+      <stop offset="100%" stop-color="#111722"/>
     </linearGradient>
-
-    <!-- Warm glow behind figure -->
-    <radialGradient id="figureGlow" cx="50%" cy="38%" r="30%">
-      <stop offset="0%" stop-color="#c9a87c" stop-opacity="0.08"/>
-      <stop offset="60%" stop-color="#c9a87c" stop-opacity="0.03"/>
-      <stop offset="100%" stop-color="#c9a87c" stop-opacity="0"/>
+    <radialGradient id="pf-halo" cx="50%" cy="42%" r="55%">
+      <stop offset="0%" stop-color="#6fd4e8" stop-opacity=".06"/>
+      <stop offset="60%" stop-color="#6fd4e8" stop-opacity=".025"/>
+      <stop offset="100%" stop-color="#6fd4e8" stop-opacity="0"/>
     </radialGradient>
-
-    <!-- Secondary ambient glow -->
-    <radialGradient id="ambientGlow" cx="50%" cy="55%" r="50%">
-      <stop offset="0%" stop-color="#c9a87c" stop-opacity="0.025"/>
-      <stop offset="100%" stop-color="#0a0a0a" stop-opacity="0"/>
-    </radialGradient>
-
-    <!-- Silhouette gradient -->
-    <linearGradient id="silhouetteGrad" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#2a2826"/>
-      <stop offset="100%" stop-color="#1e1d1b"/>
+    <linearGradient id="pf-body" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity=".05"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity=".015"/>
     </linearGradient>
-
-    <!-- Head gradient -->
-    <radialGradient id="headGrad" cx="50%" cy="40%" r="50%">
-      <stop offset="0%" stop-color="#302e2b"/>
-      <stop offset="100%" stop-color="#252422"/>
-    </radialGradient>
-
-    <!-- Noise filter -->
-    <filter id="profileNoise" x="0%" y="0%" width="100%" height="100%">
-      <feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="3" seed="5" stitchTiles="stitch" result="n"/>
-      <feColorMatrix type="saturate" values="0" in="n" result="gn"/>
-      <feComponentTransfer in="gn" result="faded">
-        <feFuncA type="linear" slope="0.04"/>
-      </feComponentTransfer>
-      <feBlend in="SourceGraphic" in2="faded" mode="screen"/>
+    <linearGradient id="pf-head" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity=".07"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity=".02"/>
+    </linearGradient>
+    <linearGradient id="pf-rim" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#6fd4e8" stop-opacity=".9"/>
+      <stop offset="70%" stop-color="#6fd4e8" stop-opacity=".35"/>
+      <stop offset="100%" stop-color="#6fd4e8" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="pf-scan" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#6fd4e8" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#6fd4e8" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#6fd4e8" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="pf-glow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="5"/>
     </filter>
-
-    <!-- Soft edge for silhouette -->
-    <filter id="softEdge">
-      <feGaussianBlur stdDeviation="1.5"/>
+    <filter id="pf-glow-wide" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="28"/>
     </filter>
-
-    <!-- Vignette -->
-    <radialGradient id="profileVignette" cx="50%" cy="45%" r="55%">
-      <stop offset="0%" stop-color="#0a0a0a" stop-opacity="0"/>
-      <stop offset="100%" stop-color="#000000" stop-opacity="0.5"/>
-    </radialGradient>
+    <filter id="pf-noise" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" stitchTiles="stitch" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .04 0"/>
+    </filter>
+    <clipPath id="pf-frame-clip">
+      <rect x="0" y="0" width="600" height="800"/>
+    </clipPath>
   </defs>
 
-  <!-- Background -->
-  <rect width="600" height="800" fill="url(#bgGrad)"/>
+  <g clip-path="url(#pf-frame-clip)">
+    <!-- base -->
+    <rect width="600" height="800" fill="url(#pf-bg)"/>
+    <rect width="600" height="800" fill="url(#pf-halo)"/>
 
-  <!-- Ambient glow -->
-  <rect width="600" height="800" fill="url(#ambientGlow)"/>
+    <!-- soft glow behind figure -->
+    <ellipse cx="300" cy="380" rx="190" ry="240" fill="#6fd4e8" opacity=".06" filter="url(#pf-glow-wide)"/>
 
-  <!-- Warm glow behind figure -->
-  <ellipse cx="300" cy="310" rx="200" ry="250" fill="url(#figureGlow)"/>
+    <!-- faint background geometry -->
+    <circle cx="300" cy="330" r="225" fill="none" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
+    <circle cx="300" cy="330" r="260" fill="none" stroke="rgba(111,212,232,.05)" stroke-width="1" stroke-dasharray="2 10"/>
+    <line x1="300" y1="60" x2="300" y2="150" stroke="rgba(111,212,232,.12)" stroke-width="1"/>
 
-  <!-- Abstract figure group -->
-  <g filter="url(#profileNoise)">
+    <!-- silhouette: shoulders -->
+    <path d="M 120 800 L 120 660 C 120 540 200 480 300 480 C 400 480 480 540 480 660 L 480 800 Z" fill="url(#pf-body)" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+    <!-- neck -->
+    <path d="M 268 420 L 268 482 C 268 500 282 510 300 510 C 318 510 332 500 332 482 L 332 420 Z" fill="url(#pf-body)"/>
+    <!-- head -->
+    <circle cx="300" cy="330" r="108" fill="url(#pf-head)" stroke="rgba(255,255,255,.07)" stroke-width="1"/>
 
-    <!-- Shoulders: curved trapezoid shape -->
-    <path d="M 160,520 C 170,440 220,400 270,390 L 330,390 C 380,400 430,440 440,520 L 460,620 C 460,640 440,660 420,660 L 180,660 C 160,660 140,640 140,620 Z"
-          fill="url(#silhouetteGrad)" opacity="0.85"/>
+    <!-- cyan rim-light: head arc (right side) -->
+    <path d="M 330 226 A 108 108 0 0 1 405 365" fill="none" stroke="#6fd4e8" stroke-width="2" stroke-linecap="round" opacity=".9"/>
+    <path d="M 330 226 A 108 108 0 0 1 405 365" fill="none" stroke="#6fd4e8" stroke-width="5" stroke-linecap="round" opacity=".5" filter="url(#pf-glow)"/>
+    <!-- cyan rim-light: shoulder arc (right side) -->
+    <path d="M 352 496 C 426 514 480 570 480 660 L 480 740" fill="none" stroke="url(#pf-rim)" stroke-width="2" stroke-linecap="round"/>
+    <path d="M 352 496 C 426 514 480 570 480 660 L 480 740" fill="none" stroke="#6fd4e8" stroke-width="5" stroke-linecap="round" opacity=".35" filter="url(#pf-glow)"/>
+    <!-- faint counter rim on left -->
+    <path d="M 270 226 A 108 108 0 0 0 197 360" fill="none" stroke="#e9eef4" stroke-width="1" stroke-linecap="round" opacity=".12"/>
 
-    <!-- Neck -->
-    <rect x="272" y="340" width="56" height="60" rx="8" fill="#2c2a28" opacity="0.8"/>
+    <!-- scan line at chest height -->
+    <line x1="40" y1="600" x2="560" y2="600" stroke="url(#pf-scan)" stroke-width="1" opacity=".15"/>
+    <line x1="40" y1="600" x2="560" y2="600" stroke="url(#pf-scan)" stroke-width="3" opacity=".06" filter="url(#pf-glow)"/>
+    <circle cx="300" cy="600" r="2" fill="#6fd4e8" opacity=".3"/>
 
-    <!-- Head: circle -->
-    <circle cx="300" cy="285" r="72" fill="url(#headGrad)" opacity="0.9"/>
+    <!-- drifting particles -->
+    <circle cx="430" cy="210" r="2" fill="#6fd4e8" opacity=".35"/>
+    <circle cx="466" cy="300" r="1.5" fill="#e9eef4" opacity=".25"/>
+    <circle cx="150" cy="450" r="1.5" fill="#6fd4e8" opacity=".2"/>
+    <circle cx="118" cy="250" r="1" fill="#e9eef4" opacity=".2"/>
+    <circle cx="500" cy="520" r="1" fill="#6fd4e8" opacity=".25"/>
 
-    <!-- Subtle highlight rim on head (warm accent) -->
-    <circle cx="300" cy="285" r="72" fill="none" stroke="#c9a87c" stroke-width="0.8" opacity="0.12"/>
+    <!-- glass frame inset -->
+    <rect x="24" y="24" width="552" height="752" rx="6" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="1"/>
+    <!-- frame corner accents -->
+    <path d="M 24 56 L 24 30 Q 24 24 30 24 L 56 24" fill="none" stroke="rgba(111,212,232,.45)" stroke-width="1.5"/>
+    <path d="M 576 744 L 576 770 Q 576 776 570 776 L 544 776" fill="none" stroke="rgba(111,212,232,.45)" stroke-width="1.5"/>
 
-    <!-- Subtle shoulder highlight -->
-    <path d="M 200,460 C 220,420 260,400 300,395 C 340,400 380,420 400,460"
-          fill="none" stroke="#c9a87c" stroke-width="0.6" opacity="0.1"/>
+    <!-- monogram -->
+    <text x="540" y="752" text-anchor="end" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="28" font-weight="600" fill="#6fd4e8" opacity=".4" letter-spacing="1">I.</text>
+
+    <!-- noise overlay -->
+    <rect width="600" height="800" filter="url(#pf-noise)" opacity=".5"/>
   </g>
-
-  <!-- Vignette overlay -->
-  <rect width="600" height="800" fill="url(#profileVignette)"/>
-
-  <!-- Thin border -->
-  <rect x="1" y="1" width="598" height="798" rx="0" fill="none" stroke="#c9a87c" stroke-width="1" opacity="0.08"/>
-
-  <!-- "I." monogram bottom-right -->
-  <text x="560" y="770" text-anchor="end"
-        font-family="'Georgia', 'Times New Roman', serif" font-size="24" font-weight="400"
-        font-style="italic" fill="#c9a87c" opacity="0.35">I.</text>
 </svg>
