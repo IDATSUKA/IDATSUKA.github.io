@@ -15,7 +15,7 @@
   --dim:    #303840;
   --accent: #6fd4e8;
   --border: rgba(255,255,255,.07);
-  --mono:   'SF Mono', ui-monospace, 'Cascadia Code', Menlo, Consolas, monospace;
+  --mono:   'Space Mono', 'SF Mono', ui-monospace, Menlo, monospace;
 }
 
 html { scroll-behavior: smooth; }
@@ -23,7 +23,7 @@ html { scroll-behavior: smooth; }
 body {
   background: var(--bg);
   color: var(--fg);
-  font-family: 'Inter', 'Noto Sans JP', -apple-system, sans-serif;
+  font-family: 'Space Grotesk', 'Zen Kaku Gothic New', -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   line-height: 1.75;
   overflow-x: hidden;
@@ -152,7 +152,7 @@ footer p { font-family: var(--mono); font-size: .58rem; color: var(--dim); }
   padding: 9rem 3rem 4.5rem; border-bottom: 1px solid var(--border);
 }
 .page-header h1 {
-  font-size: clamp(3rem, 9vw, 7rem); font-weight: 400;
+  font-size: clamp(3rem, 9vw, 7rem); font-weight: 500;
   letter-spacing: -.03em; line-height: .92;
 }
 .page-header-desc {
@@ -185,7 +185,7 @@ footer p { font-family: var(--mono); font-size: .58rem; color: var(--dim); }
   opacity: 0; animation: fadeUp 1s ease forwards .2s;
 }
 .hero-name {
-  font-size: clamp(4rem, 12vw, 10rem); font-weight: 400;
+  font-size: clamp(4rem, 12vw, 10rem); font-weight: 500;
   letter-spacing: -.04em; line-height: .9; margin-bottom: 2rem;
   opacity: 0; animation: fadeUp 1s ease forwards .5s;
 }
@@ -350,7 +350,7 @@ footer p { font-family: var(--mono); font-size: .58rem; color: var(--dim); }
    ═══════════════════════════════════════════ */
 .project-hero { padding: 10rem 3rem 4rem; border-bottom: 1px solid var(--border); }
 .project-hero .label { margin-bottom: 1.5rem; }
-.project-hero h1 { font-size: clamp(2.5rem,7vw,5.5rem); font-weight: 400; letter-spacing: -.03em; line-height: .92; margin-bottom: 1.5rem; }
+.project-hero h1 { font-size: clamp(2.5rem,7vw,5.5rem); font-weight: 500; letter-spacing: -.03em; line-height: .92; margin-bottom: 1.5rem; }
 .project-hero-desc { font-size: .95rem; line-height: 1.9; color: var(--fg-dim); max-width: 560px; margin-bottom: 2.5rem; }
 .project-meta-grid { display: flex; gap: 3rem; flex-wrap: wrap; }
 .project-meta-label { font-family: var(--mono); font-size: .52rem; letter-spacing: .25em; text-transform: uppercase; color: var(--dim); margin-bottom: .25rem; }
