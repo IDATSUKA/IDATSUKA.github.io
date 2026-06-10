@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" width="1200" height="750" role="img" aria-label="ダークの中に宿る光 — a beam of light in darkness">
+  <defs>
+    <linearGradient id="bf-beam" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e9eef4" stop-opacity="0"/>
+      <stop offset="35%" stop-color="#cfeef7" stop-opacity=".55"/>
+      <stop offset="50%" stop-color="#ffffff" stop-opacity=".8"/>
+      <stop offset="65%" stop-color="#9fe0ef" stop-opacity=".5"/>
+      <stop offset="100%" stop-color="#6fd4e8" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="bf-beam-wide" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#6fd4e8" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#6fd4e8" stop-opacity=".25"/>
+      <stop offset="100%" stop-color="#6fd4e8" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="bf-core" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity=".95"/>
+      <stop offset="35%" stop-color="#bdeaf4" stop-opacity=".55"/>
+      <stop offset="100%" stop-color="#6fd4e8" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="bf-ambient" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="#6fd4e8" stop-opacity=".05"/>
+      <stop offset="100%" stop-color="#6fd4e8" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="bf-vignette" cx="50%" cy="50%" r="75%">
+      <stop offset="0%" stop-color="#05070a" stop-opacity="0"/>
+      <stop offset="72%" stop-color="#05070a" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#05070a" stop-opacity=".75"/>
+    </radialGradient>
+    <linearGradient id="bf-glass-a" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity=".04"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity=".015"/>
+    </linearGradient>
+    <linearGradient id="bf-glass-b" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity=".02"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity=".035"/>
+    </linearGradient>
+    <filter id="bf-blur-beam" x="-100%" y="-20%" width="300%" height="140%">
+      <feGaussianBlur stdDeviation="14"/>
+    </filter>
+    <filter id="bf-blur-core" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="10"/>
+    </filter>
+    <filter id="bf-blur-soft" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3"/>
+    </filter>
+    <filter id="bf-noise" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" stitchTiles="stitch" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .035 0"/>
+    </filter>
+  </defs>
+
+  <!-- base -->
+  <rect width="1200" height="750" fill="#05070a"/>
+  <rect width="1200" height="750" fill="url(#bf-ambient)"/>
+
+  <!-- kanji watermark -->
+  <text x="600" y="520" text-anchor="middle" font-family="'Hiragino Mincho ProN', 'Yu Mincho', 'Noto Serif JP', serif" font-size="460" fill="#6fd4e8" opacity=".03">光</text>
+
+  <!-- vertical light beam -->
+  <rect x="540" y="-40" width="120" height="830" fill="url(#bf-beam-wide)" filter="url(#bf-blur-beam)"/>
+  <rect x="582" y="-40" width="36" height="830" fill="url(#bf-beam)" filter="url(#bf-blur-beam)"/>
+  <rect x="597" y="-40" width="6" height="830" fill="url(#bf-beam)" opacity=".9" filter="url(#bf-blur-soft)"/>
+  <line x1="600" y1="40" x2="600" y2="710" stroke="#e9eef4" stroke-width="1" opacity=".5"/>
+
+  <!-- bright core -->
+  <ellipse cx="600" cy="375" rx="90" ry="60" fill="url(#bf-core)" opacity=".5" filter="url(#bf-blur-core)"/>
+  <circle cx="600" cy="375" r="14" fill="#ffffff" opacity=".9" filter="url(#bf-blur-core)"/>
+  <circle cx="600" cy="375" r="4" fill="#ffffff"/>
+  <line x1="500" y1="375" x2="700" y2="375" stroke="#bdeaf4" stroke-width="1" opacity=".3" filter="url(#bf-blur-soft)"/>
+
+  <!-- floating glass panels -->
+  <g transform="rotate(-4 420 250)">
+    <rect x="300" y="180" width="240" height="140" rx="8" fill="url(#bf-glass-a)" stroke="rgba(255,255,255,.09)" stroke-width="1"/>
+    <line x1="300" y1="200" x2="540" y2="200" stroke="rgba(111,212,232,.18)" stroke-width="1"/>
+  </g>
+  <g transform="rotate(3 790 460)">
+    <rect x="660" y="390" width="260" height="150" rx="8" fill="url(#bf-glass-b)" stroke="rgba(255,255,255,.08)" stroke-width="1"/>
+    <line x1="660" y1="520" x2="920" y2="520" stroke="rgba(111,212,232,.15)" stroke-width="1"/>
+  </g>
+  <g transform="rotate(-2 350 560)">
+    <rect x="250" y="490" width="200" height="120" rx="8" fill="url(#bf-glass-b)" stroke="rgba(255,255,255,.07)" stroke-width="1"/>
+  </g>
+  <g transform="rotate(5 880 190)">
+    <rect x="790" y="130" width="180" height="110" rx="8" fill="url(#bf-glass-a)" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+  </g>
+  <!-- panel edges catching the light (closest to beam) -->
+  <line x1="540" y1="196" x2="540" y2="312" stroke="#9fe0ef" stroke-width="1.5" opacity=".45" transform="rotate(-4 420 250)"/>
+  <line x1="660" y1="396" x2="660" y2="534" stroke="#9fe0ef" stroke-width="1.5" opacity=".4" transform="rotate(3 790 460)"/>
+  <line x1="450" y1="494" x2="450" y2="606" stroke="#6fd4e8" stroke-width="1" opacity=".3" transform="rotate(-2 350 560)"/>
+
+  <!-- thin horizon lines -->
+  <line x1="0" y1="375" x2="1200" y2="375" stroke="rgba(111,212,232,.06)" stroke-width="1"/>
+  <line x1="80" y1="660" x2="1120" y2="660" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
+
+  <!-- drifting particles near the beam -->
+  <circle cx="566" cy="180" r="1.5" fill="#e9eef4" opacity=".5"/>
+  <circle cx="638" cy="240" r="2" fill="#bdeaf4" opacity=".45"/>
+  <circle cx="552" cy="320" r="1" fill="#6fd4e8" opacity=".5"/>
+  <circle cx="652" cy="430" r="1.5" fill="#e9eef4" opacity=".4"/>
+  <circle cx="572" cy="520" r="2" fill="#6fd4e8" opacity=".35"/>
+  <circle cx="630" cy="590" r="1" fill="#bdeaf4" opacity=".4"/>
+  <circle cx="520" cy="455" r="1" fill="#6fd4e8" opacity=".3"/>
+  <circle cx="688" cy="320" r="1" fill="#e9eef4" opacity=".3"/>
+  <circle cx="720" cy="540" r="1.5" fill="#6fd4e8" opacity=".2"/>
+  <circle cx="470" cy="260" r="1" fill="#6fd4e8" opacity=".25"/>
+
+  <!-- vignette and noise -->
+  <rect width="1200" height="750" fill="url(#bf-vignette)"/>
+  <rect width="1200" height="750" filter="url(#bf-noise)" opacity=".5"/>
+</svg>

@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-label="Neon District">
+  <defs>
+    <linearGradient id="n-bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#060818"/>
+      <stop offset="1" stop-color="#101a38"/>
+    </linearGradient>
+    <pattern id="n-grid" width="60" height="60" patternUnits="userSpaceOnUse">
+      <path d="M60 0H0V60" fill="none" stroke="rgba(111,212,232,0.06)" stroke-width="1"/>
+    </pattern>
+    <linearGradient id="n-glass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="rgba(111,212,232,0.10)"/>
+      <stop offset="1" stop-color="rgba(60,90,180,0.04)"/>
+    </linearGradient>
+    <radialGradient id="n-halo" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="rgba(111,212,232,0.55)"/>
+      <stop offset="1" stop-color="rgba(111,212,232,0)"/>
+    </radialGradient>
+    <filter id="n-blur" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="10"/>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#n-bg)"/>
+  <rect width="1200" height="630" fill="url(#n-grid)"/>
+
+  <!-- ambient city glow -->
+  <ellipse cx="600" cy="650" rx="600" ry="180" fill="rgba(111,212,232,0.05)" filter="url(#n-blur)"/>
+
+  <!-- phone-shaped glass rectangle with cyan edge glow -->
+  <g>
+    <rect x="490" y="115" width="220" height="420" rx="34" fill="none" stroke="rgba(111,212,232,0.55)" stroke-width="6" filter="url(#n-blur)"/>
+    <rect x="490" y="115" width="220" height="420" rx="34" fill="url(#n-glass)" stroke="rgba(111,212,232,0.8)" stroke-width="1.2"/>
+    <rect x="565" y="132" width="70" height="5" rx="2.5" fill="rgba(111,212,232,0.35)"/>
+  </g>
+
+  <!-- dashed route lines on screen -->
+  <path d="M530 480 L575 410 L555 350 L610 300 L600 245" fill="none" stroke="rgba(111,212,232,0.7)" stroke-width="1.5" stroke-dasharray="6 6" stroke-linejoin="round"/>
+  <path d="M600 245 L655 215 L645 175" fill="none" stroke="rgba(111,212,232,0.35)" stroke-width="1.2" stroke-dasharray="4 7"/>
+  <circle cx="530" cy="480" r="3" fill="none" stroke="rgba(111,212,232,0.6)" stroke-width="1"/>
+
+  <!-- map pin dot with blur halo -->
+  <circle cx="600" cy="245" r="34" fill="url(#n-halo)"/>
+  <circle cx="600" cy="245" r="7" fill="#6fd4e8"/>
+  <circle cx="600" cy="245" r="14" fill="none" stroke="rgba(111,212,232,0.5)" stroke-width="1"/>
+
+  <!-- distant neon strokes -->
+  <line x1="120" y1="180" x2="340" y2="180" stroke="rgba(140,120,255,0.35)" stroke-width="1"/>
+  <line x1="150" y1="210" x2="300" y2="210" stroke="rgba(111,212,232,0.25)" stroke-width="1"/>
+  <line x1="880" y1="420" x2="1080" y2="420" stroke="rgba(111,212,232,0.30)" stroke-width="1"/>
+  <line x1="910" y1="450" x2="1040" y2="450" stroke="rgba(140,120,255,0.22)" stroke-width="1"/>
+  <circle cx="930" cy="170" r="2.5" fill="rgba(111,212,232,0.7)"/>
+  <circle cx="985" cy="200" r="1.8" fill="rgba(140,120,255,0.55)"/>
+  <circle cx="240" cy="430" r="2" fill="rgba(111,212,232,0.5)"/>
+
+  <!-- title -->
+  <text x="120" y="555" font-family="'Helvetica Neue',Arial,sans-serif" font-size="22" font-weight="300" letter-spacing="12" fill="#e9eef4" opacity="0.8">NEON DISTRICT</text>
+  <text x="120" y="582" font-family="'Helvetica Neue',Arial,sans-serif" font-size="11" font-weight="300" letter-spacing="6" fill="rgba(111,212,232,0.6)">NIGHTLIFE APP — UI / UX</text>
+</svg>

@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-label="IDATSUKA — Designer, Tokyo">
+  <defs>
+    <radialGradient id="og-glow" cx="50%" cy="0%" r="75%">
+      <stop offset="0%" stop-color="#6fd4e8" stop-opacity=".05"/>
+      <stop offset="55%" stop-color="#6fd4e8" stop-opacity=".02"/>
+      <stop offset="100%" stop-color="#6fd4e8" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="og-corner-glow" cx="100%" cy="100%" r="80%">
+      <stop offset="0%" stop-color="#6fd4e8" stop-opacity=".025"/>
+      <stop offset="100%" stop-color="#6fd4e8" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="og-line" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#6fd4e8" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#6fd4e8" stop-opacity=".7"/>
+      <stop offset="100%" stop-color="#6fd4e8" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="og-glass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity=".03"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity=".015"/>
+    </linearGradient>
+    <linearGradient id="og-edge" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#ffffff" stop-opacity=".12"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <pattern id="og-grid" width="80" height="80" patternUnits="userSpaceOnUse">
+      <path d="M 80 0 L 0 0 0 80" fill="none" stroke="rgba(255,255,255,.02)" stroke-width="1"/>
+    </pattern>
+    <filter id="og-blur-soft" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="6"/>
+    </filter>
+    <filter id="og-blur-wide" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="22"/>
+    </filter>
+    <filter id="og-noise" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" stitchTiles="stitch" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .04 0"/>
+    </filter>
+  </defs>
+
+  <!-- base -->
+  <rect width="1200" height="630" fill="#05070a"/>
+  <rect width="1200" height="630" fill="url(#og-grid)"/>
+  <rect width="1200" height="630" fill="url(#og-glow)"/>
+  <rect width="1200" height="630" fill="url(#og-corner-glow)"/>
+
+  <!-- ambient geometry -->
+  <circle cx="600" cy="120" r="240" fill="#6fd4e8" opacity=".04" filter="url(#og-blur-wide)"/>
+  <line x1="0" y1="80" x2="1200" y2="80" stroke="url(#og-edge)" stroke-width="1"/>
+  <line x1="0" y1="550" x2="1200" y2="550" stroke="url(#og-edge)" stroke-width="1"/>
+  <rect x="1010" y="430" width="120" height="120" fill="none" stroke="rgba(111,212,232,.10)" stroke-width="1" transform="rotate(15 1070 490)"/>
+  <rect x="70" y="90" width="80" height="80" fill="none" stroke="rgba(255,255,255,.05)" stroke-width="1" transform="rotate(-12 110 130)"/>
+  <circle cx="1090" cy="130" r="3" fill="#6fd4e8" opacity=".35"/>
+  <circle cx="150" cy="500" r="2" fill="#6fd4e8" opacity=".25"/>
+  <circle cx="980" cy="520" r="1.5" fill="#e9eef4" opacity=".2"/>
+
+  <!-- frosted glass panel -->
+  <rect x="240" y="170" width="720" height="290" rx="14" fill="url(#og-glass)" stroke="rgba(255,255,255,.08)" stroke-width="1"/>
+  <line x1="280" y1="170" x2="920" y2="170" stroke="url(#og-line)" stroke-width="1" opacity=".35"/>
+  <!-- corner ticks on panel -->
+  <path d="M 240 196 L 240 184 Q 240 170 254 170 L 266 170" fill="none" stroke="rgba(111,212,232,.4)" stroke-width="1.5"/>
+  <path d="M 960 434 L 960 446 Q 960 460 946 460 L 934 460" fill="none" stroke="rgba(111,212,232,.4)" stroke-width="1.5"/>
+
+  <!-- name -->
+  <text x="600" y="306" text-anchor="middle" font-family="'Helvetica Neue', Helvetica, Arial, 'Hiragino Kaku Gothic ProN', sans-serif" font-size="76" font-weight="600" fill="#e9eef4" letter-spacing="-1">IDATSUKA</text>
+  <!-- cyan glow echo behind text -->
+  <text x="600" y="306" text-anchor="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="76" font-weight="600" fill="#6fd4e8" letter-spacing="-1" opacity=".18" filter="url(#og-blur-soft)">IDATSUKA</text>
+
+  <!-- divider line -->
+  <rect x="560" y="344" width="80" height="2" fill="#6fd4e8" opacity=".7"/>
+  <rect x="560" y="344" width="80" height="2" fill="#6fd4e8" opacity=".5" filter="url(#og-blur-soft)"/>
+
+  <!-- subtitle -->
+  <text x="600" y="400" text-anchor="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="22" font-weight="400" fill="#66717d" letter-spacing="6">DESIGNER&#8201;&#8212;&#8201;TOKYO</text>
+
+  <!-- footer mark -->
+  <text x="600" y="586" text-anchor="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" fill="#66717d" letter-spacing="4" opacity=".7">IDATSUKA.GITHUB.IO</text>
+
+  <!-- noise overlay -->
+  <rect width="1200" height="630" filter="url(#og-noise)" opacity=".5"/>
+</svg>

@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-label="Pulse">
+  <defs>
+    <linearGradient id="p-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b0716"/>
+      <stop offset="1" stop-color="#170f2a"/>
+    </linearGradient>
+    <radialGradient id="p-core" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="rgba(240,235,255,0.9)"/>
+      <stop offset="0.35" stop-color="rgba(160,120,255,0.45)"/>
+      <stop offset="1" stop-color="rgba(150,110,255,0)"/>
+    </radialGradient>
+    <linearGradient id="p-bar" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="rgba(150,110,255,0.05)"/>
+      <stop offset="0.5" stop-color="rgba(170,130,255,0.45)"/>
+      <stop offset="1" stop-color="rgba(150,110,255,0.05)"/>
+    </linearGradient>
+    <filter id="p-blur" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="22"/>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#p-bg)"/>
+
+  <!-- concentric rings -->
+  <circle cx="600" cy="290" r="100" fill="none" stroke="rgba(150,110,255,0.15)" stroke-width="1.2"/>
+  <circle cx="600" cy="290" r="160" fill="none" stroke="rgba(150,110,255,0.10)" stroke-width="1"/>
+  <circle cx="600" cy="290" r="225" fill="none" stroke="rgba(150,110,255,0.07)" stroke-width="1"/>
+  <circle cx="600" cy="290" r="295" fill="none" stroke="rgba(150,110,255,0.04)" stroke-width="0.8"/>
+
+  <!-- central blurred glow core -->
+  <circle cx="600" cy="290" r="55" fill="url(#p-core)" filter="url(#p-blur)"/>
+  <circle cx="600" cy="290" r="6" fill="rgba(245,240,255,0.95)"/>
+
+  <!-- symmetric equalizer bars -->
+  <g fill="url(#p-bar)">
+    <rect x="488" y="262" width="6" height="56" rx="3"/>
+    <rect x="514" y="240" width="6" height="100" rx="3"/>
+    <rect x="540" y="218" width="6" height="144" rx="3"/>
+    <rect x="566" y="195" width="6" height="190" rx="3"/>
+    <rect x="597" y="170" width="6" height="240" rx="3" opacity="0.9"/>
+    <rect x="628" y="195" width="6" height="190" rx="3"/>
+    <rect x="654" y="218" width="6" height="144" rx="3"/>
+    <rect x="680" y="240" width="6" height="100" rx="3"/>
+    <rect x="706" y="262" width="6" height="56" rx="3"/>
+  </g>
+
+  <!-- scattered particles -->
+  <circle cx="300" cy="150" r="2" fill="rgba(190,160,255,0.6)"/>
+  <circle cx="920" cy="190" r="1.6" fill="rgba(190,160,255,0.45)"/>
+  <circle cx="980" cy="380" r="2.4" fill="rgba(150,110,255,0.5)"/>
+  <circle cx="230" cy="400" r="1.8" fill="rgba(190,160,255,0.4)"/>
+  <circle cx="420" cy="110" r="1.4" fill="rgba(190,160,255,0.35)"/>
+  <circle cx="780" cy="120" r="1.8" fill="rgba(150,110,255,0.45)"/>
+  <circle cx="160" cy="250" r="1.5" fill="rgba(190,160,255,0.3)"/>
+  <circle cx="1050" cy="270" r="1.5" fill="rgba(190,160,255,0.3)"/>
+
+  <!-- PULSE wide-tracked text -->
+  <text x="600" y="520" text-anchor="middle" font-family="'Helvetica Neue',Arial,sans-serif" font-size="64" font-weight="200" letter-spacing="58" fill="#e9eef4" opacity="0.1">PULSE</text>
+
+  <!-- title -->
+  <text x="120" y="555" font-family="'Helvetica Neue',Arial,sans-serif" font-size="22" font-weight="300" letter-spacing="12" fill="#e9eef4" opacity="0.8">PULSE</text>
+  <text x="120" y="582" font-family="'Helvetica Neue',Arial,sans-serif" font-size="11" font-weight="300" letter-spacing="6" fill="rgba(170,130,255,0.6)">MUSIC STREAMING — PRODUCT DESIGN</text>
+</svg>

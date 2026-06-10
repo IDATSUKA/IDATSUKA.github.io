@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>デザインシステムを0から構築する — 実践的アプローチ — IDATSUKA</title>
+  <meta name="description" content="スタートアップでデザインシステムをゼロから構築した実践記録。監査、Design Tokens、コンポーネント化、そして運用のリアルまで、フェーズごとの学びをまとめました。">
+  <link rel="canonical" href="https://idatsuka.com/blog-01.html">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%2305070a'/><text x='16' y='22' text-anchor='middle' font-size='18' font-family='sans-serif' font-weight='600' fill='%236fd4e8'>I</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">Idatsuka<span class="logo-dot">.</span></a>
+  <ul class="nav-links">
+    <li><a href="about.html">About</a></li>
+    <li><a href="works.html">Works</a></li>
+    <li><a href="blog.html" class="active">Blog</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <button class="menu-toggle" id="menuToggle" aria-label="メニュー"><span></span><span></span><span></span></button>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="about.html">About</a>
+  <a href="works.html">Works</a>
+  <a href="blog.html" class="active">Blog</a>
+  <a href="contact.html">Contact</a>
+</div>
+
+<header class="article-header">
+  <div class="article-meta">
+    <span class="article-tag">Process</span>
+    <span class="article-date">2025.02.28</span>
+    <span class="article-read">6 min read</span>
+  </div>
+  <h1>デザインシステムを0から構築する — 実践的アプローチ</h1>
+  <p class="article-header-desc">あるスタートアップで、デザインシステムをゼロから立ち上げた。教科書通りにはいかなかったその過程と、現場で得た学びをフェーズごとに振り返る。</p>
+</header>
+
+<article class="article-body">
+  <p>昨年、あるスタートアップでデザインシステムの構築を任された。プロダクトはすでに数万人のユーザーを抱え、デザイナーは3人、エンジニアは15人。誰もが「そろそろ必要だよね」と口にしながら、誰も手をつけられていない状態だった。この記事は、その半年間の記録であり、これから同じ道を歩む人への<strong>実践的なメモ</strong>でもある。</p>
+
+  <h2>なぜ必要だったのか</h2>
+  <p>きっかけは、チームのスケーリングだった。デザイナーが1人の頃は、その人の頭の中がデザインシステムだった。しかし3人になった瞬間、同じ「プライマリーボタン」が3種類の青で実装され、余白のルールは人によって8pxだったり10pxだったりした。エンジニアからは「どれが正なのか分からない」という声が上がり、レビューのたびに些細なスタイル議論で時間が溶けていった。</p>
+  <p>つまり問題はデザインの美しさではなく、<strong>意思決定のコスト</strong>だった。システムとは、繰り返される判断を一度だけ済ませるための仕組みだ。そう定義し直したことで、経営層への説明もすんなり通った。</p>
+
+  <h2>Phase 1 — 監査と棚卸し</h2>
+  <p>最初にやったのは、新しいものを作ることではなく、今あるものを全部並べることだった。プロダクト内の全画面をスクリーンショットに撮り、ボタン、フォーム、カード、モーダルをひたすら切り出してFigmaの一枚のボードに貼っていく。地味で退屈な作業だが、これを飛ばすと必ず後で痛い目を見る。</p>
+  <p>結果は想像以上にひどかった。ボタンだけで34バリエーション、グレーは22色。しかしこの「惨状の可視化」こそが最大の成果だった。チーム全員が同じ画像を見て、同じ危機感を共有できたからだ。</p>
+
+  <h2>Phase 2 — Design Tokensから始める</h2>
+  <p>コンポーネントから着手したくなる気持ちを抑えて、まずDesign Tokensを定義した。カラー、タイポグラフィ、スペーシング、角丸、シャドウ。プリミティブな値（<strong>blue-500</strong>のような原色パレット）と、意味を持つセマンティックトークン（<strong>color-action-primary</strong>のような用途名）の二層構造にした。</p>
+  <p>この二層構造のおかげで、後にブランドカラーを微調整したときも、変更は一箇所で済んだ。トークンはJSONで管理し、FigmaとコードのCSS変数に同期する。デザインと実装が同じ言語を話し始めた瞬間だった。</p>
+
+  <blockquote>「完璧なシステムを目指すな。使われるシステムを目指せ。」</blockquote>
+
+  <p>これはチームで決めた合言葉だ。網羅性よりも採用率。ドキュメントの美しさよりも、明日のプルリクエストで使われること。優先順位を間違えたシステムは、立派な廃墟になる。</p>
+
+  <h2>Phase 3 — コンポーネント化</h2>
+  <p>トークンが固まったら、ようやくコンポーネントだ。考え方のベースにはAtomic Designを置いたが、<strong>厳格にしすぎない</strong>ことを最初に決めた。「これはAtomかMoleculeか」という神学論争は時間の無駄でしかない。実際にはAtom、Component、Patternの3階層に簡略化し、迷ったら使用頻度の高い方に寄せるルールにした。</p>
+  <p>着手順は監査データに基づいて決めた。出現頻度の高いボタン、テキストフィールド、カードの3つから始め、2週間ごとに数個ずつリリースしていく。一気に全部作らない。小さく出して、フィードバックをもらい、直す。プロダクト開発と同じリズムだ。</p>
+
+  <h2>運用のリアル</h2>
+  <p>システムは作って終わりではない。むしろ作ってからが本番だ。運用で効いたのは次の3つだった。</p>
+  <ul>
+    <li><strong>週1回30分の「システム定例」</strong> — 追加・変更の判断をその場で即決し、滞留させない。</li>
+    <li><strong>例外を禁止しない</strong> — 例外は記録さえすれば、次のアップデートの種になる。</li>
+    <li><strong>エンジニアをオーナーに巻き込む</strong> — デザイナーだけのシステムは、コードベースから静かに乖離していく。</li>
+  </ul>
+  <p>正直に言えば、リリース後3ヶ月で一度停滞した。新機能ラッシュでシステム更新が後回しになったのだ。救ったのは仕組みではなく、「壊れたら自分が直す」と言ってくれた一人のエンジニアだった。システムは結局、人が運ぶものだ。</p>
+
+  <hr>
+
+  <h2>振り返りと学び</h2>
+  <p>半年を振り返って、学びを3つに絞るならこうなる。第一に、<strong>監査から始めること</strong>。現状の可視化が共通認識をつくる。第二に、トークンという土台に先に投資すること。第三に、完成度よりも採用率を追うこと。</p>
+  <p>デザインシステムは銀の弾丸ではない。しかし、チームが同じ言葉で話すための辞書にはなる。そして辞書は、使われるほどに育っていく。もしあなたのチームが今まさにスケーリングの痛みを感じているなら、まずはスクリーンショットを全部並べるところから始めてみてほしい。</p>
+</article>
+
+<div class="article-footer">
+  <a href="blog.html" class="article-back">&larr; Back to Blog</a>
+</div>
+
+<footer>
+  <p>&copy; 2025 Idatsuka</p>
+  <ul class="footer-links">
+    <li><a href="about.html">About</a></li>
+    <li><a href="works.html">Works</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+</footer>
+
+<script>
+document.getElementById('menuToggle').addEventListener('click', function() {
+  this.classList.toggle('open');
+  document.getElementById('mobileMenu').classList.toggle('open');
+});
+</script>
+
+</body>
+</html>

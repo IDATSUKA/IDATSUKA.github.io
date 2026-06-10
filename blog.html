@@ -6,7 +6,7 @@
   <title>Blog — IDATSUKA</title>
   <meta name="description" content="IDATSUKA のブログ・ノート。デザイン、カルチャー、思考の断片。">
   <link rel="canonical" href="https://idatsuka.com/blog.html">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%230a0a0a'/><text x='16' y='22' text-anchor='middle' font-size='18' font-family='sans-serif' font-weight='600' fill='%23c9a87c'>I</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%2305070a'/><text x='16' y='22' text-anchor='middle' font-size='18' font-family='sans-serif' font-weight='600' fill='%236fd4e8'>I</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
@@ -15,14 +15,22 @@
 <body>
 
 <nav>
-  <a href="/" class="logo">Idatsuka</a>
+  <a href="/" class="logo">Idatsuka<span class="logo-dot">.</span></a>
   <ul class="nav-links">
     <li><a href="about.html">About</a></li>
     <li><a href="works.html">Works</a></li>
     <li><a href="blog.html" class="active">Blog</a></li>
     <li><a href="contact.html">Contact</a></li>
   </ul>
+  <button class="menu-toggle" id="menuToggle" aria-label="メニュー"><span></span><span></span><span></span></button>
 </nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="about.html">About</a>
+  <a href="works.html">Works</a>
+  <a href="blog.html" class="active">Blog</a>
+  <a href="contact.html">Contact</a>
+</div>
 
 <header class="page-header">
   <span class="label">Blog / Notes</span>
@@ -41,16 +49,16 @@
 <main>
 
   <!-- Featured -->
-  <a href="#" class="featured-post rv">
+  <a href="blog-05.html" class="featured-post rv">
     <div class="featured-thumb">
-      <span class="featured-thumb-label">Image Here</span>
+      <img src="img/blog-featured.svg" alt="ダークの中に宿る光" loading="lazy">
     </div>
     <div class="featured-content">
       <p class="featured-badge">Featured</p>
       <span class="featured-tag">Design</span>
-      <h2 class="featured-title">ダークの中に宿る光 — 矛盾するデザインの力</h2>
+      <h2 class="featured-title">ダークの中に宿る光 — 透明なデザインの力</h2>
       <p class="featured-excerpt">
-        アンダーグラウンドカルチャーとハイデザインの境界線が溶け始めている。その交差点にこそ、最も強い表現が生まれると私は信じている。
+        闇の中にこそ、光は最も美しく宿る。研ぎ澄まされた透明な表現の交差点に、最も強いデザインが生まれると私は信じている。
       </p>
       <div class="featured-meta">
         <span>2025.03.15</span>
@@ -66,7 +74,7 @@
       <span>Latest</span>
     </div>
 
-    <a href="#" class="post-item">
+    <a href="blog-01.html" class="post-item">
       <span class="post-num">01</span>
       <div>
         <span class="post-tag">Process</span>
@@ -79,7 +87,7 @@
       </div>
     </a>
 
-    <a href="#" class="post-item">
+    <a href="blog-02.html" class="post-item">
       <span class="post-num">02</span>
       <div>
         <span class="post-tag">Culture</span>
@@ -92,7 +100,7 @@
       </div>
     </a>
 
-    <a href="#" class="post-item">
+    <a href="blog-03.html" class="post-item">
       <span class="post-num">03</span>
       <div>
         <span class="post-tag">Design</span>
@@ -105,7 +113,7 @@
       </div>
     </a>
 
-    <a href="#" class="post-item">
+    <a href="blog-04.html" class="post-item">
       <span class="post-num">04</span>
       <div>
         <span class="post-tag">Process</span>
@@ -118,7 +126,7 @@
       </div>
     </a>
 
-    <a href="#" class="post-item">
+    <a href="blog-05.html" class="post-item">
       <span class="post-num">05</span>
       <div>
         <span class="post-tag">Design</span>
@@ -159,12 +167,12 @@
         </div>
         <div class="note-card">
           <span class="note-card-label">Inspiration</span>
-          <p class="note-card-text">建築家のザハ・ハディドが言った通り — 「直線は神のものではない、曲線が自然だ」。</p>
+          <p class="note-card-text">ガラス越しの東京タワー。透けて見えるものの方が、直接見るより美しいことがある。</p>
           <span class="note-card-date">2024.12.28</span>
         </div>
         <div class="note-card">
           <span class="note-card-label">Note</span>
-          <p class="note-card-text">色を選ぶとき、私はいつも感情から入る。この色は怒りか、静寂か、それとも期待か。</p>
+          <p class="note-card-text">色を選ぶとき、私はいつも感情から入る。この色は静寂か、緊張か、それとも期待か。</p>
           <span class="note-card-date">2024.11.05</span>
         </div>
       </div>
@@ -184,6 +192,10 @@
 </footer>
 
 <script>
+document.getElementById('menuToggle').addEventListener('click', function() {
+  this.classList.toggle('open');
+  document.getElementById('mobileMenu').classList.toggle('open');
+});
 document.querySelectorAll('.tag-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.tag-btn').forEach(b => b.classList.remove('active'));

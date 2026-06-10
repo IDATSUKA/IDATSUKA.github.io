@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="600" height="800" role="img" aria-label="Profile placeholder">
+  <defs>
+    <linearGradient id="pf-bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0a0e14"/>
+      <stop offset="100%" stop-color="#111722"/>
+    </linearGradient>
+    <radialGradient id="pf-halo" cx="50%" cy="42%" r="55%">
+      <stop offset="0%" stop-color="#6fd4e8" stop-opacity=".06"/>
+      <stop offset="60%" stop-color="#6fd4e8" stop-opacity=".025"/>
+      <stop offset="100%" stop-color="#6fd4e8" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="pf-body" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity=".05"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity=".015"/>
+    </linearGradient>
+    <linearGradient id="pf-head" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity=".07"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity=".02"/>
+    </linearGradient>
+    <linearGradient id="pf-rim" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#6fd4e8" stop-opacity=".9"/>
+      <stop offset="70%" stop-color="#6fd4e8" stop-opacity=".35"/>
+      <stop offset="100%" stop-color="#6fd4e8" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="pf-scan" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#6fd4e8" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#6fd4e8" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#6fd4e8" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="pf-glow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="5"/>
+    </filter>
+    <filter id="pf-glow-wide" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="28"/>
+    </filter>
+    <filter id="pf-noise" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" stitchTiles="stitch" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .04 0"/>
+    </filter>
+    <clipPath id="pf-frame-clip">
+      <rect x="0" y="0" width="600" height="800"/>
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#pf-frame-clip)">
+    <!-- base -->
+    <rect width="600" height="800" fill="url(#pf-bg)"/>
+    <rect width="600" height="800" fill="url(#pf-halo)"/>
+
+    <!-- soft glow behind figure -->
+    <ellipse cx="300" cy="380" rx="190" ry="240" fill="#6fd4e8" opacity=".06" filter="url(#pf-glow-wide)"/>
+
+    <!-- faint background geometry -->
+    <circle cx="300" cy="330" r="225" fill="none" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
+    <circle cx="300" cy="330" r="260" fill="none" stroke="rgba(111,212,232,.05)" stroke-width="1" stroke-dasharray="2 10"/>
+    <line x1="300" y1="60" x2="300" y2="150" stroke="rgba(111,212,232,.12)" stroke-width="1"/>
+
+    <!-- silhouette: shoulders -->
+    <path d="M 120 800 L 120 660 C 120 540 200 480 300 480 C 400 480 480 540 480 660 L 480 800 Z" fill="url(#pf-body)" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+    <!-- neck -->
+    <path d="M 268 420 L 268 482 C 268 500 282 510 300 510 C 318 510 332 500 332 482 L 332 420 Z" fill="url(#pf-body)"/>
+    <!-- head -->
+    <circle cx="300" cy="330" r="108" fill="url(#pf-head)" stroke="rgba(255,255,255,.07)" stroke-width="1"/>
+
+    <!-- cyan rim-light: head arc (right side) -->
+    <path d="M 330 226 A 108 108 0 0 1 405 365" fill="none" stroke="#6fd4e8" stroke-width="2" stroke-linecap="round" opacity=".9"/>
+    <path d="M 330 226 A 108 108 0 0 1 405 365" fill="none" stroke="#6fd4e8" stroke-width="5" stroke-linecap="round" opacity=".5" filter="url(#pf-glow)"/>
+    <!-- cyan rim-light: shoulder arc (right side) -->
+    <path d="M 352 496 C 426 514 480 570 480 660 L 480 740" fill="none" stroke="url(#pf-rim)" stroke-width="2" stroke-linecap="round"/>
+    <path d="M 352 496 C 426 514 480 570 480 660 L 480 740" fill="none" stroke="#6fd4e8" stroke-width="5" stroke-linecap="round" opacity=".35" filter="url(#pf-glow)"/>
+    <!-- faint counter rim on left -->
+    <path d="M 270 226 A 108 108 0 0 0 197 360" fill="none" stroke="#e9eef4" stroke-width="1" stroke-linecap="round" opacity=".12"/>
+
+    <!-- scan line at chest height -->
+    <line x1="40" y1="600" x2="560" y2="600" stroke="url(#pf-scan)" stroke-width="1" opacity=".15"/>
+    <line x1="40" y1="600" x2="560" y2="600" stroke="url(#pf-scan)" stroke-width="3" opacity=".06" filter="url(#pf-glow)"/>
+    <circle cx="300" cy="600" r="2" fill="#6fd4e8" opacity=".3"/>
+
+    <!-- drifting particles -->
+    <circle cx="430" cy="210" r="2" fill="#6fd4e8" opacity=".35"/>
+    <circle cx="466" cy="300" r="1.5" fill="#e9eef4" opacity=".25"/>
+    <circle cx="150" cy="450" r="1.5" fill="#6fd4e8" opacity=".2"/>
+    <circle cx="118" cy="250" r="1" fill="#e9eef4" opacity=".2"/>
+    <circle cx="500" cy="520" r="1" fill="#6fd4e8" opacity=".25"/>
+
+    <!-- glass frame inset -->
+    <rect x="24" y="24" width="552" height="752" rx="6" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="1"/>
+    <!-- frame corner accents -->
+    <path d="M 24 56 L 24 30 Q 24 24 30 24 L 56 24" fill="none" stroke="rgba(111,212,232,.45)" stroke-width="1.5"/>
+    <path d="M 576 744 L 576 770 Q 576 776 570 776 L 544 776" fill="none" stroke="rgba(111,212,232,.45)" stroke-width="1.5"/>
+
+    <!-- monogram -->
+    <text x="540" y="752" text-anchor="end" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="28" font-weight="600" fill="#6fd4e8" opacity=".4" letter-spacing="1">I.</text>
+
+    <!-- noise overlay -->
+    <rect width="600" height="800" filter="url(#pf-noise)" opacity=".5"/>
+  </g>
+</svg>

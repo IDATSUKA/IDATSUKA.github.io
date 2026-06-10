@@ -6,7 +6,7 @@
   <title>About — IDATSUKA</title>
   <meta name="description" content="東京を拠点に活動するデザイナー Idatsuka のプロフィール。">
   <link rel="canonical" href="https://idatsuka.com/about.html">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%230a0a0a'/><text x='16' y='22' text-anchor='middle' font-size='18' font-family='sans-serif' font-weight='600' fill='%23c9a87c'>I</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%2305070a'/><text x='16' y='22' text-anchor='middle' font-size='18' font-family='sans-serif' font-weight='600' fill='%236fd4e8'>I</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
@@ -15,14 +15,22 @@
 <body>
 
 <nav>
-  <a href="/" class="logo">Idatsuka</a>
+  <a href="/" class="logo">Idatsuka<span class="logo-dot">.</span></a>
   <ul class="nav-links">
     <li><a href="about.html" class="active">About</a></li>
     <li><a href="works.html">Works</a></li>
     <li><a href="blog.html">Blog</a></li>
     <li><a href="contact.html">Contact</a></li>
   </ul>
+  <button class="menu-toggle" id="menuToggle" aria-label="メニュー"><span></span><span></span><span></span></button>
 </nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="about.html" class="active">About</a>
+  <a href="works.html">Works</a>
+  <a href="blog.html">Blog</a>
+  <a href="contact.html">Contact</a>
+</div>
 
 <header class="page-header">
   <div class="page-header-grid">
@@ -32,7 +40,7 @@
     </div>
     <p class="page-header-desc">
       東京を拠点に活動するデザイナー。<br>
-      ダークな世界に光を見出すことが、私のデザインの出発点です。
+      透明な光のように、静かに心へ届くデザインを。
     </p>
   </div>
 </header>
@@ -44,17 +52,14 @@
     <div class="container">
       <span class="label rv">01 — Biography</span>
       <div class="bio-grid">
-        <div class="bio-photo rv" role="img" aria-label="Idatsuka プロフィール写真">
-          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1">
-            <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
-          </svg>
-          <span class="bio-photo-hint">Photo Here</span>
+        <div class="bio-photo rv">
+          <img src="img/profile.svg" alt="Idatsuka プロフィール画像">
         </div>
         <div class="bio-text rv">
           <p>東京を拠点に活動する<strong>デザイナー、Idatsuka</strong>です。UI/UXデザイン、ブランディング、Webデザインを専門としています。</p>
-          <p>私のデザインの哲学は「<strong>矛盾の中に宿る美しさ</strong>」です。ダークな背景の中に鮮烈な光が差し込むように、相反する要素が融合したとき、最も強いデザインが生まれると信じています。</p>
+          <p>私のデザインの哲学は「<strong>透明であること</strong>」。デザインは主張するためではなく、本質を澄んだかたちで届けるためにある。余計なものを取り除いた先に残る、静かな佇まいを大切にしています。</p>
           <p>クライアントのビジョンを形にすることに情熱を注ぎながら、常に新しい表現を探求し続けています。デザインは見た目だけでなく、<strong>感情を動かす力</strong>を持つべきだと考えています。</p>
-          <p>音楽、アンダーグラウンドカルチャー、建築からインスピレーションを受け、それをデジタルの世界に翻訳することが私の仕事です。</p>
+          <p>音楽、建築、テクノロジーからインスピレーションを受け、それをデジタルの世界に翻訳することが私の仕事です。</p>
         </div>
       </div>
     </div>
@@ -144,6 +149,10 @@
 </footer>
 
 <script>
+document.getElementById('menuToggle').addEventListener('click', function() {
+  this.classList.toggle('open');
+  document.getElementById('mobileMenu').classList.toggle('open');
+});
 const io = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
 }, { threshold: 0.1 });
