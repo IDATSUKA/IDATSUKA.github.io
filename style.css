@@ -57,10 +57,11 @@ nav {
   border-bottom: 1px solid var(--border);
 }
 .logo {
-  font-family: var(--mono);
-  font-size: .72rem; font-weight: 500; letter-spacing: .18em;
-  text-transform: uppercase; color: var(--fg);
+  display: flex; align-items: center;
+  line-height: 0;
 }
+.logo svg { transition: opacity .25s; }
+.logo:hover svg { opacity: .7; }
 .nav-links { display: flex; gap: 2.2rem; list-style: none; }
 .nav-links a {
   font-family: var(--mono);
@@ -186,26 +187,25 @@ footer p { font-family: var(--mono); font-size: .58rem; color: var(--dim); }
 }
 .hero-name {
   margin-bottom: 2.5rem;
-  opacity: 0; animation: fadeUp 1s ease forwards .5s;
+  opacity: 0; animation: fadeUp 1.2s ease forwards .5s;
 }
 .hero-name svg {
-  width: min(84vw, 820px); height: auto;
+  width: min(80vw, 700px); height: auto;
   display: block; margin: 0 auto;
+  filter: drop-shadow(0 0 40px rgba(111,212,232,.06));
 }
-.hero-name .wm { fill: var(--fg); }
-.hero-name .wm-accent { fill: var(--accent); }
 .hero-line {
-  width: 48px; height: 1px;
-  background: linear-gradient(to right, transparent, var(--accent), transparent);
-  margin: 0 auto 1.6rem;
-  opacity: 0; animation: fadeUp 1s ease forwards .8s;
+  width: 64px; height: 1px;
+  background: linear-gradient(to right, transparent, rgba(111,212,232,.5), transparent);
+  margin: 0 auto 1.8rem;
+  opacity: 0; animation: fadeUp 1.2s ease forwards .9s;
 }
 .hero-sub {
-  font-family: var(--mono); font-size: .65rem; color: var(--muted);
-  letter-spacing: .28em; text-transform: uppercase;
-  opacity: 0; animation: fadeUp 1s ease forwards 1s;
+  font-family: var(--mono); font-size: .6rem; color: var(--dim);
+  letter-spacing: .4em; text-transform: uppercase;
+  opacity: 0; animation: fadeUp 1.2s ease forwards 1.1s;
 }
-.hero-cta { margin-top: 3.5rem; opacity: 0; animation: fadeUp 1s ease forwards 1.3s; }
+.hero-cta { margin-top: 4rem; opacity: 0; animation: fadeUp 1.2s ease forwards 1.4s; }
 .hero-scroll {
   position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
   display: flex; flex-direction: column; align-items: center; gap: .6rem;
