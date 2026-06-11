@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 500">
+  <defs>
+    <linearGradient id="gb" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="50%" stop-color="#a8d8ea"/>
+      <stop offset="100%" stop-color="#5b8fa8"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="500" fill="#08090c"/>
+  <text x="600" y="58" text-anchor="middle" font-family="monospace" font-size="11" letter-spacing="6" fill="#363d48">CONCEPT B</text>
+  <text x="600" y="280" text-anchor="middle" font-family="sans-serif" font-size="130" font-weight="700" letter-spacing="-5" fill="url(#gb)">IDATSUKA</text>
+  <text x="600" y="380" text-anchor="middle" font-family="monospace" font-size="11" letter-spacing="6" fill="#6b7280">GRADIENT BOLD</text>
+  <text x="600" y="420" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#4a5060">Weight 700 × 白→アイスブルーの縦グラデーション — 存在感と神秘性の両立</text>
+</svg>
