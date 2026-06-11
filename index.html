@@ -42,46 +42,7 @@
   <div class="hero-inner">
     <p class="hero-label">Designer — Tokyo</p>
 
-    <!-- Concept selector -->
-    <div id="conceptPicker" style="position:fixed;top:5rem;right:2rem;z-index:999;display:flex;flex-direction:column;gap:.4rem;">
-      <button class="cpick active" data-c="a" style="all:unset;font-family:var(--mono);font-size:.55rem;letter-spacing:.15em;color:#6b7280;cursor:pointer;padding:.3rem .6rem;border:1px solid #363d48;text-align:center;transition:all .25s;">A — ETHEREAL</button>
-      <button class="cpick" data-c="b" style="all:unset;font-family:var(--mono);font-size:.55rem;letter-spacing:.15em;color:#6b7280;cursor:pointer;padding:.3rem .6rem;border:1px solid #363d48;text-align:center;transition:all .25s;">B — GHOST</button>
-      <button class="cpick" data-c="c" style="all:unset;font-family:var(--mono);font-size:.55rem;letter-spacing:.15em;color:#6b7280;cursor:pointer;padding:.3rem .6rem;border:1px solid #363d48;text-align:center;transition:all .25s;">C — WHISPER</button>
-      <button class="cpick" data-c="d" style="all:unset;font-family:var(--mono);font-size:.55rem;letter-spacing:.15em;color:#6b7280;cursor:pointer;padding:.3rem .6rem;border:1px solid #363d48;text-align:center;transition:all .25s;">D — AURORA</button>
-      <button class="cpick" data-c="e" style="all:unset;font-family:var(--mono);font-size:.55rem;letter-spacing:.15em;color:#6b7280;cursor:pointer;padding:.3rem .6rem;border:1px solid #363d48;text-align:center;transition:all .25s;">E — VERTICAL</button>
-      <button class="cpick" data-c="f" style="all:unset;font-family:var(--mono);font-size:.55rem;letter-spacing:.15em;color:#6b7280;cursor:pointer;padding:.3rem .6rem;border:1px solid #363d48;text-align:center;transition:all .25s;">F — CIPHER</button>
-    </div>
-
-    <!-- A: Ethereal Wide -->
-    <div class="wm-variant" id="wm-a">
-      <h1 style="font-size:clamp(3.5rem,11vw,9rem);font-weight:300;letter-spacing:.28em;color:#f2f4f7;text-shadow:0 0 120px rgba(200,220,240,.06);">IDATSUKA</h1>
-    </div>
-
-    <!-- B: Ghost — Aベース + 極薄アウトラインの二重レイヤー -->
-    <div class="wm-variant" id="wm-b" style="display:none;position:relative;">
-      <h1 style="font-size:clamp(3.5rem,11vw,9rem);font-weight:300;letter-spacing:.28em;color:#f2f4f7;text-shadow:0 0 100px rgba(200,220,240,.06);position:relative;z-index:1;">IDATSUKA</h1>
-      <h1 class="wm-ghost" style="font-size:clamp(3.5rem,11vw,9rem);font-weight:300;letter-spacing:.28em;position:absolute;top:4px;left:4px;-webkit-text-stroke:.5px rgba(168,216,234,.12);-webkit-text-fill-color:transparent;z-index:0;pointer-events:none;">IDATSUKA</h1>
-    </div>
-
-    <!-- C: Whisper — 超極細 + さらに広いスペーシング + 薄い透明度 -->
-    <div class="wm-variant" id="wm-c" style="display:none;">
-      <h1 style="font-size:clamp(3rem,10vw,8rem);font-weight:300;letter-spacing:.5em;color:rgba(242,244,247,.55);text-shadow:0 0 80px rgba(242,244,247,.04);">IDATSUKA</h1>
-    </div>
-
-    <!-- D: Aurora — Aベース + 横方向の微細グラデーション -->
-    <div class="wm-variant" id="wm-d" style="display:none;">
-      <h1 style="font-size:clamp(3.5rem,11vw,9rem);font-weight:300;letter-spacing:.28em;background:linear-gradient(90deg,rgba(242,244,247,.4) 0%,#f2f4f7 30%,#d0e8f0 50%,#f2f4f7 70%,rgba(242,244,247,.4) 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 80px rgba(200,220,240,.05));">IDATSUKA</h1>
-    </div>
-
-    <!-- E: Vertical — 縦書き構成 -->
-    <div class="wm-variant" id="wm-e" style="display:none;">
-      <h1 style="font-size:clamp(1.8rem,4vw,3rem);font-weight:300;letter-spacing:.6em;color:#f2f4f7;writing-mode:vertical-rl;text-orientation:upright;text-shadow:0 0 80px rgba(200,220,240,.05);line-height:2.2;margin:0 auto;">IDATSUKA</h1>
-    </div>
-
-    <!-- F: Cipher — 極小サイズで巨大な余白 -->
-    <div class="wm-variant" id="wm-f" style="display:none;">
-      <h1 style="font-family:var(--mono);font-size:clamp(.8rem,1.5vw,1.1rem);font-weight:400;letter-spacing:1.2em;color:rgba(242,244,247,.7);text-transform:uppercase;">IDATSUKA</h1>
-    </div>
+    <h1 class="hero-name">IDATSUKA</h1>
 
     <div class="hero-line" aria-hidden="true" id="heroLine"></div>
     <p class="hero-sub" id="heroSub">UI/UX, Branding, Web Design</p>
@@ -95,19 +56,6 @@
   </div>
 </section>
 
-<style>
-  .cdot {
-    display: inline-block; width: 4px; height: 4px;
-    background: #a8d8ea; border-radius: 50%;
-    vertical-align: middle; margin: 0 .18em;
-    box-shadow: 0 0 12px rgba(168,216,234,.4);
-  }
-  .wm-variant { animation: fadeUp 1s cubic-bezier(.16,1,.3,1) forwards; }
-  .cpick.active { color: #f2f4f7 !important; border-color: #a8d8ea !important; }
-  @media (max-width: 768px) {
-    #conceptPicker { top: auto; bottom: 1rem; right: 1rem; left: 1rem; flex-direction: row; flex-wrap: wrap; justify-content: center; }
-  }
-</style>
 
 <section class="home-about">
   <div class="container">
@@ -257,18 +205,6 @@ const io = new IntersectionObserver(entries => {
 }, { threshold: .1 });
 document.querySelectorAll('.rv').forEach(el => io.observe(el));
 
-// Concept switcher
-document.querySelectorAll('.cpick').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const c = btn.dataset.c;
-    document.querySelectorAll('.wm-variant').forEach(v => v.style.display = 'none');
-    document.getElementById('wm-' + c).style.display = '';
-    document.querySelectorAll('.cpick').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById('heroLine').style.display = '';
-    document.getElementById('heroSub').style.display = '';
-  });
-});
 document.getElementById('contactForm').addEventListener('submit', e => {
   e.preventDefault();
   document.getElementById('form-msg').style.display = 'block';
