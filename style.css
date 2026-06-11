@@ -190,7 +190,7 @@ footer p { font-family: var(--mono); font-size: .58rem; color: var(--dim); }
 }
 .hero-name {
   font-family: var(--mono);
-  font-size: clamp(1.1rem, 2.2vw, 1.6rem);
+  font-size: clamp(1.4rem, 2.8vw, 2rem);
   font-weight: 400;
   letter-spacing: 1em;
   color: rgba(242,244,247,.65);
@@ -580,7 +580,7 @@ footer p { font-family: var(--mono); font-size: .58rem; color: var(--dim); }
   .skills-row { justify-content: center; }
 }
 @media (max-width: 480px) {
-  .hero-name { font-size: clamp(1rem, 3.5vw, 1.3rem); }
+  .hero-name { font-size: clamp(1.2rem, 4.5vw, 1.6rem); }
   .skills-grid { grid-template-columns: 1fr; }
   .sns-grid { grid-template-columns: 1fr; }
 }
