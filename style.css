@@ -563,7 +563,7 @@ footer p { font-family: var(--mono); font-size: .58rem; color: var(--dim); }
   .skills-row { justify-content: center; }
 }
 @media (max-width: 480px) {
-  .hero-name { font-size: clamp(2.5rem,14vw,4rem); }
+  .hero-name { font-size: clamp(.7rem, 2.5vw, .9rem); }
   .skills-grid { grid-template-columns: 1fr; }
   .sns-grid { grid-template-columns: 1fr; }
 }
