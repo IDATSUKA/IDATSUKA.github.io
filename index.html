@@ -41,9 +41,51 @@
   <div class="hero-glow" aria-hidden="true"></div>
   <div class="hero-inner">
     <p class="hero-label">Designer — Tokyo</p>
-    <h1 class="hero-name">IDATSUKA</h1>
-    <div class="hero-line" aria-hidden="true"></div>
-    <p class="hero-sub">UI/UX, Branding, Web Design</p>
+
+    <!-- Concept selector -->
+    <div id="conceptPicker" style="position:fixed;top:5rem;right:2rem;z-index:999;display:flex;flex-direction:column;gap:.4rem;">
+      <button class="cpick active" data-c="a" style="all:unset;font-family:var(--mono);font-size:.55rem;letter-spacing:.15em;color:#6b7280;cursor:pointer;padding:.3rem .6rem;border:1px solid #363d48;text-align:center;transition:all .25s;">A — ETHEREAL</button>
+      <button class="cpick" data-c="b" style="all:unset;font-family:var(--mono);font-size:.55rem;letter-spacing:.15em;color:#6b7280;cursor:pointer;padding:.3rem .6rem;border:1px solid #363d48;text-align:center;transition:all .25s;">B — GRADIENT</button>
+      <button class="cpick" data-c="c" style="all:unset;font-family:var(--mono);font-size:.55rem;letter-spacing:.15em;color:#6b7280;cursor:pointer;padding:.3rem .6rem;border:1px solid #363d48;text-align:center;transition:all .25s;">C — SLASH</button>
+      <button class="cpick" data-c="d" style="all:unset;font-family:var(--mono);font-size:.55rem;letter-spacing:.15em;color:#6b7280;cursor:pointer;padding:.3rem .6rem;border:1px solid #363d48;text-align:center;transition:all .25s;">D — STACKED</button>
+      <button class="cpick" data-c="e" style="all:unset;font-family:var(--mono);font-size:.55rem;letter-spacing:.15em;color:#6b7280;cursor:pointer;padding:.3rem .6rem;border:1px solid #363d48;text-align:center;transition:all .25s;">E — HOLLOW</button>
+      <button class="cpick" data-c="f" style="all:unset;font-family:var(--mono);font-size:.55rem;letter-spacing:.15em;color:#6b7280;cursor:pointer;padding:.3rem .6rem;border:1px solid #363d48;text-align:center;transition:all .25s;">F — DOTS</button>
+    </div>
+
+    <!-- A: Ethereal Wide -->
+    <div class="wm-variant" id="wm-a">
+      <h1 style="font-size:clamp(3.5rem,11vw,9rem);font-weight:300;letter-spacing:.28em;color:#f2f4f7;text-shadow:0 0 120px rgba(200,220,240,.06);">IDATSUKA</h1>
+    </div>
+
+    <!-- B: Gradient Bold -->
+    <div class="wm-variant" id="wm-b" style="display:none;">
+      <h1 style="font-size:clamp(3.5rem,11vw,9rem);font-weight:700;letter-spacing:-.04em;background:linear-gradient(180deg,#fff 0%,#a8d8ea 50%,#5b8fa8 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;">IDATSUKA</h1>
+    </div>
+
+    <!-- C: Slash Divide -->
+    <div class="wm-variant" id="wm-c" style="display:none;">
+      <h1 style="font-size:clamp(2.8rem,9vw,7rem);font-weight:400;letter-spacing:.08em;color:#f2f4f7;">IDA<span style="color:#a8d8ea;font-weight:300;margin:0 .08em;">/</span>TSUKA</h1>
+    </div>
+
+    <!-- D: Stacked System -->
+    <div class="wm-variant" id="wm-d" style="display:none;text-align:center;">
+      <h1 style="font-size:clamp(3rem,10vw,8rem);font-weight:300;letter-spacing:.4em;color:#f2f4f7;margin-bottom:0;">IDATSUKA</h1>
+      <div style="width:min(80%,500px);height:1px;margin:.8rem auto;background:linear-gradient(to right,transparent,rgba(168,216,234,.3),transparent);"></div>
+      <p style="font-family:var(--mono);font-size:.6rem;letter-spacing:.6em;color:#6b7280;text-transform:uppercase;">Designer — Tokyo</p>
+    </div>
+
+    <!-- E: Hollow Outline -->
+    <div class="wm-variant" id="wm-e" style="display:none;">
+      <h1 style="font-size:clamp(3.5rem,11vw,9rem);font-weight:600;letter-spacing:.12em;-webkit-text-stroke:1px rgba(242,244,247,.6);-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 60px rgba(168,216,234,.08));">IDATSUKA</h1>
+    </div>
+
+    <!-- F: Dot Constellation -->
+    <div class="wm-variant" id="wm-f" style="display:none;">
+      <h1 style="font-size:clamp(2.5rem,8vw,6rem);font-weight:300;letter-spacing:.15em;color:#f2f4f7;">I<span class="cdot"></span>D<span class="cdot"></span>A<span class="cdot"></span>T<span class="cdot"></span>S<span class="cdot"></span>U<span class="cdot"></span>K<span class="cdot"></span>A</h1>
+    </div>
+
+    <div class="hero-line" aria-hidden="true" id="heroLine"></div>
+    <p class="hero-sub" id="heroSub">UI/UX, Branding, Web Design</p>
     <div class="hero-cta">
       <a href="works.html" class="btn">View Works</a>
     </div>
@@ -53,6 +95,20 @@
     <div class="scroll-line"></div>
   </div>
 </section>
+
+<style>
+  .cdot {
+    display: inline-block; width: 4px; height: 4px;
+    background: #a8d8ea; border-radius: 50%;
+    vertical-align: middle; margin: 0 .18em;
+    box-shadow: 0 0 12px rgba(168,216,234,.4);
+  }
+  .wm-variant { animation: fadeUp 1s cubic-bezier(.16,1,.3,1) forwards; }
+  .cpick.active { color: #f2f4f7 !important; border-color: #a8d8ea !important; }
+  @media (max-width: 768px) {
+    #conceptPicker { top: auto; bottom: 1rem; right: 1rem; left: 1rem; flex-direction: row; flex-wrap: wrap; justify-content: center; }
+  }
+</style>
 
 <section class="home-about">
   <div class="container">
@@ -201,6 +257,21 @@ const io = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
 }, { threshold: .1 });
 document.querySelectorAll('.rv').forEach(el => io.observe(el));
+
+// Concept switcher
+document.querySelectorAll('.cpick').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const c = btn.dataset.c;
+    document.querySelectorAll('.wm-variant').forEach(v => v.style.display = 'none');
+    document.getElementById('wm-' + c).style.display = '';
+    document.querySelectorAll('.cpick').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const line = document.getElementById('heroLine');
+    const sub = document.getElementById('heroSub');
+    if (c === 'd') { line.style.display = 'none'; sub.style.display = 'none'; }
+    else { line.style.display = ''; sub.style.display = ''; }
+  });
+});
 document.getElementById('contactForm').addEventListener('submit', e => {
   e.preventDefault();
   document.getElementById('form-msg').style.display = 'block';
