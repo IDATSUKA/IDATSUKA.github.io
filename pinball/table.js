@@ -70,6 +70,23 @@
     return l;
   })();
 
+  // Arch wall segments (shared by physics build and 3D rendering)
+  T.archSegs = function (n) {
+    n = n || 28;
+    const out = [];
+    for (let i = 0; i < n; i++) {
+      const a1 = Math.PI + i / n * Math.PI, a2 = Math.PI + (i + 1) / n * Math.PI;
+      const x1 = T.ACX + T.ARX * Math.cos(a1), y1 = T.ACY + T.ARY * Math.sin(a1);
+      const x2 = T.ACX + T.ARX * Math.cos(a2), y2 = T.ACY + T.ARY * Math.sin(a2);
+      out.push({
+        x: (x1 + x2) / 2, y: (y1 + y2) / 2,
+        len: Math.hypot(x2 - x1, y2 - y1) + 4,
+        angle: Math.atan2(y2 - y1, x2 - x1),
+      });
+    }
+    return out;
+  };
+
   // ── Build the Matter.js world ─────────────────────
   T.build = function (Matter) {
     const { Engine, World, Bodies, Body, Constraint } = Matter;
@@ -86,13 +103,9 @@
     const st = [];
 
     // Top arch (full half-ellipse — also seals lane re-entry)
-    for (let i = 0; i < 28; i++) {
-      const a1 = Math.PI + i / 28 * Math.PI, a2 = Math.PI + (i + 1) / 28 * Math.PI;
-      const x1 = T.ACX + T.ARX * Math.cos(a1), y1 = T.ACY + T.ARY * Math.sin(a1);
-      const x2 = T.ACX + T.ARX * Math.cos(a2), y2 = T.ACY + T.ARY * Math.sin(a2);
-      st.push(mkR((x1 + x2) / 2, (y1 + y2) / 2, Math.hypot(x2 - x1, y2 - y1) + 4, 16,
-        { angle: Math.atan2(y2 - y1, x2 - x1) }));
-    }
+    T.archSegs(28).forEach(s => {
+      st.push(mkR(s.x, s.y, s.len, 16, { angle: s.angle }));
+    });
     // Walls: left, lane divider (= playfield right), outer right, lane top cap
     st.push(mkR(T.PL - 6, (T.PT + T.PB) / 2, 12, T.PB - T.PT + 60));
     st.push(mkR(T.PR + 4, (T.PT + T.PB) / 2, 12, T.PB - T.PT + 60));
