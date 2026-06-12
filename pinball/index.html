@@ -36,6 +36,14 @@ const MNEED = 3;
 const GOLD = '#D4AA50', GOLD2 = '#B8903A';
 const now = () => performance.now();
 
+// PWA: offline cache + installability
+if (typeof navigator !== 'undefined' && 'serviceWorker' in navigator){
+  navigator.serviceWorker.register('./sw.js').catch(() => {});
+}
+const isStandalone =
+  (typeof navigator !== 'undefined' && navigator.standalone === true) ||
+  (typeof window.matchMedia === 'function' && window.matchMedia('(display-mode: standalone)').matches);
+
 // ════════════════════════════════════════════
 // RENDERER + SCENE
 // ════════════════════════════════════════════
@@ -613,6 +621,10 @@ function drawTitle(tNow){
   if (hi > 0){
     hg.fillStyle = 'rgba(150,134,92,0.92)'; hg.font = `${11*k}px "Helvetica Neue"`;
     hg.fillText('BEST: ' + hi.toLocaleString('en-US'), cx, Hv * 0.775);
+  }
+  if (!isStandalone){
+    hg.fillStyle = 'rgba(140,126,88,0.8)'; hg.font = `${10*k}px "Helvetica Neue"`;
+    hg.fillText('アプリ化: 共有メニュー → 「ホーム画面に追加」', cx, Hv * 0.83);
   }
 }
 
