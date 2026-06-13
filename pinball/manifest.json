@@ -1,0 +1,17 @@
+{
+  "name": "AURORA INDUSTRIES PINBALL",
+  "short_name": "AURORA",
+  "id": "/pinball/",
+  "scope": "./",
+  "start_url": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#050505",
+  "theme_color": "#050505",
+  "description": "AURORA INDUSTRIES — 3D pinball. Minimal systems, maximum impact.",
+  "icons": [
+    { "src": "icon.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
