@@ -1,5 +1,5 @@
 /* AURORA PINBALL — service worker: precache everything for offline play. */
-const VERSION = 'aurora-v2';
+const VERSION = 'aurora-v3';
 const ASSETS = [
   './',
   './index.html',
@@ -10,7 +10,7 @@ const ASSETS = [
   './matter.min.js',
   './three.module.min.js',
   './three.core.min.js',
-  './playfield-art.png',
+  './reference.png',
   './manifest.json',
   './icon.png',
   './icon-512.png',

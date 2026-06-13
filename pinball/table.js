@@ -8,47 +8,52 @@
 
   // ── Frame / playfield ─────────────────────────────
   T.W = 390; T.H = 844;
-  T.PL = 22; T.PR = 318; T.PT = 28; T.PB = 658;
-  T.PCX = 170;
-  T.ACX = 170; T.ACY = 115; T.ARX = 148; T.ARY = 88;
-  T.INFO_Y = 660;
+  T.PL = 46; T.PR = 306; T.PT = 246; T.PB = 620;
+  T.PCX = 176;
+  T.ACX = 176; T.ACY = 350; T.ARX = 130; T.ARY = 104;
+  // ── Reference photo placement (logical 390x844 screen) ───
+  // The photo is 1086x1448; drawn full-width (k=390/1086) at y=IMG_Y.
+  T.IMG_Y = 230; T.IMG_K = 390 / 1086;        // photo top offset & scale
+  // photo-pixel -> screen helper
+  T.fromPhoto = (px, py) => ({ x: px * T.IMG_K, y: T.IMG_Y + py * T.IMG_K });
+  T.INFO_Y = 626;
 
   // ── Shooter lane / plunger ────────────────────────
-  T.LANE_X = 352;          // ball x while in shooter lane
-  T.PH_Y = 646;            // plunger head (static floor) centre y
-  T.PULL_MAX = 18;         // visual plunger travel px
-  T.BALL_R = 10;
-  T.LAUNCH_MIN = 13;       // launch velocity = -(LAUNCH_MIN + power*LAUNCH_RNG)
-  T.LAUNCH_RNG = 19;
-  T.GUIDE_Y = 109;         // lane y at which the wire ramp takes over
+  T.LANE_X = 363;          // ball x while in shooter lane
+  T.PH_Y = 606;            // plunger head (static floor) centre y
+  T.PULL_MAX = 16;         // visual plunger travel px
+  T.BALL_R = 9;
+  T.LAUNCH_MIN = 12;       // launch velocity = -(LAUNCH_MIN + power*LAUNCH_RNG)
+  T.LAUNCH_RNG = 18;
+  T.GUIDE_Y = 312;         // lane y at which the wire ramp takes over
 
   // ── Flippers ──────────────────────────────────────
-  T.FLY = 630; T.LFPX = 101; T.RFPX = 239; T.FLEN = 62;
+  T.FLY = 588; T.LFPX = 123, T.RFPX = 230; T.FLEN = 44;
   T.F_REST = 0.50; T.F_UP = -0.42;
 
-  // ── Upper features ────────────────────────────────
-  T.BR = 22;
-  T.BUMPERS = [{ x: 170, y: 176 }, { x: 112, y: 240 }, { x: 228, y: 240 }];
-  T.POSTS = [{ x: 82, y: 156 }, { x: 258, y: 156 }, { x: 62, y: 196 }, { x: 278, y: 196 }];
-  T.VB = [{ x: 82, y: 375 }, { x: 112, y: 353 }, { x: 142, y: 331 }]; T.VBA = -0.38;
-  T.SB = [{ x: 198, y: 331 }, { x: 228, y: 353 }, { x: 258, y: 375 }]; T.SBA = 0.38;
-  T.CMX = 170; T.CMY0 = 394; T.CMDY = 28; T.NMODES = 5;
-  T.ORBIT = { x: 300, y: 134, a: -0.22, w: 12, h: 78 };
-  T.SAX = 170; T.SAY = 608;   // SHOOT AGAIN lamp (visual only)
+  // ── Upper features (positions traced from the photo) ─────
+  T.BR = 20;
+  T.BUMPERS = [{ x: 176, y: 300 }, { x: 140, y: 340 }, { x: 214, y: 340 }];
+  T.POSTS = [{ x: 104, y: 326 }, { x: 248, y: 326 }, { x: 92, y: 372 }, { x: 260, y: 372 }];
+  T.VB = [{ x: 110, y: 388 }, { x: 126, y: 388 }, { x: 142, y: 388 }]; T.VBA = 0;
+  T.SB = [{ x: 210, y: 388 }, { x: 226, y: 388 }, { x: 242, y: 388 }]; T.SBA = 0;
+  T.CMX = 176; T.CMY0 = 446; T.CMDY = 14; T.NMODES = 5;
+  T.ORBIT = { x: 258, y: 330, a: -0.30, w: 12, h: 60 };
+  T.SAX = 176; T.SAY = 540;   // SHOOT AGAIN lamp (visual only)
 
   // ── Lower third ───────────────────────────────────
-  T.RAIL_L = { x: 64, top: 506, bot: 592 };
-  T.RAIL_R = { x: 276, top: 506, bot: 592 };
-  T.GUIDE_L = { x1: 64, y1: 596, x2: 101, y2: 630 };
-  T.GUIDE_R = { x1: 276, y1: 596, x2: 239, y2: 630 };
-  T.SLING_L = [[98, 512], [146, 588], [98, 588]];
-  T.SLING_R = [[242, 512], [194, 588], [242, 588]];
-  T.SLING_NL = { x: 0.845, y: -0.534 };   // kick direction (into playfield)
-  T.SLING_NR = { x: -0.845, y: -0.534 };
+  T.RAIL_L = { x: 80, top: 470, bot: 545 };
+  T.RAIL_R = { x: 272, top: 470, bot: 545 };
+  T.GUIDE_L = { x1: 80, y1: 545, x2: 123, y2: 588 };
+  T.GUIDE_R = { x1: 272, y1: 545, x2: 230, y2: 588 };
+  T.SLING_L = [[110, 500], [152, 556], [110, 556]];
+  T.SLING_R = [[242, 500], [200, 556], [242, 556]];
+  T.SLING_NL = { x: 0.8, y: -0.6 };   // kick direction (into playfield)
+  T.SLING_NR = { x: -0.8, y: -0.6 };
 
   // ── Wire ramp: shooter lane → playfield (cubic bezier) ──
-  T.RAMP = [[352, 109], [356, 14], [322, 2], [268, 100]];
-  T.MAXV = 26;
+  T.RAMP = [[363, 312], [374, 250], [322, 236], [252, 300]];
+  T.MAXV = 24;
 
   T.bez = function (t) {
     const [p0, p1, p2, p3] = T.RAMP, u = 1 - t;
