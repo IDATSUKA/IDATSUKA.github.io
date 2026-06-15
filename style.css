@@ -240,8 +240,7 @@ footer p { font-family: var(--mono); font-size: .58rem; color: var(--dim); }
   opacity: 0; animation: fadeUp 1s ease forwards 1.8s;
 }
 .hero-scroll span {
-  font-family: var(--mono); font-size: .52rem; letter-spacing: .3em;
-  margin-right: -.3em;
+  font-family: var(--mono); font-size: .52rem;
   text-transform: uppercase; color: var(--dim);
 }
 .scroll-line {
