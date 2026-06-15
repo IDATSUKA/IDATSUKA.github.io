@@ -239,6 +239,7 @@ footer p { font-family: var(--mono); font-size: .58rem; color: var(--dim); }
 }
 .hero-scroll span {
   font-family: var(--mono); font-size: .52rem; letter-spacing: .3em;
+  padding-left: .3em;
   text-transform: uppercase; color: var(--dim);
 }
 .scroll-line {
