@@ -1,5 +1,5 @@
 /* AURORA PINBALL — service worker: precache everything for offline play. */
-const VERSION = 'aurora-v4';
+const VERSION = 'aurora-v5';
 const ASSETS = [
   './',
   './index.html',

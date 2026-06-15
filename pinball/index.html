@@ -379,6 +379,7 @@ function physStep(){
 
   for (const b of balls.slice()){
     if (!T.clampBall(tb, b)){ onDrain(b); continue; }
+    T.antiStuck(tb, b);
     if (b.position.y > PB + 14 && b.position.x < PR + 6) onDrain(b);
   }
 
