@@ -182,12 +182,14 @@ footer p { font-family: var(--mono); font-size: .58rem; color: var(--dim); }
   mask-image: radial-gradient(ellipse 65% 55% at 50% 50%, black 30%, transparent 80%);
   -webkit-mask-image: radial-gradient(ellipse 65% 55% at 50% 50%, black 30%, transparent 80%);
 }
-.hero-inner { text-align: center; position: relative; z-index: 2; }
+.hero-inner {
+  display: flex; flex-direction: column; align-items: center;
+  position: relative; z-index: 2;
+}
 .hero-label {
   font-family: var(--mono); font-size: .58rem; letter-spacing: .5em;
+  margin-right: -.5em;
   text-transform: uppercase; color: var(--muted); margin-bottom: 2.5rem;
-  width: fit-content; margin-left: auto; margin-right: auto;
-  padding-left: .5em;
   opacity: 0; animation: fadeUp 1.4s cubic-bezier(.16,1,.3,1) forwards .2s;
 }
 .hero-name {
@@ -227,7 +229,7 @@ footer p { font-family: var(--mono); font-size: .58rem; color: var(--dim); }
 }
 .hero-sub {
   font-family: var(--mono); font-size: .6rem; color: var(--dim);
-  letter-spacing: .4em; width: fit-content; margin-left: auto; margin-right: auto; padding-left: .4em;
+  letter-spacing: .4em; margin-right: -.4em;
   text-transform: uppercase;
   opacity: 0; animation: fadeUp 1.2s ease forwards 1.1s;
 }
@@ -239,7 +241,7 @@ footer p { font-family: var(--mono); font-size: .58rem; color: var(--dim); }
 }
 .hero-scroll span {
   font-family: var(--mono); font-size: .52rem; letter-spacing: .3em;
-  padding-left: .3em;
+  margin-right: -.3em;
   text-transform: uppercase; color: var(--dim);
 }
 .scroll-line {
