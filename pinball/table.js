@@ -96,7 +96,7 @@
   T.build = function (Matter) {
     const { Engine, World, Bodies, Body, Constraint } = Matter;
     const eng = Engine.create();
-    eng.gravity.y = 1.7;
+    eng.gravity.y = 1.85;
     eng.positionIterations = 8;
     eng.velocityIterations = 6;
 
@@ -117,13 +117,19 @@
     st.push(mkR(T.W - 6, T.H / 2, 12, T.H + 80));
     st.push(mkR(T.LANE_X, -4, 76, 14));
 
-    // Outlane/inlane rails (capsules) + top post only
-    // (no bottom post — it used to wedge the ball against the side wall)
-    [T.RAIL_L, T.RAIL_R].forEach(r => {
-      st.push(mkR(r.x, (r.top + r.bot) / 2, 7, r.bot - r.top, { restitution: 0.3 }));
-      st.push(mkC(r.x, r.top, 4.5, { restitution: 0.7 }));
+    // Lower funnel walls — the playfield narrows toward the flippers (as in the
+    // photo), so every ball is guided down onto a flipper instead of slipping
+    // past down the sides. The drain is the centre gap between the flipper tips.
+    T.FUNNEL = [
+      [[T.PL - 4, 452], [118, 586]],   // left wall -> just outside L flipper (sealed, no corner pocket)
+      [[T.PR + 4, 452], [234, 586]],   // right wall -> just outside R flipper
+    ];
+    T.FUNNEL.forEach(([a, c2]) => {
+      const cx = (a[0] + c2[0]) / 2, cy = (a[1] + c2[1]) / 2;
+      const len = Math.hypot(c2[0] - a[0], c2[1] - a[1]);
+      st.push(mkR(cx, cy, len, 9, { angle: Math.atan2(c2[1] - a[1], c2[0] - a[0]), restitution: 0.25 }));
     });
-    // Inlane guides down to flipper pivots
+    // small inlane guides just inside the funnel, feeding the flipper bases
     [T.GUIDE_L, T.GUIDE_R].forEach(gd => {
       const cx = (gd.x1 + gd.x2) / 2, cy = (gd.y1 + gd.y2) / 2;
       const len = Math.hypot(gd.x2 - gd.x1, gd.y2 - gd.y1);
@@ -137,7 +143,11 @@
       return Bodies.fromVertices(cx, cy, [verts.map(v => ({ x: v[0], y: v[1] }))],
         Object.assign({}, SO, { restitution: 0.2 }));
     };
+    // Slingshots: kick via the geometric scan only (no solid body), so they
+    // don't form a basin that traps the ball above the flippers.
     const slingL = mkSling(T.SLING_L), slingR = mkSling(T.SLING_R);
+    slingL.collisionFilter = { category: 4, mask: 0 };
+    slingR.collisionFilter = { category: 4, mask: 0 };
     slingL.plugin = { cd: 0 }; slingR.plugin = { cd: 0 };
     st.push(slingL, slingR);
 
@@ -240,10 +250,12 @@
     const { Body } = tb.M;
     const pl = b.plugin;
     if (pl.inLane || pl.guide) { pl.slow = 0; return; }
+    // a ball loitering (slowly circling on a ledge/basin) above the flippers is
+    // pushed down toward the flippers so it can be played or drain the centre
     const v = Math.hypot(b.velocity.x, b.velocity.y);
-    if (v < 0.55 && b.position.y < T.FLY - 26) {
-      if ((pl.slow = (pl.slow || 0) + 1) > 84) {        // ~0.7s at 120 Hz
-        Body.setVelocity(b, { x: (Math.random() - 0.5) * 3.5, y: 2.6 + Math.random() * 1.6 });
+    if (v < 0.6 && b.position.y < T.FLY - 26) {
+      if ((pl.slow = (pl.slow || 0) + 1) > 72) {        // ~0.6s at 120 Hz
+        Body.setVelocity(b, { x: (Math.random() - 0.5) * 2.4, y: 2.8 + Math.random() * 1.4 });
         pl.slow = 0;
       }
     } else pl.slow = 0;
@@ -306,8 +318,8 @@
           // real slings are noisy — jitter breaks symmetric ping-pong traps
           const ja = (Math.random() - 0.5) * 0.6, ca = Math.cos(ja), sa = Math.sin(ja);
           const kx = n.x * ca - n.y * sa, ky = n.x * sa + n.y * ca;
-          const kp = 6.5 + Math.random() * 2.5;
-          Body.setVelocity(ball, { x: v.x * 0.25 + kx * kp, y: v.y * 0.25 + ky * kp });
+          const kp = 3.4 + Math.random() * 1.4;
+          Body.setVelocity(ball, { x: v.x * 0.18 + kx * kp, y: v.y * 0.18 + ky * kp });
           cb('sling', side, { x: bx, y: by });
         }
       });
