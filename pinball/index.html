@@ -681,17 +681,36 @@ function buildBG(){
   b.shadowColor = C.gold; b.shadowBlur = 6; b.strokeStyle = C.gold;
   b.beginPath(); b.moveTo(0, INFO_Y); b.lineTo(PR+8, INFO_Y); b.stroke(); b.shadowBlur = 0;
 }
-// ── baked static playfield image (replaces procedural buildBG) ──
+// ── board (photo with moving parts erased) + cut-out object sprites ──
+// Each operating part is a sprite cut from the reference photo, animated by
+// the physics (flippers rotate, plunger slides) over the erased board.
 let bgImg = null, bgReady = false;
-(function loadBG(){
+const SPR = {};                 // name -> {img, ready}
+const SPRITE_FILES = ['board', 'flipperL', 'flipperR', 'plunger'];
+// sprite metadata (photo px), from build-assets.cjs / sprites.json
+const SMETA = {
+  flipL: { piv: [338, 1018], S: 280 },
+  flipR: { piv: [620, 1018], S: 280 },
+  plunger: { x0: 950, y0: 995, w: 65, h: 350 },
+};
+function loadSprite(name, onBoard){
   if (typeof Image === 'undefined') return;
-  bgImg = new Image();
-  bgImg.onload = () => { bgReady = true; };
-  bgImg.onerror = () => { bgReady = false; };
-  bgImg.src = 'reference.png';
-})();
-// test hook (harmless in production): lets a headless harness inject the bg
-if (typeof globalThis !== 'undefined') globalThis.__setBG = img => { bgImg = img; bgReady = true; };
+  const im = new Image();
+  const rec = { img: im, ready: false };
+  im.onload = () => { rec.ready = true; if (onBoard){ bgImg = im; bgReady = true; } };
+  im.onerror = () => {};
+  im.src = name + '.png';
+  SPR[name] = rec;
+}
+SPRITE_FILES.forEach(n => loadSprite(n, n === 'board'));
+// test hook (harmless in production): inject board + sprites for headless render
+if (typeof globalThis !== 'undefined'){
+  globalThis.__setSprites = (imgs) => {
+    bgImg = imgs.board; bgReady = true;
+    for (const k in imgs) SPR[k] = { img: imgs[k], ready: true };
+  };
+  globalThis.__setBG = img => { bgImg = img; bgReady = true; };  // legacy harness hook
+}
 
 // ════════════════════════════════════════════
 // DRAW COMPONENTS
@@ -725,25 +744,24 @@ function slingFlash(verts, fl){
   glow((a[0]+b[0])/2, (a[1]+b[1])/2, 26, '#fff4d0', Math.min(1, fl/30));
 }
 
-function drawFlipper(f){
-  const v = f.body.vertices;
-  ds(g, 2, 4, 9); g.beginPath(); g.moveTo(v[0].x, v[0].y); v.forEach(p => g.lineTo(p.x, p.y)); g.closePath(); g.fillStyle = 'rgba(0,0,0,0.32)'; g.fill(); cs(g);
-  g.beginPath(); g.moveTo(v[0].x, v[0].y); v.forEach(p => g.lineTo(p.x, p.y)); g.closePath();
-  const topY = Math.min(...v.map(p => p.y)), botY = Math.max(...v.map(p => p.y));
-  const fg3 = g.createLinearGradient(0, topY-4, 0, botY+4);
-  fg3.addColorStop(0,'#FAF5EB'); fg3.addColorStop(0.32,'#EEE7D3'); fg3.addColorStop(0.7,'#DDD5C0'); fg3.addColorStop(1,'#B8B09E');
-  if (f.on && !tilted) ds(g, 0, 0, 10, C.gLt);
-  g.fillStyle = fg3; g.fill(); cs(g);
-  g.strokeStyle = 'rgba(92,84,65,0.85)'; g.lineWidth = 2; g.stroke();
-  g.beginPath();
-  if (f.left){ g.moveTo(v[0].x, v[0].y); g.lineTo(v[1].x, v[1].y); }
-  else { g.moveTo(v[1].x, v[1].y); g.lineTo(v[2].x, v[2].y); }
-  g.strokeStyle = 'rgba(255,252,240,0.65)'; g.lineWidth = 1.2; g.stroke();
-  const cg2 = g.createRadialGradient(f.pivX-2, f.y-2, 0.5, f.pivX, f.y, 7);
-  cg2.addColorStop(0,'#484848'); cg2.addColorStop(0.5,'#303030'); cg2.addColorStop(1,'#181818');
-  ds(g, 1, 2, 4); g.beginPath(); g.arc(f.pivX, f.y, 7, 0, Math.PI*2); g.fillStyle = cg2; g.fill(); cs(g);
-  g.strokeStyle = C.mid; g.lineWidth = 1.2; g.stroke();
-  g.beginPath(); g.arc(f.pivX-2, f.y-2, 2.2, 0, Math.PI*2); g.fillStyle = 'rgba(115,110,88,0.44)'; g.fill();
+// draw the real photo flipper (cut-out sprite) rotated about its pivot
+function drawFlipper(f, meta){
+  const spr = f.left ? SPR.flipperL : SPR.flipperR;
+  const r = f.body.angle - f.rest;           // 0 at rest; rotates as it flips
+  if (spr && spr.ready){
+    const s = meta.S * T.IMG_K;
+    g.save();
+    g.translate(f.pivX, f.y); g.rotate(r);
+    if (f.on && !tilted) ds(g, 0, 0, 9, C.gLt);
+    g.drawImage(spr.img, -s/2, -s/2, s, s);
+    cs(g);
+    g.restore();
+  } else {
+    // fallback: simple flipper from physics body
+    const v = f.body.vertices;
+    g.beginPath(); g.moveTo(v[0].x, v[0].y); v.forEach(p => g.lineTo(p.x, p.y)); g.closePath();
+    g.fillStyle = '#EEE7D3'; g.fill();
+  }
 }
 
 function drawBall(b){
@@ -766,9 +784,14 @@ function drawBall(b){
   g.beginPath(); g.arc(x+3, y-6, 2, 0, Math.PI*2); g.fillStyle = 'rgba(255,255,255,0.36)'; g.fill();
 }
 
-// The photo shows the real plunger; we only give launch feedback (gauge/hint)
-// and a subtle highlight on the photo's plunger as it is pulled.
+// the real photo plunger (cut-out sprite) slides down as it is pulled
 function drawPlunger(){
+  const m = SMETA.plunger, spr = SPR.plunger;
+  if (spr && spr.ready){
+    const sx = m.x0 * T.IMG_K, sy = T.IMG_Y + m.y0 * T.IMG_K;
+    const sw = m.w * T.IMG_K, sh = m.h * T.IMG_K;
+    g.drawImage(spr.img, sx, sy + pull * T.PULL_MAX, sw, sh);
+  }
   const laneBall = state === 'play' && balls.some(b => b.plugin.inLane && b.position.y > T.PH_Y - 30);
   if (!laneBall) return;
   const gx = T.LANE_X + 16, gTop = T.PH_Y - 96, gh = 96;
@@ -834,7 +857,7 @@ function draw(){
     glow(T.SAX, T.SAY, 20, '#ffe080', 0.85);
 
   // Flippers, plunger feedback, balls
-  drawFlipper(LF); drawFlipper(RF);
+  drawFlipper(LF, SMETA.flipL); drawFlipper(RF, SMETA.flipR);
   drawPlunger();
   balls.forEach(drawBall);
 
