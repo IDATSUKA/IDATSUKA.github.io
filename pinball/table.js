@@ -42,17 +42,17 @@
   T.SAX = 176; T.SAY = 540;   // SHOOT AGAIN lamp (visual only)
 
   // ── Lower third ───────────────────────────────────
-  T.RAIL_L = { x: 80, top: 470, bot: 545 };
-  T.RAIL_R = { x: 272, top: 470, bot: 545 };
-  T.GUIDE_L = { x1: 80, y1: 545, x2: 120, y2: 592 };
-  T.GUIDE_R = { x1: 272, y1: 545, x2: 228, y2: 592 };
+  T.RAIL_L = { x: 72, top: 470, bot: 545 };
+  T.RAIL_R = { x: 280, top: 470, bot: 545 };
+  T.GUIDE_L = { x1: 72, y1: 545, x2: 120, y2: 592 };
+  T.GUIDE_R = { x1: 280, y1: 545, x2: 228, y2: 592 };
   T.SLING_L = [[110, 500], [152, 556], [110, 556]];
   T.SLING_R = [[242, 500], [200, 556], [242, 556]];
   T.SLING_NL = { x: 0.8, y: -0.6 };   // kick direction (into playfield)
   T.SLING_NR = { x: -0.8, y: -0.6 };
 
   // ── Wire ramp: shooter lane → playfield (cubic bezier) ──
-  T.RAMP = [[363, 312], [374, 250], [322, 236], [252, 300]];
+  T.RAMP = [[363, 312], [380, 232], [300, 224], [188, 262]];
   T.MAXV = 24;
 
   T.bez = function (t) {
@@ -96,7 +96,7 @@
   T.build = function (Matter) {
     const { Engine, World, Bodies, Body, Constraint } = Matter;
     const eng = Engine.create();
-    eng.gravity.y = 1.9;
+    eng.gravity.y = 1.7;
     eng.positionIterations = 8;
     eng.velocityIterations = 6;
 
@@ -117,11 +117,11 @@
     st.push(mkR(T.W - 6, T.H / 2, 12, T.H + 80));
     st.push(mkR(T.LANE_X, -4, 76, 14));
 
-    // Outlane/inlane rails (capsules) + top posts
+    // Outlane/inlane rails (capsules) + top post only
+    // (no bottom post — it used to wedge the ball against the side wall)
     [T.RAIL_L, T.RAIL_R].forEach(r => {
       st.push(mkR(r.x, (r.top + r.bot) / 2, 7, r.bot - r.top, { restitution: 0.3 }));
       st.push(mkC(r.x, r.top, 4.5, { restitution: 0.7 }));
-      st.push(mkC(r.x, r.bot, 4, { restitution: 0.3 }));
     });
     // Inlane guides down to flipper pivots
     [T.GUIDE_L, T.GUIDE_R].forEach(gd => {
@@ -231,6 +231,24 @@
     return true;
   };
 
+  // Anti-stuck: a top-down playfield has no tilt, so a ball can rest on a flat
+  // ledge (drop-target bank, sling) forever. If a ball sits nearly still above
+  // the flipper zone, give it a small downward nudge to free it. Call once per
+  // physics substep, after the solver. Balls resting on the flippers (which is
+  // legitimate) and the lane ball are left alone.
+  T.antiStuck = function (tb, b) {
+    const { Body } = tb.M;
+    const pl = b.plugin;
+    if (pl.inLane || pl.guide) { pl.slow = 0; return; }
+    const v = Math.hypot(b.velocity.x, b.velocity.y);
+    if (v < 0.55 && b.position.y < T.FLY - 26) {
+      if ((pl.slow = (pl.slow || 0) + 1) > 84) {        // ~0.7s at 120 Hz
+        Body.setVelocity(b, { x: (Math.random() - 0.5) * 3.5, y: 2.6 + Math.random() * 1.6 });
+        pl.slow = 0;
+      }
+    } else pl.slow = 0;
+  };
+
   const inRect = (px, py, rx, ry, hw, hh, a) => {
     const ca = Math.cos(-a), sa = Math.sin(-a), dx = px - rx, dy = py - ry;
     const lx = dx * ca - dy * sa, ly = dx * sa + dy * ca;
@@ -268,7 +286,12 @@
         if (dx * dx + dy * dy < rr * rr) {
           b.plugin.cd = 40; b.plugin.fl = 64;
           const d = Math.hypot(dx, dy) || 1;
-          Body.setVelocity(ball, { x: dx / d * 9.5 + v.x * 0.25, y: dy / d * 9.5 + v.y * 0.25 });
+          // kick away from centre, with a little randomness so play varies
+          const ja = (Math.random() - 0.5) * 0.7, ca = Math.cos(ja), sa = Math.sin(ja);
+          let nx = dx / d, ny = dy / d;
+          const rx = nx * ca - ny * sa, ry = nx * sa + ny * ca;
+          const kp = 8.5 + Math.random() * 2;
+          Body.setVelocity(ball, { x: rx * kp + v.x * 0.2, y: ry * kp + v.y * 0.2 });
           cb('bumper', i, b.position);
         }
       });

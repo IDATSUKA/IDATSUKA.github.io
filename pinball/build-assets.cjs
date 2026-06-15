@@ -5,8 +5,8 @@ const fs = require('fs');
 const OUT = '/home/user/IDATSUKA.github.io/pinball';
 
 // object geometry in PHOTO pixels (measured from the reference)
-const FLIP_L = { piv:[338,1018], tip:[450,1044], r:17 };
-const FLIP_R = { piv:[620,1018], tip:[508,1044], r:17 };
+const FLIP_L = { piv:[340,1011], tip:[450,1035], r:16 };
+const FLIP_R = { piv:[618,1011], tip:[508,1035], r:16 };
 const BUMPS  = [ [538,246], [426,319], [649,327] ]; const BR_PH = 60;
 const PLUNGE = { x0:950, x1:1015, y0:995, y1:1345 };
 
@@ -60,17 +60,22 @@ const PLUNGE = { x0:950, x1:1015, y0:995, y1:1345 };
   }
   fs.writeFileSync(OUT+'/board.png', bd.toBuffer('image/png'));
 
-  // ── flipper sprites (square, pivot-centred) ──
+  // ── flipper sprites (square, pivot-centred, tapered bat mask) ──
   function cutFlipper(f, name){
     const len = Math.hypot(f.tip[0]-f.piv[0], f.tip[1]-f.piv[1]);
-    const S = Math.ceil((len + f.r + 8) * 2); const c = S/2;
+    const S = Math.ceil((len + f.r + 10) * 2); const c = S/2;
     const cv = createCanvas(S,S), x = cv.getContext('2d');
-    // draw photo so that pivot maps to centre
     x.drawImage(img, f.piv[0]-c, f.piv[1]-c, S, S, 0,0,S,S);
-    // mask to capsule (pivot at centre, tip at offset)
     const tipL = [c + (f.tip[0]-f.piv[0]), c + (f.tip[1]-f.piv[1])];
+    // tighter tapered-bat mask (excludes the flipper's cast shadow / neighbours)
+    const r1 = f.r - 1, r2 = f.r * 0.55, N = 40;
     x.globalCompositeOperation = 'destination-in';
-    capsule(x, [c,c], tipL, f.r); x.fillStyle='#fff'; x.fill();
+    x.beginPath();
+    for (let i=0;i<=N;i++){
+      const u=i/N, cx=c+(tipL[0]-c)*u, cy=c+(tipL[1]-c)*u, r=r1+(r2-r1)*u;
+      x.moveTo(cx+r, cy); x.arc(cx, cy, r, 0, Math.PI*2);
+    }
+    x.fillStyle='#fff'; x.fill();
     fs.writeFileSync(OUT+'/'+name+'.png', cv.toBuffer('image/png'));
     return { S, restAng: Math.atan2(f.tip[1]-f.piv[1], f.tip[0]-f.piv[0]) };
   }
