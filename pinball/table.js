@@ -28,8 +28,8 @@
   T.GUIDE_Y = 312;         // lane y at which the wire ramp takes over
 
   // ── Flippers ──────────────────────────────────────
-  T.FLY = 588; T.LFPX = 123, T.RFPX = 230; T.FLEN = 44;
-  T.F_REST = 0.50; T.F_UP = -0.42;
+  T.FLY = 596; T.LFPX = 120, T.RFPX = 228; T.FLEN = 42;
+  T.F_REST = 0.228; T.F_UP = -0.55;   // rest angle matches the photo's flippers
 
   // ── Upper features (positions traced from the photo) ─────
   T.BR = 20;
@@ -44,8 +44,8 @@
   // ── Lower third ───────────────────────────────────
   T.RAIL_L = { x: 80, top: 470, bot: 545 };
   T.RAIL_R = { x: 272, top: 470, bot: 545 };
-  T.GUIDE_L = { x1: 80, y1: 545, x2: 123, y2: 588 };
-  T.GUIDE_R = { x1: 272, y1: 545, x2: 230, y2: 588 };
+  T.GUIDE_L = { x1: 80, y1: 545, x2: 120, y2: 592 };
+  T.GUIDE_R = { x1: 272, y1: 545, x2: 228, y2: 592 };
   T.SLING_L = [[110, 500], [152, 556], [110, 556]];
   T.SLING_R = [[242, 500], [200, 556], [242, 556]];
   T.SLING_NL = { x: 0.8, y: -0.6 };   // kick direction (into playfield)
