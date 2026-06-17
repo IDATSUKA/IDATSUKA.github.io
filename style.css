@@ -235,7 +235,7 @@ footer p { font-family: var(--mono); font-size: .58rem; color: var(--dim); }
 }
 .hero-cta { margin-top: 4rem; opacity: 0; animation: fadeUp 1.2s ease forwards 1.4s; }
 .hero-scroll {
-  position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+  position: absolute; bottom: 2.5rem; left: 0; right: 0;
   display: flex; flex-direction: column; align-items: center; gap: .6rem;
   opacity: 0; animation: fadeUp 1s ease forwards 1.8s;
 }
