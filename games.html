@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Games — IDATSUKA</title>
+  <meta name="description" content="IDATSUKA のゲームプロジェクト。インタラクティブな体験とクリエイティブコーディング。">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%2308090c'/><text x='16' y='22' text-anchor='middle' font-size='16' font-family='sans-serif' font-weight='300' fill='%23f2f4f7'>I</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Zen+Kaku+Gothic+New:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">Idatsuka</a>
+  <ul class="nav-links">
+    <li><a href="works.html">Design</a></li>
+    <li><a href="games.html" class="active">Games</a></li>
+    <li><a href="art.html">Art</a></li>
+    <li><a href="business.html">Business</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <button class="menu-toggle" id="menuToggle" aria-label="メニュー"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="works.html">Design</a>
+  <a href="games.html" class="active">Games</a>
+  <a href="art.html">Art</a>
+  <a href="business.html">Business</a>
+  <a href="blog.html">Blog</a>
+  <a href="contact.html">Contact</a>
+</div>
+
+<header class="page-header">
+  <span class="label">Interactive</span>
+  <h1>Games.</h1>
+</header>
+
+<main class="works-page-list">
+  <div class="works-grid">
+
+    <div class="work-card rv">
+      <span class="work-card-num">01</span>
+      <div class="work-card-thumb" style="background: linear-gradient(160deg, #06080a, #0c1018); display: flex; align-items: center; justify-content: center;"></div>
+      <p class="work-card-cat">Procedural Endless Runner</p>
+      <h2 class="work-card-title">Void Runner</h2>
+      <p class="work-card-desc">プロシージャル生成の無限ランナー。光と闇のコントラストで構成されたミニマルな世界を走り抜ける。</p>
+      <div class="work-card-meta">
+        <span class="work-card-year">2024</span>
+        <span class="work-card-arrow">&rarr;</span>
+      </div>
+    </div>
+
+    <div class="work-card rv">
+      <span class="work-card-num">02</span>
+      <div class="work-card-thumb" style="background: linear-gradient(135deg, #04050f, #0a1020); display: flex; align-items: center; justify-content: center;"></div>
+      <p class="work-card-cat">Audio-Reactive Puzzle</p>
+      <h2 class="work-card-title">Signal</h2>
+      <p class="work-card-desc">音に反応するパズルゲーム。音楽がレベルを生成し、リズムが解法のヒントになる。</p>
+      <div class="work-card-meta">
+        <span class="work-card-year">2023</span>
+        <span class="work-card-arrow">&rarr;</span>
+      </div>
+    </div>
+
+    <div class="work-card rv">
+      <span class="work-card-num">03</span>
+      <div class="work-card-thumb" style="background: linear-gradient(145deg, #080a0e, #0e1418); display: flex; align-items: center; justify-content: center;"></div>
+      <p class="work-card-cat">Generative Art Toy</p>
+      <h2 class="work-card-title">Lattice</h2>
+      <p class="work-card-desc">タッチで結晶構造が成長するジェネラティブアートトイ。遊ぶたびに異なる幾何学模様が生まれる。</p>
+      <div class="work-card-meta">
+        <span class="work-card-year">2023</span>
+        <span class="work-card-arrow">&rarr;</span>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<section>
+  <div class="container">
+    <span class="label rv">Approach</span>
+    <div class="about-bio">
+      <p class="rv">ゲーム制作は私にとって「制約のないデザイン」です。クライアントワークでは機能性やビジネス要件に従いますが、ゲームでは純粋な体験設計に集中できます。プレイヤーの感情をデザインし、インタラクションの一つひとつに意味を持たせる。それがゲームデザインの醍醐味です。</p>
+      <p class="rv">WebGL、Canvas、プロシージャル生成、オーディオリアクティブシステムなど、テクノロジーを創造的に活用することで、従来のゲームの枠を超えたインタラクティブ体験を追求しています。</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>&copy; 2025 Idatsuka</p>
+  <ul class="footer-links">
+    <li><a href="works.html">Design</a></li>
+    <li><a href="games.html">Games</a></li>
+    <li><a href="art.html">Art</a></li>
+    <li><a href="business.html">Business</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+</footer>
+
+<script>
+document.getElementById('menuToggle').addEventListener('click', function() {
+  this.classList.toggle('open');
+  document.getElementById('mobileMenu').classList.toggle('open');
+});
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.rv').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
