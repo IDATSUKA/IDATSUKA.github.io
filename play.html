@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Art — IDATSUKA</title>
-  <meta name="description" content="IDATSUKA のアート作品。デジタルアート、ジェネラティブアート、実験的ビジュアル。">
+  <title>Play — IDATSUKA</title>
+  <meta name="description" content="IDATSUKA の趣味・クリエイティブプロジェクト。ゲーム、アート、実験。">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%2308090c'/><text x='16' y='22' text-anchor='middle' font-size='16' font-family='sans-serif' font-weight='300' fill='%23f2f4f7'>I</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,7 +15,7 @@
 
 <nav>
   <a href="/" class="logo">Idatsuka</a>
-    <ul class="nav-links">
+  <ul class="nav-links">
     <li><a href="play.html" class="active">Play</a></li>
     <li><a href="biz.html">Business</a></li>
     <li><a href="blog.html">Blog</a></li>
@@ -31,87 +31,89 @@
 </div>
 
 <header class="page-header">
-  <span class="label">Creative</span>
-  <h1>Art.</h1>
+  <span class="label">Hobby & Creative</span>
+  <h1>Play.</h1>
+  <p class="page-header-desc">仕事の外で生まれるもの。<br>遊びと実験がデザインの源泉になる。</p>
 </header>
 
-<main class="works-page-list">
-  <div class="works-grid">
+<!-- Games -->
+<section style="border-bottom:1px solid var(--border);">
+  <div class="container">
+    <span class="label rv">Games</span>
+    <p class="rv" style="font-size:.92rem;line-height:1.9;color:var(--fg-dim);max-width:600px;margin-bottom:2.5rem;">
+      インタラクティブな体験とクリエイティブコーディング。ゲーム制作は「制約のないデザイン」。
+    </p>
+  </div>
+  <div class="works-grid-home">
+    <a href="games.html" class="work-card-home rv">
+      <span class="work-card-num">01</span>
+      <div class="work-card-thumb" style="background: linear-gradient(160deg, #06080a, #0c1018); display: flex; align-items: center; justify-content: center;"></div>
+      <p class="work-card-cat">Procedural Endless Runner</p>
+      <h2 class="work-card-title">Void Runner</h2>
+      <p class="work-card-desc">プロシージャル生成の無限ランナー。光と闇のコントラストで構成されたミニマルな世界を走り抜ける。</p>
+    </a>
+    <a href="games.html" class="work-card-home rv">
+      <span class="work-card-num">02</span>
+      <div class="work-card-thumb" style="background: linear-gradient(135deg, #04050f, #0a1020); display: flex; align-items: center; justify-content: center;"></div>
+      <p class="work-card-cat">Audio-Reactive Puzzle</p>
+      <h2 class="work-card-title">Signal</h2>
+      <p class="work-card-desc">音に反応するパズルゲーム。音楽がレベルを生成し、リズムが解法のヒントになる。</p>
+    </a>
+    <a href="games.html" class="work-card-home rv">
+      <span class="work-card-num">03</span>
+      <div class="work-card-thumb" style="background: linear-gradient(145deg, #080a0e, #0e1418); display: flex; align-items: center; justify-content: center;"></div>
+      <p class="work-card-cat">Generative Art Toy</p>
+      <h2 class="work-card-title">Lattice</h2>
+      <p class="work-card-desc">タッチで結晶構造が成長するジェネラティブアートトイ。遊ぶたびに異なる幾何学模様が生まれる。</p>
+    </a>
+  </div>
+  <div class="container" style="padding-top:2rem;padding-bottom:1rem;">
+    <a href="games.html" class="btn rv">All Games &rarr;</a>
+  </div>
+</section>
 
-    <div class="work-card rv">
+<!-- Art -->
+<section>
+  <div class="container">
+    <span class="label rv">Art</span>
+    <p class="rv" style="font-size:.92rem;line-height:1.9;color:var(--fg-dim);max-width:600px;margin-bottom:2.5rem;">
+      デジタルアート、ジェネラティブアート、実験的ビジュアル。アルゴリズムと美意識の交差点。
+    </p>
+  </div>
+  <div class="works-grid-home">
+    <a href="art.html" class="work-card-home rv">
       <span class="work-card-num">01</span>
       <div class="work-card-thumb art-01"></div>
       <p class="work-card-cat">Generative</p>
       <h2 class="work-card-title">Void #001</h2>
       <p class="work-card-desc">アルゴリズムが描く虚空。ランダムシードから生まれる一期一会のビジュアル。</p>
-      <div class="work-card-meta">
-        <span class="work-card-year">2024</span>
-        <span class="work-card-arrow">&rarr;</span>
-      </div>
-    </div>
-
-    <div class="work-card rv">
+    </a>
+    <a href="art.html" class="work-card-home rv">
       <span class="work-card-num">02</span>
       <div class="work-card-thumb art-02"></div>
       <p class="work-card-cat">Generative</p>
       <h2 class="work-card-title">Noise Field</h2>
       <p class="work-card-desc">パーリンノイズの流れを可視化。デジタルの風景画。</p>
-      <div class="work-card-meta">
-        <span class="work-card-year">2024</span>
-        <span class="work-card-arrow">&rarr;</span>
-      </div>
-    </div>
-
-    <div class="work-card rv">
+    </a>
+    <a href="art.html" class="work-card-home rv">
       <span class="work-card-num">03</span>
       <div class="work-card-thumb art-03"></div>
       <p class="work-card-cat">Digital Sculpture</p>
       <h2 class="work-card-title">Monolith</h2>
       <p class="work-card-desc">黒い直方体のバリエーション。ミニマルな形態の探求。</p>
-      <div class="work-card-meta">
-        <span class="work-card-year">2023</span>
-        <span class="work-card-arrow">&rarr;</span>
-      </div>
-    </div>
-
-    <div class="work-card rv">
+    </a>
+    <a href="art.html" class="work-card-home rv">
       <span class="work-card-num">04</span>
       <div class="work-card-thumb art-04"></div>
       <p class="work-card-cat">Data Visualization</p>
       <h2 class="work-card-title">Spectrum</h2>
       <p class="work-card-desc">東京の電車の運行データを光に変換。都市のリズムを可視化。</p>
-      <div class="work-card-meta">
-        <span class="work-card-year">2023</span>
-        <span class="work-card-arrow">&rarr;</span>
-      </div>
-    </div>
-
-    <div class="work-card rv">
-      <span class="work-card-num">05</span>
-      <div class="work-card-thumb art-05"></div>
-      <p class="work-card-cat">Photo Manipulation</p>
-      <h2 class="work-card-title">Erosion</h2>
-      <p class="work-card-desc">建築写真にアルゴリズム的な侵食を施す。構造と崩壊の対話。</p>
-      <div class="work-card-meta">
-        <span class="work-card-year">2023</span>
-        <span class="work-card-arrow">&rarr;</span>
-      </div>
-    </div>
-
-    <div class="work-card rv">
-      <span class="work-card-num">06</span>
-      <div class="work-card-thumb art-06"></div>
-      <p class="work-card-cat">Audio Visual</p>
-      <h2 class="work-card-title">Pulse Wave</h2>
-      <p class="work-card-desc">リアルタイム音響可視化。音の波形を3D空間に展開。</p>
-      <div class="work-card-meta">
-        <span class="work-card-year">2022</span>
-        <span class="work-card-arrow">&rarr;</span>
-      </div>
-    </div>
-
+    </a>
   </div>
-</main>
+  <div class="container" style="padding-top:2rem;padding-bottom:1rem;">
+    <a href="art.html" class="btn rv">All Art &rarr;</a>
+  </div>
+</section>
 
 <footer>
   <p>&copy; 2025 Idatsuka</p>
