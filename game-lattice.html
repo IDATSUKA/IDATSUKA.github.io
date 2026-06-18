@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lattice — IDATSUKA</title>
+  <meta name="description" content="Lattice — タッチで結晶構造が成長するジェネラティブアートトイ。">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%2308090c'/><text x='16' y='22' text-anchor='middle' font-size='16' font-family='sans-serif' font-weight='300' fill='%23f2f4f7'>I</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Zen+Kaku+Gothic+New:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .game-wrapper {
+      position: relative;
+      width: 100%;
+      background: #08090c;
+      border-bottom: 1px solid var(--border);
+    }
+    .game-canvas {
+      display: block;
+      width: 100%;
+      cursor: crosshair;
+      touch-action: none;
+    }
+    .game-controls {
+      display: flex;
+      gap: 1rem;
+      padding: 1.2rem 3rem;
+      border-bottom: 1px solid var(--border);
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .game-controls .btn {
+      padding: .5rem 1.2rem;
+      font-size: .55rem;
+    }
+    .game-hint {
+      font-family: var(--mono);
+      font-size: .55rem;
+      letter-spacing: .1em;
+      color: var(--dim);
+      margin-left: auto;
+    }
+    .game-stats {
+      font-family: var(--mono);
+      font-size: .52rem;
+      letter-spacing: .08em;
+      color: var(--dim);
+      display: flex;
+      gap: 1.5rem;
+    }
+    .game-stats span {
+      color: var(--muted);
+    }
+    .game-instructions {
+      padding: 3rem 3rem 4rem;
+      max-width: 700px;
+    }
+    .game-instructions p {
+      font-size: .88rem;
+      line-height: 2;
+      color: var(--fg-dim);
+      margin-bottom: .8rem;
+    }
+    .game-instructions p:last-child {
+      margin-bottom: 0;
+    }
+    .game-instructions .key-hint {
+      font-family: var(--mono);
+      font-size: .7rem;
+      color: var(--muted);
+      display: inline-block;
+      border: 1px solid var(--dim);
+      padding: .1rem .4rem;
+      margin: 0 .15rem;
+    }
+    @media (max-width: 900px) {
+      .game-controls {
+        padding: 1rem 1.5rem;
+      }
+      .game-hint {
+        display: none;
+      }
+      .game-instructions {
+        padding: 2rem 1.5rem 3rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">Idatsuka</a>
+  <ul class="nav-links">
+    <li><a href="about.html">Profile</a></li>
+    <li><a href="play.html" class="active">Play</a></li>
+    <li><a href="biz.html">Business</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <button class="menu-toggle" id="menuToggle" aria-label="メニュー"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="about.html">Profile</a>
+  <a href="play.html" class="active">Play</a>
+  <a href="biz.html">Business</a>
+  <a href="blog.html">Blog</a>
+  <a href="contact.html">Contact</a>
+</div>
+
+<header class="page-header">
+  <span class="label">Generative Art Toy</span>
+  <h1>Lattice.</h1>
+  <p class="page-header-desc">画面をタッチして結晶を育てる。<br>触れるたびに異なる幾何学模様が生まれる。</p>
+</header>
+
+<div class="game-controls">
+  <button class="btn" id="btnClear">Clear</button>
+  <button class="btn" id="btnSave">Save PNG</button>
+  <div class="game-stats">
+    <span>Nodes: <span id="statNodes">0</span></span>
+    <span>Lines: <span id="statLines">0</span></span>
+  </div>
+  <span class="game-hint">Click or drag to grow crystals</span>
+</div>
+
+<div class="game-wrapper">
+  <canvas class="game-canvas" id="latticeCanvas"></canvas>
+</div>
+
+<section class="game-instructions">
+  <span class="label">How to Play / 遊び方</span>
+  <p>画面のどこかをクリックまたはタップすると、その場所から結晶構造が成長します。ドラッグすると連続的に結晶が生まれます。複数の構造が重なり合い、唯一無二のパターンを描きます。</p>
+  <p>Click anywhere on the canvas to spawn crystalline structures. Drag to create continuous growth trails. Each structure branches at geometric angles, forming unique lattice patterns.</p>
+  <p style="color:var(--dim);font-size:.8rem;margin-top:1.5rem;">
+    <span class="key-hint">Click</span> 結晶を生成 &nbsp;
+    <span class="key-hint">Drag</span> 連続生成 &nbsp;
+    <span class="key-hint">Clear</span> リセット &nbsp;
+    <span class="key-hint">Save</span> PNG保存
+  </p>
+</section>
+
+<footer>
+  <p>&copy; 2025 Idatsuka</p>
+  <ul class="footer-links">
+    <li><a href="about.html">Profile</a></li>
+    <li><a href="play.html">Play</a></li>
+    <li><a href="biz.html">Business</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+</footer>
+
+<script>
+// ── Mobile menu ──
+document.getElementById('menuToggle').addEventListener('click', function() {
+  this.classList.toggle('open');
+  document.getElementById('mobileMenu').classList.toggle('open');
+});
+
+// ── Lattice: Generative Crystal Art Toy ──
+(function() {
+  'use strict';
+
+  const canvas = document.getElementById('latticeCanvas');
+  const ctx = canvas.getContext('2d');
+  const statNodes = document.getElementById('statNodes');
+  const statLines = document.getElementById('statLines');
+
+  // ── Colors ──
+  const BG = '#08090c';
+  const ACCENT = '#a8d8ea';
+  const COLORS = [
+    'rgba(54, 61, 72, 0.6)',    // dim
+    'rgba(54, 61, 72, 0.4)',
+    'rgba(107, 114, 128, 0.35)', // muted
+    'rgba(107, 114, 128, 0.25)',
+    'rgba(107, 114, 128, 0.15)',
+    'rgba(168, 216, 234, 0.5)',  // accent
+    'rgba(168, 216, 234, 0.3)',
+    'rgba(168, 216, 234, 0.15)',
+    'rgba(242, 244, 247, 0.08)', // fg very faint
+  ];
+
+  // ── Branch angles (radians) ──
+  const BRANCH_ANGLES = [
+    Math.PI / 6,     // 30
+    Math.PI / 3,     // 60
+    Math.PI / 2,     // 90
+    2 * Math.PI / 3, // 120
+    5 * Math.PI / 6, // 150
+  ];
+
+  // ── State ──
+  let branches = [];
+  let nodeCount = 0;
+  let lineCount = 0;
+  let dpr = 1;
+  let gridCanvas = null;
+
+  // ── Sizing ──
+  function resize() {
+    const wrapper = canvas.parentElement;
+    const w = wrapper.clientWidth;
+    const h = Math.max(500, Math.min(window.innerHeight - 200, 700));
+    dpr = window.devicePixelRatio || 1;
+    canvas.width = w * dpr;
+    canvas.height = h * dpr;
+    canvas.style.height = h + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    drawGrid();
+    redraw();
+  }
+
+  // ── Subtle grid background ──
+  function drawGrid() {
+    const w = canvas.width / dpr;
+    const h = canvas.height / dpr;
+    gridCanvas = document.createElement('canvas');
+    gridCanvas.width = canvas.width;
+    gridCanvas.height = canvas.height;
+    const gctx = gridCanvas.getContext('2d');
+    gctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    // Grid lines
+    gctx.strokeStyle = 'rgba(255, 255, 255, 0.018)';
+    gctx.lineWidth = 1;
+    const gridSize = 80;
+    for (let x = 0; x <= w; x += gridSize) {
+      gctx.beginPath();
+      gctx.moveTo(x, 0);
+      gctx.lineTo(x, h);
+      gctx.stroke();
+    }
+    for (let y = 0; y <= h; y += gridSize) {
+      gctx.beginPath();
+      gctx.moveTo(0, y);
+      gctx.lineTo(w, y);
+      gctx.stroke();
+    }
+
+    // Radial vignette mask over grid
+    const grad = gctx.createRadialGradient(w / 2, h / 2, 0, w / 2, h / 2, Math.max(w, h) * 0.6);
+    grad.addColorStop(0, 'rgba(8, 9, 12, 0)');
+    grad.addColorStop(0.5, 'rgba(8, 9, 12, 0)');
+    grad.addColorStop(1, 'rgba(8, 9, 12, 1)');
+    gctx.fillStyle = grad;
+    gctx.fillRect(0, 0, w, h);
+  }
+
+  // ── Branch class ──
+  function Branch(x, y, angle, length, depth, color, lineWidth) {
+    this.x = x;
+    this.y = y;
+    this.angle = angle;
+    this.length = length;
+    this.depth = depth;
+    this.color = color;
+    this.lineWidth = lineWidth;
+    this.progress = 0;
+    this.speed = 0.008 + Math.random() * 0.012;
+    this.done = false;
+    this.spawned = false;
+    this.endX = x + Math.cos(angle) * length;
+    this.endY = y + Math.sin(angle) * length;
+    // Segments drawn so far (for redraw)
+    this.segments = [];
+  }
+
+  // ── Pick a color ──
+  function pickColor(depth) {
+    if (depth === 0) {
+      // Root branches: slightly brighter
+      return Math.random() < 0.3
+        ? COLORS[5] // accent
+        : COLORS[Math.floor(Math.random() * 4)];
+    }
+    if (depth <= 2) {
+      return Math.random() < 0.15
+        ? COLORS[5 + Math.floor(Math.random() * 3)]
+        : COLORS[Math.floor(Math.random() * 5)];
+    }
+    // Deep branches: mostly very faint
+    return Math.random() < 0.08
+      ? COLORS[6]
+      : COLORS[Math.floor(Math.random() * COLORS.length)];
+  }
+
+  // ── Spawn a crystal from a point ──
+  function spawnCrystal(cx, cy) {
+    const numBranches = 3 + Math.floor(Math.random() * 5);
+    const baseAngle = Math.random() * Math.PI * 2;
+    const angleStep = (Math.PI * 2) / numBranches;
+
+    for (let i = 0; i < numBranches; i++) {
+      const angle = baseAngle + angleStep * i + (Math.random() - 0.5) * 0.3;
+      const length = 30 + Math.random() * 80;
+      const color = pickColor(0);
+      const lw = 0.5 + Math.random() * 0.5;
+      branches.push(new Branch(cx, cy, angle, length, 0, color, lw));
+      nodeCount++;
+    }
+    updateStats();
+  }
+
+  // ── Update stats display ──
+  function updateStats() {
+    statNodes.textContent = nodeCount;
+    statLines.textContent = lineCount;
+  }
+
+  // ── Spawn sub-branches from a branch endpoint ──
+  function spawnChildren(branch) {
+    if (branch.depth >= 6) return;
+    const maxChildren = branch.depth < 2 ? 3 : 2;
+    const numChildren = 1 + Math.floor(Math.random() * maxChildren);
+    // Probability of branching decreases with depth
+    const branchProb = Math.max(0.2, 0.85 - branch.depth * 0.12);
+
+    for (let i = 0; i < numChildren; i++) {
+      if (Math.random() > branchProb) continue;
+
+      const angleOffset = BRANCH_ANGLES[Math.floor(Math.random() * BRANCH_ANGLES.length)];
+      const sign = Math.random() < 0.5 ? 1 : -1;
+      const angle = branch.angle + angleOffset * sign + (Math.random() - 0.5) * 0.15;
+      const lengthFactor = 0.5 + Math.random() * 0.4;
+      const length = branch.length * lengthFactor;
+
+      if (length < 4) continue;
+
+      const color = pickColor(branch.depth + 1);
+      const lw = Math.max(0.3, branch.lineWidth * (0.7 + Math.random() * 0.2));
+      branches.push(new Branch(branch.endX, branch.endY, angle, length, branch.depth + 1, color, lw));
+      nodeCount++;
+    }
+    updateStats();
+  }
+
+  // ── Draw a single segment ──
+  function drawSegment(seg) {
+    ctx.beginPath();
+    ctx.moveTo(seg.x1, seg.y1);
+    ctx.lineTo(seg.x2, seg.y2);
+    ctx.strokeStyle = seg.color;
+    ctx.lineWidth = seg.lineWidth;
+    ctx.stroke();
+  }
+
+  // ── Draw node marker (small dot or diamond at branch points) ──
+  function drawNode(x, y, depth) {
+    if (Math.random() > 0.4) return; // Not every node gets a marker
+    const size = Math.max(0.5, 2 - depth * 0.3);
+    ctx.save();
+    if (Math.random() < 0.3) {
+      // Diamond
+      ctx.translate(x, y);
+      ctx.rotate(Math.PI / 4);
+      ctx.fillStyle = depth < 2
+        ? 'rgba(168, 216, 234, 0.25)'
+        : 'rgba(107, 114, 128, 0.15)';
+      ctx.fillRect(-size / 2, -size / 2, size, size);
+    } else {
+      // Dot
+      ctx.fillStyle = depth < 2
+        ? 'rgba(168, 216, 234, 0.2)'
+        : 'rgba(107, 114, 128, 0.1)';
+      ctx.beginPath();
+      ctx.arc(x, y, size * 0.6, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.restore();
+  }
+
+  // ── Full redraw (after resize) ──
+  function redraw() {
+    const w = canvas.width / dpr;
+    const h = canvas.height / dpr;
+    ctx.fillStyle = BG;
+    ctx.fillRect(0, 0, w, h);
+
+    // Draw grid
+    if (gridCanvas) {
+      ctx.save();
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.drawImage(gridCanvas, 0, 0);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.restore();
+    }
+
+    // Redraw all segments
+    for (let i = 0; i < branches.length; i++) {
+      const b = branches[i];
+      for (let j = 0; j < b.segments.length; j++) {
+        drawSegment(b.segments[j]);
+      }
+    }
+  }
+
+  // ── Animation loop ──
+  let lastTime = 0;
+  let animating = false;
+
+  function animate(time) {
+    if (!lastTime) lastTime = time;
+    const dt = Math.min(time - lastTime, 50);
+    lastTime = time;
+
+    let anyActive = false;
+
+    for (let i = 0; i < branches.length; i++) {
+      const b = branches[i];
+      if (b.done) continue;
+      anyActive = true;
+
+      const prevProgress = b.progress;
+      b.progress = Math.min(1, b.progress + b.speed * (dt / 16));
+
+      // Draw new segment portion
+      const x1 = b.x + Math.cos(b.angle) * b.length * prevProgress;
+      const y1 = b.y + Math.sin(b.angle) * b.length * prevProgress;
+      const x2 = b.x + Math.cos(b.angle) * b.length * b.progress;
+      const y2 = b.y + Math.sin(b.angle) * b.length * b.progress;
+
+      const seg = { x1: x1, y1: y1, x2: x2, y2: y2, color: b.color, lineWidth: b.lineWidth };
+      b.segments.push(seg);
+      drawSegment(seg);
+      lineCount++;
+
+      if (b.progress >= 1) {
+        b.done = true;
+        drawNode(b.endX, b.endY, b.depth);
+        if (!b.spawned) {
+          b.spawned = true;
+          spawnChildren(b);
+        }
+      }
+    }
+
+    updateStats();
+
+    if (anyActive) {
+      requestAnimationFrame(animate);
+    } else {
+      animating = false;
+    }
+  }
+
+  function startAnimation() {
+    if (!animating) {
+      animating = true;
+      lastTime = 0;
+      requestAnimationFrame(animate);
+    }
+  }
+
+  // ── Input handling ──
+  let isDown = false;
+  let lastSpawnTime = 0;
+  const SPAWN_THROTTLE = 60; // ms between spawns while dragging
+
+  function getPos(e) {
+    const rect = canvas.getBoundingClientRect();
+    const touch = e.touches ? e.touches[0] : e;
+    return {
+      x: touch.clientX - rect.left,
+      y: touch.clientY - rect.top
+    };
+  }
+
+  function handleDown(e) {
+    e.preventDefault();
+    isDown = true;
+    const pos = getPos(e);
+    spawnCrystal(pos.x, pos.y);
+    startAnimation();
+    lastSpawnTime = performance.now();
+  }
+
+  function handleMove(e) {
+    if (!isDown) return;
+    e.preventDefault();
+    const now = performance.now();
+    if (now - lastSpawnTime < SPAWN_THROTTLE) return;
+    const pos = getPos(e);
+    spawnCrystal(pos.x, pos.y);
+    startAnimation();
+    lastSpawnTime = now;
+  }
+
+  function handleUp() {
+    isDown = false;
+  }
+
+  canvas.addEventListener('mousedown', handleDown);
+  canvas.addEventListener('mousemove', handleMove);
+  canvas.addEventListener('mouseup', handleUp);
+  canvas.addEventListener('mouseleave', handleUp);
+  canvas.addEventListener('touchstart', handleDown, { passive: false });
+  canvas.addEventListener('touchmove', handleMove, { passive: false });
+  canvas.addEventListener('touchend', handleUp);
+  canvas.addEventListener('touchcancel', handleUp);
+
+  // ── Controls ──
+  document.getElementById('btnClear').addEventListener('click', function() {
+    branches = [];
+    nodeCount = 0;
+    lineCount = 0;
+    updateStats();
+    redraw();
+  });
+
+  document.getElementById('btnSave').addEventListener('click', function() {
+    // Create a clean export canvas without DPR scaling artifacts
+    const exportCanvas = document.createElement('canvas');
+    const w = canvas.width / dpr;
+    const h = canvas.height / dpr;
+    exportCanvas.width = w * 2; // Export at 2x for quality
+    exportCanvas.height = h * 2;
+    const ectx = exportCanvas.getContext('2d');
+    ectx.setTransform(2, 0, 0, 2, 0, 0);
+
+    // Background
+    ectx.fillStyle = BG;
+    ectx.fillRect(0, 0, w, h);
+
+    // Grid
+    ectx.strokeStyle = 'rgba(255, 255, 255, 0.018)';
+    ectx.lineWidth = 1;
+    for (let x = 0; x <= w; x += 80) {
+      ectx.beginPath(); ectx.moveTo(x, 0); ectx.lineTo(x, h); ectx.stroke();
+    }
+    for (let y = 0; y <= h; y += 80) {
+      ectx.beginPath(); ectx.moveTo(0, y); ectx.lineTo(w, y); ectx.stroke();
+    }
+
+    // All segments
+    for (let i = 0; i < branches.length; i++) {
+      const b = branches[i];
+      for (let j = 0; j < b.segments.length; j++) {
+        const seg = b.segments[j];
+        ectx.beginPath();
+        ectx.moveTo(seg.x1, seg.y1);
+        ectx.lineTo(seg.x2, seg.y2);
+        ectx.strokeStyle = seg.color;
+        ectx.lineWidth = seg.lineWidth;
+        ectx.stroke();
+      }
+    }
+
+    const link = document.createElement('a');
+    link.download = 'lattice-' + Date.now() + '.png';
+    link.href = exportCanvas.toDataURL('image/png');
+    link.click();
+  });
+
+  // ── Init ──
+  window.addEventListener('resize', resize);
+  resize();
+})();
+</script>
+</body>
+</html>
