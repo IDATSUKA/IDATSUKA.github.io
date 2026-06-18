@@ -145,7 +145,7 @@ document.getElementById('menuToggle').addEventListener('click', function() {
 <div id="nameOverlay" style="
   display:none;position:fixed;inset:0;z-index:9999;
   background:rgba(8,9,12,0.95);
-  display:flex;align-items:center;justify-content:center;
+  align-items:center;justify-content:center;
   font-family:'Space Mono',monospace;
 ">
   <div style="text-align:center;max-width:320px;padding:2rem;">
@@ -253,6 +253,8 @@ document.getElementById('menuToggle').addEventListener('click', function() {
   let shakeTimer = 0;
   let flashTimer = 0;
   let deadTimer = 0;
+  let lbResult = null;
+  let lbSubmitted = false;
 
   // ── Player ──
   const player = {
@@ -505,6 +507,19 @@ document.getElementById('menuToggle').addEventListener('click', function() {
     touchMoveX = 0;
     isTouching = true;
 
+    if (state === STATE_DEAD && canvas._rankingBtn) {
+      const rect = canvas.getBoundingClientRect();
+      const scaleX = rect.width / W();
+      const scaleY = rect.height / H();
+      const mx = (touch.clientX - rect.left) / scaleX;
+      const my = (touch.clientY - rect.top) / scaleY;
+      const rb = canvas._rankingBtn;
+      if (mx >= rb.x && mx <= rb.x + rb.w && my >= rb.y && my <= rb.y + rb.h) {
+        window.location.href = 'ranking.html';
+        return;
+      }
+    }
+
     if (state !== STATE_PLAYING) {
       startGame();
     }
@@ -523,7 +538,19 @@ document.getElementById('menuToggle').addEventListener('click', function() {
     touchMoveX = 0;
   }, { passive: false });
 
-  canvas.addEventListener('click', function() {
+  canvas.addEventListener('click', function(e) {
+    if (state === STATE_DEAD && canvas._rankingBtn) {
+      const rect = canvas.getBoundingClientRect();
+      const scaleX = rect.width / W();
+      const scaleY = rect.height / H();
+      const mx = (e.clientX - rect.left) / scaleX;
+      const my = (e.clientY - rect.top) / scaleY;
+      const rb = canvas._rankingBtn;
+      if (mx >= rb.x && mx <= rb.x + rb.w && my >= rb.y && my <= rb.y + rb.h) {
+        window.location.href = 'ranking.html';
+        return;
+      }
+    }
     if (state !== STATE_PLAYING) {
       startGame();
     }
@@ -595,11 +622,20 @@ document.getElementById('menuToggle').addEventListener('click', function() {
         deadTimer = 0;
         shakeTimer = 15;
         flashTimer = 8;
+        lbResult = null;
+        lbSubmitted = false;
         spawnDeathParticles();
         if (score > highScore) {
           highScore = score;
           localStorage.setItem('voidRunnerHigh', String(highScore));
         }
+        // Submit score to leaderboard (async, non-blocking)
+        Leaderboard.submitScore('void-runner', score).then(function(res) {
+          lbResult = res;
+          lbSubmitted = true;
+        }).catch(function() {
+          lbSubmitted = true;
+        });
       }
 
       // Score
@@ -922,12 +958,25 @@ document.getElementById('menuToggle').addEventListener('click', function() {
         ctx.fillStyle = '#f2f4f7';
         ctx.fillText(score.toLocaleString(), w / 2, h * 0.48);
 
-        // High score
+        // Player name
+        const deadName = Leaderboard.getName();
+        if (deadName) {
+          ctx.font = '400 ' + Math.min(w * 0.02, 8) + 'px "Space Mono", monospace';
+          ctx.fillStyle = 'rgba(107, 114, 128, 0.6)';
+          ctx.fillText(deadName, w / 2, h * 0.40);
+        }
+
+        // High score / leaderboard result
         ctx.font = '400 ' + Math.min(w * 0.025, 10) + 'px "Space Mono", monospace';
         ctx.fillStyle = COL_DIM;
-        if (score >= highScore && score > 0) {
+        if (lbSubmitted && lbResult && lbResult.isNew) {
+          ctx.fillStyle = COL_PLAYER;
+          ctx.fillText('NEW PERSONAL BEST!', w / 2, h * 0.54);
+        } else if (score >= highScore && score > 0) {
           ctx.fillStyle = COL_PLAYER;
           ctx.fillText('NEW BEST!', w / 2, h * 0.54);
+        } else if (lbSubmitted && lbResult && !lbResult.isNew) {
+          ctx.fillText('BEST: ' + lbResult.best.toLocaleString(), w / 2, h * 0.54);
         } else {
           ctx.fillText('BEST: ' + highScore.toLocaleString(), w / 2, h * 0.54);
         }
@@ -937,7 +986,7 @@ document.getElementById('menuToggle').addEventListener('click', function() {
           const btnW = Math.min(w * 0.45, 160);
           const btnH = 36;
           const btnX = w / 2 - btnW / 2;
-          const btnY = h * 0.63 - btnH / 2;
+          const btnY = h * 0.61 - btnH / 2;
 
           ctx.strokeStyle = 'rgba(168, 216, 234, 0.4)';
           ctx.lineWidth = 1;
@@ -945,10 +994,23 @@ document.getElementById('menuToggle').addEventListener('click', function() {
 
           ctx.font = '400 ' + Math.min(w * 0.027, 11) + 'px "Space Mono", monospace';
           ctx.fillStyle = COL_PLAYER;
-          ctx.fillText('RESTART', w / 2, h * 0.63);
+          ctx.fillText('RESTART', w / 2, h * 0.61);
 
           // Store button bounds for click detection
           canvas._restartBtn = { x: btnX, y: btnY, w: btnW, h: btnH };
+
+          // Ranking button
+          const rankBtnY = h * 0.70 - btnH / 2;
+          ctx.strokeStyle = 'rgba(168, 216, 234, 0.25)';
+          ctx.lineWidth = 1;
+          ctx.strokeRect(btnX, rankBtnY, btnW, btnH);
+
+          ctx.font = '400 ' + Math.min(w * 0.027, 11) + 'px "Space Mono", monospace';
+          ctx.fillStyle = 'rgba(168, 216, 234, 0.7)';
+          ctx.fillText('RANKING', w / 2, h * 0.70);
+
+          // Store ranking button bounds for click detection
+          canvas._rankingBtn = { x: btnX, y: rankBtnY, w: btnW, h: btnH };
         }
 
         ctx.globalAlpha = 1;

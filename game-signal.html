@@ -238,6 +238,43 @@ document.getElementById('menuToggle').addEventListener('click', function() {
 });
 
 // ═══════════════════════════════════════════
+// Leaderboard — Name Registration Overlay
+// ═══════════════════════════════════════════
+(async function initLeaderboard() {
+  await Leaderboard.init();
+  const overlay = document.getElementById('nameOverlay');
+  const nameInput = document.getElementById('nameInput');
+  const nameError = document.getElementById('nameError');
+  const nameRegisterBtn = document.getElementById('nameRegisterBtn');
+  const hudPlayer = document.getElementById('hudPlayer');
+
+  const existing = Leaderboard.getName();
+  if (existing) {
+    overlay.classList.add('hidden');
+    hudPlayer.textContent = existing;
+  } else {
+    overlay.classList.remove('hidden');
+  }
+
+  nameRegisterBtn.addEventListener('click', async function() {
+    nameError.textContent = '';
+    const val = nameInput.value.trim();
+    if (!val) { nameError.textContent = '名前を入力してください'; return; }
+    const res = await Leaderboard.registerName(val);
+    if (res.ok) {
+      overlay.classList.add('hidden');
+      hudPlayer.textContent = val;
+    } else {
+      nameError.textContent = res.msg || '登録に失敗しました';
+    }
+  });
+
+  nameInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') nameRegisterBtn.click();
+  });
+})();
+
+// ═══════════════════════════════════════════
 // SIGNAL — Memory / Simon Says Game
 // ═══════════════════════════════════════════
 (function() {
@@ -653,6 +690,13 @@ document.getElementById('menuToggle').addEventListener('click', function() {
     }
 
     startBtn.textContent = 'Retry';
+
+    // Submit score to leaderboard
+    Leaderboard.submitScore('signal', score).then(function(res) {
+      if (res && res.ok && res.isNew) {
+        statusEl.textContent = 'ゲームオーバー — 自己ベスト更新！ ' + score;
+      }
+    }).catch(function() { /* ignore leaderboard errors */ });
   }
 
   function getCircleAt(mx, my) {
