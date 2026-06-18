@@ -40,17 +40,17 @@
 </header>
 
 <div class="filter-bar">
-  <button class="filter-btn active">All</button>
-  <button class="filter-btn">UI / UX</button>
-  <button class="filter-btn">Branding</button>
-  <button class="filter-btn">Web Design</button>
-  <button class="filter-btn">Motion</button>
+  <button class="filter-btn active" data-filter="all">All</button>
+  <button class="filter-btn" data-filter="uiux">UI / UX</button>
+  <button class="filter-btn" data-filter="branding">Branding</button>
+  <button class="filter-btn" data-filter="web">Web Design</button>
+  <button class="filter-btn" data-filter="motion">Motion</button>
 </div>
 
 <main class="works-page-list">
   <div class="works-grid">
 
-    <a href="work-01.html" class="work-card rv">
+    <a href="work-01.html" class="work-card rv" data-category="branding">
       <span class="work-card-num">01</span>
       <div class="work-card-thumb"><img src="img/work-01.svg" alt="KUROMOJI" loading="lazy"></div>
       <p class="work-card-cat">Branding</p>
@@ -62,7 +62,7 @@
       </div>
     </a>
 
-    <a href="work-02.html" class="work-card rv">
+    <a href="work-02.html" class="work-card rv" data-category="uiux">
       <span class="work-card-num">02</span>
       <div class="work-card-thumb"><img src="img/work-02.svg" alt="Neon District" loading="lazy"></div>
       <p class="work-card-cat">UI / UX Design</p>
@@ -74,7 +74,7 @@
       </div>
     </a>
 
-    <a href="work-03.html" class="work-card rv">
+    <a href="work-03.html" class="work-card rv" data-category="web">
       <span class="work-card-num">03</span>
       <div class="work-card-thumb"><img src="img/work-03.svg" alt="SORA Architecture" loading="lazy"></div>
       <p class="work-card-cat">Web Design</p>
@@ -86,7 +86,7 @@
       </div>
     </a>
 
-    <a href="work-04.html" class="work-card rv">
+    <a href="work-04.html" class="work-card rv" data-category="motion">
       <span class="work-card-num">04</span>
       <div class="work-card-thumb"><img src="img/work-04.svg" alt="Pulse" loading="lazy"></div>
       <p class="work-card-cat">Motion Design</p>
@@ -98,7 +98,7 @@
       </div>
     </a>
 
-    <a href="work-05.html" class="work-card rv">
+    <a href="work-05.html" class="work-card rv" data-category="uiux">
       <span class="work-card-num">05</span>
       <div class="work-card-thumb"><img src="img/work-05.svg" alt="Mono" loading="lazy"></div>
       <p class="work-card-cat">UI / UX Design</p>
@@ -110,7 +110,7 @@
       </div>
     </a>
 
-    <a href="work-06.html" class="work-card rv">
+    <a href="work-06.html" class="work-card rv" data-category="branding">
       <span class="work-card-num">06</span>
       <div class="work-card-thumb"><img src="img/work-06.svg" alt="KADO" loading="lazy"></div>
       <p class="work-card-cat">Branding</p>
@@ -141,12 +141,30 @@ document.getElementById('menuToggle').addEventListener('click', function() {
   this.classList.toggle('open');
   document.getElementById('mobileMenu').classList.toggle('open');
 });
+
+// Filter functionality
 document.querySelectorAll('.filter-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
+    const filter = btn.getAttribute('data-filter');
+    document.querySelectorAll('.work-card').forEach(card => {
+      if (filter === 'all' || card.getAttribute('data-category') === filter) {
+        card.style.display = '';
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(14px)';
+        requestAnimationFrame(() => {
+          card.style.transition = 'opacity .4s ease, transform .4s ease';
+          card.style.opacity = '1';
+          card.style.transform = 'translateY(0)';
+        });
+      } else {
+        card.style.display = 'none';
+      }
+    });
   });
 });
+
 const io = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
 }, { threshold: 0.1 });
