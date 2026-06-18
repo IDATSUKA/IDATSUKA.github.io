@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ranking — IDATSUKA</title>
+  <meta name="description" content="IDATSUKA ゲームランキング。Void Runner, Signal のハイスコアを競おう。">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%2308090c'/><text x='16' y='22' text-anchor='middle' font-size='16' font-family='sans-serif' font-weight='300' fill='%23f2f4f7'>I</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Zen+Kaku+Gothic+New:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .ranking-tabs {
+      display: flex; gap: 0; border-bottom: 1px solid var(--border);
+    }
+    .ranking-tab {
+      flex: 1; padding: 1.2rem 1.5rem; background: none; border: none;
+      font-family: var(--mono); font-size: .6rem; letter-spacing: .16em;
+      text-transform: uppercase; color: var(--muted); cursor: pointer;
+      border-bottom: 2px solid transparent; transition: color .25s, border-color .25s;
+      text-align: center;
+    }
+    .ranking-tab:hover { color: var(--fg); }
+    .ranking-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+    .ranking-panel { display: none; }
+    .ranking-panel.active { display: block; }
+    .ranking-list { padding: 0 3rem 4rem; }
+    .ranking-header {
+      display: grid; grid-template-columns: 3.5rem 1fr auto;
+      gap: 2rem; padding: 1.2rem 0; border-bottom: 1px solid var(--border);
+      font-family: var(--mono); font-size: .5rem; letter-spacing: .2em;
+      text-transform: uppercase; color: var(--dim);
+    }
+    .ranking-row {
+      display: grid; grid-template-columns: 3.5rem 1fr auto;
+      gap: 2rem; padding: 1rem 0; border-bottom: 1px solid var(--border);
+      align-items: center; transition: background .2s;
+    }
+    .ranking-row:hover { background: var(--bg2); margin: 0 -1rem; padding-left: 1rem; padding-right: 1rem; }
+    .ranking-row.is-me { background: rgba(168,216,234,.04); }
+    .rank-num {
+      font-family: var(--mono); font-size: .7rem; color: var(--dim);
+      text-align: center;
+    }
+    .rank-num.top1 { color: var(--accent); font-weight: 700; font-size: .9rem; }
+    .rank-num.top2, .rank-num.top3 { color: var(--fg-dim); font-weight: 500; }
+    .rank-name { font-size: .9rem; font-weight: 400; }
+    .rank-name .you-badge {
+      font-family: var(--mono); font-size: .48rem; letter-spacing: .15em;
+      text-transform: uppercase; color: var(--accent);
+      border: 1px solid rgba(168,216,234,.3); padding: .1rem .4rem;
+      margin-left: .5rem; vertical-align: middle;
+    }
+    .rank-score {
+      font-family: var(--mono); font-size: .85rem; font-weight: 700;
+      color: var(--fg); text-align: right;
+    }
+    .rank-date {
+      font-family: var(--mono); font-size: .5rem; color: var(--dim);
+      margin-top: .15rem;
+    }
+    .ranking-empty {
+      padding: 4rem 2rem; text-align: center;
+      font-family: var(--mono); font-size: .7rem; color: var(--dim);
+    }
+    .ranking-actions {
+      padding: 2rem 3rem; display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;
+    }
+    .ranking-note {
+      font-family: var(--mono); font-size: .52rem; color: var(--dim);
+      margin-left: auto; letter-spacing: .08em;
+    }
+    @media (max-width: 900px) {
+      .ranking-list { padding: 0 1.5rem 3rem; }
+      .ranking-actions { padding: 1.5rem; }
+      .ranking-header, .ranking-row {
+        grid-template-columns: 2.5rem 1fr auto; gap: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">Idatsuka</a>
+  <ul class="nav-links">
+    <li><a href="about.html">Profile</a></li>
+    <li><a href="play.html" class="active">Play</a></li>
+    <li><a href="biz.html">Business</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <button class="menu-toggle" id="menuToggle" aria-label="メニュー"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="about.html">Profile</a>
+  <a href="play.html" class="active">Play</a>
+  <a href="biz.html">Business</a>
+  <a href="blog.html">Blog</a>
+  <a href="contact.html">Contact</a>
+</div>
+
+<header class="page-header">
+  <span class="label">Leaderboard</span>
+  <h1>Ranking.</h1>
+  <p class="page-header-desc">ゲームのハイスコアランキング。<br>名前を登録してスコアを競おう。</p>
+</header>
+
+<div class="ranking-tabs">
+  <button class="ranking-tab active" data-game="void-runner">Void Runner</button>
+  <button class="ranking-tab" data-game="signal">Signal</button>
+</div>
+
+<div class="ranking-actions">
+  <a href="games.html" class="btn">Games &larr;</a>
+  <button class="btn" id="refreshBtn">Refresh</button>
+  <span class="ranking-note" id="modeNote"></span>
+</div>
+
+<div id="panel-void-runner" class="ranking-panel active">
+  <div class="ranking-list">
+    <div class="ranking-header">
+      <span>Rank</span><span>Player</span><span style="text-align:right">Score</span>
+    </div>
+    <div id="list-void-runner"></div>
+  </div>
+</div>
+
+<div id="panel-signal" class="ranking-panel">
+  <div class="ranking-list">
+    <div class="ranking-header">
+      <span>Rank</span><span>Player</span><span style="text-align:right">Score</span>
+    </div>
+    <div id="list-signal"></div>
+  </div>
+</div>
+
+<footer>
+  <p>&copy; 2025 Idatsuka</p>
+  <ul class="footer-links">
+    <li><a href="about.html">Profile</a></li>
+    <li><a href="play.html">Play</a></li>
+    <li><a href="biz.html">Business</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+</footer>
+
+<script src="js/leaderboard.js"></script>
+<script>
+document.getElementById('menuToggle').addEventListener('click', function() {
+  this.classList.toggle('open');
+  document.getElementById('mobileMenu').classList.toggle('open');
+});
+
+(async function() {
+  await Leaderboard.init();
+
+  const myName = Leaderboard.getName();
+  const modeNote = document.getElementById('modeNote');
+  modeNote.textContent = Leaderboard.isFirebaseActive() ? 'Online Ranking' : 'Local Ranking';
+
+  const tabs = document.querySelectorAll('.ranking-tab');
+  const panels = document.querySelectorAll('.ranking-panel');
+
+  tabs.forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      tabs.forEach(function(t) { t.classList.remove('active'); });
+      panels.forEach(function(p) { p.classList.remove('active'); });
+      tab.classList.add('active');
+      document.getElementById('panel-' + tab.dataset.game).classList.add('active');
+    });
+  });
+
+  async function loadRankings() {
+    var games = ['void-runner', 'signal'];
+    for (var g = 0; g < games.length; g++) {
+      var game = games[g];
+      var rankings = await Leaderboard.getRankings(game, 50);
+      var container = document.getElementById('list-' + game);
+
+      if (rankings.length === 0) {
+        container.innerHTML = '<div class="ranking-empty">まだスコアがありません。<br>ゲームをプレイしてスコアを登録しよう。</div>';
+        continue;
+      }
+
+      var html = '';
+      for (var i = 0; i < rankings.length; i++) {
+        var r = rankings[i];
+        var rankClass = 'rank-num';
+        if (i === 0) rankClass += ' top1';
+        else if (i === 1) rankClass += ' top2';
+        else if (i === 2) rankClass += ' top3';
+
+        var isMe = myName && r.name === myName;
+        var rowClass = 'ranking-row' + (isMe ? ' is-me' : '');
+        var badge = isMe ? '<span class="you-badge">You</span>' : '';
+
+        var dateStr = '';
+        if (r.date) {
+          var d = new Date(r.date);
+          dateStr = d.getFullYear() + '/' + String(d.getMonth() + 1).padStart(2, '0') + '/' + String(d.getDate()).padStart(2, '0');
+        }
+
+        html += '<div class="' + rowClass + '">';
+        html += '<span class="' + rankClass + '">' + (i + 1) + '</span>';
+        html += '<div><span class="rank-name">' + escapeHtml(r.name) + badge + '</span>';
+        if (dateStr) html += '<div class="rank-date">' + dateStr + '</div>';
+        html += '</div>';
+        html += '<span class="rank-score">' + r.score.toLocaleString() + '</span>';
+        html += '</div>';
+      }
+      container.innerHTML = html;
+    }
+  }
+
+  function escapeHtml(s) {
+    var div = document.createElement('div');
+    div.textContent = s;
+    return div.innerHTML;
+  }
+
+  document.getElementById('refreshBtn').addEventListener('click', loadRankings);
+
+  loadRankings();
+})();
+</script>
+</body>
+</html>

@@ -10,6 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Zen+Kaku+Gothic+New:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <script src="js/leaderboard.js"></script>
   <style>
     .game-wrapper {
       display: flex;
@@ -91,6 +92,64 @@
       text-align: center;
       margin-bottom: 2rem;
     }
+    .name-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(8,9,12,0.95);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      gap: 1rem;
+      padding: 2rem;
+    }
+    .name-overlay.hidden { display: none; }
+    .name-overlay label {
+      font-family: 'Space Mono', monospace;
+      font-size: .7rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: #a8d8ea;
+    }
+    .name-overlay input {
+      font-family: 'Space Mono', monospace;
+      font-size: .85rem;
+      padding: .6rem 1rem;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,.15);
+      color: #f2f4f7;
+      text-align: center;
+      outline: none;
+      width: 200px;
+      letter-spacing: .08em;
+      transition: border-color .3s;
+    }
+    .name-overlay input:focus {
+      border-color: #a8d8ea;
+    }
+    .name-overlay .name-error {
+      font-family: 'Space Mono', monospace;
+      font-size: .6rem;
+      color: #ea6464;
+      min-height: 1.2em;
+    }
+    .name-overlay button {
+      padding: .65rem 1.6rem;
+      border: 1px solid rgba(255,255,255,.15);
+      background: transparent;
+      color: #f2f4f7;
+      font-family: 'Space Mono', monospace;
+      font-size: .6rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: border-color .3s, color .3s;
+    }
+    .name-overlay button:hover {
+      border-color: #a8d8ea;
+      color: #a8d8ea;
+    }
   </style>
 </head>
 <body>
@@ -120,13 +179,25 @@
   <p class="page-header-desc">光の順序を記憶せよ。<br>シグナルを受信し、正しい順番で再現する記憶と反射のゲーム。</p>
 </header>
 
-<main class="game-wrapper">
+<main class="game-wrapper" style="position:relative;">
+  <div class="name-overlay" id="nameOverlay">
+    <label for="nameInput">Enter Your Name</label>
+    <input type="text" id="nameInput" maxlength="16" placeholder="Name">
+    <div class="name-error" id="nameError"></div>
+    <button id="nameRegisterBtn">Register</button>
+  </div>
+
   <p class="game-instructions">
     光るサークルの順番を覚えて、同じ順番でタップしてください。<br>
-    ラウンドごとにシーケンスが一つずつ増えていきます。
+    ラウンドごとにシーケンスが一つずつ増えていきます。<br>
+    <a href="ranking.html" style="color:#a8d8ea;font-size:.75rem;letter-spacing:.12em;">Ranking</a>
   </p>
 
   <div class="game-hud">
+    <div class="hud-item">
+      <div class="hud-label">Player</div>
+      <div class="hud-value" id="hudPlayer">---</div>
+    </div>
     <div class="hud-item">
       <div class="hud-label">Round</div>
       <div class="hud-value" id="hudRound">0</div>
@@ -145,6 +216,7 @@
 
   <div class="game-status" id="gameStatus">START を押してゲーム開始</div>
   <button class="game-start-btn" id="startBtn">Start</button>
+  <a href="ranking.html" class="btn" style="margin-top:.8rem;font-size:.55rem;">Ranking</a>
 </main>
 
 <footer>

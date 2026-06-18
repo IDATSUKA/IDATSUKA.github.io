@@ -119,7 +119,7 @@
   <div class="game-container">
     <canvas id="gameCanvas"></canvas>
   </div>
-  <p class="game-instructions">Arrow keys / A,D / Swipe to move &mdash; Tap or Space to start</p>
+  <p class="game-instructions">Arrow keys / A,D / Swipe to move &mdash; Tap or Space to start<br><a href="ranking.html" style="color:#a8d8ea;text-decoration:none;opacity:0.6;">Ranking</a></p>
 </div>
 
 <footer>
@@ -139,6 +139,76 @@ document.getElementById('menuToggle').addEventListener('click', function() {
   this.classList.toggle('open');
   document.getElementById('mobileMenu').classList.toggle('open');
 });
+</script>
+
+<!-- Name Registration Overlay -->
+<div id="nameOverlay" style="
+  display:none;position:fixed;inset:0;z-index:9999;
+  background:rgba(8,9,12,0.95);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Space Mono',monospace;
+">
+  <div style="text-align:center;max-width:320px;padding:2rem;">
+    <div style="color:#a8d8ea;font-size:1.1rem;margin-bottom:0.5rem;font-family:'Space Grotesk',sans-serif;font-weight:500;">VOID RUNNER</div>
+    <div style="color:#6b7280;font-size:0.65rem;letter-spacing:0.12em;margin-bottom:2rem;">ENTER YOUR NAME</div>
+    <input id="nameInput" type="text" maxlength="16" placeholder="Name (1-16 chars)" autocomplete="off" style="
+      display:block;width:100%;box-sizing:border-box;
+      background:transparent;border:1px solid rgba(168,216,234,0.3);
+      color:#f2f4f7;font-family:'Space Mono',monospace;font-size:0.85rem;
+      padding:0.6rem 0.8rem;text-align:center;outline:none;
+      margin-bottom:0.5rem;
+    ">
+    <div id="nameError" style="color:#e87272;font-size:0.65rem;min-height:1.2rem;margin-bottom:1rem;"></div>
+    <button id="nameRegisterBtn" style="
+      background:transparent;border:1px solid rgba(168,216,234,0.4);
+      color:#a8d8ea;font-family:'Space Mono',monospace;font-size:0.75rem;
+      padding:0.5rem 2rem;cursor:pointer;letter-spacing:0.1em;
+    ">REGISTER</button>
+  </div>
+</div>
+
+<script src="js/leaderboard.js"></script>
+<script>
+// Leaderboard initialization and name registration
+(function() {
+  const overlay = document.getElementById('nameOverlay');
+  const nameInput = document.getElementById('nameInput');
+  const nameError = document.getElementById('nameError');
+  const nameRegisterBtn = document.getElementById('nameRegisterBtn');
+
+  // Hide overlay by default until we check
+  overlay.style.display = 'none';
+
+  async function initLeaderboard() {
+    await Leaderboard.init();
+    if (!Leaderboard.getName()) {
+      overlay.style.display = 'flex';
+      nameInput.focus();
+    }
+  }
+
+  nameRegisterBtn.addEventListener('click', async function() {
+    nameError.textContent = '';
+    const name = nameInput.value.trim();
+    if (!name) { nameError.textContent = '名前を入力してください'; return; }
+    nameRegisterBtn.disabled = true;
+    nameRegisterBtn.textContent = '...';
+    const res = await Leaderboard.registerName(name);
+    if (res.ok) {
+      overlay.style.display = 'none';
+    } else {
+      nameError.textContent = res.msg || 'エラーが発生しました';
+    }
+    nameRegisterBtn.disabled = false;
+    nameRegisterBtn.textContent = 'REGISTER';
+  });
+
+  nameInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') nameRegisterBtn.click();
+  });
+
+  initLeaderboard();
+})();
 </script>
 
 <script>
@@ -802,6 +872,14 @@ document.getElementById('menuToggle').addEventListener('click', function() {
       ctx.font = '400 ' + Math.min(w * 0.025, 10) + 'px "Space Mono", monospace';
       ctx.fillStyle = COL_DIM;
       ctx.fillText('SPD ' + speed.toFixed(1), 16, 18);
+
+      // Player name (below speed)
+      const pName = Leaderboard.getName();
+      if (pName) {
+        ctx.font = '400 ' + Math.min(w * 0.02, 8) + 'px "Space Mono", monospace';
+        ctx.fillStyle = 'rgba(107, 114, 128, 0.5)';
+        ctx.fillText(pName, 16, 32);
+      }
     }
 
     if (state === STATE_DEAD) {
