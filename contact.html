@@ -57,7 +57,7 @@
       <div class="contact-info-item">
         <p class="contact-info-label">Email</p>
         <p class="contact-info-value">
-          <a href="mailto:hello@idatsuka.com">hello@idatsuka.com</a>
+          <a href="mailto:www.dai.07@gmail.com">www.dai.07@gmail.com</a>
         </p>
       </div>
 
@@ -81,7 +81,7 @@
     <div class="rv">
       <span class="label">02 — Message</span>
 
-      <form id="contactForm" action="https://formspree.io/f/example" method="POST">
+      <form id="contactForm">
         <div class="form-row-split">
           <div>
             <label class="form-label" for="name">Name</label>
@@ -113,12 +113,6 @@
 
         <button type="submit" class="btn-filled">Send Message</button>
       </form>
-
-      <div class="form-success" id="successMsg">
-        <div class="form-success-icon">&check;</div>
-        <h3>メッセージを受け取りました</h3>
-        <p>2〜3営業日以内にご連絡いたします。</p>
-      </div>
     </div>
 
   </div>
@@ -169,8 +163,13 @@ document.getElementById('menuToggle').addEventListener('click', function() {
 });
 document.getElementById('contactForm').addEventListener('submit', function(e) {
   e.preventDefault();
-  this.style.display = 'none';
-  document.getElementById('successMsg').style.display = 'block';
+  var name = document.getElementById('name').value;
+  var email = document.getElementById('email').value;
+  var category = document.getElementById('category').value || 'General';
+  var message = document.getElementById('message').value;
+  var subject = encodeURIComponent('[IDATSUKA] ' + category + ' — ' + name);
+  var body = encodeURIComponent('Name: ' + name + '\nEmail: ' + email + '\nCategory: ' + category + '\n\n' + message);
+  window.location.href = 'mailto:www.dai.07@gmail.com?subject=' + subject + '&body=' + body;
 });
 const io = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
