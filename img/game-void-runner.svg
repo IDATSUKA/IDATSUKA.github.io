@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="60%" r="40%">
+      <stop offset="0%" stop-color="#a8d8ea" stop-opacity=".12"/>
+      <stop offset="100%" stop-color="#08090c" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="trail" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#a8d8ea" stop-opacity=".6"/>
+      <stop offset="100%" stop-color="#a8d8ea" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="scanfade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#08090c" stop-opacity="0"/>
+      <stop offset="80%" stop-color="#08090c" stop-opacity=".7"/>
+      <stop offset="100%" stop-color="#08090c" stop-opacity="1"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="450" fill="#08090c"/>
+  <rect width="800" height="450" fill="url(#glow)"/>
+  <!-- Grid -->
+  <g stroke="rgba(255,255,255,.025)" stroke-width=".5">
+    <line x1="100" y1="0" x2="100" y2="450"/><line x1="200" y1="0" x2="200" y2="450"/>
+    <line x1="300" y1="0" x2="300" y2="450"/><line x1="400" y1="0" x2="400" y2="450"/>
+    <line x1="500" y1="0" x2="500" y2="450"/><line x1="600" y1="0" x2="600" y2="450"/>
+    <line x1="700" y1="0" x2="700" y2="450"/>
+    <line x1="0" y1="75" x2="800" y2="75"/><line x1="0" y1="150" x2="800" y2="150"/>
+    <line x1="0" y1="225" x2="800" y2="225"/><line x1="0" y1="300" x2="800" y2="300"/>
+    <line x1="0" y1="375" x2="800" y2="375"/>
+  </g>
+  <!-- Obstacles -->
+  <g fill="#363d48">
+    <rect x="80" y="60" width="220" height="5" rx="1"/>
+    <rect x="500" y="60" width="180" height="5" rx="1"/>
+    <rect x="200" y="130" width="300" height="8" rx="1" opacity=".7"/>
+    <rect x="560" y="130" width="160" height="8" rx="1" opacity=".7"/>
+    <rect x="100" y="200" width="160" height="4" rx="1" opacity=".5"/>
+    <rect x="350" y="195" width="200" height="6" rx="1" opacity=".6"/>
+    <rect x="620" y="200" width="120" height="4" rx="1" opacity=".5"/>
+    <polygon points="250,170 262,182 250,194 238,182" opacity=".6"/>
+    <polygon points="580,100 590,112 580,124 570,112" opacity=".5"/>
+    <rect x="140" y="270" width="250" height="5" rx="1" opacity=".4"/>
+    <rect x="470" y="268" width="180" height="6" rx="1" opacity=".4"/>
+  </g>
+  <!-- Obstacle top edge highlights -->
+  <g fill="rgba(168,216,234,.06)">
+    <rect x="80" y="60" width="220" height="1"/>
+    <rect x="500" y="60" width="180" height="1"/>
+    <rect x="200" y="130" width="300" height="1"/>
+    <rect x="350" y="195" width="200" height="1"/>
+  </g>
+  <!-- Player trail -->
+  <g opacity=".3">
+    <polygon points="400,370 407,380 400,390 393,380" fill="#a8d8ea" opacity=".15"/>
+    <polygon points="400,355 407,365 400,375 393,365" fill="#a8d8ea" opacity=".2"/>
+    <polygon points="400,340 407,350 400,360 393,350" fill="#a8d8ea" opacity=".25"/>
+  </g>
+  <!-- Trail line -->
+  <rect x="399" y="340" width="2" height="80" fill="url(#trail)" opacity=".4"/>
+  <!-- Player (diamond) -->
+  <polygon points="400,310 412,325 400,340 388,325" fill="#a8d8ea"/>
+  <polygon points="400,315 408,325 400,335 392,325" fill="none" stroke="rgba(255,255,255,.4)" stroke-width=".5"/>
+  <!-- Player glow -->
+  <circle cx="400" cy="325" r="30" fill="rgba(168,216,234,.08)"/>
+  <circle cx="400" cy="325" r="16" fill="rgba(168,216,234,.05)"/>
+  <!-- Particles -->
+  <g fill="#a8d8ea">
+    <rect x="396" y="345" width="2" height="2" opacity=".5"/>
+    <rect x="404" y="352" width="1.5" height="1.5" opacity=".4"/>
+    <rect x="393" y="360" width="1" height="1" opacity=".3"/>
+    <rect x="406" y="368" width="1.5" height="1.5" opacity=".25"/>
+    <rect x="398" y="378" width="1" height="1" opacity=".2"/>
+    <rect x="402" y="385" width="1.5" height="1.5" opacity=".15"/>
+    <rect x="395" y="395" width="1" height="1" opacity=".1"/>
+  </g>
+  <!-- Score HUD -->
+  <text x="760" y="35" fill="#6b7280" font-family="'Space Mono',monospace" font-size="14" text-anchor="end" font-weight="700">2,847</text>
+  <text x="40" y="35" fill="#1a1e26" font-family="'Space Mono',monospace" font-size="10">SPD 4.2</text>
+  <!-- Bottom fade -->
+  <rect width="800" height="450" fill="url(#scanfade)"/>
+</svg>
