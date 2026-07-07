@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- ============================================================
+  ZEN — Minimal Portfolio Template v1.0
+  by IDATSUKA (https://idatsuka.com)
+
+  ■ カスタマイズ手順
+  1. 下の <title> と meta description をあなたの名前に変更
+  2. :root の CSS変数（色・フォント）を好みに調整
+  3. 「EDIT:」コメントの付いた箇所のテキスト・画像を差し替え
+  4. 1ファイル完結。サーバーにアップロードするだけで公開できます
+
+  ライセンス: 個人・商用利用可 / 再販・再配布は不可
+============================================================ -->
+
+<title>YOUR NAME — Portfolio</title>
+<meta name="description" content="YOUR NAME のポートフォリオ。デザインと制作の記録。">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Zen+Kaku+Gothic+New:wght@300;400;500&family=Space+Mono&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   THEME — ここを変えるだけで全体の印象が変わります
+============================================================ */
+:root {
+  --bg: #0a0b0e;          /* 背景色 */
+  --bg2: #101218;         /* カード背景色 */
+  --fg: #f0f2f5;          /* 文字色 */
+  --fg-dim: #9aa1ad;      /* 補助文字色 */
+  --muted: #646c78;       /* さらに薄い文字色 */
+  --accent: #7fd4c1;      /* アクセントカラー（リンク・ホバー） */
+  --border: #22252e;      /* 罫線 */
+  --sans: 'Inter', 'Zen Kaku Gothic New', sans-serif;
+  --mono: 'Space Mono', monospace;
+  --maxw: 1080px;         /* コンテンツ最大幅 */
+}
+
+/* ---- LIGHT THEME を使う場合は、上の :root を丸ごとこれに差し替え ----
+:root {
+  --bg: #fafafa; --bg2: #ffffff; --fg: #16181d; --fg-dim: #565d68;
+  --muted: #9aa1ad; --accent: #0e7c66; --border: #e4e6ea;
+  --sans: 'Inter', 'Zen Kaku Gothic New', sans-serif;
+  --mono: 'Space Mono', monospace; --maxw: 1080px;
+}
+--------------------------------------------------------------- */
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: var(--sans); font-weight: 300;
+  line-height: 1.8; -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+
+.container { max-width: var(--maxw); margin: 0 auto; padding: 0 1.5rem; }
+section { padding: 6rem 0; border-bottom: 1px solid var(--border); }
+
+.label {
+  font-family: var(--mono); font-size: .6rem; letter-spacing: .3em;
+  text-transform: uppercase; color: var(--muted);
+  display: block; margin-bottom: 2rem;
+}
+
+/* ---- Nav ---- */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.2rem 1.5rem; border-bottom: 1px solid var(--border);
+  background: color-mix(in srgb, var(--bg) 85%, transparent);
+  backdrop-filter: blur(12px);
+}
+.logo { font-family: var(--mono); font-size: .85rem; letter-spacing: .15em; }
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a {
+  font-size: .78rem; letter-spacing: .08em; color: var(--fg-dim);
+  transition: color .3s;
+}
+.nav-links a:hover { color: var(--accent); }
+
+/* ---- Hero ---- */
+#hero {
+  min-height: 82vh; display: flex; flex-direction: column;
+  justify-content: center; border-bottom: 1px solid var(--border);
+}
+.hero-label {
+  font-family: var(--mono); font-size: .62rem; letter-spacing: .3em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 1.5rem;
+}
+.hero-title {
+  font-size: clamp(2.4rem, 7vw, 5rem); font-weight: 300;
+  letter-spacing: -.02em; line-height: 1.15; margin-bottom: 1.5rem;
+}
+.hero-title em { font-style: normal; color: var(--accent); }
+.hero-sub { font-size: .92rem; color: var(--fg-dim); max-width: 480px; }
+
+/* ---- Works ---- */
+.works-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1px; background: var(--border); border: 1px solid var(--border);
+}
+.work-card { background: var(--bg); padding: 2rem; transition: background .3s; }
+.work-card:hover { background: var(--bg2); }
+.work-card-thumb {
+  aspect-ratio: 16/10; background: var(--bg2); margin-bottom: 1.4rem;
+  overflow: hidden; display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono); font-size: .6rem; color: var(--muted);
+  letter-spacing: .2em;
+}
+.work-card-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.work-card-cat {
+  font-family: var(--mono); font-size: .58rem; letter-spacing: .25em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: .5rem;
+}
+.work-card-title { font-size: 1.15rem; font-weight: 400; margin-bottom: .6rem; }
+.work-card-desc { font-size: .82rem; color: var(--fg-dim); }
+
+/* ---- About / Skills ---- */
+.about-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 4rem; }
+.about-text { font-size: .92rem; color: var(--fg-dim); }
+.skills-list { list-style: none; }
+.skills-list li {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding: .9rem 0; border-bottom: 1px solid var(--border);
+  font-size: .88rem;
+}
+.skills-list li span {
+  font-family: var(--mono); font-size: .62rem; color: var(--muted);
+  letter-spacing: .1em;
+}
+
+/* ---- Contact ---- */
+.contact-title { font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 300; margin-bottom: 2rem; }
+.btn {
+  display: inline-block; padding: .9rem 2.4rem;
+  border: 1px solid var(--fg); font-size: .78rem; letter-spacing: .15em;
+  transition: background .3s, color .3s;
+}
+.btn:hover { background: var(--fg); color: var(--bg); }
+
+/* ---- Footer ---- */
+footer {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 2rem 1.5rem; font-size: .72rem; color: var(--muted);
+}
+footer a { color: var(--fg-dim); }
+
+/* ---- Reveal animation ---- */
+.rv { opacity: 0; transform: translateY(24px); transition: opacity .8s ease, transform .8s ease; }
+.rv.on { opacity: 1; transform: none; }
+
+@media (max-width: 720px) {
+  .nav-links { gap: 1.2rem; }
+  .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  section { padding: 4rem 0; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <!-- EDIT: あなたの名前・ロゴ -->
+  <a href="#" class="logo">YOUR&nbsp;NAME</a>
+  <ul class="nav-links">
+    <li><a href="#works">Works</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section id="hero">
+  <div class="container">
+    <!-- EDIT: 肩書き -->
+    <p class="hero-label">Designer — Tokyo</p>
+    <!-- EDIT: キャッチコピー。<em>で囲むとアクセントカラーになります -->
+    <h1 class="hero-title">静けさの中に、<br><em>強さ</em>を宿すデザイン。</h1>
+    <p class="hero-sub">YOUR NAME のポートフォリオ。ブランディング、UI/UX、Webデザインの制作実績を掲載しています。</p>
+  </div>
+</section>
+
+<section id="works">
+  <div class="container">
+    <span class="label rv">01 — Selected Works</span>
+    <div class="works-grid">
+      <!-- EDIT: 実績カード。必要なだけ複製してください。
+           サムネイルは <img src="..."> をコメント解除して差し替え -->
+      <a href="#" class="work-card rv">
+        <div class="work-card-thumb"><!-- <img src="img/work-01.jpg" alt=""> -->IMAGE</div>
+        <p class="work-card-cat">Branding</p>
+        <h2 class="work-card-title">Project One</h2>
+        <p class="work-card-desc">プロジェクトの概要を1〜2行で。何を解決したかを書くと伝わります。</p>
+      </a>
+      <a href="#" class="work-card rv">
+        <div class="work-card-thumb">IMAGE</div>
+        <p class="work-card-cat">UI / UX</p>
+        <h2 class="work-card-title">Project Two</h2>
+        <p class="work-card-desc">プロジェクトの概要を1〜2行で。</p>
+      </a>
+      <a href="#" class="work-card rv">
+        <div class="work-card-thumb">IMAGE</div>
+        <p class="work-card-cat">Web Design</p>
+        <h2 class="work-card-title">Project Three</h2>
+        <p class="work-card-desc">プロジェクトの概要を1〜2行で。</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="container">
+    <span class="label rv">02 — About</span>
+    <div class="about-grid">
+      <!-- EDIT: 自己紹介 -->
+      <p class="about-text rv">
+        YOUR NAME。東京を拠点に活動するデザイナー。
+        ブランディングとデジタルプロダクトのデザインを中心に、
+        コンセプト設計から実装まで一貫して手がけています。
+      </p>
+      <!-- EDIT: スキル一覧 -->
+      <ul class="skills-list rv">
+        <li>Branding <span>Logo / VI / Guidelines</span></li>
+        <li>UI / UX Design <span>Figma / Prototyping</span></li>
+        <li>Web Design <span>HTML / CSS / JS</span></li>
+        <li>Motion <span>After Effects / Lottie</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="contact" style="border-bottom:none;">
+  <div class="container">
+    <span class="label rv">03 — Contact</span>
+    <h2 class="contact-title rv">プロジェクトのご相談は<br>お気軽に。</h2>
+    <!-- EDIT: メールアドレス -->
+    <a href="mailto:hello@example.com" class="btn rv">hello@example.com</a>
+  </div>
+</section>
+
+<footer>
+  <!-- EDIT: コピーライト -->
+  <p>&copy; 2026 YOUR NAME</p>
+  <p><a href="#hero">Back to top ↑</a></p>
+</footer>
+
+<script>
+// スクロールで要素をふわっと表示（.rv が付いた要素が対象）
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.rv').forEach(el => io.observe(el));
+</script>
+</body>
+</html>

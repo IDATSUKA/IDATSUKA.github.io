@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Store — IDATSUKA</title>
+  <meta name="description" content="IDATSUKA のデジタルストア。ポートフォリオテンプレートなどのデジタルプロダクトを販売しています。">
+  <meta property="og:title" content="Store — IDATSUKA">
+  <meta property="og:description" content="IDATSUKA のデジタルストア。ポートフォリオテンプレートなどのデジタルプロダクトを販売しています。">
+  <link rel="canonical" href="https://idatsuka.com/store.html">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%2308090c'/><text x='16' y='22' text-anchor='middle' font-size='16' font-family='sans-serif' font-weight='300' fill='%23f2f4f7'>I</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Zen+Kaku+Gothic+New:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .products-grid { grid-template-columns: repeat(2, 1fr); }
+    @media (max-width: 700px) { .products-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">Idatsuka</a>
+  <ul class="nav-links">
+    <li><a href="about.html">Profile</a></li>
+    <li><a href="play.html">Play</a></li>
+    <li><a href="biz.html">Business</a></li>
+    <li><a href="store.html" class="active">Store</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <button class="menu-toggle" id="menuToggle" aria-label="メニュー"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="about.html">Profile</a>
+  <a href="play.html">Play</a>
+  <a href="biz.html">Business</a>
+  <a href="store.html" class="active">Store</a>
+  <a href="blog.html">Blog</a>
+  <a href="contact.html">Contact</a>
+</div>
+
+<header class="page-header">
+  <span class="label">Digital Products</span>
+  <h1>Store.</h1>
+  <p class="page-header-desc">制作の現場から生まれたデジタルプロダクト。テンプレート、素材、ツール。</p>
+</header>
+
+<!-- 01 — Products -->
+<section style="border-bottom:1px solid var(--border);">
+  <div class="container">
+    <span class="label rv">01 — Products</span>
+    <div class="skills-grid products-grid">
+
+      <!-- ZEN Template -->
+      <div class="skill-item rv" style="display:flex;flex-direction:column;gap:.6rem;">
+        <p class="work-card-cat" style="font-family:var(--mono);font-size:.58rem;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);">HTML Template</p>
+        <p class="skill-item-name" style="font-size:1.1rem;">ZEN — Minimal Portfolio Template</p>
+        <p class="skill-item-tools" style="flex:1;">
+          1ファイル完結のミニマルなポートフォリオHTMLテンプレート。ビルドツール不要、日本語コメント付きでカスタマイズ簡単。ダーク / ライト両テーマ同梱。個人・商用利用可。
+        </p>
+        <p style="font-family:var(--mono);font-size:.85rem;color:var(--fg);margin:.4rem 0;">¥2,980 <span style="font-size:.62rem;color:var(--muted);">（応援価格 / 無料版あり）</span></p>
+        <div style="display:flex;gap:.8rem;flex-wrap:wrap;margin-top:.4rem;">
+          <a href="products/template-zen/index.html" class="btn" target="_blank" rel="noopener">Live Demo</a>
+          <a href="products/idatsuka-template-zen-v1.0.zip" class="btn" download>Free Download</a>
+          <a href="#" class="btn buy-btn" data-product="template-zen">応援購入 ¥2,980</a>
+        </div>
+      </div>
+
+      <!-- Custom order -->
+      <div class="skill-item rv" style="display:flex;flex-direction:column;gap:.6rem;">
+        <p class="work-card-cat" style="font-family:var(--mono);font-size:.58rem;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);">Custom Order</p>
+        <p class="skill-item-name" style="font-size:1.1rem;">オーダーメイド制作</p>
+        <p class="skill-item-tools" style="flex:1;">
+          テンプレートでは物足りない方へ。ロゴ、ブランディング、Webサイトをオーダーメイドで制作します。プランと料金は Business ページをご覧ください。
+        </p>
+        <p style="font-family:var(--mono);font-size:.85rem;color:var(--fg);margin:.4rem 0;">¥300,000〜</p>
+        <div style="display:flex;gap:.8rem;flex-wrap:wrap;margin-top:.4rem;">
+          <a href="business.html" class="btn">Services &amp; Pricing &rarr;</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- 02 — Support -->
+<section style="border-bottom:1px solid var(--border);">
+  <div class="container">
+    <span class="label rv">02 — Support</span>
+    <p class="rv" style="font-size:.92rem;line-height:1.9;color:var(--fg-dim);max-width:600px;margin-bottom:2rem;">
+      このサイトのゲームやテンプレートは無料で公開しています。活動を応援していただける方は、応援購入やご依頼という形でサポートいただけると、次の制作の力になります。
+    </p>
+    <div style="display:flex;gap:.8rem;flex-wrap:wrap;">
+      <a href="#" class="btn rv buy-btn" data-product="support">制作を応援する</a>
+      <a href="play.html" class="btn rv">Play Games &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="about-cta rv">
+  <h2 class="about-cta-title">気になるものは<em>ありましたか。</em></h2>
+  <a href="contact.html" class="btn">Get in Touch</a>
+</div>
+
+<footer>
+  <p>&copy; 2025 Idatsuka</p>
+  <ul class="footer-links">
+    <li><a href="about.html">Profile</a></li>
+    <li><a href="play.html">Play</a></li>
+    <li><a href="biz.html">Business</a></li>
+    <li><a href="store.html">Store</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+</footer>
+
+<script>
+document.getElementById('menuToggle').addEventListener('click', function() {
+  this.classList.toggle('open');
+  document.getElementById('mobileMenu').classList.toggle('open');
+});
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.rv').forEach(el => io.observe(el));
+
+/* ============================================================
+   決済リンク設定
+   Stripe Payment Link / BOOTH / Gumroad などで商品を作成し、
+   そのURLを下に貼るだけで購入ボタンが有効になります。
+   （手順は リポジトリの MONETIZATION.md 参照）
+============================================================ */
+const PAY_LINKS = {
+  'template-zen': '',  // 例: 'https://buy.stripe.com/xxxx' or BOOTH商品URL
+  'support': ''        // 例: 'https://ko-fi.com/xxxx' or Stripe投げ銭リンク
+};
+document.querySelectorAll('.buy-btn').forEach(btn => {
+  const url = PAY_LINKS[btn.dataset.product];
+  if (url) {
+    btn.href = url;
+    btn.target = '_blank';
+    btn.rel = 'noopener';
+  } else {
+    // 決済リンク未設定の間はデモ動作: クリックしても購入・注文は発生しません
+    btn.addEventListener('click', ev => {
+      ev.preventDefault();
+      let toast = document.getElementById('payToast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'payToast';
+        toast.style.cssText = 'position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:var(--bg2);color:var(--fg);border:1px solid var(--border);padding:.9rem 1.6rem;font-size:.78rem;letter-spacing:.08em;z-index:200;opacity:0;transition:opacity .3s;';
+        toast.textContent = '現在、決済の準備中です。もうしばらくお待ちください。';
+        document.body.appendChild(toast);
+      }
+      requestAnimationFrame(() => { toast.style.opacity = '1'; });
+      clearTimeout(toast._t);
+      toast._t = setTimeout(() => { toast.style.opacity = '0'; }, 2600);
+    });
+  }
+});
+</script>
+</body>
+</html>
