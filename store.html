@@ -144,9 +144,21 @@ document.querySelectorAll('.buy-btn').forEach(btn => {
     btn.target = '_blank';
     btn.rel = 'noopener';
   } else {
-    // 決済リンク未設定の間は、メールでの購入導線にフォールバック
-    const subject = encodeURIComponent('【購入希望】' + btn.textContent.trim());
-    btn.href = 'mailto:www.dai.07@gmail.com?subject=' + subject;
+    // 決済リンク未設定の間はデモ動作: クリックしても購入・注文は発生しません
+    btn.addEventListener('click', ev => {
+      ev.preventDefault();
+      let toast = document.getElementById('payToast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'payToast';
+        toast.style.cssText = 'position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:var(--bg2);color:var(--fg);border:1px solid var(--border);padding:.9rem 1.6rem;font-size:.78rem;letter-spacing:.08em;z-index:200;opacity:0;transition:opacity .3s;';
+        toast.textContent = '現在、決済の準備中です。もうしばらくお待ちください。';
+        document.body.appendChild(toast);
+      }
+      requestAnimationFrame(() => { toast.style.opacity = '1'; });
+      clearTimeout(toast._t);
+      toast._t = setTimeout(() => { toast.style.opacity = '0'; }, 2600);
+    });
   }
 });
 </script>
