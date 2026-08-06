@@ -94,6 +94,37 @@ volume 未マウント、CUDA とドライバの不一致がよくある原因�
 
 ---
 
+## macOS / API ノード固有
+
+**ノード検索に "MiniMax H3" が出てこない**
+ComfyUI が古いか、API ノードが読み込まれていません。
+`comfy_api_nodes/nodes_minimax.py` に `MinimaxHailuo03TextToVideoNode` があるか確認してください。
+無ければ更新します（`mac/install.sh -r master`）。
+
+**401 / 認証エラー、または「credits」関連のエラー**
+API ノードは Comfy アカウントに課金される仕組みです。GUI なら右上からログイン、
+スクリプトなら <https://platform.comfy.org/> で発行した `comfyui-` で始まるキーを
+`COMFY_API_KEY` に設定してください。残高不足でも失敗します。
+
+**`At least one reference image or video is required.`**
+ref2v は参照画像か参照動画が最低 1 つ必要です。音声だけでは実行できません。
+
+**参照画像が弾かれる**
+最小 256×256、アスペクト比 0.4〜2.5 の制約があります。極端に細長い画像は通りません。
+
+**参照動画が弾かれる**
+23.976〜60 FPS、1 本 2 秒以上、合計 15 秒以内です。
+
+**Mac で重みを使うローカル版ワークフロー（`workflows/*.json`）を開いたらエラーになる**
+仕様です。Apple Silicon では H3 の重みを実行できません
+（[mac-setup.md](mac-setup.md) に理由を書いています）。`workflows/api/` のほうを使ってください。
+
+**依存のインストールが失敗する**
+公式の ComfyUI Desktop（<https://www.comfy.org/download>）を使うのが早いです。
+同じ API ノードが最初から入っています。
+
+---
+
 ## 出力の品質
 
 **音声が出ない / 無音**

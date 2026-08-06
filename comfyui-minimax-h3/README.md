@@ -4,6 +4,8 @@ MiniMax H3（Hailuo 3.0 系のオープンウェイト版・2026-08-03 公開）
 
 - **RunPod Serverless** — Docker イメージ + ハンドラで、API を叩くと mp4（映像＋音声）が返る構成
 - **Windows ローカル** — PowerShell 一発で ComfyUI・PyTorch・重みを揃える構成
+- **macOS** — ComfyUI 同梱の **API ノード**で使う構成（Mac ではローカル実行不可。理由は
+  [docs/mac-setup.md](docs/mac-setup.md)）
 
 H3 は映像と 32kHz ステレオ音声を**同時に**生成するモデルなので、ワークフローは
 「映像 latent と音声 latent が組になった AV latent を 1 回のサンプリングで解いて、
@@ -15,10 +17,14 @@ H3 は映像と 32kHz ステレオ音声を**同時に**生成するモデルな
 
 ```
 comfyui-minimax-h3/
-├── workflows/              ComfyUI API フォーマットのワークフロー
+├── workflows/              ローカル実行用（重みを使う）
 │   ├── t2v.json            テキスト → 動画＋音声
 │   ├── flf2v.json          最初/最後のフレーム指定 → 動画＋音声
-│   └── ref2v.json          参照画像 → 動画＋音声
+│   ├── ref2v.json          参照画像 → 動画＋音声
+│   └── api/                ホスト API 用（重み不要・Mac 向け）
+│       ├── api_t2v.json
+│       ├── api_flf2v.json
+│       └── api_ref2v.json
 ├── scripts/
 │   └── download_models.py  Hugging Face から重みを取得（Windows/RunPod 共通）
 ├── runpod/
@@ -29,13 +35,25 @@ comfyui-minimax-h3/
 ├── windows/
 │   ├── install.ps1         Windows 用インストーラ
 │   └── download_models.ps1
+├── mac/
+│   └── install.sh          macOS 用インストーラ（重みは落とさない）
 ├── client/
-│   └── call_runpod.py      エンドポイント呼び出しサンプル
+│   ├── call_runpod.py      RunPod エンドポイント呼び出し
+│   └── call_local_api.py   ローカル ComfyUI 経由で API ノードを実行
 └── docs/
     ├── runpod-serverless.md
     ├── windows-setup.md
+    ├── mac-setup.md
     └── troubleshooting.md
 ```
+
+## どれを使うか
+
+| | 生成する場所 | 重み | 課金 |
+|---|---|---|---|
+| RunPod Serverless | RunPod の GPU | 必要（Network Volume） | GPU 秒課金 |
+| Windows ローカル | 手元の NVIDIA GPU | 必要（ローカル） | 電気代のみ |
+| macOS（API ノード） | MiniMax のサーバ | 不要 | 生成 1 本ごと（768P で約 $0.13/秒） |
 
 ---
 
@@ -91,11 +109,28 @@ cd comfyui-minimax-h3\windows
 
 → **[docs/windows-setup.md](docs/windows-setup.md)**
 
+### macOS
+
+重みは落としません（Mac ではローカル実行できないため）。生成は MiniMax のサーバ側です。
+
+```bash
+cd comfyui-minimax-h3/mac
+chmod +x install.sh && ./install.sh -d ~/ComfyUI
+
+# GUI: ~/ComfyUI/run_comfyui.command を起動し、右上からログイン
+# CLI:
+export COMFY_API_KEY=comfyui-xxxxxxxx
+python ../client/call_local_api.py --prompt "夜の渋谷を歩く猫、雨音つき" --out out.mp4
+```
+
+→ **[docs/mac-setup.md](docs/mac-setup.md)**
+
 ---
 
-## ワークフローの構造
+## ワークフローの構造（ローカル実行版）
 
-3 つの JSON はどれも同じ骨格です（ノード名は ComfyUI 本体のソースに実在するものを使用）。
+`workflows/*.json` の 3 つはどれも同じ骨格です（ノード名は ComfyUI 本体のソースに実在するものを使用）。
+`workflows/api/*.json` は API ノード 1 個＋ SaveVideo だけの、まったく別の単純な構成です。
 
 ```
 UNETLoader ─────────────► MiniMaxH3SigmaShift ──┐  (shift_video=12, shift_audio=3)
