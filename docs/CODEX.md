@@ -21,14 +21,31 @@ Claude が指示を組み立て → Codex が実行 → Claude が diff を検�
 
 ## 動かすのに必要なもの（2つ）
 
+どちらの設定も、claude.ai/code の**環境ダイアログ**で行います。開き方:
+
+1. [claude.ai/code](https://claude.ai/code) を開く
+2. メッセージ入力欄のすぐ上の行にある、現在の環境名が出ているクラウドアイコンをクリック
+   （このセレクタ専用の設定ページも直接 URL もありません）
+3. 環境名にマウスを乗せると右に出る歯車アイコンをクリック
+
 ### 1. 認証
 
-どちらか一方を用意します。
+**A. `OPENAI_API_KEY`（Claude Code on the web 向け・唯一の実用的な方法）**
 
-**A. 環境シークレット（Claude Code on the web 向け・推奨）**
+環境ダイアログの **Environment variables** 欄に `.env` 形式で記述します。
 
-Claude Code の環境設定で `OPENAI_API_KEY` を環境変数として登録します。
-リモートセッションはコンテナが毎回作り直されるため、`codex login` の対話ログインは残りません。API キー方式が唯一の実用的な選択肢です。
+```
+OPENAI_API_KEY=sk-...
+```
+
+⚠️ **重要 — Codex は `OPENAI_API_KEY` を直接読みません。**
+環境変数を置いただけでは `Missing bearer or basic authentication in header` で 401 になります。
+キーは `codex login --with-api-key` によって `$CODEX_HOME/auth.json`（既定 `~/.codex/auth.json`）へ
+書き込まれて初めて API に送信されます。この変換は `session-start.sh` と `codex-run.sh` が
+自動で行うので手動操作は不要ですが、仕組みとして把握しておいてください。
+
+⚠️ クラウド環境に専用のシークレットストアはありません。環境変数は**その環境を使える人が
+平文で読めます**。共有環境（organization-shared environment）では組織のメンバー全員に見えます。
 
 **B. 対話ログイン（手元のマシン向け）**
 
@@ -37,17 +54,23 @@ codex login          # ChatGPT アカウントでログイン
 codex login status   # 確認
 ```
 
-認証情報は `~/.codex/` に保存されます。
+認証情報は `~/.codex/` に保存されます。リモートセッションはコンテナが毎回破棄されるため、
+この方法はローカル専用です。
 
 ### 2. ネットワーク許可
 
-Codex は以下のホストへ HTTPS で通信します。
+Codex は `api.openai.com` へ HTTPS / WebSocket で通信します。
+既定の **Trusted** 許可リストにこのホストは**含まれていません**。
 
-- `api.openai.com`
-- `chatgpt.com`（ChatGPT アカウント認証を使う場合）
+環境ダイアログの **Network access** を **Custom** にし、**Allowed domains** に記述します。
 
-**Claude Code on the web ではこれが egress ポリシーで制限されている場合があります。**
-実際、このセットアップを行ったセッションでは両ホストとも 403（ポリシー拒否）でした。
+```
+api.openai.com
+```
+
+⚠️ **「Also include default list of common package managers」に必ずチェックを入れてください。**
+外すと書いたドメインしか通らず、`registry.npmjs.org` が遮断されて
+`session-start.sh` の `npm install -g @openai/codex` が失敗します。
 
 確認方法:
 
@@ -56,10 +79,13 @@ codex doctor                                   # reachability の行を見る
 curl -sS "$HTTPS_PROXY/__agentproxy/status"    # 直近の拒否ホストが出る
 ```
 
-`connect_rejected` に上記ホストが出る場合は、環境のネットワークポリシーを
-「カスタム許可リスト」にして `api.openai.com` と `chatgpt.com` を追加してください
-（環境設定は https://code.claude.com/docs/en/claude-code-on-the-web を参照）。
-ローカルの Claude Code で使う場合はこの制限はありません。
+`connect_rejected` に `api.openai.com` が出る場合はまだ遮断されています。
+ローカルの Claude Code で使う場合はこの制限自体がありません。
+
+### 反映のタイミング
+
+環境変数はセッション起動時に一度だけ読み込まれます。**実行中のセッションには反映されません** ——
+設定を保存したら新しいセッションを開始してください。
 
 ---
 
