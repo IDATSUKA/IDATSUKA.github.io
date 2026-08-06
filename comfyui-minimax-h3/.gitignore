@@ -1,0 +1,7 @@
+models/
+output/
+*.mp4
+*.safetensors
+__pycache__/
+*.pyc
+.hf-staging/

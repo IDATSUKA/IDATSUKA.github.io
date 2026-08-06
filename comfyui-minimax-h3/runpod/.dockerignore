@@ -1,0 +1,9 @@
+**/.git
+**/__pycache__
+**/*.pyc
+**/models
+**/output
+docs/
+windows/
+client/
+*.md

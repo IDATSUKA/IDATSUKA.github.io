@@ -1,0 +1,12 @@
+{
+  "input": {
+    "mode": "t2v",
+    "prompt": "A cinematic close-up of a woman standing on a rainy Tokyo street at night, neon reflections on wet asphalt, she smiles and says \"hello\", ambient rain and distant traffic.",
+    "width": 1344,
+    "height": 768,
+    "length": 124,
+    "steps": 50,
+    "cfg": 1.0,
+    "seed": 42
+  }
+}

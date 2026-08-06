@@ -1,0 +1,17 @@
+# Points ComfyUI at the RunPod Network Volume instead of the (empty) in-image
+# models/ tree. The volume is mounted at /runpod-volume on serverless workers
+# and at /workspace on a Pod - keep both entries so one volume serves both.
+runpod_volume:
+    base_path: /runpod-volume/ComfyUI/
+    is_default: true
+    diffusion_models: models/diffusion_models/
+    text_encoders: models/text_encoders/
+    vae: models/vae/
+    loras: models/loras/
+
+pod_workspace:
+    base_path: /workspace/ComfyUI/
+    diffusion_models: models/diffusion_models/
+    text_encoders: models/text_encoders/
+    vae: models/vae/
+    loras: models/loras/
