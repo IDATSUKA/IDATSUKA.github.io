@@ -57,9 +57,16 @@ MSG
   exit 2
 fi
 
-# Credentials: either a stored login under $CODEX_HOME (~/.codex) or an API key
-# in the environment. `codex login status` is the authoritative check.
-if [ -z "${OPENAI_API_KEY:-}" ] && ! codex login status >/dev/null 2>&1; then
+# Credentials live in $CODEX_HOME/auth.json (default ~/.codex). Codex does NOT
+# read OPENAI_API_KEY on its own — an API key only reaches the API once it has
+# been materialised into auth.json by `codex login --with-api-key`. So if a key
+# is in the environment and there is no stored login yet, do that login here.
+if ! codex login status >/dev/null 2>&1 && [ -n "${OPENAI_API_KEY:-}" ]; then
+  printenv OPENAI_API_KEY | codex login --with-api-key >/dev/null 2>&1 || true
+fi
+
+# `codex login status` is the authoritative check.
+if ! codex login status >/dev/null 2>&1; then
   cat >&2 <<'MSG'
 codex-run: Codex has no credentials.
 Provide one of:

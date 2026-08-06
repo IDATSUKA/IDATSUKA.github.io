@@ -23,9 +23,20 @@ fi
 
 echo "session-start: codex $(codex --version 2>/dev/null || echo '(version unknown)')"
 
-if [ -z "${OPENAI_API_KEY:-}" ] && ! codex login status >/dev/null 2>&1; then
-  echo "session-start: NOTE - Codex has no credentials; set OPENAI_API_KEY as an"
-  echo "session-start: environment secret to enable delegation. See docs/CODEX.md."
+# Codex does not read OPENAI_API_KEY directly; the key has to be written into
+# $CODEX_HOME/auth.json by `codex login --with-api-key` before it is sent to the
+# API. Do that once per container, since the container is ephemeral.
+if ! codex login status >/dev/null 2>&1 && [ -n "${OPENAI_API_KEY:-}" ]; then
+  if printenv OPENAI_API_KEY | codex login --with-api-key >/dev/null 2>&1; then
+    echo "session-start: codex authenticated from OPENAI_API_KEY"
+  else
+    echo "session-start: WARNING - codex login with OPENAI_API_KEY failed." >&2
+  fi
+fi
+
+if ! codex login status >/dev/null 2>&1; then
+  echo "session-start: NOTE - Codex has no credentials. Set OPENAI_API_KEY in the"
+  echo "session-start: environment's variables to enable delegation. See docs/CODEX.md."
 fi
 
 exit 0
