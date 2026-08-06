@@ -5,8 +5,8 @@
 | | 最低ライン | 快適 |
 |---|---|---|
 | OS | Windows 10 22H2 / 11（64bit） | Windows 11 |
-| GPU | NVIDIA 24GB（RTX 4090 / 3090） | 32GB 以上（RTX 5090 / RTX PRO 6000） |
-| ドライバ | CUDA 12.8 対応の最新版 | 〃 |
+| GPU | NVIDIA 24GB・**Ampere 世代以降**（RTX 4090 / 3090） | 32GB 以上（RTX 5090 / RTX PRO 6000） |
+| ドライバ | CUDA 13.0 対応の最新版 | 〃 |
 | システム RAM | 32GB | **64GB 以上** |
 | ストレージ | NVMe SSD に 60GB 空き | 150GB 空き |
 | Python | 3.12 または 3.13 | 3.12 |
@@ -17,6 +17,18 @@
 （設定 → システム → バージョン情報 → システムの詳細設定 → パフォーマンス → 詳細設定 → 仮想メモリ）。
 
 ---
+
+## まず自分のマシンを判定する
+
+インストール前に、どの profile が使えるかを判定できます（PyTorch 未導入でも動きます）。
+
+```powershell
+python ..\scripts\check_hardware.py
+```
+
+GPU の世代・VRAM・RAM・空き容量から、使うべき profile、起動フラグ、
+最初に試すべき解像度まで出力します。「そもそも動くのか」は
+[free-setup.md](free-setup.md) にハードウェアの線引きをまとめてあります。
 
 ## インストール
 
@@ -47,7 +59,7 @@ cd <このリポジトリ>\comfyui-minimax-h3\windows
 
 1. Git / Python / NVIDIA ドライバの確認
 2. ComfyUI を固定コミットで clone（H3 ノードが入っている版）
-3. `venv` を作り、CUDA 12.8 版の PyTorch と ComfyUI の依存を導入
+3. `venv` を作り、**CUDA 13.0 版**の PyTorch と ComfyUI の依存を導入
 4. 選んだ profile の重みを Hugging Face から取得
 5. `workflows/*.json` を ComfyUI の workflows フォルダにコピー
 6. `run_comfyui.bat` を生成

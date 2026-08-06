@@ -26,6 +26,7 @@ comfyui-minimax-h3/
 │       ├── api_flf2v.json
 │       └── api_ref2v.json
 ├── scripts/
+│   ├── check_hardware.py   このマシンで動くか判定して profile を提案
 │   └── download_models.py  Hugging Face から重みを取得（Windows/RunPod 共通）
 ├── runpod/
 │   ├── Dockerfile          ワーカーのイメージ
@@ -39,8 +40,10 @@ comfyui-minimax-h3/
 │   └── install.sh          macOS 用インストーラ（重みは落とさない）
 ├── client/
 │   ├── call_runpod.py      RunPod エンドポイント呼び出し
-│   └── call_local_api.py   ローカル ComfyUI 経由で API ノードを実行
+│   ├── call_local_api.py   ローカル ComfyUI 経由で API ノードを実行
+│   └── batch_local.py      プロンプトをまとめてローカル GPU で消化
 └── docs/
+    ├── free-setup.md       ★ 無料でできる範囲の最高構築
     ├── runpod-serverless.md
     ├── windows-setup.md
     ├── mac-setup.md
@@ -49,11 +52,21 @@ comfyui-minimax-h3/
 
 ## どれを使うか
 
+まず判定してください（何も入れていない状態でも動きます）。
+
+```bash
+python scripts/check_hardware.py
+```
+
 | | 生成する場所 | 重み | 課金 |
 |---|---|---|---|
+| Windows ローカル | 手元の NVIDIA GPU | 必要（ローカル） | **無料**（電気代のみ） |
 | RunPod Serverless | RunPod の GPU | 必要（Network Volume） | GPU 秒課金 |
-| Windows ローカル | 手元の NVIDIA GPU | 必要（ローカル） | 電気代のみ |
 | macOS（API ノード） | MiniMax のサーバ | 不要 | 生成 1 本ごと（768P で約 $0.13/秒） |
+
+無料で完結させたい場合は **[docs/free-setup.md](docs/free-setup.md)** を読んでください。
+動かせる GPU の条件（bf16 対応 = Ampere 世代以降）と、Colab / Kaggle の無料枠が
+使えない理由をソース根拠つきでまとめています。
 
 ---
 
@@ -70,6 +83,11 @@ H3 は DiT 本体・テキストエンコーダ（Qwen3-VL-32B）・映像 VAE�
 | `fp8` | pruned fp8 scaled | INT8 convrot | Ada / Hopper で INT8 が通らない時の代替 | 約 45GB |
 
 - **NVFP4 は Blackwell 世代の GPU でしか動きません。** RTX 4090 などでは `int8` を使ってください。
+- **PyTorch は cu130 以上が必須です。** cu128 以下だと ComfyUI が INT8 / NVFP4 の
+  カーネルを無効化してしまい、量子化 profile が最適化パスに乗りません
+  （`comfy/quant_ops.py`）。
+- **Ampere 世代（RTX 30xx / A100）より前の GPU では動きません。** H3 は bf16 / fp32 しか
+  サポートせず、bf16 は compute capability 8.0 以上が条件のためです。
 - どの profile でも映像 VAE（fp16）と音声 VAE（fp32）は必ず両方必要です。
 - 上のサイズは公開情報ベースの概算です。実際のファイルサイズはダウンロード後に
   `download_models.py` が実測値を出力します。

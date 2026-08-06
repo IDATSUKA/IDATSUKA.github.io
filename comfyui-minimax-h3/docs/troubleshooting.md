@@ -36,6 +36,23 @@ python download_models.py --list
 
 ---
 
+## 起動ログに出る警告
+
+**`You need pytorch with cu130 or higher to use optimized CUDA operations.`**
+これが出ていると **INT8 convrot / NVFP4 のカーネルが無効**になっていて、
+量子化 profile が最適化パスに乗りません（`comfy/quant_ops.py` が
+torch のビルドが CUDA 13 未満のとき comfy-kitchen の CUDA バックエンドを切ります）。
+cu130 で入れ直してください。
+
+```powershell
+D:\AI\ComfyUI\venv\Scripts\python.exe -m pip install --force-reinstall `
+  torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu130
+```
+
+現状の確認は `python scripts/check_hardware.py` が一番早いです。
+
+---
+
 ## メモリ・パフォーマンス
 
 **`CUDA out of memory`**

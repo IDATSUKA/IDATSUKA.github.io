@@ -31,7 +31,10 @@ param(
     [switch]$SkipModels,
     [switch]$Ref2va,
     [string]$ComfyUIRef = "2eb609766a749e3104485979615e062e401bab97",
-    [string]$TorchIndex = "https://download.pytorch.org/whl/cu128"
+    # cu130 is required, not merely preferred: comfy/quant_ops.py turns off the
+    # comfy-kitchen CUDA backend when torch.version.cuda < 13, and that backend
+    # provides the INT8 convrot / NVFP4 kernels every quantized profile needs.
+    [string]$TorchIndex = "https://download.pytorch.org/whl/cu130"
 )
 
 $ErrorActionPreference = "Stop"
@@ -96,7 +99,7 @@ if (-not (Test-Path $py)) {
     python -m venv $venv
 }
 
-Info "Installing PyTorch (CUDA 12.8)"
+Info "Installing PyTorch (CUDA 13.0)"
 & $py -m pip install --upgrade pip setuptools wheel
 & $py -m pip install torch torchvision torchaudio --index-url $TorchIndex
 
@@ -104,8 +107,15 @@ Info "Installing ComfyUI requirements"
 & $py -m pip install -r (Join-Path $InstallDir "requirements.txt")
 & $py -m pip install huggingface_hub hf_transfer
 
-$torchCuda = & $py -c "import torch; print(torch.version.cuda, torch.cuda.is_available())"
+$torchCuda = (& $py -c "import torch; print(torch.version.cuda or 'none')").Trim()
+$cudaOk    = (& $py -c "import torch; v=torch.version.cuda; print(int(bool(v) and tuple(map(int,v.split('.')))>=(13,0)))").Trim()
 Info "torch CUDA: $torchCuda"
+if ($cudaOk -ne "1") {
+    Warn "torch is built for CUDA $torchCuda. ComfyUI will log 'You need pytorch with cu130 or"
+    Warn "higher to use optimized CUDA operations' and disable the INT8/NVFP4 kernels, so the"
+    Warn "quantized profiles will be far slower. Reinstall with:"
+    Warn "  $py -m pip install --force-reinstall torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu130"
+}
 
 # --- models ----------------------------------------------------------------
 $modelsDir = Join-Path $InstallDir "models"
