@@ -93,6 +93,20 @@ def queue(server: str, graph: dict, client_id: str) -> str:
     return r.json()["prompt_id"]
 
 
+def explain_failure(status: dict) -> str:
+    """ComfyUI's message log also holds execution_start / execution_cached noise;
+    surface only the exception so a long batch log stays readable."""
+    for entry in status.get("messages", []):
+        if not (isinstance(entry, (list, tuple)) and len(entry) == 2):
+            continue
+        name, data = entry
+        if name != "execution_error" or not isinstance(data, dict):
+            continue
+        return (f"node {data.get('node_id', '?')} ({data.get('node_type', '?')}): "
+                f"{data.get('exception_type', '')}: {data.get('exception_message', '')}")
+    return json.dumps(status.get("messages", []), ensure_ascii=False)[:300]
+
+
 def collect(server: str, entry: dict, dest: pathlib.Path) -> pathlib.Path | None:
     for out in entry.get("outputs", {}).values():
         for values in out.values():
@@ -175,8 +189,7 @@ def main() -> int:
 
         status = entry.get("status", {})
         if status.get("status_str") == "error" or not status.get("completed", True):
-            msgs = json.dumps(status.get("messages", []), ensure_ascii=False)[:300]
-            print(f"[failed]  {label}\n           {msgs}", file=sys.stderr)
+            print(f"[failed]  {label}\n           {explain_failure(status)}", file=sys.stderr)
             failed += 1
             continue
 

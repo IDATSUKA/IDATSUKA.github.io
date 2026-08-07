@@ -49,6 +49,24 @@ def upload_image(base: str, path: str) -> str:
     return f"{sub}/{info['name']}" if sub else info["name"]
 
 
+def explain_failure(status: dict) -> str:
+    """ComfyUI's message log also holds execution_start / execution_cached noise;
+    surface only the exception so the real cause is not buried."""
+    for entry in status.get("messages", []):
+        if not (isinstance(entry, (list, tuple)) and len(entry) == 2):
+            continue
+        name, data = entry
+        if name != "execution_error" or not isinstance(data, dict):
+            continue
+        head = (f"node {data.get('node_id', '?')} ({data.get('node_type', '?')}): "
+                f"{data.get('exception_type', '')}: {data.get('exception_message', '')}")
+        tb = data.get("traceback")
+        if isinstance(tb, list) and tb:
+            head += "\n" + "".join(tb[-3:]).strip()
+        return head
+    return json.dumps(status.get("messages", []), ensure_ascii=False)[:1500]
+
+
 def build(args) -> dict:
     prompt = json.loads((WORKFLOWS / MODES[args.mode]).read_text())
 
@@ -112,8 +130,7 @@ def run(args, prompt: dict) -> list[pathlib.Path]:
             entry = history[prompt_id]
             status = entry.get("status", {})
             if status.get("status_str") == "error" or not status.get("completed", True):
-                sys.exit("execution failed:\n" +
-                         json.dumps(status.get("messages", []), indent=2, ensure_ascii=False)[:4000])
+                sys.exit("execution failed: " + explain_failure(status))
             break
         time.sleep(3)
     else:

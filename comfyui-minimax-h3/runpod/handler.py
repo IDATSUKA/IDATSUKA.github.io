@@ -240,6 +240,27 @@ def queue_prompt(prompt: dict, client_id: str) -> str:
     return r.json()["prompt_id"]
 
 
+def explain_failure(status: dict) -> str:
+    """Pull the one useful entry out of ComfyUI's status message log.
+
+    The log also carries execution_start / execution_cached / progress events;
+    dumping it whole buries the actual exception.
+    """
+    for entry in status.get("messages", []):
+        if not (isinstance(entry, (list, tuple)) and len(entry) == 2):
+            continue
+        name, data = entry
+        if name != "execution_error" or not isinstance(data, dict):
+            continue
+        head = (f"node {data.get('node_id', '?')} ({data.get('node_type', '?')}): "
+                f"{data.get('exception_type', '')}: {data.get('exception_message', '')}")
+        tb = data.get("traceback")
+        if isinstance(tb, list) and tb:
+            head += "\n" + "".join(tb[-3:]).strip()
+        return head
+    return json.dumps(status.get("messages", []), ensure_ascii=False)[:1500]
+
+
 def await_result(prompt_id: str, job_id: str) -> dict:
     deadline = time.time() + JOB_TIMEOUT
     last_report = 0.0
@@ -254,8 +275,7 @@ def await_result(prompt_id: str, job_id: str) -> dict:
             entry = history[prompt_id]
             status = entry.get("status", {})
             if status.get("status_str") == "error" or not status.get("completed", True):
-                messages = status.get("messages", [])
-                raise RuntimeError(f"execution failed: {json.dumps(messages, ensure_ascii=False)[:4000]}")
+                raise RuntimeError(f"execution failed: {explain_failure(status)}")
             return entry
 
         now = time.time()
