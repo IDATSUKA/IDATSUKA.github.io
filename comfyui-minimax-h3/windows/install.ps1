@@ -1,21 +1,37 @@
 <#
 .SYNOPSIS
-    Installs ComfyUI + MiniMax H3 on Windows (NVIDIA GPU).
+    Installs ComfyUI + MiniMax H3 on Windows.
 
 .DESCRIPTION
-    Clones ComfyUI at a revision that ships the native MiniMax H3 nodes, builds a
-    venv with CUDA 12.8 PyTorch, installs requirements, downloads the weights for
-    the chosen quantization profile, and writes run_comfyui.bat.
+    Two modes:
+
+    Local weights (default) - needs an NVIDIA GPU with 24GB+ VRAM and compute
+    capability 8.0+. Clones ComfyUI at a revision that ships the native MiniMax
+    H3 nodes, builds a venv with CUDA 13.0 PyTorch, downloads the weights for the
+    chosen quantization profile, and writes run_comfyui.bat.
+
+        .\install.ps1 -InstallDir D:\AI\ComfyUI -Quant nvfp4
+
+    -ApiOnly - no GPU requirement at all. Installs the same ComfyUI but skips the
+    weights entirely and wires up the hosted MiniMax H3 API nodes, where the
+    generation runs on MiniMax's servers. Use this when the GPU is too small
+    (or absent). Billed per clip - about $0.13 per second of 768P video.
+
+        .\install.ps1 -InstallDir D:\AI\ComfyUI -ApiOnly
 
     Run from a normal (non-admin) PowerShell:
         Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
-        .\install.ps1 -InstallDir D:\AI\ComfyUI -Quant nvfp4
 
 .PARAMETER InstallDir
-    Where ComfyUI goes. Put it on a fast SSD with 60-150 GB free.
+    Where ComfyUI goes. Local mode wants a fast SSD with 60-150 GB free;
+    -ApiOnly needs about 10 GB.
+
+.PARAMETER ApiOnly
+    Skip the weights and use the hosted API nodes. No GPU needed.
 
 .PARAMETER Quant
     bf16 | int8 | nvfp4 | fp8 - see ..\docs\windows-setup.md for the VRAM table.
+    Ignored with -ApiOnly.
 
 .PARAMETER SkipModels
     Install ComfyUI but do not download weights.
@@ -28,6 +44,7 @@ param(
     [string]$InstallDir = "$env:USERPROFILE\ComfyUI",
     [ValidateSet("bf16", "int8", "nvfp4", "fp8")]
     [string]$Quant = "nvfp4",
+    [switch]$ApiOnly,
     [switch]$SkipModels,
     [switch]$Ref2va,
     [string]$ComfyUIRef = "2eb609766a749e3104485979615e062e401bab97",
@@ -60,14 +77,33 @@ if ($pyVersion -notin @("3.12", "3.13")) {
     Warn "Python $pyVersion detected. ComfyUI is tested on 3.12/3.13; 3.14+ often has no wheels yet."
 }
 
+if ($ApiOnly) {
+    Info "Mode: hosted API nodes (no weights, no GPU requirement)"
+} else {
+    Info "Mode: local weights (profile: $Quant)"
+}
+
 if (Get-Command nvidia-smi -ErrorAction SilentlyContinue) {
     $gpu = (nvidia-smi --query-gpu=name,memory.total,driver_version --format=csv,noheader | Select-Object -First 1)
     Info "GPU: $gpu"
-} else {
-    Warn "nvidia-smi not found. MiniMax H3 needs an NVIDIA GPU with a recent driver."
+    if (-not $ApiOnly) {
+        # 24GB is the practical floor: the pruned INT8 DiT alone is ~19.5GB.
+        $vramMb = [int]((nvidia-smi --query-gpu=memory.total --format=csv,noheader,nounits | Select-Object -First 1).Trim())
+        if ($vramMb -lt 20000) {
+            Warn "This GPU has ${vramMb}MB of VRAM. MiniMax H3's smallest checkpoint is about 19.5GB,"
+            Warn "so local generation is very unlikely to work here (24GB is the practical floor)."
+            Warn "Re-run with -ApiOnly to install the hosted-API setup instead, which has no GPU"
+            Warn "requirement and skips the multi-tens-of-GB download."
+            $answer = Read-Host "Continue with the local install anyway? [y/N]"
+            if ($answer -notmatch '^(y|yes)$') { Die "Stopped. Re-run with -ApiOnly." }
+        }
+    }
+} elseif (-not $ApiOnly) {
+    Warn "nvidia-smi not found. Local MiniMax H3 needs an NVIDIA GPU with a recent driver."
+    Warn "If this machine has no suitable GPU, re-run with -ApiOnly."
 }
 
-if ($Quant -eq "nvfp4") {
+if (-not $ApiOnly -and $Quant -eq "nvfp4") {
     Warn "Quant 'nvfp4' needs a Blackwell GPU (RTX 50xx / RTX PRO 6000 / B200). On Ada or Hopper use -Quant int8."
 }
 
@@ -87,8 +123,9 @@ if (Test-Path (Join-Path $InstallDir ".git")) {
     git clone https://github.com/comfyanonymous/ComfyUI.git $InstallDir
 }
 git -C $InstallDir checkout $ComfyUIRef
-if (-not (Test-Path (Join-Path $InstallDir "comfy_extras\nodes_minimax_h3.py"))) {
-    Die "This ComfyUI revision has no MiniMax H3 nodes. Pass a newer -ComfyUIRef (or 'master')."
+$needFile = if ($ApiOnly) { "comfy_api_nodes\nodes_minimax.py" } else { "comfy_extras\nodes_minimax_h3.py" }
+if (-not (Test-Path (Join-Path $InstallDir $needFile))) {
+    Die "This ComfyUI revision is missing $needFile. Pass a newer -ComfyUIRef (or 'master')."
 }
 
 # --- venv ------------------------------------------------------------------
@@ -119,7 +156,9 @@ if ($cudaOk -ne "1") {
 
 # --- models ----------------------------------------------------------------
 $modelsDir = Join-Path $InstallDir "models"
-if ($SkipModels) {
+if ($ApiOnly) {
+    Info "Skipping weights - the hosted API nodes do not use them."
+} elseif ($SkipModels) {
     Warn "Skipping model download (-SkipModels). Run later:"
     Warn "  $py $repoRoot\scripts\download_models.py --models-dir $modelsDir --profile $Quant"
 } else {
@@ -132,16 +171,23 @@ if ($SkipModels) {
 }
 
 # --- workflows + launcher --------------------------------------------------
-$wfDest = Join-Path $InstallDir "user\default\workflows\minimax_h3"
+if ($ApiOnly) {
+    $wfDest = Join-Path $InstallDir "user\default\workflows\minimax_h3_api"
+    $wfSrc  = Join-Path $repoRoot "workflows\api\*.json"
+} else {
+    $wfDest = Join-Path $InstallDir "user\default\workflows\minimax_h3"
+    $wfSrc  = Join-Path $repoRoot "workflows\*.json"
+}
 New-Item -ItemType Directory -Force -Path $wfDest | Out-Null
-Copy-Item (Join-Path $repoRoot "workflows\*.json") $wfDest -Force
+Copy-Item $wfSrc $wfDest -Force
 Info "API-format workflows copied to $wfDest"
 
 # On a card that cannot hold the DiT outright, ComfyUI streams transformer blocks
 # from system RAM. Reserving a little VRAM keeps the desktop compositor from
-# fighting the sampler for the last few hundred MB.
+# fighting the sampler for the last few hundred MB. The API nodes never touch
+# the GPU, so they get no flags.
 $vramFlag = ""
-if (Get-Command nvidia-smi -ErrorAction SilentlyContinue) {
+if (-not $ApiOnly -and (Get-Command nvidia-smi -ErrorAction SilentlyContinue)) {
     $vramMb = [int]((nvidia-smi --query-gpu=memory.total --format=csv,noheader,nounits | Select-Object -First 1).Trim())
     if ($vramMb -lt 34000) { $vramFlag = "--reserve-vram 1.0" }
     Info "Detected ${vramMb}MB VRAM -> launch flags: '$vramFlag'"
@@ -166,6 +212,16 @@ Write-Host ""
 Info "Done."
 Write-Host "  Start ComfyUI : $batPath"
 Write-Host "  Then open     : http://127.0.0.1:8188"
-Write-Host "  Workflow menu : Workflow -> Browse Templates -> Video -> MiniMax H3"
-Write-Host ""
-Warn "Set your Windows pagefile to 64GB+ if you have under 64GB RAM - H3 streams DiT layers through system memory."
+
+if ($ApiOnly) {
+    Write-Host "  Node search   : type 'MiniMax H3' (category partner/video/MiniMax)"
+    Write-Host "  Workflows     : Workflow -> Open -> $wfDest"
+    Write-Host ""
+    Warn "Sign in before generating: open the user menu at the top right of the ComfyUI window."
+    Warn "The API nodes bill your Comfy account - roughly `$0.13 per second of 768P video,"
+    Warn "so a 5 second clip is about `$0.64. Nothing is charged until you actually run one."
+} else {
+    Write-Host "  Workflow menu : Workflow -> Browse Templates -> Video -> MiniMax H3"
+    Write-Host ""
+    Warn "Set your Windows pagefile to 64GB+ if you have under 64GB RAM - H3 streams DiT layers through system memory."
+}

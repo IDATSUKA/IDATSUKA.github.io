@@ -58,11 +58,13 @@ comfyui-minimax-h3/
 python scripts/check_hardware.py
 ```
 
-| | 生成する場所 | 重み | 課金 |
-|---|---|---|---|
-| Windows ローカル | 手元の NVIDIA GPU | 必要（ローカル） | **無料**（電気代のみ） |
-| RunPod Serverless | RunPod の GPU | 必要（Network Volume） | GPU 秒課金 |
-| macOS（API ノード） | MiniMax のサーバ | 不要 | 生成 1 本ごと（768P で約 $0.13/秒） |
+| | 生成する場所 | GPU 要件 | 重み | 課金 |
+|---|---|---|---|---|
+| Windows ローカル | 手元の NVIDIA GPU | **24GB 以上・Ampere 以降** | 必要 | **無料**（電気代のみ） |
+| Windows / macOS（API ノード） | MiniMax のサーバ | **不要** | 不要 | 1 本ごと（768P で約 $0.13/秒） |
+| RunPod Serverless | RunPod の GPU | 不要（借りる） | 必要（Network Volume） | GPU 秒課金 |
+
+GPU が条件を満たさない場合、Windows でも `install.ps1 -ApiOnly` で API ノード構成が入ります。
 
 無料で完結させたい場合は **[docs/free-setup.md](docs/free-setup.md)** を読んでください。
 動かせる GPU の条件（bf16 対応 = Ampere 世代以降）と、Colab / Kaggle の無料枠が

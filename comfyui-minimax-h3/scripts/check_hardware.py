@@ -185,6 +185,16 @@ def decide(gpu: dict | None, torch_info: dict, ram: float | None) -> tuple[str |
         warnings.append("torch is not installed yet - install it from the cu130 index "
                         "(https://download.pytorch.org/whl/cu130), not cu128.")
 
+    # The smallest H3 checkpoint (pruned INT8 DiT) is ~19.5GB. Below roughly that,
+    # there is no arrangement of offloading that makes local generation practical.
+    if vram < 20:
+        blockers.append(
+            f"{gpu['name']} has {vram:.0f}GB of VRAM. The smallest MiniMax H3 checkpoint is about "
+            "19.5GB and 24GB is the practical floor, so local generation is not realistic here. "
+            "The generation itself is the problem, not the setup - use the hosted API nodes "
+            "(install.ps1 -ApiOnly) or rent a GPU.")
+        return None, blockers, warnings
+
     blackwell = cc is not None and cc >= (10, 0)
     ada_plus = cc is not None and cc >= (8, 9)
 
@@ -202,8 +212,8 @@ def decide(gpu: dict | None, torch_info: dict, ram: float | None) -> tuple[str |
 
     if vram < 24:
         warnings.append(
-            f"{vram:.0f}GB VRAM is below the practical floor of 24GB. Expect heavy layer streaming; "
-            "start at 832x480 with length 124 and be ready for it to be very slow or OOM.")
+            f"{vram:.0f}GB VRAM is right at the edge. Expect heavy layer streaming; start at "
+            "832x480 with length 124 and be ready for it to be very slow or OOM.")
     elif vram < 32:
         warnings.append(
             f"{vram:.0f}GB VRAM works but the text encoder will not sit alongside the DiT. "
@@ -318,9 +328,15 @@ def main() -> int:
             row("", setting, why)
     else:
         head("What you can still do")
-        print("  * Hosted API nodes on any machine    -> docs/mac-setup.md")
-        print("  * Rent a GPU by the second on RunPod -> docs/runpod-serverless.md")
-        print("  * Why free notebook tiers do not work -> docs/free-setup.md")
+        print("  This machine can run ComfyUI with the hosted MiniMax H3 API nodes - the")
+        print("  generation happens on MiniMax's servers, so no GPU is involved.")
+        print()
+        print(color("    .\\install.ps1 -InstallDir D:\\AI\\ComfyUI -ApiOnly      (Windows)", CYAN))
+        print(color("    ./install.sh -d ~/ComfyUI                             (macOS)", CYAN))
+        print()
+        print("  Billed per clip: about $0.13 per second of 768P video (~$0.64 for 5s).")
+        print("  Renting a GPU instead -> docs/runpod-serverless.md")
+        print("  Why free notebook tiers cannot run it -> docs/free-setup.md")
 
     print()
     return 0 if profile else 1
