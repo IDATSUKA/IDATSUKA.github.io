@@ -1,0 +1,21 @@
+{
+  "name": "adobe-mcp",
+  "version": "1.0.0",
+  "description": "MCP server that lets Claude drive Adobe Premiere Pro (and later After Effects / Photoshop / Illustrator) through a CEP panel bridge.",
+  "type": "module",
+  "private": true,
+  "bin": {
+    "adobe-mcp": "server/index.js"
+  },
+  "scripts": {
+    "start": "node server/index.js",
+    "test": "node test/premiere-jsx.test.mjs && node test/plumbing.test.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.0",
+    "ws": "^8.18.0"
+  }
+}

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ExtensionManifest Version="7.0"
+                   ExtensionBundleId="com.idatsuka.adobebridge"
+                   ExtensionBundleVersion="1.0.0"
+                   ExtensionBundleName="MCP Bridge"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ExtensionList>
+    <Extension Id="com.idatsuka.adobebridge.panel" Version="1.0.0"/>
+  </ExtensionList>
+
+  <ExecutionEnvironment>
+    <!-- One panel, every app. Premiere is implemented; the others connect and
+         expose the generic ExtendScript escape hatch until their modules land. -->
+    <HostList>
+      <Host Name="PPRO" Version="[12.0,99.9]"/>
+      <Host Name="AEFT" Version="[15.0,99.9]"/>
+      <Host Name="PHXS" Version="[19.0,99.9]"/>
+      <Host Name="PHXM" Version="[19.0,99.9]"/>
+      <Host Name="ILST" Version="[23.0,99.9]"/>
+      <Host Name="AUDT" Version="[11.0,99.9]"/>
+    </HostList>
+    <LocaleList>
+      <Locale Code="All"/>
+    </LocaleList>
+    <RequiredRuntimeList>
+      <RequiredRuntime Name="CSXS" Version="8.0"/>
+    </RequiredRuntimeList>
+  </ExecutionEnvironment>
+
+  <DispatchInfoList>
+    <Extension Id="com.idatsuka.adobebridge.panel">
+      <DispatchInfo>
+        <Resources>
+          <MainPath>./index.html</MainPath>
+          <CEFCommandLine>
+            <Parameter>--allow-file-access</Parameter>
+            <Parameter>--allow-file-access-from-files</Parameter>
+          </CEFCommandLine>
+        </Resources>
+        <Lifecycle>
+          <AutoVisible>true</AutoVisible>
+        </Lifecycle>
+        <UI>
+          <Type>Panel</Type>
+          <Menu>MCP Bridge</Menu>
+          <Geometry>
+            <Size><Height>240</Height><Width>320</Width></Size>
+            <MinSize><Height>160</Height><Width>240</Width></MinSize>
+          </Geometry>
+        </UI>
+      </DispatchInfo>
+    </Extension>
+  </DispatchInfoList>
+</ExtensionManifest>

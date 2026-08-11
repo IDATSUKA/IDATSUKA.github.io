@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>MCP Bridge</title>
+<style>
+  :root { color-scheme: dark; }
+  body {
+    margin: 0;
+    padding: 14px;
+    font: 12px/1.6 -apple-system, "Segoe UI", "Hiragino Sans", "Yu Gothic UI", sans-serif;
+    background: #232323;
+    color: #d8d8d8;
+  }
+  h1 { font-size: 13px; margin: 0 0 10px; font-weight: 600; letter-spacing: .02em; }
+  .row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .dot { width: 9px; height: 9px; border-radius: 50%; background: #777; flex: none; }
+  .dot.on  { background: #4caf50; box-shadow: 0 0 6px #4caf5088; }
+  .dot.off { background: #e05252; }
+  .dot.wait{ background: #e0a52d; }
+  #state { font-weight: 600; }
+  #host { color: #8e8e8e; }
+  #log {
+    margin-top: 10px;
+    height: 96px;
+    overflow-y: auto;
+    background: #1b1b1b;
+    border: 1px solid #333;
+    border-radius: 4px;
+    padding: 6px 8px;
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    font-size: 11px;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  #log div { color: #9a9a9a; }
+  #log div.err { color: #e88; }
+  #log div.ok { color: #8cc98c; }
+  button {
+    background: #3a3a3a; color: #ddd; border: 1px solid #4a4a4a;
+    border-radius: 4px; padding: 4px 10px; font-size: 11px; cursor: pointer;
+  }
+  button:hover { background: #464646; }
+</style>
+</head>
+<body>
+  <h1>MCP Bridge</h1>
+  <div class="row">
+    <span class="dot wait" id="dot"></span>
+    <span id="state">接続中…</span>
+  </div>
+  <div class="row" id="host"></div>
+  <div class="row">
+    <button id="reload">スクリプト再読込</button>
+    <button id="reconnect">再接続</button>
+  </div>
+  <div id="log"></div>
+
+  <script src="./js/CSInterface.js"></script>
+  <script src="./js/main.js"></script>
+</body>
+</html>
