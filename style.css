@@ -113,7 +113,7 @@ footer {
   display: flex; justify-content: space-between; align-items: center;
 }
 footer p { font-family: var(--mono); font-size: .58rem; color: var(--dim); }
-.footer-links { display: flex; gap: 2rem; list-style: none; }
+.footer-links { display: flex; flex-wrap: wrap; gap: 2rem; list-style: none; }
 .footer-links a {
   font-family: var(--mono); font-size: .58rem; letter-spacing: .1em;
   text-transform: uppercase; color: var(--dim); transition: color .25s;
@@ -584,11 +584,30 @@ footer p { font-family: var(--mono); font-size: .58rem; color: var(--dim); }
   .sns-section { padding: 3rem 1.5rem; }
   .sns-grid { grid-template-columns: 1fr 1fr; }
   footer { flex-direction: column; gap: .8rem; text-align: center; padding: 1.5rem; }
-  .footer-links { justify-content: center; }
+  .footer-links { justify-content: center; gap: 1.2rem 1.4rem; }
   .skills-row { justify-content: center; }
 }
 @media (max-width: 480px) {
   .hero-name { font-size: clamp(1.2rem, 5vw, 1.6rem); gap: .4em; }
   .skills-grid { grid-template-columns: 1fr; }
   .sns-grid { grid-template-columns: 1fr; }
+}
+
+/* ── Concept-work notice (self-initiated project disclaimer) ── */
+.concept-notice {
+  margin-top: 2.5rem;
+  display: flex; align-items: flex-start; gap: 1rem;
+}
+.concept-notice-tag {
+  flex-shrink: 0; font-family: var(--mono); font-size: .55rem;
+  letter-spacing: .2em; text-transform: uppercase;
+  color: var(--accent); border: 1px solid var(--dim);
+  padding: .35rem .7rem; margin-top: .15rem;
+}
+.concept-notice p {
+  font-size: .74rem; line-height: 1.9; color: var(--muted); margin: 0; max-width: 720px;
+}
+.concept-notice strong { color: var(--fg-dim); font-weight: 400; }
+@media (max-width: 700px) {
+  .concept-notice { flex-direction: column; gap: .8rem; }
 }

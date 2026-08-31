@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>お見積もり — IDATSUKA</title>
+  <meta name="description" content="LP制作・コーポレートサイト・サイト診断の概算費用がその場でわかります。項目を選ぶだけ、1分で概算見積もり。">
+  <meta property="og:title" content="お見積もり — IDATSUKA">
+  <meta property="og:description" content="LP制作・コーポレートサイト・サイト診断の概算費用がその場でわかります。">
+  <meta property="og:image" content="https://idatsuka.com/img/og.svg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://idatsuka.com/estimate.html">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%2308090c'/><text x='16' y='22' text-anchor='middle' font-size='16' font-family='sans-serif' font-weight='300' fill='%23f2f4f7'>I</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Zen+Kaku+Gothic+New:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .est-wrap { display:grid; grid-template-columns: 1fr 380px; gap:4rem; align-items:start; }
+    @media (max-width: 900px){ .est-wrap { grid-template-columns:1fr; gap:2.5rem; } }
+
+    .est-step { margin-bottom:3.5rem; }
+    .est-step-head { display:flex; align-items:baseline; gap:1rem; margin-bottom:1.4rem; }
+    .est-step-num { font-family:var(--mono); font-size:.6rem; letter-spacing:.3em; color:var(--accent); }
+    .est-step-title { font-size:1.05rem; font-weight:400; letter-spacing:-.01em; }
+    .est-step-note { font-size:.78rem; color:var(--muted); margin-bottom:1.4rem; line-height:1.8; }
+
+    .opt-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:.9rem; }
+    .opt {
+      position:relative; display:block; padding:1.3rem 1.3rem 1.2rem;
+      border:1px solid var(--border); background:var(--bg2);
+      cursor:pointer; transition:border-color .25s, background .25s;
+    }
+    .opt:hover { border-color:var(--dim); background:var(--bg3); }
+    .opt input { position:absolute; opacity:0; pointer-events:none; }
+    .opt-name { font-size:.9rem; font-weight:500; margin-bottom:.35rem; display:block; }
+    .opt-price { font-family:var(--mono); font-size:.72rem; color:var(--accent); display:block; margin-bottom:.6rem; }
+    .opt-desc { font-size:.74rem; color:var(--muted); line-height:1.75; display:block; }
+    .opt input:checked ~ .opt-check { opacity:1; transform:scale(1); }
+    .opt-check {
+      position:absolute; top:1rem; right:1rem; width:16px; height:16px;
+      border-radius:50%; background:var(--accent); opacity:0; transform:scale(.6);
+      transition:opacity .2s, transform .2s;
+      display:flex; align-items:center; justify-content:center;
+    }
+    .opt-check::after { content:''; width:5px; height:9px; border:solid var(--bg); border-width:0 1.5px 1.5px 0; transform:rotate(45deg) translate(-1px,-1px); }
+    .opt.sel { border-color:var(--accent); background:var(--bg3); }
+
+    .est-range { display:flex; align-items:center; gap:1.2rem; margin-top:.4rem; }
+    .est-range input[type=range]{ -webkit-appearance:none; appearance:none; flex:1; height:1px; background:var(--dim); outline:none; }
+    .est-range input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; width:14px; height:14px; border-radius:50%; background:var(--accent); cursor:pointer; }
+    .est-range input[type=range]::-moz-range-thumb{ width:14px; height:14px; border:none; border-radius:50%; background:var(--accent); cursor:pointer; }
+    .est-range-val { font-family:var(--mono); font-size:.85rem; color:var(--fg); min-width:78px; text-align:right; }
+
+    /* Summary panel */
+    .est-panel {
+      position:sticky; top:6rem; border:1px solid var(--border);
+      background:var(--bg2); padding:2rem 1.8rem;
+    }
+    .est-panel-label { font-family:var(--mono); font-size:.55rem; letter-spacing:.3em; text-transform:uppercase; color:var(--muted); margin-bottom:1.5rem; display:block; }
+    .est-total { font-size:2.1rem; font-weight:300; letter-spacing:-.03em; line-height:1.2; }
+    .est-total small { font-size:.85rem; color:var(--muted); font-weight:400; letter-spacing:0; }
+    .est-total-sub { font-family:var(--mono); font-size:.68rem; color:var(--muted); margin-top:.5rem; }
+    .est-monthly { margin-top:.9rem; font-size:.78rem; color:var(--accent); font-family:var(--mono); }
+
+    .est-lines { list-style:none; margin:1.8rem 0; padding:1.5rem 0 0; border-top:1px solid var(--border); }
+    .est-lines li { display:flex; justify-content:space-between; gap:1rem; font-size:.76rem; padding:.42rem 0; color:var(--fg-dim); }
+    .est-lines li span:last-child { font-family:var(--mono); color:var(--muted); white-space:nowrap; }
+    .est-lines li.est-empty { color:var(--dim); justify-content:flex-start; }
+
+    .est-meta { display:flex; gap:2rem; padding-top:1.3rem; border-top:1px solid var(--border); margin-bottom:1.6rem; }
+    .est-meta-item { flex:1; }
+    .est-meta-label { font-family:var(--mono); font-size:.55rem; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); display:block; margin-bottom:.4rem; }
+    .est-meta-val { font-size:.88rem; color:var(--fg); }
+
+    .est-note { font-size:.68rem; color:var(--muted); line-height:1.8; margin-top:1.2rem; }
+    .est-panel .btn-filled { width:100%; text-align:center; justify-content:center; }
+
+    .est-contact { border-top:1px solid var(--border); padding-top:4rem; margin-top:1rem; }
+    .est-mini { display:grid; grid-template-columns:1fr 1fr; gap:1.2rem; }
+    @media (max-width:600px){ .est-mini{ grid-template-columns:1fr; } .est-meta{ gap:1.2rem; } }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">Idatsuka</a>
+  <ul class="nav-links">
+    <li><a href="about.html">Profile</a></li>
+    <li><a href="play.html">Play</a></li>
+    <li><a href="biz.html">Business</a></li>
+    <li><a href="estimate.html" class="active">Estimate</a></li>
+    <li><a href="store.html">Store</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <button class="menu-toggle" id="menuToggle" aria-label="メニュー"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="about.html">Profile</a>
+  <a href="play.html">Play</a>
+  <a href="biz.html">Business</a>
+  <a href="estimate.html" class="active">Estimate</a>
+  <a href="store.html">Store</a>
+  <a href="contact.html">Contact</a>
+</div>
+
+<header class="page-header">
+  <div class="page-header-grid">
+    <div>
+      <span class="label">Estimate</span>
+      <h1>1分で、<br>概算を。</h1>
+    </div>
+    <p class="page-header-desc">
+      項目を選ぶだけで、費用と納期の目安がその場で出ます。<br>
+      入力内容はそのまま見積もり依頼として送信できます。<br>
+      <strong style="color:var(--fg-dim);font-weight:400;">相談・見積もりは無料です。</strong>
+    </p>
+  </div>
+</header>
+
+<main>
+  <div class="container">
+    <div class="est-wrap">
+
+      <!-- ══ Left: builder ══ -->
+      <div>
+
+        <!-- STEP 1 -->
+        <div class="est-step rv">
+          <div class="est-step-head">
+            <span class="est-step-num">01</span>
+            <h2 class="est-step-title">何をつくりますか？</h2>
+          </div>
+          <p class="est-step-note">迷ったら「サイト診断」から。現状の課題を洗い出してから制作に進む方が、結果的に安く早く終わります。</p>
+          <div class="opt-grid" id="baseGrid">
+            <label class="opt" data-group="base">
+              <input type="radio" name="base" value="audit" data-price="50000" data-weeks="1">
+              <span class="opt-check"></span>
+              <span class="opt-name">サイト診断</span>
+              <span class="opt-price">¥50,000</span>
+              <span class="opt-desc">既存サイトの改善点を20項目のレポートに。優先度付き・30分の解説付き。5営業日で納品。</span>
+            </label>
+            <label class="opt" data-group="base">
+              <input type="radio" name="base" value="lp" data-price="350000" data-weeks="3">
+              <span class="opt-check"></span>
+              <span class="opt-name">LP制作</span>
+              <span class="opt-price">¥350,000〜</span>
+              <span class="opt-desc">商品・サービスを売るための1枚もの。構成案からデザイン・実装・公開まで一貫。</span>
+            </label>
+            <label class="opt" data-group="base">
+              <input type="radio" name="base" value="corp" data-price="800000" data-weeks="6">
+              <span class="opt-check"></span>
+              <span class="opt-name">コーポレートサイト</span>
+              <span class="opt-price">¥800,000〜</span>
+              <span class="opt-desc">会社サイトの新規制作・全面刷新。スマホ最適化と問い合わせ導線まで。</span>
+            </label>
+            <label class="opt" data-group="base">
+              <input type="radio" name="base" value="brand" data-price="250000" data-weeks="3">
+              <span class="opt-check"></span>
+              <span class="opt-name">ロゴ・ブランディング</span>
+              <span class="opt-price">¥250,000〜</span>
+              <span class="opt-desc">ロゴ、カラー、書体、使用ガイドライン。名刺等の展開もこの中で。</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- STEP 2: pages -->
+        <div class="est-step rv" id="pagesStep" hidden>
+          <div class="est-step-head">
+            <span class="est-step-num">02</span>
+            <h2 class="est-step-title">ページ数は？</h2>
+          </div>
+          <p class="est-step-note">トップページを含めた総ページ数です。わからなければそのままで構いません。</p>
+          <div class="est-range">
+            <input type="range" id="pages" min="1" max="20" value="5" step="1">
+            <span class="est-range-val" id="pagesVal">5 ページ</span>
+          </div>
+        </div>
+
+        <!-- STEP 3: options -->
+        <div class="est-step rv" id="optStep" hidden>
+          <div class="est-step-head">
+            <span class="est-step-num" id="optNum">03</span>
+            <h2 class="est-step-title">必要なものはありますか？</h2>
+          </div>
+          <p class="est-step-note">あとから追加もできます。迷う項目は未選択のままで結構です。</p>
+          <div class="opt-grid" id="addonGrid">
+            <label class="opt" data-group="addon">
+              <input type="checkbox" name="addon" value="copy" data-price="80000" data-weeks="1" data-label="原稿・コピーライティング">
+              <span class="opt-check"></span>
+              <span class="opt-name">原稿・コピー</span>
+              <span class="opt-price">+¥80,000</span>
+              <span class="opt-desc">掲載する文章をこちらで作成。原稿が用意できない場合はこちら。</span>
+            </label>
+            <label class="opt" data-group="addon">
+              <input type="checkbox" name="addon" value="photo" data-price="60000" data-weeks="1" data-label="写真撮影の手配">
+              <span class="opt-check"></span>
+              <span class="opt-name">写真の手配</span>
+              <span class="opt-price">+¥60,000</span>
+              <span class="opt-desc">カメラマン手配とディレクション。撮影費実費は別途。</span>
+            </label>
+            <label class="opt" data-group="addon">
+              <input type="checkbox" name="addon" value="cms" data-price="120000" data-weeks="1" data-label="CMS導入（自分で更新）">
+              <span class="opt-check"></span>
+              <span class="opt-name">CMS導入</span>
+              <span class="opt-price">+¥120,000</span>
+              <span class="opt-desc">お知らせやブログを自分で更新できるように。管理画面の使い方説明付き。</span>
+            </label>
+            <label class="opt" data-group="addon">
+              <input type="checkbox" name="addon" value="i18n" data-price="150000" data-weeks="2" data-label="多言語対応（英語）">
+              <span class="opt-check"></span>
+              <span class="opt-name">多言語対応</span>
+              <span class="opt-price">+¥150,000</span>
+              <span class="opt-desc">英語版の構築。翻訳文はご支給、または別途お見積もり。</span>
+            </label>
+            <label class="opt" data-group="addon">
+              <input type="checkbox" name="addon" value="form" data-price="50000" data-weeks="0" data-label="問い合わせフォーム">
+              <span class="opt-check"></span>
+              <span class="opt-name">問い合わせフォーム</span>
+              <span class="opt-price">+¥50,000</span>
+              <span class="opt-desc">自動返信メール・スパム対策込み。</span>
+            </label>
+            <label class="opt" data-group="addon">
+              <input type="checkbox" name="addon" value="seo" data-price="70000" data-weeks="1" data-label="SEO初期設定">
+              <span class="opt-check"></span>
+              <span class="opt-name">SEO初期設定</span>
+              <span class="opt-price">+¥70,000</span>
+              <span class="opt-desc">構造化データ・計測タグ・サーチコンソール登録まで。</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- STEP 4: schedule -->
+        <div class="est-step rv" id="rushStep" hidden>
+          <div class="est-step-head">
+            <span class="est-step-num" id="rushNum">04</span>
+            <h2 class="est-step-title">いつ必要ですか？</h2>
+          </div>
+          <div class="opt-grid">
+            <label class="opt" data-group="rush">
+              <input type="radio" name="rush" value="normal" data-mult="1" checked>
+              <span class="opt-check"></span>
+              <span class="opt-name">通常</span>
+              <span class="opt-price">追加費用なし</span>
+              <span class="opt-desc">標準の制作期間で進行します。</span>
+            </label>
+            <label class="opt" data-group="rush">
+              <input type="radio" name="rush" value="rush" data-mult="1.3">
+              <span class="opt-check"></span>
+              <span class="opt-name">お急ぎ</span>
+              <span class="opt-price">×1.3</span>
+              <span class="opt-desc">期間を約半分に短縮。他案件より優先して進行します。</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- STEP 5: maintenance -->
+        <div class="est-step rv" id="mntStep" hidden>
+          <div class="est-step-head">
+            <span class="est-step-num" id="mntNum">05</span>
+            <h2 class="est-step-title">公開後の運用は？</h2>
+          </div>
+          <p class="est-step-note">つくって終わりにしないためのプランです。不要なら「なし」で構いません。</p>
+          <div class="opt-grid">
+            <label class="opt" data-group="mnt">
+              <input type="radio" name="mnt" value="none" data-monthly="0" checked>
+              <span class="opt-check"></span>
+              <span class="opt-name">なし</span>
+              <span class="opt-price">¥0 / 月</span>
+              <span class="opt-desc">納品して完了。更新は都度お見積もり。</span>
+            </label>
+            <label class="opt" data-group="mnt">
+              <input type="radio" name="mnt" value="light" data-monthly="19800" data-label="運用サポート ライト">
+              <span class="opt-check"></span>
+              <span class="opt-name">ライト</span>
+              <span class="opt-price">¥19,800 / 月</span>
+              <span class="opt-desc">月2回までの更新、障害対応、バックアップ。</span>
+            </label>
+            <label class="opt" data-group="mnt">
+              <input type="radio" name="mnt" value="std" data-monthly="49800" data-label="運用サポート スタンダード">
+              <span class="opt-check"></span>
+              <span class="opt-name">スタンダード</span>
+              <span class="opt-price">¥49,800 / 月</span>
+              <span class="opt-desc">月8回までの更新、月次の改善提案と数値レポート。</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Contact -->
+        <div class="est-contact rv" id="contactStep" hidden>
+          <span class="label">Send</span>
+          <h2 class="est-step-title" style="margin-bottom:.8rem;">この内容で相談する</h2>
+          <p class="est-step-note" style="margin-bottom:2rem;">
+            上の見積もり内容が自動で本文に入ります。もちろん、この金額で確定ではありません。
+            内容を伺ったうえで、正式なお見積もりを無料でお出しします。
+          </p>
+          <form id="estForm">
+            <div class="est-mini">
+              <div>
+                <label class="form-label" for="cname">お名前 / 会社名</label>
+                <input class="form-input" type="text" id="cname" required placeholder="山田太郎 / 株式会社〇〇">
+              </div>
+              <div>
+                <label class="form-label" for="cmail">メールアドレス</label>
+                <input class="form-input" type="email" id="cmail" required placeholder="you@example.com">
+              </div>
+            </div>
+            <div class="form-row">
+              <label class="form-label" for="cmsg">ご相談内容（任意）</label>
+              <textarea class="form-textarea" id="cmsg" placeholder="現在のサイトURL、達成したいこと、ご予算やご希望の時期など。箇条書きで構いません。"></textarea>
+            </div>
+            <button type="submit" class="btn-filled">この内容で問い合わせる</button>
+            <p class="est-note">送信するとメールソフトが開きます。うまく開かない場合は <a href="mailto:www.dai.07@gmail.com" style="color:var(--accent);">www.dai.07@gmail.com</a> まで直接お送りください。</p>
+          </form>
+        </div>
+
+      </div>
+
+      <!-- ══ Right: summary ══ -->
+      <aside>
+        <div class="est-panel">
+          <span class="est-panel-label">概算お見積もり</span>
+
+          <div class="est-total" id="total">— <small>円</small></div>
+          <div class="est-total-sub" id="totalSub">項目を選んでください</div>
+          <div class="est-monthly" id="monthly" hidden></div>
+
+          <ul class="est-lines" id="lines">
+            <li class="est-empty">未選択</li>
+          </ul>
+
+          <div class="est-meta">
+            <div class="est-meta-item">
+              <span class="est-meta-label">納期目安</span>
+              <span class="est-meta-val" id="weeks">—</span>
+            </div>
+            <div class="est-meta-item">
+              <span class="est-meta-label">着手金</span>
+              <span class="est-meta-val" id="deposit">—</span>
+            </div>
+          </div>
+
+          <a href="#contactStep" class="btn-filled" id="panelCta">この内容で相談する</a>
+
+          <p class="est-note">
+            表示は税抜の概算です。要件により変動します。<br>
+            正式なお見積もりは無料。着手金は50%、残金は検収後のお支払いです。
+          </p>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+</main>
+
+<footer>
+  <p>&copy; 2025 Idatsuka</p>
+  <ul class="footer-links">
+    <li><a href="about.html">Profile</a></li>
+    <li><a href="play.html">Play</a></li>
+    <li><a href="biz.html">Business</a></li>
+    <li><a href="estimate.html">Estimate</a></li>
+    <li><a href="store.html">Store</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+</footer>
+
+<script>
+document.getElementById('menuToggle').addEventListener('click', function () {
+  this.classList.toggle('open');
+  document.getElementById('mobileMenu').classList.toggle('open');
+});
+
+(function () {
+  var BASE_LABEL = {
+    audit: 'サイト診断',
+    lp:    'LP制作',
+    corp:  'コーポレートサイト制作',
+    brand: 'ロゴ・ブランディング'
+  };
+  // Page count only affects multi-page builds.
+  var PAGES_APPLY   = { corp: true, lp: false, audit: false, brand: false };
+  var PER_PAGE      = 60000;   // beyond the pages included in the base price
+  var PAGES_INCLUDED = 5;
+
+  var $ = function (id) { return document.getElementById(id); };
+  var yen = function (n) { return n.toLocaleString('ja-JP'); };
+
+  function selectedBase() {
+    return document.querySelector('input[name=base]:checked');
+  }
+
+  function calc() {
+    var base = selectedBase();
+    var lines = [], total = 0, weeks = 0, monthly = 0, monthlyLabel = '';
+
+    if (base) {
+      var bPrice = +base.dataset.price;
+      var bWeeks = +base.dataset.weeks;
+      total += bPrice;
+      weeks += bWeeks;
+      lines.push([BASE_LABEL[base.value], bPrice]);
+
+      // extra pages
+      if (PAGES_APPLY[base.value]) {
+        var p = +$('pages').value;
+        if (p > PAGES_INCLUDED) {
+          var extra = (p - PAGES_INCLUDED) * PER_PAGE;
+          total += extra;
+          weeks += Math.ceil((p - PAGES_INCLUDED) / 4);
+          lines.push(['追加ページ ' + (p - PAGES_INCLUDED) + 'p', extra]);
+        }
+      }
+
+      // add-ons
+      document.querySelectorAll('input[name=addon]:checked').forEach(function (a) {
+        total += +a.dataset.price;
+        weeks += +a.dataset.weeks;
+        lines.push([a.dataset.label, +a.dataset.price]);
+      });
+
+      // rush
+      var rush = document.querySelector('input[name=rush]:checked');
+      if (rush && +rush.dataset.mult > 1) {
+        var add = Math.round(total * (+rush.dataset.mult - 1));
+        total += add;
+        weeks = Math.max(1, Math.ceil(weeks / 2));
+        lines.push(['お急ぎ対応 (×1.3)', add]);
+      }
+
+      // maintenance (monthly, not part of the one-off total)
+      var mnt = document.querySelector('input[name=mnt]:checked');
+      if (mnt && +mnt.dataset.monthly > 0) {
+        monthly = +mnt.dataset.monthly;
+        monthlyLabel = mnt.dataset.label;
+      }
+    }
+
+    return { lines: lines, total: total, weeks: weeks, monthly: monthly, monthlyLabel: monthlyLabel, base: base };
+  }
+
+  function render() {
+    var r = calc();
+
+    // visual selection state
+    document.querySelectorAll('.opt').forEach(function (o) {
+      var i = o.querySelector('input');
+      o.classList.toggle('sel', i && i.checked);
+    });
+
+    // progressive disclosure
+    var has = !!r.base, v = r.base ? r.base.value : '';
+    $('pagesStep').hidden = !(has && PAGES_APPLY[v]);
+    $('optStep').hidden   = !(has && v !== 'audit');
+    $('rushStep').hidden  = !has;
+    $('mntStep').hidden   = !(has && v !== 'audit' && v !== 'brand');
+    $('contactStep').hidden = !has;
+
+    // renumber the visible steps
+    var n = 2;
+    [['pagesStep', null], ['optStep', 'optNum'], ['rushStep', 'rushNum'], ['mntStep', 'mntNum']]
+      .forEach(function (pair) {
+        var sec = $(pair[0]);
+        if (sec.hidden) return;
+        var el = pair[1] ? $(pair[1]) : sec.querySelector('.est-step-num');
+        if (el) el.textContent = ('0' + n).slice(-2);
+        n++;
+      });
+
+    // totals
+    if (!has) {
+      $('total').innerHTML = '— <small>円</small>';
+      $('totalSub').textContent = '項目を選んでください';
+      $('lines').innerHTML = '<li class="est-empty">未選択</li>';
+      $('weeks').textContent = '—';
+      $('deposit').textContent = '—';
+      $('monthly').hidden = true;
+      return;
+    }
+
+    $('total').innerHTML = yen(r.total) + ' <small>円〜</small>';
+    $('totalSub').textContent = '税抜 / 概算';
+    $('lines').innerHTML = r.lines.map(function (l) {
+      return '<li><span>' + l[0] + '</span><span>¥' + yen(l[1]) + '</span></li>';
+    }).join('');
+    $('weeks').textContent = r.weeks <= 1 ? '約1週間' : '約' + r.weeks + '週間';
+    $('deposit').textContent = '¥' + yen(Math.round(r.total * 0.5));
+
+    if (r.monthly > 0) {
+      $('monthly').hidden = false;
+      $('monthly').textContent = '＋ ' + r.monthlyLabel + '  ¥' + yen(r.monthly) + ' / 月';
+    } else {
+      $('monthly').hidden = true;
+    }
+  }
+
+  function summaryText() {
+    var r = calc();
+    if (!r.base) return '';
+    var t = ['── 概算見積もり ──'];
+    r.lines.forEach(function (l) { t.push('・' + l[0] + '  ¥' + yen(l[1])); });
+    t.push('');
+    t.push('合計（税抜・概算）: ¥' + yen(r.total) + '〜');
+    if (r.monthly > 0) t.push('運用: ' + r.monthlyLabel + ' ¥' + yen(r.monthly) + ' / 月');
+    t.push('納期目安: ' + (r.weeks <= 1 ? '約1週間' : '約' + r.weeks + '週間'));
+    return t.join('\n');
+  }
+
+  // events
+  document.addEventListener('change', function (e) {
+    if (e.target.matches('input[name=base],input[name=addon],input[name=rush],input[name=mnt]')) render();
+  });
+  $('pages').addEventListener('input', function () {
+    $('pagesVal').textContent = this.value + ' ページ';
+    render();
+  });
+  $('panelCta').addEventListener('click', function (e) {
+    e.preventDefault();
+    var s = $('contactStep');
+    if (!s.hidden) s.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  $('estForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var r = calc();
+    var name = $('cname').value, mail = $('cmail').value, msg = $('cmsg').value;
+    var subject = '[お見積もり依頼] ' + (r.base ? BASE_LABEL[r.base.value] : '') + ' — ' + name;
+    var body = [
+      'お名前 / 会社名: ' + name,
+      'メールアドレス: ' + mail,
+      '',
+      summaryText(),
+      '',
+      '── ご相談内容 ──',
+      msg || '（未記入）'
+    ].join('\n');
+    window.location.href = 'mailto:www.dai.07@gmail.com?subject=' +
+      encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+  });
+
+  render();
+})();
+
+var io = new IntersectionObserver(function (es) {
+  es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
+}, { threshold: .1 });
+document.querySelectorAll('.rv').forEach(function (el) { io.observe(el); });
+</script>
+</body>
+</html>

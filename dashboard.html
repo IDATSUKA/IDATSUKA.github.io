@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — IDATSUKA</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="案件パイプラインと月次売上の管理。データはこのブラウザ内にのみ保存されます。">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%2308090c'/><text x='16' y='22' text-anchor='middle' font-size='16' font-family='sans-serif' font-weight='300' fill='%23f2f4f7'>I</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Zen+Kaku+Gothic+New:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    :root {
+      --c-won:  #3987e5;   /* 確定  — validated dark-mode slot 1 */
+      --c-pipe: #d95926;   /* 見込み — validated dark-mode slot 2 */
+      --surface: #0e1016;
+    }
+    .db-note {
+      border:1px solid var(--border); background:var(--bg2);
+      padding:1rem 1.2rem; font-size:.72rem; color:var(--muted);
+      line-height:1.8; margin-bottom:3rem;
+    }
+    .db-note strong { color:var(--fg-dim); font-weight:400; }
+
+    /* ── KPI tiles ── */
+    .kpi-row { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--border); border:1px solid var(--border); margin-bottom:3.5rem; }
+    @media (max-width:820px){ .kpi-row{ grid-template-columns:repeat(2,1fr); } }
+    .kpi { background:var(--bg2); padding:1.6rem 1.4rem; }
+    .kpi-label { font-family:var(--mono); font-size:.55rem; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); display:block; margin-bottom:.7rem; }
+    .kpi-val { font-size:1.75rem; font-weight:300; letter-spacing:-.03em; line-height:1.15; }
+    .kpi-val small { font-size:.72rem; color:var(--muted); letter-spacing:0; }
+    .kpi-sub { font-family:var(--mono); font-size:.63rem; color:var(--muted); margin-top:.5rem; }
+    .kpi-bar { height:2px; background:var(--dim); margin-top:.9rem; position:relative; overflow:hidden; }
+    .kpi-bar i { position:absolute; inset:0 auto 0 0; background:var(--c-won); transition:width .5s ease; }
+
+    /* ── chart ── */
+    .chart-head { display:flex; align-items:baseline; justify-content:space-between; gap:1rem; flex-wrap:wrap; margin-bottom:1.2rem; }
+    .legend { display:flex; gap:1.4rem; align-items:center; }
+    .legend span { display:inline-flex; align-items:center; gap:.45rem; font-size:.7rem; color:var(--fg-dim); }
+    .legend i { width:10px; height:10px; border-radius:2px; display:block; }
+    .legend .lg-target { width:14px; height:0; border-top:2px dashed var(--muted); border-radius:0; }
+    .chart-box { border:1px solid var(--border); background:var(--surface); padding:1.6rem 1.2rem .8rem; overflow-x:auto; }
+    .chart-box svg { display:block; min-width:640px; }
+    .bar-hit { cursor:pointer; }
+    .tip {
+      position:fixed; z-index:400; pointer-events:none; opacity:0;
+      background:var(--bg3); border:1px solid var(--dim); padding:.7rem .85rem;
+      font-size:.72rem; line-height:1.7; white-space:nowrap; transition:opacity .12s;
+      box-shadow:0 8px 24px rgba(0,0,0,.5);
+    }
+    .tip b { font-weight:500; display:block; margin-bottom:.35rem; font-family:var(--mono); font-size:.65rem; color:var(--muted); letter-spacing:.1em; }
+    .tip u { text-decoration:none; display:inline-flex; align-items:center; gap:.4rem; }
+    .tip u i { width:8px; height:8px; border-radius:2px; display:inline-block; }
+
+    /* ── deals ── */
+    .db-form { display:grid; grid-template-columns:2fr 1.4fr 1fr 1fr 1fr 1fr auto; gap:.6rem; align-items:end; margin-bottom:1.5rem; }
+    @media (max-width:1000px){ .db-form{ grid-template-columns:1fr 1fr; } }
+    .db-form .form-label { margin-bottom:.4rem; }
+    .db-form .form-input, .db-form .form-select { margin:0; padding:.7rem .8rem; font-size:.8rem; }
+    .db-form button { padding:.78rem 1.4rem; white-space:nowrap; }
+
+    .db-table { width:100%; border-collapse:collapse; font-size:.78rem; }
+    .db-table th {
+      text-align:left; font-family:var(--mono); font-size:.55rem; letter-spacing:.2em;
+      text-transform:uppercase; color:var(--muted); font-weight:400;
+      padding:.7rem .8rem; border-bottom:1px solid var(--border); white-space:nowrap;
+    }
+    .db-table td { padding:.85rem .8rem; border-bottom:1px solid var(--border); color:var(--fg-dim); vertical-align:middle; }
+    .db-table td.num { font-family:var(--mono); text-align:right; white-space:nowrap; }
+    .db-table tr:hover td { background:var(--bg2); }
+    .db-table select { background:var(--bg2); color:var(--fg-dim); border:1px solid var(--border); padding:.35rem .5rem; font-size:.72rem; font-family:inherit; }
+    .del { background:none; border:none; color:var(--dim); cursor:pointer; font-size:1rem; line-height:1; padding:.2rem .4rem; }
+    .del:hover { color:var(--c-pipe); }
+    .badge { font-family:var(--mono); font-size:.58rem; letter-spacing:.12em; padding:.25rem .55rem; border:1px solid var(--dim); color:var(--muted); text-transform:uppercase; }
+    .empty-row td { text-align:center; color:var(--dim); padding:3rem 0; }
+    .tbl-wrap { overflow-x:auto; border:1px solid var(--border); }
+    .tbl-wrap table { min-width:820px; }
+
+    .db-actions { display:flex; gap:.8rem; flex-wrap:wrap; margin-top:2rem; }
+    .db-actions button { font-size:.6rem; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">Idatsuka</a>
+  <ul class="nav-links">
+    <li><a href="biz.html">Business</a></li>
+    <li><a href="estimate.html">Estimate</a></li>
+    <li><a href="dashboard.html" class="active">Dashboard</a></li>
+  </ul>
+  <button class="menu-toggle" id="menuToggle" aria-label="メニュー"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="biz.html">Business</a>
+  <a href="estimate.html">Estimate</a>
+  <a href="dashboard.html" class="active">Dashboard</a>
+</div>
+
+<header class="page-header">
+  <div class="page-header-grid">
+    <div>
+      <span class="label">Internal</span>
+      <h1>Pipeline.</h1>
+    </div>
+    <p class="page-header-desc">
+      案件と月次売上の管理。目標は月商 <strong style="color:var(--fg-dim);font-weight:400;">¥1,111,000</strong>（年商1,333万＝所得1,000万）。<br>
+      毎週日曜に更新してください。
+    </p>
+  </div>
+</header>
+
+<main>
+  <div class="container">
+
+    <p class="db-note">
+      <strong>データはこのブラウザ内にのみ保存されます。</strong>
+      サーバーには一切送信されません。別の端末やブラウザには引き継がれないため、
+      定期的に下部の「バックアップを保存」でJSONを書き出してください。
+      ブラウザの履歴・サイトデータを消すと失われます。
+    </p>
+
+    <!-- KPI -->
+    <div class="kpi-row">
+      <div class="kpi">
+        <span class="kpi-label">今月の確定</span>
+        <div class="kpi-val" id="kThis">¥0</div>
+        <div class="kpi-sub" id="kThisSub">目標 ¥1,111,000</div>
+        <div class="kpi-bar"><i id="kThisBar" style="width:0%"></i></div>
+      </div>
+      <div class="kpi">
+        <span class="kpi-label">月額ストック (MRR)</span>
+        <div class="kpi-val" id="kMrr">¥0</div>
+        <div class="kpi-sub" id="kMrrSub">0 社</div>
+        <div class="kpi-bar"><i id="kMrrBar" style="width:0%"></i></div>
+      </div>
+      <div class="kpi">
+        <span class="kpi-label">見込み (加重)</span>
+        <div class="kpi-val" id="kPipe">¥0</div>
+        <div class="kpi-sub" id="kPipeSub">0 件が進行中</div>
+      </div>
+      <div class="kpi">
+        <span class="kpi-label">直近12ヶ月の確定</span>
+        <div class="kpi-val" id="kYear">¥0</div>
+        <div class="kpi-sub" id="kYearSub">年商目標 ¥13,330,000</div>
+        <div class="kpi-bar"><i id="kYearBar" style="width:0%"></i></div>
+      </div>
+    </div>
+
+    <!-- Chart -->
+    <section style="padding:0 0 4rem;">
+      <div class="chart-head">
+        <div>
+          <span class="label" style="margin-bottom:.4rem;">月次売上</span>
+          <p style="font-size:.75rem;color:var(--muted);">確定と見込み（成約確度で加重）の積み上げ。破線は月商目標。</p>
+        </div>
+        <div class="legend">
+          <span><i style="background:var(--c-won)"></i>確定</span>
+          <span><i style="background:var(--c-pipe)"></i>見込み（加重）</span>
+          <span><i class="lg-target"></i>目標</span>
+        </div>
+      </div>
+      <div class="chart-box"><svg id="chart" role="img" aria-label="月次売上の確定額と加重見込み額"></svg></div>
+    </section>
+
+    <!-- Add deal -->
+    <section style="padding:0 0 2rem;">
+      <span class="label">案件を追加</span>
+      <form class="db-form" id="addForm">
+        <div>
+          <label class="form-label" for="dName">案件名</label>
+          <input class="form-input" id="dName" required placeholder="コーポレートサイト刷新">
+        </div>
+        <div>
+          <label class="form-label" for="dClient">相手先</label>
+          <input class="form-input" id="dClient" placeholder="株式会社〇〇">
+        </div>
+        <div>
+          <label class="form-label" for="dType">種別</label>
+          <select class="form-select" id="dType">
+            <option value="project">制作</option>
+            <option value="retainer">月額</option>
+            <option value="spot">スポット</option>
+          </select>
+        </div>
+        <div>
+          <label class="form-label" for="dAmount">金額</label>
+          <input class="form-input" id="dAmount" type="number" min="0" step="1000" required placeholder="350000">
+        </div>
+        <div>
+          <label class="form-label" for="dStage">状態</label>
+          <select class="form-select" id="dStage">
+            <option value="lead">見込み</option>
+            <option value="talk">商談</option>
+            <option value="quote">提案済</option>
+            <option value="won">受注</option>
+            <option value="done">納品済</option>
+            <option value="lost">失注</option>
+          </select>
+        </div>
+        <div>
+          <label class="form-label" for="dMonth">計上月</label>
+          <input class="form-input" id="dMonth" type="month" required>
+        </div>
+        <button type="submit" class="btn-filled">追加</button>
+      </form>
+    </section>
+
+    <!-- Table -->
+    <section style="padding:0 0 3rem;">
+      <div class="tbl-wrap">
+        <table class="db-table">
+          <thead>
+            <tr>
+              <th>案件</th><th>相手先</th><th>種別</th>
+              <th style="text-align:right">金額</th>
+              <th>状態</th><th>計上月</th>
+              <th style="text-align:right">加重</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+
+      <div class="db-actions">
+        <button class="btn" id="exportBtn">バックアップを保存</button>
+        <button class="btn" id="importBtn">バックアップを読み込む</button>
+        <input type="file" id="importFile" accept="application/json" hidden>
+        <button class="btn" id="demoBtn">サンプルを入れて試す</button>
+        <button class="btn" id="clearBtn">すべて削除</button>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<div class="tip" id="tip"></div>
+
+<footer>
+  <p>&copy; 2025 Idatsuka</p>
+  <ul class="footer-links">
+    <li><a href="biz.html">Business</a></li>
+    <li><a href="estimate.html">Estimate</a></li>
+    <li><a href="/">Home</a></li>
+  </ul>
+</footer>
+
+<script>
+document.getElementById('menuToggle').addEventListener('click', function () {
+  this.classList.toggle('open');
+  document.getElementById('mobileMenu').classList.toggle('open');
+});
+
+(function () {
+  'use strict';
+
+  var KEY = 'idatsuka.pipeline.v1';
+  var TARGET = 1111000;                 // 月商目標
+  var RETAINER_HORIZON = 12;            // 月額は計上月から12ヶ月ぶん見込む
+
+  var STAGE = {
+    lead:  { label: '見込み', p: 0.10 },
+    talk:  { label: '商談',   p: 0.30 },
+    quote: { label: '提案済', p: 0.50 },
+    won:   { label: '受注',   p: 1.00 },
+    done:  { label: '納品済', p: 1.00 },
+    lost:  { label: '失注',   p: 0.00 }
+  };
+  var TYPE = { project: '制作', retainer: '月額', spot: 'スポット' };
+
+  var $ = function (id) { return document.getElementById(id); };
+  var yen = function (n) { return '¥' + Math.round(n).toLocaleString('ja-JP'); };
+
+  function monthKey(d) {
+    return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2);
+  }
+  function addMonths(key, n) {
+    var p = key.split('-');
+    var d = new Date(+p[0], +p[1] - 1 + n, 1);
+    return monthKey(d);
+  }
+  function monthLabel(key) {
+    var p = key.split('-');
+    return (+p[1]) + '月' + (+p[1] === 1 ? " '" + p[0].slice(2) : '');
+  }
+
+  var deals = [];
+  function load() {
+    try {
+      var raw = localStorage.getItem(KEY);
+      deals = raw ? JSON.parse(raw) : [];
+      if (!Array.isArray(deals)) deals = [];
+    } catch (e) { deals = []; }
+  }
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(deals)); }
+    catch (e) { alert('保存できませんでした。ブラウザの設定でサイトデータが無効になっている可能性があります。'); }
+  }
+
+  /* ── aggregation ─────────────────────────────── */
+
+  // Revenue a deal contributes to a given month, split into confirmed / weighted-pipeline.
+  function contribution(d, key) {
+    var amt = +d.amount || 0;
+    var st = STAGE[d.stage] || STAGE.lead;
+    if (st.p === 0) return null;
+
+    var active;
+    if (d.type === 'retainer') {
+      // recurs monthly from its start month
+      active = key >= d.month && key < addMonths(d.month, RETAINER_HORIZON);
+    } else {
+      active = key === d.month;
+    }
+    if (!active) return null;
+
+    return (d.stage === 'won' || d.stage === 'done')
+      ? { won: amt, pipe: 0 }
+      : { won: 0, pipe: amt * st.p };
+  }
+
+  function monthsWindow() {
+    var start = addMonths(monthKey(new Date()), -3);
+    var out = [];
+    for (var i = 0; i < 12; i++) out.push(addMonths(start, i));
+    return out;
+  }
+
+  function seriesFor(keys) {
+    return keys.map(function (k) {
+      var won = 0, pipe = 0;
+      deals.forEach(function (d) {
+        var c = contribution(d, k);
+        if (c) { won += c.won; pipe += c.pipe; }
+      });
+      return { key: k, won: won, pipe: pipe };
+    });
+  }
+
+  /* ── chart ───────────────────────────────────── */
+
+  function drawChart() {
+    var keys = monthsWindow();
+    var data = seriesFor(keys);
+    var svg = $('chart');
+    var W = 900, H = 300, ML = 68, MR = 16, MT = 18, MB = 40;
+    var iw = W - ML - MR, ih = H - MT - MB;
+
+    var peak = Math.max(TARGET * 1.15, d3max(data));
+    var yMax = niceCeil(peak);
+    var y = function (v) { return MT + ih - (v / yMax) * ih; };
+
+    var slot = iw / data.length;
+    var bw = Math.min(46, slot * 0.6);
+
+    var parts = [];
+
+    // gridlines + y labels
+    var ticks = 4;
+    for (var i = 0; i <= ticks; i++) {
+      var v = yMax * i / ticks, yy = y(v);
+      parts.push('<line x1="' + ML + '" y1="' + yy + '" x2="' + (W - MR) + '" y2="' + yy +
+                 '" stroke="rgba(255,255,255,.05)" stroke-width="1"/>');
+      parts.push('<text x="' + (ML - 10) + '" y="' + (yy + 4) + '" text-anchor="end" ' +
+                 'font-family="Space Mono, monospace" font-size="9.5" fill="#6b7280">' +
+                 (v >= 10000 ? (v / 10000) + '万' : v) + '</text>');
+    }
+
+    // bars
+    data.forEach(function (d, i) {
+      var cx = ML + slot * i + slot / 2;
+      var x = cx - bw / 2;
+      var yW = y(d.won), hW = MT + ih - yW;
+      var yP = y(d.won + d.pipe), hP = (MT + ih - yP) - hW;
+
+      if (hW > 0) {
+        parts.push('<rect x="' + x + '" y="' + (yW) + '" width="' + bw + '" height="' + hW +
+                   '" rx="0" fill="var(--c-won)"/>');
+        // 4px rounded cap on the data-end when nothing stacks above
+        if (hP <= 0) parts.push(cap(x, yW, bw, 'var(--c-won)'));
+      }
+      if (hP > 0) {
+        // 2px surface gap between stacked segments
+        var gap = hW > 0 ? 2 : 0;
+        parts.push('<rect x="' + x + '" y="' + yP + '" width="' + bw + '" height="' + Math.max(0, hP - gap) +
+                   '" fill="var(--c-pipe)"/>');
+        parts.push(cap(x, yP, bw, 'var(--c-pipe)'));
+      }
+
+      // x label
+      parts.push('<text x="' + cx + '" y="' + (MT + ih + 20) + '" text-anchor="middle" ' +
+                 'font-family="Space Mono, monospace" font-size="9.5" fill="#6b7280">' +
+                 monthLabel(d.key) + '</text>');
+
+      // hit area
+      parts.push('<rect class="bar-hit" x="' + (ML + slot * i) + '" y="' + MT + '" width="' + slot +
+                 '" height="' + ih + '" fill="transparent" data-i="' + i + '"/>');
+    });
+
+    // target line — drawn above bars
+    parts.push('<line x1="' + ML + '" y1="' + y(TARGET) + '" x2="' + (W - MR) + '" y2="' + y(TARGET) +
+               '" stroke="#6b7280" stroke-width="2" stroke-dasharray="5 4"/>');
+    parts.push('<text x="' + (W - MR) + '" y="' + (y(TARGET) - 7) + '" text-anchor="end" ' +
+               'font-family="Space Mono, monospace" font-size="9.5" fill="#6b7280">目標 111万</text>');
+
+    svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+    svg.setAttribute('height', H);
+    svg.setAttribute('width', '100%');
+    svg.innerHTML = parts.join('');
+
+    // hover
+    var tip = $('tip');
+    svg.querySelectorAll('.bar-hit').forEach(function (el) {
+      el.addEventListener('mouseenter', function (ev) {
+        var d = data[+el.dataset.i];
+        tip.innerHTML =
+          '<b>' + d.key + '</b>' +
+          '<u><i style="background:var(--c-won)"></i>確定 ' + yen(d.won) + '</u><br>' +
+          '<u><i style="background:var(--c-pipe)"></i>見込み ' + yen(d.pipe) + '</u><br>' +
+          '<span style="color:#6b7280">合計 ' + yen(d.won + d.pipe) + ' / 目標比 ' +
+          Math.round((d.won + d.pipe) / TARGET * 100) + '%</span>';
+        tip.style.opacity = 1;
+        move(ev);
+      });
+      el.addEventListener('mousemove', move);
+      el.addEventListener('mouseleave', function () { tip.style.opacity = 0; });
+      function move(ev) {
+        var r = tip.getBoundingClientRect();
+        var x = ev.clientX + 14, yv = ev.clientY - 10;
+        if (x + r.width > window.innerWidth - 8) x = ev.clientX - r.width - 14;
+        if (yv + r.height > window.innerHeight - 8) yv = window.innerHeight - r.height - 8;
+        tip.style.left = x + 'px'; tip.style.top = yv + 'px';
+      }
+    });
+  }
+
+  function cap(x, yTop, w, fill) {
+    // 4px rounded data-end
+    return '<path d="M' + x + ' ' + (yTop + 4) +
+           ' a4 4 0 0 1 4 -4 h' + (w - 8) + ' a4 4 0 0 1 4 4 z" fill="' + fill + '"/>';
+  }
+  function d3max(data) {
+    return data.reduce(function (m, d) { return Math.max(m, d.won + d.pipe); }, 0);
+  }
+  function niceCeil(v) {
+    if (v <= 0) return 100000;
+    var mag = Math.pow(10, Math.floor(Math.log10(v)));
+    return Math.ceil(v / (mag / 2)) * (mag / 2);
+  }
+
+  /* ── KPI ─────────────────────────────────────── */
+
+  function drawKpi() {
+    var now = monthKey(new Date());
+
+    var thisWon = 0, thisPipe = 0;
+    deals.forEach(function (d) {
+      var c = contribution(d, now);
+      if (c) { thisWon += c.won; thisPipe += c.pipe; }
+    });
+
+    var mrrDeals = deals.filter(function (d) {
+      return d.type === 'retainer' && (d.stage === 'won' || d.stage === 'done') && d.month <= now;
+    });
+    var mrr = mrrDeals.reduce(function (s, d) { return s + (+d.amount || 0); }, 0);
+
+    var open = deals.filter(function (d) {
+      return ['lead', 'talk', 'quote'].indexOf(d.stage) >= 0;
+    });
+    var openW = open.reduce(function (s, d) {
+      var mult = d.type === 'retainer' ? RETAINER_HORIZON : 1;
+      return s + (+d.amount || 0) * STAGE[d.stage].p * mult;
+    }, 0);
+
+    var y12 = 0, keys = [];
+    for (var i = 11; i >= 0; i--) keys.push(addMonths(now, -i));
+    seriesFor(keys).forEach(function (r) { y12 += r.won; });
+
+    $('kThis').textContent = yen(thisWon);
+    $('kThisSub').textContent = '目標 ' + yen(TARGET) + ' / 達成 ' + Math.round(thisWon / TARGET * 100) + '%';
+    $('kThisBar').style.width = Math.min(100, thisWon / TARGET * 100) + '%';
+
+    $('kMrr').textContent = yen(mrr);
+    $('kMrrSub').textContent = mrrDeals.length + ' 社 / 目標 8社 ¥280,000';
+    $('kMrrBar').style.width = Math.min(100, mrr / 280000 * 100) + '%';
+
+    $('kPipe').textContent = yen(openW);
+    $('kPipeSub').textContent = open.length + ' 件が進行中';
+
+    $('kYear').textContent = yen(y12);
+    $('kYearSub').textContent = '年商目標 ¥13,330,000 / 達成 ' + Math.round(y12 / 13330000 * 100) + '%';
+    $('kYearBar').style.width = Math.min(100, y12 / 13330000 * 100) + '%';
+  }
+
+  /* ── table ───────────────────────────────────── */
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  function drawTable() {
+    var tb = $('tbody');
+    if (!deals.length) {
+      tb.innerHTML = '<tr class="empty-row"><td colspan="8">案件がまだありません。上のフォームから追加してください。</td></tr>';
+      return;
+    }
+    var sorted = deals.slice().sort(function (a, b) {
+      return a.month === b.month ? 0 : (a.month < b.month ? -1 : 1);
+    });
+    tb.innerHTML = sorted.map(function (d) {
+      var st = STAGE[d.stage] || STAGE.lead;
+      var mult = d.type === 'retainer' ? RETAINER_HORIZON : 1;
+      var weighted = (+d.amount || 0) * st.p * mult;
+      var opts = Object.keys(STAGE).map(function (k) {
+        return '<option value="' + k + '"' + (k === d.stage ? ' selected' : '') + '>' + STAGE[k].label + '</option>';
+      }).join('');
+      return '<tr>' +
+        '<td>' + esc(d.name) + '</td>' +
+        '<td style="color:var(--muted)">' + (esc(d.client) || '—') + '</td>' +
+        '<td><span class="badge">' + (TYPE[d.type] || d.type) + '</span></td>' +
+        '<td class="num">' + yen(d.amount) + (d.type === 'retainer' ? '<span style="color:var(--muted)">/月</span>' : '') + '</td>' +
+        '<td><select data-stage="' + d.id + '">' + opts + '</select></td>' +
+        '<td class="num" style="text-align:left">' + esc(d.month) + '</td>' +
+        '<td class="num" style="color:var(--muted)">' + yen(weighted) + '</td>' +
+        '<td style="text-align:right"><button class="del" data-del="' + d.id + '" aria-label="削除">&times;</button></td>' +
+        '</tr>';
+    }).join('');
+  }
+
+  function render() { drawKpi(); drawChart(); drawTable(); }
+
+  /* ── events ──────────────────────────────────── */
+
+  $('dMonth').value = monthKey(new Date());
+
+  $('addForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    deals.push({
+      id: 'd' + Date.now() + Math.random().toString(36).slice(2, 7),
+      name: $('dName').value.trim(),
+      client: $('dClient').value.trim(),
+      type: $('dType').value,
+      amount: +$('dAmount').value || 0,
+      stage: $('dStage').value,
+      month: $('dMonth').value
+    });
+    save(); render();
+    $('dName').value = ''; $('dClient').value = ''; $('dAmount').value = '';
+    $('dName').focus();
+  });
+
+  $('tbody').addEventListener('change', function (e) {
+    var id = e.target.dataset.stage;
+    if (!id) return;
+    var d = deals.find(function (x) { return x.id === id; });
+    if (d) { d.stage = e.target.value; save(); render(); }
+  });
+
+  $('tbody').addEventListener('click', function (e) {
+    var id = e.target.dataset.del;
+    if (!id) return;
+    var d = deals.find(function (x) { return x.id === id; });
+    if (d && confirm('「' + d.name + '」を削除しますか？')) {
+      deals = deals.filter(function (x) { return x.id !== id; });
+      save(); render();
+    }
+  });
+
+  $('exportBtn').addEventListener('click', function () {
+    var blob = new Blob([JSON.stringify(deals, null, 2)], { type: 'application/json' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'idatsuka-pipeline-' + monthKey(new Date()) + '.json';
+    document.body.appendChild(a); a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 0);
+  });
+
+  $('importBtn').addEventListener('click', function () { $('importFile').click(); });
+  $('importFile').addEventListener('change', function (e) {
+    var f = e.target.files && e.target.files[0];
+    if (!f) return;
+    var r = new FileReader();
+    r.onload = function () {
+      try {
+        var got = JSON.parse(r.result);
+        if (!Array.isArray(got)) throw 0;
+        deals = got; save(); render();
+      } catch (err) { alert('読み込めませんでした。バックアップのJSONファイルを選んでください。'); }
+    };
+    r.readAsText(f);
+    e.target.value = '';
+  });
+
+  $('demoBtn').addEventListener('click', function () {
+    if (deals.length && !confirm('既存のデータにサンプルを追加します。よろしいですか？')) return;
+    var n = monthKey(new Date());
+    [
+      ['サイト診断',            'A社', 'spot',     50000,  'done',  addMonths(n, -2)],
+      ['LP制作',                'A社', 'project',  350000, 'won',   addMonths(n, -1)],
+      ['運用サポート ライト',   'A社', 'retainer', 19800,  'won',   addMonths(n, -1)],
+      ['コーポレートサイト刷新','B社', 'project',  800000, 'quote', n],
+      ['ロゴ制作',              'C社', 'project',  250000, 'talk',  addMonths(n, 1)],
+      ['LP制作',                'D社', 'project',  350000, 'lead',  addMonths(n, 2)]
+    ].forEach(function (r) {
+      deals.push({
+        id: 'd' + Date.now() + Math.random().toString(36).slice(2, 7),
+        name: r[0], client: r[1], type: r[2], amount: r[3], stage: r[4], month: r[5]
+      });
+    });
+    save(); render();
+  });
+
+  $('clearBtn').addEventListener('click', function () {
+    if (confirm('すべての案件データを削除します。元に戻せません。よろしいですか？')) {
+      deals = []; save(); render();
+    }
+  });
+
+  window.addEventListener('resize', function () { clearTimeout(window.__rt); window.__rt = setTimeout(drawChart, 150); });
+
+  load();
+  render();
+})();
+</script>
+</body>
+</html>
