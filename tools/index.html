@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>無料ツール — 請求書・見積書の作成 | IDATSUKA</title>
+<meta name="description" content="フリーランス・個人事業主のための無料ツール。インボイス対応の請求書作成など、登録不要・インストール不要でブラウザだけで使えます。入力内容は送信されません。">
+<link rel="canonical" href="https://idatsuka.com/tools/">
+<meta property="og:title" content="無料ツール — 請求書・見積書の作成 | IDATSUKA">
+<meta property="og:description" content="フリーランス・個人事業主のための無料ツール。登録不要・インストール不要。">
+<meta property="og:image" content="https://idatsuka.com/img/og.svg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%2308090c'/><text x='16' y='22' text-anchor='middle' font-size='16' font-family='sans-serif' font-weight='300' fill='%23f2f4f7'>I</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Zen+Kaku+Gothic+New:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css">
+<style>
+  .tool-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:1px; background:var(--border); border:1px solid var(--border); }
+  .tool-card { background:var(--bg2); padding:2.2rem 2rem; display:flex; flex-direction:column; transition:background .3s; text-decoration:none; color:inherit; }
+  a.tool-card:hover { background:var(--bg3); }
+  .tool-card-tag { font-family:var(--mono); font-size:.52rem; letter-spacing:.22em; text-transform:uppercase; color:var(--accent); margin-bottom:1.1rem; }
+  .tool-card-tag.soon { color:var(--dim); }
+  .tool-card h2 { font-size:1.1rem; font-weight:400; letter-spacing:-.01em; margin-bottom:.7rem; }
+  .tool-card p { font-size:.79rem; color:var(--muted); line-height:1.9; flex:1; }
+  .tool-card-go { font-family:var(--mono); font-size:.6rem; letter-spacing:.16em; text-transform:uppercase; color:var(--dim); margin-top:1.6rem; transition:color .3s; }
+  a.tool-card:hover .tool-card-go { color:var(--accent); }
+  .tool-card.soon { opacity:.55; }
+  .why { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:2.5rem; max-width:960px; }
+  .why h3 { font-size:.9rem; font-weight:400; margin-bottom:.7rem; }
+  .why p { font-size:.79rem; color:var(--muted); line-height:1.9; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">Idatsuka</a>
+  <ul class="nav-links">
+    <li><a href="index.html" class="active">Tools</a></li>
+    <li><a href="../biz.html">Business</a></li>
+    <li><a href="../estimate.html">Estimate</a></li>
+    <li><a href="../store.html">Store</a></li>
+    <li><a href="../contact.html">Contact</a></li>
+  </ul>
+  <button class="menu-toggle" id="menuToggle" aria-label="メニュー"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html" class="active">Tools</a>
+  <a href="../biz.html">Business</a>
+  <a href="../estimate.html">Estimate</a>
+  <a href="../store.html">Store</a>
+  <a href="../contact.html">Contact</a>
+</div>
+
+<header class="page-header">
+  <div class="page-header-grid">
+    <div>
+      <span class="label">Free Tools</span>
+      <h1>道具は、<br>無料で。</h1>
+    </div>
+    <p class="page-header-desc">
+      フリーランス・個人事業主の事務作業を減らすための道具です。<br>
+      <strong style="color:var(--fg-dim);font-weight:400;">登録不要・インストール不要・無料。</strong><br>
+      すべてブラウザの中だけで動き、入力内容はどこにも送信されません。
+    </p>
+  </div>
+</header>
+
+<main>
+  <div class="container">
+
+    <div class="tool-grid">
+      <a href="invoice.html" class="tool-card rv">
+        <span class="tool-card-tag">請求 — 公開中</span>
+        <h2>インボイス対応 請求書作成</h2>
+        <p>
+          適格請求書の6つの記載要件を満たした請求書を作成し、PDFで保存できます。
+          税率ごとの区分記載、軽減税率8%、源泉徴収の控除に対応。
+          取引先と自社情報は次回のために保存され、連番も自動で進みます。
+        </p>
+        <span class="tool-card-go">使ってみる &rarr;</span>
+      </a>
+
+      <div class="tool-card soon rv">
+        <span class="tool-card-tag soon">見積 — 準備中</span>
+        <h2>見積書作成</h2>
+        <p>
+          請求書と同じ形式で見積書を作成します。
+          作成した見積書をそのまま請求書に変換できるようにする予定です。
+        </p>
+        <span class="tool-card-go">近日公開</span>
+      </div>
+
+      <div class="tool-card soon rv">
+        <span class="tool-card-tag soon">帳簿 — 準備中</span>
+        <h2>売上・経費の記録</h2>
+        <p>
+          確定申告に必要な売上と経費を、勘定科目つきで記録します。
+          年間の集計と、そのまま申告に使えるCSVの書き出しに対応する予定です。
+        </p>
+        <span class="tool-card-go">近日公開</span>
+      </div>
+    </div>
+
+    <section style="border-top:1px solid var(--border);margin-top:4rem;">
+      <span class="label">なぜ無料なのか</span>
+      <div class="why">
+        <div>
+          <h3>作った本人が使うため</h3>
+          <p>
+            これらは受託仕事の合間に自分で必要になって作った道具です。
+            自分が毎月使うものなので、使いにくければ自分が困ります。
+            だから雑には作れません。
+          </p>
+        </div>
+        <div>
+          <h3>データを預からないため</h3>
+          <p>
+            すべての処理がブラウザの中で完結します。
+            取引先名や金額をサーバーに送らない設計なので、
+            預かるデータがなく、維持にお金がかかりません。
+          </p>
+        </div>
+        <div>
+          <h3>仕事につながることがあるため</h3>
+          <p>
+            道具を気に入っていただいた方から、
+            サイトやLPの制作を相談いただくことがあります。
+            それで十分に成り立っています。
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<div class="about-cta rv">
+  <h2 class="about-cta-title">サイトの制作も、<em>承っています。</em></h2>
+  <p style="font-size:.85rem;color:var(--muted);line-height:1.9;max-width:460px;margin:0 auto 2rem;">
+    費用と納期は先に公開しています。<br>
+    項目を選ぶだけで、概算が1分で出ます。
+  </p>
+  <a href="../estimate.html" class="btn-filled">概算見積もりを出す</a>
+</div>
+
+<footer>
+  <p>&copy; 2025 Idatsuka</p>
+  <ul class="footer-links">
+    <li><a href="index.html">Tools</a></li>
+    <li><a href="../biz.html">Business</a></li>
+    <li><a href="../estimate.html">Estimate</a></li>
+    <li><a href="../store.html">Store</a></li>
+    <li><a href="../contact.html">Contact</a></li>
+    <li><a href="/">Home</a></li>
+  </ul>
+</footer>
+
+<script>
+document.getElementById('menuToggle').addEventListener('click', function () {
+  this.classList.toggle('open');
+  document.getElementById('mobileMenu').classList.toggle('open');
+});
+var io = new IntersectionObserver(function (es) {
+  es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
+}, { threshold: .1 });
+document.querySelectorAll('.rv').forEach(function (el) { io.observe(el); });
+</script>
+</body>
+</html>
