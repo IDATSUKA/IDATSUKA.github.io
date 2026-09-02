@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>インボイス対応 請求書作成ツール — 無料・登録不要 | IDATSUKA</title>
-<meta name="description" content="インボイス制度（適格請求書）に対応した請求書を無料で作成・PDF保存。登録不要、インストール不要。税率ごとの区分記載、源泉徴収、登録番号に対応。入力内容はブラウザ内にのみ保存され、送信されません。">
-<link rel="canonical" href="https://idatsuka.com/tools/invoice.html">
-<meta property="og:title" content="インボイス対応 請求書作成ツール — 無料・登録不要">
-<meta property="og:description" content="適格請求書の要件を満たした請求書を、ブラウザだけで作成・PDF保存。登録不要・無料。">
+<title>見積書作成ツール — 無料・登録不要 | IDATSUKA</title>
+<meta name="description" content="見積書を無料で作成・PDF保存。登録不要、インストール不要。税率ごとの区分、軽減税率、源泉徴収に対応。作った見積書はそのまま請求書に変換できます。入力内容は送信されません。">
+<link rel="canonical" href="https://idatsuka.com/tools/quote.html">
+<meta property="og:title" content="見積書作成ツール — 無料・登録不要">
+<meta property="og:description" content="見積書をブラウザだけで作成・PDF保存。そのまま請求書に変換できます。登録不要・無料。">
 <meta property="og:image" content="https://idatsuka.com/img/og.svg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%2308090c'/><text x='16' y='22' text-anchor='middle' font-size='16' font-family='sans-serif' font-weight='300' fill='%23f2f4f7'>I</text></svg>">
@@ -17,10 +17,10 @@
 <link rel="stylesheet" href="../style.css">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebApplication",
-"name":"インボイス対応 請求書作成ツール","url":"https://idatsuka.com/tools/invoice.html",
+"name":"見積書作成ツール","url":"https://idatsuka.com/tools/quote.html",
 "applicationCategory":"BusinessApplication","operatingSystem":"Web",
 "offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},
-"description":"インボイス制度（適格請求書）の記載要件を満たした請求書を、登録不要・無料で作成しPDF保存できるツール。"}
+"description":"見積書を登録不要・無料で作成しPDF保存できるツール。そのまま請求書に変換できます。"}
 </script>
 <style>
   main > .container { max-width:1460px; }
@@ -116,8 +116,7 @@
     .doc { box-shadow:none !important; width:auto !important; min-height:0 !important; padding:14mm 13mm !important; }
     .doc-fit { transform:none !important; height:auto !important; }
   }
-</style>
-</head>
+</style></head>
 <body>
 
 <nav class="no-print">
@@ -143,12 +142,12 @@
   <div class="page-header-grid">
     <div>
       <span class="label">Free Tool</span>
-      <h1>請求書を、<br>1分で。</h1>
+      <h1>見積書を、<br>1分で。</h1>
     </div>
     <p class="page-header-desc">
-      インボイス制度（適格請求書）の記載要件を満たした請求書を作成し、PDFで保存できます。<br>
-      <strong style="color:var(--fg-dim);font-weight:400;">登録不要・無料・インストール不要。</strong><br>
-      入力内容はあなたのブラウザ内にのみ保存され、どこにも送信されません。
+      見積書を作成し、PDFで保存できます。<br>
+      作った見積書は、<strong style="color:var(--fg-dim);font-weight:400;">そのまま請求書に変換</strong>できます。<br>
+      登録不要・無料。入力内容はどこにも送信されません。
     </p>
   </div>
 </header>
@@ -157,32 +156,27 @@
   <div class="container">
     <div class="tool-wrap">
 
-      <!-- ══ editor ══ -->
       <div class="no-print">
 
         <div class="panel">
-          <span class="panel-title">請求元（あなた）</span>
+          <span class="panel-title">見積元（あなた）</span>
           <div class="fld">
             <label for="fName">事業者名 / 氏名</label>
             <input id="fName" data-k="fromName" placeholder="株式会社〇〇 / 山田太郎">
           </div>
           <div class="fld">
-            <label for="fReg">適格請求書発行事業者 登録番号</label>
+            <label for="fReg">登録番号（任意）</label>
             <input id="fReg" data-k="fromReg" placeholder="T1234567890123" maxlength="14">
-            <p class="hint">「T」＋13桁。未登録の場合は空欄のままで構いません（その場合、消費税の記載は参考値になります）。</p>
+            <p class="hint">見積書に登録番号の記載義務はありませんが、記載しておくと請求時の確認がスムーズです。</p>
           </div>
           <div class="fld">
             <label for="fAddr">住所・連絡先</label>
             <textarea id="fAddr" data-k="fromAddr" placeholder="〒150-0001&#10;東京都渋谷区〇〇1-2-3&#10;TEL 03-0000-0000"></textarea>
           </div>
-          <div class="fld">
-            <label for="fBank">振込先</label>
-            <textarea id="fBank" data-k="bank" placeholder="〇〇銀行 〇〇支店&#10;普通 1234567&#10;ヤマダ タロウ"></textarea>
-          </div>
         </div>
 
         <div class="panel">
-          <span class="panel-title">請求先</span>
+          <span class="panel-title">見積先</span>
           <div class="fld">
             <label for="tName">宛先名</label>
             <input id="tName" data-k="toName" placeholder="株式会社△△">
@@ -194,17 +188,17 @@
             </select>
           </div>
           <div class="fld">
-            <label for="tAddr">部署・担当者・住所（任意）</label>
+            <label for="tAddr">部署・担当者（任意）</label>
             <textarea id="tAddr" data-k="toAddr" placeholder="〇〇部 △△様"></textarea>
           </div>
         </div>
 
         <div class="panel">
-          <span class="panel-title">請求書情報</span>
+          <span class="panel-title">見積書情報</span>
           <div class="fld fld-2">
             <div>
-              <label for="iNo">請求書番号</label>
-              <input id="iNo" data-k="no" placeholder="INV-0001">
+              <label for="iNo">見積書番号</label>
+              <input id="iNo" data-k="no" placeholder="Q-0001">
             </div>
             <div>
               <label for="iDate">発行日</label>
@@ -213,13 +207,17 @@
           </div>
           <div class="fld fld-2">
             <div>
-              <label for="iDue">お支払期限</label>
-              <input id="iDue" data-k="due" type="date">
+              <label for="iValid">有効期限</label>
+              <input id="iValid" data-k="valid" type="date">
             </div>
             <div>
-              <label for="iTitle">件名</label>
-              <input id="iTitle" data-k="title" placeholder="Webサイト制作費">
+              <label for="iDeliv">納期</label>
+              <input id="iDeliv" data-k="delivery" placeholder="ご発注から3週間">
             </div>
+          </div>
+          <div class="fld">
+            <label for="iTitle">件名</label>
+            <input id="iTitle" data-k="title" placeholder="コーポレートサイト制作">
           </div>
         </div>
 
@@ -235,24 +233,27 @@
         <div class="panel">
           <span class="panel-title">控除・備考</span>
           <div class="fld">
-            <label><input type="checkbox" id="whOn" data-k="whOn" style="width:auto;margin-right:.5rem;vertical-align:-1px;">源泉徴収税を差し引く</label>
+            <label><input type="checkbox" id="whOn" data-k="whOn" style="width:auto;margin-right:.5rem;vertical-align:-1px;">源泉徴収税を差し引いて表示</label>
             <p class="hint">デザイン・原稿・講演などの報酬で、支払者が源泉徴収する場合に使います。税率は 10.21%（支払金額100万円超の部分は 20.42%）。</p>
           </div>
           <div class="fld">
             <label for="note">備考</label>
-            <textarea id="note" data-k="note" placeholder="振込手数料は貴社にてご負担をお願いいたします。"></textarea>
+            <textarea id="note" data-k="note" placeholder="本見積書に記載のない作業が発生した場合は、別途お見積もりいたします。"></textarea>
           </div>
         </div>
 
         <div class="panel">
-          <span class="panel-title">適格請求書の記載要件</span>
+          <span class="panel-title">記載内容の確認</span>
           <ul class="req-list" id="reqs"></ul>
         </div>
 
         <div class="actions">
           <button class="btn-filled" id="printBtn" type="button">PDFで保存 / 印刷</button>
+          <button class="btn" id="toInvoiceBtn" type="button">この内容で請求書をつくる</button>
+        </div>
+        <div class="actions" style="margin-top:.7rem;">
           <button class="btn" id="saveBtn" type="button">この内容を保存</button>
-          <button class="btn" id="dupBtn" type="button">次の請求書へ</button>
+          <button class="btn" id="dupBtn" type="button">次の見積書へ</button>
           <button class="btn" id="resetBtn" type="button">クリア</button>
         </div>
         <p class="hint" style="margin-top:1rem;">
@@ -261,11 +262,10 @@
 
       </div>
 
-      <!-- ══ document ══ -->
       <div class="doc-scroll">
         <div class="doc-fit" id="docFit">
         <div class="doc" id="doc">
-          <h1>請求書</h1>
+          <h1>見 積 書</h1>
           <div class="doc-meta">
             <div id="dNo"></div>
             <div id="dDate"></div>
@@ -283,7 +283,7 @@
           </div>
 
           <div class="total-band">
-            <span>ご請求金額（税込）</span>
+            <span>お見積金額（税込）</span>
             <strong id="dGrand">¥0</strong>
           </div>
 
@@ -309,9 +309,9 @@
           </div>
 
           <div class="doc-foot">
-            <div id="dBankWrap">
-              <div class="lbl">お振込先</div>
-              <div class="bx" id="dBank"></div>
+            <div id="dTermsWrap">
+              <div class="lbl">お取引条件</div>
+              <div class="bx" id="dTerms"></div>
             </div>
             <div id="dNoteWrap" style="margin-top:5mm;">
               <div class="lbl">備考</div>
@@ -319,44 +319,41 @@
             </div>
           </div>
 
-          <p class="doc-note" id="dDue"></p>
+          <p class="doc-note" id="dFootNote"></p>
         </div>
         </div>
       </div>
 
     </div>
 
-    <!-- SEO / trust copy -->
     <section class="no-print" style="border-top:1px solid var(--border);margin-top:4rem;">
       <span class="label">このツールについて</span>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:2.5rem;max-width:960px;">
         <div>
+          <h2 style="font-size:.95rem;font-weight:400;margin-bottom:.8rem;">そのまま請求書になります</h2>
+          <p style="font-size:.8rem;color:var(--muted);line-height:1.9;">
+            見積が通ったら「この内容で請求書をつくる」を押すだけ。宛先も品目も引き継がれるので、
+            請求のたびに同じ内容を打ち直す必要がありません。
+          </p>
+        </div>
+        <div>
           <h2 style="font-size:.95rem;font-weight:400;margin-bottom:.8rem;">入力内容は送信されません</h2>
           <p style="font-size:.8rem;color:var(--muted);line-height:1.9;">
-            すべての処理があなたのブラウザの中だけで完結します。取引先名や金額がサーバーに送られることはありません。
-            保存を押した場合も、データはこの端末のブラウザ内にのみ残ります。
+            すべての処理がブラウザの中だけで完結します。取引先名や金額がサーバーに送られることはありません。
+            保存した場合も、データはこの端末の中にのみ残ります。
           </p>
         </div>
         <div>
-          <h2 style="font-size:.95rem;font-weight:400;margin-bottom:.8rem;">適格請求書の6要件に対応</h2>
+          <h2 style="font-size:.95rem;font-weight:400;margin-bottom:.8rem;">消費税の計算は請求書と同一</h2>
           <p style="font-size:.8rem;color:var(--muted);line-height:1.9;">
-            発行者名と登録番号、取引年月日、取引内容、税率ごとに区分した対価の額と適用税率、
-            税率ごとの消費税額、交付を受ける事業者名。この6つを満たす形で出力します。
-            軽減税率8%の品目には「※」を付し、欄外に注記します。
-          </p>
-        </div>
-        <div>
-          <h2 style="font-size:.95rem;font-weight:400;margin-bottom:.8rem;">消費税の端数処理</h2>
-          <p style="font-size:.8rem;color:var(--muted);line-height:1.9;">
-            インボイス制度では、1つの請求書につき税率ごとに1回だけ端数処理を行います。
-            本ツールは税率区分ごとの合計額から消費税を算出し、切り捨てで処理しています。
+            税率ごとに合計してから端数処理する方式で、請求書ツールとまったく同じ計算を使っています。
+            見積と請求で金額がズレることがありません。
           </p>
         </div>
       </div>
       <p style="font-size:.72rem;color:var(--dim);line-height:1.9;margin-top:2.5rem;max-width:760px;">
-        ※ 本ツールは請求書の作成を補助するものであり、税務上の判断を代行するものではありません。
-        源泉徴収の要否、税率の適用、登録番号の記載可否などの最終的な判断は、
-        管轄の税務署または税理士にご確認ください。
+        ※ 本ツールは見積書の作成を補助するものであり、税務上の判断を代行するものではありません。
+        源泉徴収の要否や税率の適用については、管轄の税務署または税理士にご確認ください。
       </p>
     </section>
 
@@ -385,25 +382,22 @@ document.getElementById('menuToggle').addEventListener('click', function () {
   'use strict';
 
   var B = window.Billing;
-  var KEY = 'idatsuka.invoice.v1';
-  var DB = B.store(KEY);
+  var KEY = 'idatsuka.quote.v1';
+  var INVOICE_KEY = 'idatsuka.invoice.v1';
+  var DB = B.store(KEY), INV = B.store(INVOICE_KEY);
 
   var $ = function (id) { return document.getElementById(id); };
-  var yen = B.yen, esc = B.esc, jpDate = B.jpDate;
+  var yen = B.yen, esc = B.esc, jpDate = B.jpDate, blankItem = B.blankItem;
 
-  var FIELDS = ['fromName','fromReg','fromAddr','bank','toName','toHonor','toAddr',
-                'no','date','due','title','note'];
+  var FIELDS = ['fromName','fromReg','fromAddr','toName','toHonor','toAddr',
+                'no','date','valid','delivery','title','note'];
   var state = { items: [], whOn: false };
   FIELDS.forEach(function (k) { state[k] = ''; });
 
-  var blankItem = B.blankItem;
-
-  /* ── items editor ── */
   function renderItems() {
-    var box = $('items');
-    box.innerHTML = state.items.map(function (it, i) {
+    $('items').innerHTML = state.items.map(function (it, i) {
       return '<div class="li-row">' +
-        '<input data-i="' + i + '" data-f="desc"  value="' + esc(it.desc) + '" placeholder="Webサイト制作費">' +
+        '<input data-i="' + i + '" data-f="desc"  value="' + esc(it.desc) + '" placeholder="コーポレートサイト制作">' +
         '<input data-i="' + i + '" data-f="qty"   value="' + it.qty + '" type="number" step="any" min="0">' +
         '<input data-i="' + i + '" data-f="price" value="' + it.price + '" type="number" step="1" min="0">' +
         '<select data-i="' + i + '" data-f="rate">' +
@@ -437,10 +431,8 @@ document.getElementById('menuToggle').addEventListener('click', function () {
     state.items.push(blankItem()); renderItems(); render();
   });
 
-  /* ── field binding ── */
   document.querySelectorAll('[data-k]').forEach(function (el) {
-    var ev = el.type === 'checkbox' ? 'change' : 'input';
-    el.addEventListener(ev, function () {
+    el.addEventListener(el.type === 'checkbox' ? 'change' : 'input', function () {
       state[el.dataset.k] = el.type === 'checkbox' ? el.checked : el.value;
       render();
     });
@@ -456,12 +448,10 @@ document.getElementById('menuToggle').addEventListener('click', function () {
 
   function calc() { return B.calc(state.items, { withholding: state.whOn }); }
 
-  /* ── document render ── */
   function render() {
     var c = calc();
-    var hasReduced = c.hasReduced;
 
-    $('dNo').textContent   = state.no ? '請求書番号: ' + state.no : '';
+    $('dNo').textContent   = state.no ? '見積書番号: ' + state.no : '';
     $('dDate').textContent = state.date ? '発行日: ' + jpDate(state.date) : '';
 
     $('dToName').textContent = (state.toName || '　') + (state.toName && state.toHonor ? ' ' + state.toHonor : '');
@@ -476,41 +466,38 @@ document.getElementById('menuToggle').addEventListener('click', function () {
     $('dTitleWrap').style.display = state.title ? '' : 'none';
     $('dTitle').textContent = state.title || '';
 
-    $('dItems').innerHTML = B.itemRows(c);
+    $('dItems').innerHTML = B.itemRows(c, '品目を入力してください');
+    $('dSums').innerHTML  = B.sumRows(c, 'お見積金額');
 
-    $('dSums').innerHTML = B.sumRows(c, 'ご請求金額');
+    var terms = [];
+    if (state.valid)    terms.push('有効期限: ' + jpDate(state.valid));
+    if (state.delivery) terms.push('納期: ' + state.delivery);
+    $('dTermsWrap').style.display = terms.length ? '' : 'none';
+    $('dTerms').textContent = terms.join('\n');
 
-    $('dBankWrap').style.display = state.bank ? '' : 'none';
-    $('dBank').textContent = state.bank || '';
     $('dNoteWrap').style.display = state.note ? '' : 'none';
     $('dNote').textContent = state.note || '';
 
-    var foot = [];
-    if (state.due) foot.push('お支払期限: ' + jpDate(state.due));
-    if (hasReduced) foot.push('※ は軽減税率（8%）対象品目です。');
-    $('dDue').innerHTML = foot.join('<br>');
+    $('dFootNote').innerHTML = c.hasReduced ? '※ は軽減税率（8%）対象品目です。' : '';
 
-    renderReqs(c, hasReduced);
+    renderReqs(c);
+    B.fitPreview('docFit', 'doc');
   }
 
-  /* ── invoice-requirement checklist ── */
-  function renderReqs(c, hasReduced) {
-    var taxable = c.hasTaxable;
+  function renderReqs(c) {
     var checks = [
-      { ok: !!state.fromName, t: '発行者の氏名または名称' },
-      { ok: /^T\d{13}$/.test((state.fromReg || '').trim()), t: '適格請求書発行事業者の登録番号（T＋13桁）' },
-      { ok: !!state.date, t: '取引年月日' },
-      { ok: c.lines.some(function (l) { return l.desc; }), t: '取引内容' + (hasReduced ? '（軽減税率対象である旨）' : '') },
-      { ok: taxable || c.subtotal > 0, t: '税率ごとに区分した対価の額と適用税率' },
-      { ok: taxable, t: '税率ごとに区分した消費税額' },
-      { ok: !!state.toName, t: '交付を受ける事業者の氏名または名称' }
+      { ok: !!state.fromName, t: '見積元の氏名または名称' },
+      { ok: !!state.toName,   t: '見積先の氏名または名称' },
+      { ok: !!state.date,     t: '発行日' },
+      { ok: c.lines.some(function (l) { return l.desc; }), t: '品目の内容' },
+      { ok: c.subtotal > 0,   t: '金額' },
+      { ok: !!state.valid,    t: '有効期限（推奨）' }
     ];
-    $('reqs').innerHTML = checks.map(function (c2) {
-      return '<li class="' + (c2.ok ? '' : 'bad') + '">' + c2.t + (c2.ok ? '' : ' — 未入力') + '</li>';
+    $('reqs').innerHTML = checks.map(function (x) {
+      return '<li class="' + (x.ok ? '' : 'bad') + '">' + x.t + (x.ok ? '' : ' — 未入力') + '</li>';
     }).join('');
   }
 
-  /* ── persistence ── */
   function save(silent) {
     var ok = DB.save(state);
     if (silent) return;
@@ -528,12 +515,35 @@ document.getElementById('menuToggle').addEventListener('click', function () {
   $('saveBtn').addEventListener('click', function () { save(false); });
   $('printBtn').addEventListener('click', function () { save(true); window.print(); });
 
+  /* 見積書 → 請求書。請求書側に既存の入力があれば、消える前に必ず確認する。 */
+  $('toInvoiceBtn').addEventListener('click', function () {
+    var existing = INV.load();
+    var hasContent = existing && (
+      (Array.isArray(existing.items) && existing.items.some(function (i) { return i.desc || i.price; })) ||
+      existing.toName || existing.no
+    );
+    if (hasContent && !confirm('請求書ツールに入力済みの内容があります。この見積書の内容で上書きしますか？')) return;
+
+    var inv = existing || {};
+    ['fromName','fromReg','fromAddr','toName','toHonor','toAddr','title','note'].forEach(function (k) {
+      inv[k] = state[k];
+    });
+    inv.items = JSON.parse(JSON.stringify(state.items));
+    inv.whOn  = state.whOn;
+    inv.date  = B.today();
+    inv.due   = '';
+    if (!inv.no) inv.no = '';
+    // bank は請求書側にだけある項目なので、既存の値をそのまま残す
+    INV.save(inv);
+    save(true);
+    window.location.href = 'invoice.html';
+  });
+
   $('dupBtn').addEventListener('click', function () {
-    // keep issuer + client, clear the document-specific parts
     state.no = B.nextNumber(state.no);
-    state.title = ''; state.note = '';
+    state.title = ''; state.note = ''; state.delivery = '';
     state.date = B.today();
-    state.due = '';
+    state.valid = '';
     state.items = [blankItem()];
     fillFields(); renderItems(); render(); save(true);
   });
@@ -549,15 +559,10 @@ document.getElementById('menuToggle').addEventListener('click', function () {
     fillFields(); renderItems(); render();
   });
 
-  /* ── fit the A4 preview into its column ── */
-  function fit() { B.fitPreview('docFit', 'doc'); }
   window.addEventListener('resize', function () {
-    clearTimeout(window.__ft); window.__ft = setTimeout(fit, 120);
+    clearTimeout(window.__ft); window.__ft = setTimeout(function () { B.fitPreview('docFit','doc'); }, 120);
   });
-  var _render = render;
-  render = function () { _render(); fit(); };
 
-  /* ── init ── */
   if (!load()) {
     state.toHonor = '御中';
     state.date = B.today();
