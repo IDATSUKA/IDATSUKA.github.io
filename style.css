@@ -95,6 +95,14 @@ nav {
   transition: color .3s, letter-spacing .4s var(--ease-out);
 }
 .logo:hover { color: var(--accent); letter-spacing: .34em; }
+.logo img {
+  height: 11px; width: auto; display: block;
+  opacity: .92; transition: opacity .3s, filter .35s;
+}
+.logo:hover img {
+  opacity: 1;
+  filter: drop-shadow(0 0 7px rgba(159,214,236,.55));
+}
 .nav-links { display: flex; gap: 2.4rem; list-style: none; }
 .nav-links a {
   font-family: var(--mono);
@@ -267,6 +275,14 @@ footer p { font-family: var(--mono); font-size: .56rem; color: var(--dim); lette
   color: var(--accent);
   transform: translateY(-4px);
   text-shadow: 0 0 24px rgba(159,214,236,.5);
+}
+.hero-name img {
+  width: min(540px, 76vw); height: auto;
+  filter: drop-shadow(0 0 28px rgba(159,214,236,.14));
+  transition: filter .5s;
+}
+.hero-name:hover img {
+  filter: drop-shadow(0 0 36px rgba(159,214,236,.3));
 }
 .hero-line {
   width: 90px; height: 1px;
