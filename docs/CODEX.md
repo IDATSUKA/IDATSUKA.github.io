@@ -15,7 +15,9 @@ Claude が指示を組み立て → Codex が実行 → Claude が diff を検�
 | `.claude/scripts/codex-run.sh` | Codex を非対話で呼ぶラッパー。認証チェックと終了コードを整理 |
 | `.claude/agents/codex.md` | Claude が起動するサブエージェント。Codex を実行し diff を検証して報告する |
 | `.claude/skills/codex/SKILL.md` | `/codex` として呼べるスキル。委譲の手順書 |
-| `.claude/settings.json` | SessionStart フックの登録と、codex 系コマンドの許可 |
+| `.claude/settings.json` | SessionStart フックの登録と、codex 系コマンド・site-check の許可 |
+| `.agents/skills/site-check/` | 両エージェント共通のサイト検証スクリプト（`.claude/skills/site-check` はこれへのリンク） |
+| `docs/HANDOFF.md` | セッションとエージェントをまたぐ引き継ぎログ |
 
 ---
 
@@ -120,9 +122,10 @@ curl -sS "$HTTPS_PROXY/__agentproxy/status"    # 直近の拒否ホストが出�
 | 2 | `codex` が未インストール → `npm install -g @openai/codex` |
 | 3 | 認証情報なし → 上記「認証」を参照 |
 | 4 | `api.openai.com` がネットワークポリシーで遮断 → 上記「ネットワーク許可」を参照 |
+| 5 | OpenAI アカウントに API クレジットが無い（課金切れ）。何も実行されていない → https://platform.openai.com/settings/organization/billing/ でクレジットを追加 |
 | 64 | 引数エラー |
 
-コード 4 は再試行しても無意味（ポリシー拒否）なので、ラッパー側で即座に打ち切ります。
+コード 4 と 5 は再試行しても無意味（ポリシー拒否 / 課金切れ）なので、ラッパー側で明示して打ち切ります。
 Codex 本体に任せると WebSocket と HTTPS の両方で計10回リトライして数分無駄になるため、
 事前に `api.openai.com` へ疎通確認を1回だけ行っています。
 
@@ -135,3 +138,44 @@ Codex 本体に任せると WebSocket と HTTPS の両方で計10回リトライ
 - **Codex は commit も push もしません。** 変更はワーキングツリーに残し、Claude か人間がレビューしてからコミットします。
 - **Codex の要約は「主張」であって証拠ではありません。** `--write` の後は必ず `git diff` を読んで突き合わせます。
 - **ローカル環境では自動インストールしません。** `session-start.sh` は `CLAUDE_CODE_REMOTE=true` のときだけ動きます。手元のマシンの環境は手元で管理する前提です。
+
+---
+
+## Codex と Claude の情報共有
+
+「片方のエージェントが知っていることを、もう片方も知っている」状態を作るために、
+共有される情報を **リポジトリの中のファイル** に集約しています。
+どちらのエージェントのチャット履歴や内部メモリも、相手からは見えません。
+
+| 層 | ファイル | 中身 | 誰が読むか |
+|---|---|---|---|
+| 規約 | `AGENTS.md` | リポジトリの説明・コーディング規約・検証方法 | Codex は自動で読む。Claude は `CLAUDE.md` の `@AGENTS.md` 経由で同じ内容を読む |
+| 状態 | `docs/HANDOFF.md` | 何をやったか・何が残っているか・どのブランチにあるか | 両方。作業の最初に読み、最後に追記する（`AGENTS.md` で義務付け） |
+| 手順 | `.agents/skills/<name>/SKILL.md` | 再利用する作業手順とスクリプト | Codex は `.agents/skills/` を、Claude は `.claude/skills/` を読む。後者は前者へのシンボリックリンク |
+
+### 共有されないもの（と、共有したいときの方法）
+
+- **Codex の memories**（`~/.codex/memories_*.sqlite`）や Claude の auto memory
+  （`~/.claude/projects/.../memory/`）は、それぞれのマシン・アカウントに閉じています。
+  次のセッションや相手のエージェントにも伝えたいことは `docs/HANDOFF.md` に書いてください。
+- **チャットの会話内容**も同様です。Codex で決めたことを Claude に引き継ぐなら、
+  その要点を `docs/HANDOFF.md` に貼るか、Claude に「HANDOFF.md に追記して」と頼めば残ります。
+- 環境変数（`OPENAI_API_KEY` など）はリポジトリに書かない。各環境の設定で渡します。
+
+### 新しいスキルを両方で使えるようにする
+
+```bash
+mkdir -p .agents/skills/<name>
+$EDITOR .agents/skills/<name>/SKILL.md          # frontmatter に name / description
+ln -s ../../.agents/skills/<name> .claude/skills/<name>
+```
+
+`.claude/skills/` 直下に置いた Claude 専用スキル（`codex` など）は Codex からは見えません。
+Codex にも使わせたいものだけ `.agents/skills/` に置きます。
+
+### ハマりどころ: エージェントから呼ぶと Codex が止まる
+
+`codex exec` は stdin が端末でないと「Reading additional input from stdin...」と表示して
+EOF まで待ちます。Claude Code の Bash ツールから呼ぶと stdin は常にパイプなので、
+プロンプトを引数で渡していても永久に止まります。`codex-run.sh` は `</dev/null` を付けて
+これを回避済みです。ラッパーを通さず直接叩くときも同じ対策が必要です。

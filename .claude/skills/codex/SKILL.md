@@ -47,6 +47,8 @@ Exit codes worth handling:
 - **3** — no credentials. Point the user at `docs/CODEX.md`.
 - **4** — `api.openai.com` is blocked by this environment's network policy.
   Report the blocked host; never retry a policy denial.
+- **5** — the OpenAI account has no API credits. Nothing ran; tell the user
+  to add credits at platform.openai.com and start a new session.
 
 ## 4. Verify
 

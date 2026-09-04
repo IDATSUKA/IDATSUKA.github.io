@@ -19,7 +19,8 @@
       "Bash(codex exec:*)",
       "Bash(codex review:*)",
       "Bash(.claude/scripts/codex-run.sh:*)",
-      "Bash(npm install -g @openai/codex)"
+      "Bash(npm install -g @openai/codex)",
+      "Bash(node .agents/skills/site-check/check.mjs:*)"
     ]
   }
 }

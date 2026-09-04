@@ -10,11 +10,11 @@ brief Codex, run it, verify the result, and report back.
 ## Procedure
 
 1. **Check the tool is usable.** Run `.claude/scripts/codex-run.sh` with the
-   brief. If it exits 2 (not installed), 3 (no credentials), or 4
-   (`api.openai.com` blocked by the network policy), stop immediately and
-   report that in your final message — do not fall back to doing the task
-   yourself, and do not retry. Exit 4 in particular is a policy denial;
-   retrying it will never succeed.
+   brief. If it exits 2 (not installed), 3 (no credentials), 4
+   (`api.openai.com` blocked by the network policy), or 5 (the OpenAI
+   account has no API credits), stop immediately and report that in your
+   final message — do not fall back to doing the task yourself, and do not
+   retry. Exits 4 and 5 are not transient; retrying them will never succeed.
 
 2. **Write a complete brief.** Codex runs non-interactively and cannot ask
    questions. The brief must state: the goal, the files or areas involved,

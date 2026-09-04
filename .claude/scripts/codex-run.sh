@@ -14,6 +14,7 @@
 #   2   codex CLI is not installed
 #   3   codex has no usable credentials
 #   4   api.openai.com is blocked by the network policy
+#   5   the OpenAI account has no API credits (billing), nothing ran
 #   *   whatever codex itself returned
 
 set -uo pipefail
@@ -101,14 +102,31 @@ MSG
 esac
 
 LAST_MSG="$(mktemp)"
-trap 'rm -f "$LAST_MSG"' EXIT
+RUN_LOG="$(mktemp)"
+trap 'rm -f "$LAST_MSG" "$RUN_LOG"' EXIT
 
 set -- exec --sandbox "$SANDBOX" --cd "$WORKDIR" --color never \
   --output-last-message "$LAST_MSG"
 [ -n "$MODEL" ] && set -- "$@" --model "$MODEL"
 
-codex "$@" "$PROMPT"
-STATUS=$?
+# Close stdin. When stdin is a pipe rather than a terminal (which is always the
+# case when an agent runs this script) codex prints "Reading additional input
+# from stdin..." and blocks until EOF — the run never starts. The prompt has
+# already been captured above, so there is nothing left to read.
+codex "$@" "$PROMPT" </dev/null 2>&1 | tee "$RUN_LOG"
+STATUS=${PIPESTATUS[0]}
+
+# A billing refusal is not a transient error, even though codex retries it
+# ~10 times across its two transports before giving up. Name it plainly.
+if [ "$STATUS" -ne 0 ] && grep -q "no credits remaining" "$RUN_LOG"; then
+  cat >&2 <<'MSG'
+codex-run: the OpenAI account behind OPENAI_API_KEY has no API credits.
+Nothing ran. Add credits (or switch to a key on a funded account) at
+https://platform.openai.com/settings/organization/billing/ and start a new
+session so the environment picks the change up. Do not retry until then.
+MSG
+  exit 5
+fi
 
 # codex streams its whole reasoning transcript as it runs; --output-last-message
 # captures just the closing answer, which is the part the calling agent needs.
