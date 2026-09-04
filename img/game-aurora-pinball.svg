@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <defs>
+    <radialGradient id="pf" cx="50%" cy="42%" r="62%">
+      <stop offset="0%" stop-color="#f7f1e3"/>
+      <stop offset="55%" stop-color="#e9e3d3"/>
+      <stop offset="100%" stop-color="#d2ccbd"/>
+    </radialGradient>
+    <radialGradient id="bglow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#e0b850" stop-opacity=".5"/>
+      <stop offset="100%" stop-color="#e0b850" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="ball" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="50%" stop-color="#c0c0c8"/>
+      <stop offset="100%" stop-color="#585862"/>
+    </linearGradient>
+    <linearGradient id="fade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#050505" stop-opacity="0"/>
+      <stop offset="82%" stop-color="#050505" stop-opacity=".35"/>
+      <stop offset="100%" stop-color="#050505" stop-opacity=".9"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="450" fill="#08080a"/>
+  <!-- side cabinet rails -->
+  <rect x="0" y="0" width="40" height="450" fill="#1a1a1c"/>
+  <rect x="760" y="0" width="40" height="450" fill="#1a1a1c"/>
+  <!-- playfield (arched top) -->
+  <path d="M250 40 A150 110 0 0 1 550 40 L590 410 L210 410 Z" fill="url(#pf)"/>
+  <path d="M250 40 A150 110 0 0 1 550 40 L590 410 L210 410 Z" fill="none" stroke="#b8903a" stroke-opacity=".35" stroke-width="2"/>
+  <!-- faint engineering guides -->
+  <g stroke="#7a6925" stroke-opacity=".12" stroke-width="1">
+    <line x1="280" y1="120" x2="520" y2="120"/>
+    <line x1="270" y1="200" x2="530" y2="200"/>
+    <line x1="260" y1="280" x2="540" y2="280"/>
+  </g>
+  <!-- pop bumpers -->
+  <g>
+    <circle cx="400" cy="95" r="34" fill="url(#bglow)"/>
+    <circle cx="400" cy="95" r="20" fill="#efe9da" stroke="#9a8a55" stroke-width="2"/>
+    <circle cx="350" cy="140" r="20" fill="#efe9da" stroke="#9a8a55" stroke-width="2"/>
+    <circle cx="450" cy="140" r="20" fill="#efe9da" stroke="#9a8a55" stroke-width="2"/>
+  </g>
+  <!-- drop-target banks -->
+  <g fill="#16140f" stroke="#e0b850" stroke-opacity=".55" stroke-width="1.5">
+    <rect x="300" y="195" width="26" height="26" rx="3"/>
+    <rect x="330" y="195" width="26" height="26" rx="3"/>
+    <rect x="444" y="195" width="26" height="26" rx="3"/>
+    <rect x="474" y="195" width="26" height="26" rx="3"/>
+  </g>
+  <!-- CORE MODES ladder -->
+  <g>
+    <rect x="358" y="244" width="84" height="14" rx="7" fill="#0e0d0a"/>
+    <rect x="358" y="262" width="84" height="14" rx="7" fill="#0e0d0a"/>
+    <rect x="358" y="280" width="84" height="14" rx="7" fill="#0e0d0a"/>
+    <circle cx="350" cy="251" r="4" fill="#e8b840"/>
+    <circle cx="350" cy="269" r="4" fill="#e8b840"/>
+    <circle cx="350" cy="287" r="4" fill="#4a4530"/>
+  </g>
+  <!-- AURORA logo mark -->
+  <g stroke="#b8903a" stroke-width="3" fill="none">
+    <path d="M400 318 L426 360 L374 360 Z"/>
+    <path d="M388 346 L412 346"/>
+  </g>
+  <!-- flippers -->
+  <g fill="#efe9da" stroke="#8a7a48" stroke-width="1.5">
+    <path d="M300 376 L356 392 L352 402 L300 392 Z"/>
+    <path d="M500 376 L444 392 L448 402 L500 392 Z"/>
+  </g>
+  <!-- ball + trail -->
+  <circle cx="372" cy="160" r="9" fill="#dcdce8" opacity=".18"/>
+  <circle cx="380" cy="180" r="9" fill="#dcdce8" opacity=".3"/>
+  <circle cx="388" cy="205" r="11" fill="url(#ball)"/>
+  <circle cx="385" cy="201" r="3" fill="#ffffff" opacity=".9"/>
+  <!-- score HUD -->
+  <text x="760" y="34" fill="#b8903a" font-family="'Space Mono',monospace" font-size="15" text-anchor="end" font-weight="700">128,400</text>
+  <text x="40" y="34" fill="#5a5240" font-family="'Space Mono',monospace" font-size="11">BALL 1/3</text>
+  <rect width="800" height="450" fill="url(#fade)"/>
+</svg>
