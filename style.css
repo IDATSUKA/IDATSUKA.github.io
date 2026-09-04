@@ -155,7 +155,7 @@ footer {
   display: flex; justify-content: space-between; align-items: center;
 }
 footer p { font-family: var(--mono); font-size: .56rem; color: var(--dim); letter-spacing: .08em; }
-.footer-links { display: flex; gap: 2.2rem; list-style: none; }
+.footer-links { display: flex; flex-wrap: wrap; gap: .8rem 2.2rem; list-style: none; }
 .footer-links a {
   font-family: var(--mono); font-size: .56rem; letter-spacing: .12em;
   text-transform: uppercase; color: var(--dim); transition: color .3s;
@@ -727,7 +727,7 @@ footer p { font-family: var(--mono); font-size: .56rem; color: var(--dim); lette
   .sns-section { padding: 3rem 1.5rem; }
   .sns-grid { grid-template-columns: 1fr 1fr; }
   footer { flex-direction: column; gap: .8rem; text-align: center; padding: 1.5rem; }
-  .footer-links { justify-content: center; }
+  .footer-links { justify-content: center; gap: .8rem 1.4rem; }
   .skills-row { justify-content: center; }
 }
 @media (max-width: 480px) {
