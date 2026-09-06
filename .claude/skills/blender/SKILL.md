@@ -37,6 +37,9 @@ ib.export_glb("pinball/sphere.glb")
 
 ヘルパー一覧: `reset_scene`, `add_camera`, `add_sun`, `add_point_light`, `add_material`, `hex_color`, `setup_render`, `render`, `export_glb`, `export_obj`, `save_blend`, `open_blend`, `turntable`, `site_path`。
 サンプル: `tools/blender/examples/render_preview.py`（PNG+GLB）、`tools/blender/examples/export_glb.py`（.blend→GLB）。
+キャラクター生成の実例: `tools/blender/characters/pink_operator.py`（リグ付き人型＋剣。前開きシェル `arc_shell`、髪リボン `ribbon`、
+名前ベースのボーン自動割り当て、ポーズテスト、白背景合成 `composite_white` を含む）。新しいキャラクターはこれを複製して作るのが早い。
+既存キャラクターの修正依頼はこのスクリプトを編集して再実行し、出力先 `models/pink-operator/` を上書きする。
 
 ## 注意点
 

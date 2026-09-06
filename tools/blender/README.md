@@ -21,10 +21,15 @@ tools/blender/blender.sh tools/blender/examples/render_preview.py   # 動作確�
 - `import idk_blender as ib` でヘルパー（シーン初期化・カメラ・ライト・マテリアル・レンダ・GLB 出力）が使えます
 - レンダリングエンジンは `CYCLES`（CPU）が最も確実です。GPU はありません
 
+既存のキャラクター:
+
+- `tools/blender/characters/pink_operator.py` — リグ付きキャラクター「Pink Operator」と剣。`arc_shell`（前開きジャケット）、`ribbon`（髪の毛束）、
+  名前ベースのボーン割り当てなど、キャラクター生成の実装例として流用できる。出力は `models/pink-operator/`
+
 出力先の目安:
 
 - サムネイル / OG 画像 → `img/`
-- three.js 用モデル → `pinball/`（`export_glb`）
+- three.js 用モデル → `pinball/` や `models/<name>/`（`export_glb`）
 
 ## Blender MCP（ローカル GUI 連携）
 
