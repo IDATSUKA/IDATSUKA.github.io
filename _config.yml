@@ -1,0 +1,4 @@
+# GitHub Pages (Jekyll) の公開対象から開発用ファイルを除外する
+exclude:
+  - tools/
+  - CLAUDE.md

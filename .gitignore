@@ -1,0 +1,9 @@
+# Blender
+*.blend1
+*.blend2
+tools/blender/out/
+tools/blender/.venv/
+
+# OS / editor
+.DS_Store
+Thumbs.db
