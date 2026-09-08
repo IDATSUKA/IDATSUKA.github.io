@@ -179,6 +179,43 @@ nav {
     radial-gradient(circle at 70% 20%, var(--accent-soft), transparent 50%);
   background-blend-mode: normal; position: relative; overflow: hidden;
 }
+
+.showcase-chrome {
+  position: absolute; inset: 12% 10% auto 10%; height: 72%;
+  border: 1px solid color-mix(in srgb, var(--border) 80%, var(--accent));
+  border-radius: 10px; background: color-mix(in srgb, var(--bg) 70%, var(--bg2));
+  box-shadow: 0 18px 40px color-mix(in srgb, #000 35%, transparent);
+  overflow: hidden;
+}
+.showcase-chrome-bar {
+  display: flex; align-items: center; gap: .35rem; padding: .45rem .6rem;
+  border-bottom: 1px solid var(--border); background: var(--bg2);
+}
+.showcase-chrome-bar i {
+  width: .42rem; height: .42rem; border-radius: 50%; background: var(--muted); display: block;
+}
+.showcase-chrome-bar i:nth-child(1) { background: #ff5f57; }
+.showcase-chrome-bar i:nth-child(2) { background: #febc2e; }
+.showcase-chrome-bar i:nth-child(3) { background: #28c840; }
+.showcase-chrome-body { display: grid; grid-template-columns: .32fr 1fr; height: calc(100% - 1.6rem); }
+.showcase-side { border-right: 1px solid var(--border); padding: .7rem .55rem; display: flex; flex-direction: column; gap: .4rem; }
+.showcase-side b, .showcase-main b {
+  display: block; height: .35rem; border-radius: 99px; background: var(--border);
+}
+.showcase-side b:nth-child(1) { width: 70%; background: color-mix(in srgb, var(--accent) 55%, var(--border)); }
+.showcase-side b:nth-child(2) { width: 55%; }
+.showcase-side b:nth-child(3) { width: 62%; }
+.showcase-main { padding: .75rem .7rem; display: flex; flex-direction: column; gap: .5rem; }
+.showcase-main .hero-line {
+  height: 1.1rem; width: 55%; border-radius: 4px;
+  background: color-mix(in srgb, var(--accent) 35%, var(--border));
+}
+.showcase-main .block {
+  flex: 1; border-radius: 6px; border: 1px dashed color-mix(in srgb, var(--muted) 50%, var(--border));
+  display: grid; place-items: center;
+  font-family: var(--mono); font-size: .48rem; letter-spacing: .16em; color: var(--muted);
+}
+
 .showcase-frame::after {
   content: "SPEC · SAMPLE UI"; position: absolute; inset: auto 1rem 1rem auto;
   font-family: var(--mono); font-size: .55rem; letter-spacing: .2em; color: var(--muted);
@@ -244,8 +281,37 @@ footer a { color: var(--fg-dim); }
 .rv { opacity: 0; transform: translateY(18px); transition: opacity .65s ease, transform .65s ease; }
 .rv.on { opacity: 1; transform: none; }
 
+
+/* ---- Mobile menu ---- */
+.menu-toggle {
+  display: none; background: none; border: 0; cursor: pointer;
+  width: 2rem; height: 2rem; padding: .35rem; flex-direction: column;
+  justify-content: center; gap: .28rem;
+}
+.menu-toggle span {
+  display: block; height: 1px; background: var(--fg); width: 100%;
+  transition: transform .25s, opacity .25s;
+}
+.menu-toggle.open span:nth-child(1) { transform: translateY(.36rem) rotate(45deg); }
+.menu-toggle.open span:nth-child(2) { opacity: 0; }
+.menu-toggle.open span:nth-child(3) { transform: translateY(-.36rem) rotate(-45deg); }
+.mobile-menu {
+  display: none; position: fixed; inset: 3.4rem 0 auto 0; z-index: 99;
+  background: color-mix(in srgb, var(--bg) 96%, transparent);
+  border-bottom: 1px solid var(--border); backdrop-filter: blur(12px);
+  padding: 1rem 1.35rem 1.2rem; flex-direction: column; gap: .9rem;
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a {
+  font-size: .85rem; letter-spacing: .06em; color: var(--fg-dim);
+  padding: .35rem 0; border-bottom: 1px solid var(--border);
+}
+.mobile-menu a:hover { color: var(--accent); }
+
 @media (max-width: 820px) {
   .nav-links { display: none; }
+  .menu-toggle { display: flex; }
+  .nav-cta { display: none; }
   .features-grid, .steps, .trust-row { grid-template-columns: 1fr; }
   .showcase, .price-card { grid-template-columns: 1fr; }
   section { padding: 3.5rem 0; }
@@ -265,11 +331,20 @@ footer a { color: var(--fg-dim); }
       <li><a href="#pricing">Pricing</a></li>
       <li><a href="#faq">FAQ</a></li>
     </ul>
-    <button type="button" class="theme-btn" id="themeToggle" aria-label="Toggle theme">Theme</button>
+    <button type="button" class="theme-btn" id="themeToggle" aria-label="テーマ切替">テーマ</button>
     <!-- EDIT: primary CTA href -->
-    <a href="#cta" class="nav-cta">Get started</a>
+    <a href="#cta" class="nav-cta">はじめる</a>
+    <button type="button" class="menu-toggle" id="menuToggle" aria-label="メニュー" aria-expanded="false"><span></span><span></span><span></span></button>
   </div>
 </nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#features">Features</a>
+  <a href="#showcase">Sample</a>
+  <a href="#how">How</a>
+  <a href="#pricing">Pricing</a>
+  <a href="#faq">FAQ</a>
+  <a href="#cta">はじめる</a>
+</div>
 
 <section id="hero">
   <div class="container" style="position:relative;z-index:1;">
@@ -281,7 +356,7 @@ footer a { color: var(--fg-dim); }
     <p class="hero-sub">RAY はプロダクトやサービスを最短で伝えるミニマルLPテンプレート。ビルド不要の1ファイル。ダーク / ライト対応。</p>
     <div class="hero-actions">
       <!-- EDIT: CTAs -->
-      <a href="#cta" class="btn btn-accent">無料で試す</a>
+      <a href="#cta" class="btn btn-accent">はじめる</a>
       <a href="#showcase" class="btn">サンプルを見る</a>
     </div>
   </div>
@@ -329,7 +404,18 @@ footer a { color: var(--fg-dim); }
   <div class="container">
     <span class="label rv">Sample</span>
     <div class="showcase">
-      <div class="showcase-frame rv" aria-hidden="true"></div>
+      <div class="showcase-frame rv" aria-hidden="true">
+        <div class="showcase-chrome">
+          <div class="showcase-chrome-bar"><i></i><i></i><i></i></div>
+          <div class="showcase-chrome-body">
+            <div class="showcase-side"><b></b><b></b><b></b></div>
+            <div class="showcase-main">
+              <div class="hero-line"></div>
+              <div class="block">SPEC · UI</div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="rv">
         <!-- EDIT: sample narrative -->
         <h2>見せたいのは、完成イメージ。</h2>
@@ -379,7 +465,7 @@ footer a { color: var(--fg-dim); }
       </div>
       <div>
         <p class="price-amt">¥0 <span>/ example</span></p>
-        <a href="#cta" class="btn btn-accent">詳細を見る</a>
+        <a href="#cta" class="btn btn-accent">詳しく見る</a>
       </div>
     </div>
   </div>
@@ -418,10 +504,30 @@ footer a { color: var(--fg-dim); }
 <footer>
   <!-- EDIT: copyright -->
   <p>&copy; 2026 YOUR NAME · RAY template by IDATSUKA</p>
-  <p><a href="#hero">Back to top ↑</a></p>
+  <p style="display:flex;flex-wrap:wrap;gap:.75rem;">
+    <a href="#features">Features</a>
+    <a href="#showcase">Sample</a>
+    <a href="#faq">FAQ</a>
+    <a href="#cta">はじめる</a>
+    <a href="#hero">↑</a>
+  </p>
 </footer>
 
 <script>
+// Mobile menu
+(function () {
+  const toggle = document.getElementById('menuToggle');
+  const menu = document.getElementById('mobileMenu');
+  if (!toggle || !menu) return;
+  const close = () => { toggle.classList.remove('open'); menu.classList.remove('open'); toggle.setAttribute('aria-expanded', 'false'); };
+  toggle.addEventListener('click', () => {
+    const open = menu.classList.toggle('open');
+    toggle.classList.toggle('open', open);
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  menu.querySelectorAll('a').forEach(a => a.addEventListener('click', close));
+})();
+
 // Theme toggle (persists in localStorage)
 (function () {
   const root = document.documentElement;
