@@ -250,15 +250,34 @@
     const { Body } = tb.M;
     const pl = b.plugin;
     if (pl.inLane || pl.guide) { pl.slow = 0; return; }
-    // a ball loitering (slowly circling on a ledge/basin) above the flippers is
-    // pushed down toward the flippers so it can be played or drain the centre
     const v = Math.hypot(b.velocity.x, b.velocity.y);
+    // upper playfield: a ball loitering (slowly circling on a ledge/basin) above
+    // the flippers is pushed down so it can be played or drain the centre.
     if (v < 0.6 && b.position.y < T.FLY - 26) {
       if ((pl.slow = (pl.slow || 0) + 1) > 72) {        // ~0.6s at 120 Hz
         Body.setVelocity(b, { x: (Math.random() - 0.5) * 2.4, y: 2.8 + Math.random() * 1.4 });
         pl.slow = 0;
       }
-    } else pl.slow = 0;
+      return;
+    }
+    // flipper pivot pockets: a ball can wedge in the dead corner BESIDE a
+    // flipper's pivot (the outer end), where flips never reach it. Those corners
+    // sit outboard of the flipper tips, so a legit cradle (ball held on the
+    // tip/centre face) is never in them — we can free a pivot-pocket ball even
+    // while that flipper is held up, without ever disturbing a cradle.
+    if (v < 0.5 && b.position.y >= T.FLY - 30) {
+      const inL = b.position.x < T.LFPX + 18;   // outer corner by the left pivot
+      const inR = b.position.x > T.RFPX - 18;   // outer corner by the right pivot
+      if (inL || inR) {
+        if ((pl.slow = (pl.slow || 0) + 1) > 144) {   // ~1.2s at 120 Hz
+          const dir = inL ? 1 : -1;                    // kick inward toward play/centre
+          Body.setVelocity(b, { x: dir * (1.6 + Math.random() * 1.4), y: 2.2 + Math.random() });
+          pl.slow = 0;
+        }
+        return;
+      }
+    }
+    pl.slow = 0;
   };
 
   const inRect = (px, py, rx, ry, hw, hh, a) => {
