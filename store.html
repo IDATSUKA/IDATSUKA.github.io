@@ -84,6 +84,22 @@
         </div>
       </div>
 
+
+      <!-- PULSE Template -->
+      <div class="skill-item rv" style="display:flex;flex-direction:column;gap:.6rem;">
+        <p class="work-card-cat" style="font-family:var(--mono);font-size:.58rem;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);">HTML Template</p>
+        <p class="skill-item-name" style="font-size:1.1rem;">PULSE — Dynamic Landing Page Template</p>
+        <p class="skill-item-tools" style="flex:1;">
+          ZEN / RAY の次の棚。ヒーロー動画・キネティックタイポ・UI微動ショーケースの動的 LP。ビルド不要・日本語コメント・ダーク / ライト・reduced-motion 対応。個人・商用利用可。
+        </p>
+        <p style="font-family:var(--mono);font-size:.85rem;color:var(--fg);margin:.4rem 0;">¥2,980 <span style="font-size:.62rem;color:var(--muted);">（応援価格 / 無料版あり・決済リンク後続）</span></p>
+        <div style="display:flex;gap:.8rem;flex-wrap:wrap;margin-top:.4rem;">
+          <a href="products/template-pulse/index.html" class="btn" target="_blank" rel="noopener">Live Demo</a>
+          <a href="products/idatsuka-template-pulse-v1.0.zip" class="btn" download target="_blank" rel="noopener">Free Download</a>
+          <a href="#" class="btn buy-btn" data-product="template-pulse">応援購入 ¥2,980</a>
+        </div>
+      </div>
+
       <!-- Custom order -->
       <div class="skill-item rv" style="display:flex;flex-direction:column;gap:.6rem;">
         <p class="work-card-cat" style="font-family:var(--mono);font-size:.58rem;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);">Custom Order</p>
@@ -152,6 +168,7 @@ document.querySelectorAll('.rv').forEach(el => io.observe(el));
 const PAY_LINKS = {
   'template-zen': 'https://buy.stripe.com/3cIeVeb9109tcsB64q2wU00',
   'template-ray': 'https://buy.stripe.com/bJe3cwfph4pJeAJ64q2wU03',
+  'template-pulse': '',
   'support': 'https://buy.stripe.com/cNifZield09t3W564q2wU01'
 };
 document.querySelectorAll('.buy-btn').forEach(btn => {
