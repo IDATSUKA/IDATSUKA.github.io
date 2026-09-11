@@ -38,6 +38,6 @@
   <text x="83" y="361" fill="#f4efe6" font-family="'Shippori Mincho','Noto Serif JP',serif" font-size="20" text-anchor="middle" font-weight="700">継</text>
   <!-- era badge line -->
   <line x1="60" y1="404" x2="420" y2="404" stroke="#b8a36b" stroke-width="1"/>
-  <text x="60" y="428" fill="#6b645b" font-family="'Space Mono',ui-monospace,monospace" font-size="10" letter-spacing="3">NOREN — HERITAGE TEMPLATE · v1.0 · SINCE 1902 · 創業 123 年</text>
+  <text x="60" y="428" fill="#6b645b" font-family="'Space Mono',ui-monospace,monospace" font-size="10" letter-spacing="3">NOREN — HERITAGE TEMPLATE · v1.1 · SINCE 1902 · 創業 124 年</text>
   <text x="740" y="428" fill="#1c1a17" font-family="'Space Mono',ui-monospace,monospace" font-size="26" letter-spacing="8" text-anchor="end">NOREN</text>
 </svg>

@@ -5,8 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <!-- ============================================================
-  NOREN（暖簾）— 老舗のための Web サイトテンプレート v1.0
+  NOREN（暖簾）— 老舗のための Web サイトテンプレート v1.1
   by IDATSUKA (https://idatsuka.com)
+
+  v1.1: 暖簾を Canvas の布シミュレーションに変更（風で波打ち、マウスで押され、
+        ホバー／スクロール／タップで開く）。data-char / data-panels / data-mon で調整
 
   明治・大正・昭和創業の店（茶舗・菓子舗・酒蔵・旅館・工房・呉服店…）
   のための、1ファイル完結の縦書き和風テンプレートです。
@@ -22,7 +25,7 @@
   ■ 収録しているもの
   ・昼（paper）／夜（ink）の2テーマ切替（選択はブラウザに保存）
   ・縦書きの屋号・セクション見出し（900px 以下では自動で横書き）
-  ・暖簾モチーフ（ゆっくり揺れ、スクロール・ホバーで少し開く）
+  ・暖簾モチーフ（Canvas の布。風で波打ち、マウスで押され、スクロール・ホバー・タップで少し開く）
   ・年表（明治→令和の元号帯。PC は横組み、スマホは縦組み）
   ・家紋プレースホルダー（SVG）、落款（朱印）、和紙の繊維テクスチャ
   ・品書き／店舗案内／お知らせ／FAQ／お問い合わせ
@@ -320,58 +323,17 @@ nav.scrolled { border-bottom-color: var(--border); }
 
 /* ============================================================
    暖簾（のれん）— このテンプレートの signature
-   ゆっくり揺れ、スクロールとホバーで少しだけ開きます
+   Canvas で布として描いています（竿に固定、裾ほど大きく波打つ）。
+   風でゆっくり揺れ、マウスを横切ると布が押され、
+   ホバー／スクロール／タップで少しだけ開きます。
+   生地と家紋の色は :root の --noren-bg / --noren-fg、一文字は --accent。
 ============================================================ */
 .hero-art {
   position: absolute; top: 0; right: 7vw; z-index: 2;
   width: min(27vw, 300px); height: min(54vh, 440px);
-  pointer-events: auto;
+  pointer-events: auto; touch-action: pan-y;
 }
-.noren { position: relative; width: 100%; height: 100%; display: flex; flex-direction: column; }
-/* 竿（暖簾を吊るす棒） */
-.noren-rail {
-  height: 6px; border-radius: 3px; flex: none;
-  background: linear-gradient(180deg, color-mix(in srgb, var(--fg) 55%, transparent), color-mix(in srgb, var(--fg) 30%, transparent));
-  box-shadow: 0 2px 10px -4px var(--shadow);
-}
-.noren-set { flex: 1; display: flex; gap: 6px; min-height: 0; }
-.noren-panel {
-  flex: 1; min-width: 0; transform-origin: 50% 0;
-  transition: transform 1.2s var(--ease);
-}
-.noren-cloth {
-  position: relative; height: 100%; transform-origin: 50% 0; overflow: hidden;
-  background:
-    repeating-linear-gradient(90deg, rgba(255,255,255,.045) 0 1px, transparent 1px 7px),
-    linear-gradient(180deg, color-mix(in srgb, var(--noren-bg) 88%, #fff 12%) 0 2%, var(--noren-bg) 12%);
-  box-shadow: inset 0 -28px 34px -28px rgba(0,0,0,.55), 0 24px 40px -26px var(--shadow);
-  animation: sway 9s ease-in-out infinite alternate;
-}
-/* 裾の縫い目 */
-.noren-cloth::after {
-  content: ''; position: absolute; left: 0; right: 0; bottom: 11px; height: 1px;
-  background: color-mix(in srgb, var(--noren-fg) 18%, transparent);
-}
-.noren-panel:nth-child(2) .noren-cloth { animation-duration: 11s; animation-delay: -2s; }
-.noren-panel:nth-child(3) .noren-cloth { animation-duration: 10s; animation-delay: -4s; }
-/* 竿を支点に、数px だけゆっくり揺れます */
-@keyframes sway {
-  from { transform: rotate(-.6deg); }
-  to   { transform: rotate(.6deg); }
-}
-/* 家紋（中央のパネルに染め抜き） */
-.noren-mon { position: absolute; left: 50%; top: 16%; width: 62%; translate: -50% 0; }
-.noren-mon svg { width: 100%; height: auto; display: block; }
-/* 屋号の一文字（朱） */
-.noren-char {
-  position: absolute; left: 0; right: 0; bottom: 14%; text-align: center;
-  font-family: var(--mincho); font-weight: 700; font-size: clamp(1.4rem, 3.4vw, 2.1rem);
-  color: var(--accent); letter-spacing: .1em;
-}
-/* スクロール／ホバーで少し開く */
-.noren.is-parted .noren-panel:first-child, .hero-art:hover .noren-panel:first-child { transform: rotate(-1.6deg); }
-.noren.is-parted .noren-panel:last-child, .hero-art:hover .noren-panel:last-child { transform: rotate(1.6deg); }
-.noren.is-parted .noren-panel:nth-child(2), .hero-art:hover .noren-panel:nth-child(2) { transform: scaleY(.972); }
+.noren { display: block; width: 100%; height: 100%; }
 
 /* 家紋のプレースホルダー（共通） */
 .mon-ring { fill: none; stroke: currentColor; }
@@ -657,7 +619,6 @@ footer { border-top: 1px solid var(--border); padding: 3.4rem 0 2.6rem; font-siz
   .rv { opacity: 1; transform: none; }
   .hero-name .ch { opacity: 1; }
   .chrono::before { transform: none !important; }
-  .noren-cloth { animation: none; }
 }
 </style>
 </head>
@@ -720,23 +681,13 @@ footer { border-top: 1px solid var(--border); padding: 3.4rem 0 2.6rem; font-siz
   HERO — 屋号・家訓・創業の帯・暖簾
 ============================================================ -->
 <section id="hero" class="hero">
-  <!-- EDIT: 暖簾。中央パネルの家紋と朱の一文字を店のものに差し替えてください。
-       パネルを2枚にしたい場合は .noren-panel をひとつ削除するだけでOKです -->
+  <!-- EDIT: 暖簾（Canvas で布として描画）。
+       data-char   … 中央の布に染め抜く一文字（屋号の一字など）。空にすると非表示
+       data-panels … 布の枚数（2〜4）
+       家紋は上の <symbol id="mon"> がそのまま染め抜かれます。
+       画像の家紋を使う場合は data-mon="mon.svg" のように画像パスを追加してください -->
   <div class="hero-art">
-    <div class="noren" id="noren" aria-hidden="true">
-      <div class="noren-rail"></div>
-      <div class="noren-set">
-        <div class="noren-panel"><div class="noren-cloth"></div></div>
-        <div class="noren-panel">
-          <div class="noren-cloth">
-            <span class="noren-mon" style="color:var(--noren-fg)"><svg viewBox="0 0 64 64"><use href="#mon"></use></svg></span>
-            <!-- EDIT: 暖簾に染め抜く一文字（屋号の一字など） -->
-            <span class="noren-char">屋</span>
-          </div>
-        </div>
-        <div class="noren-panel"><div class="noren-cloth"></div></div>
-      </div>
-    </div>
+    <canvas class="noren" id="noren" data-char="屋" data-panels="3" aria-hidden="true"></canvas>
   </div>
 
   <div class="container">
@@ -1285,6 +1236,230 @@ footer { border-top: 1px solid var(--border); padding: 3.4rem 0 2.6rem; font-siz
     if (!ticking) { ticking = true; requestAnimationFrame(update); }
   }, { passive: true });
   update();
+})();
+
+/* ---- 暖簾（Canvas の布シミュレーション） ----
+   竿に固定した布が裾に向かって波打ちます。触らなくても動きますが、
+   揺れの強さは AMP、波の速さは SPEED で調整できます。
+   ・風：ゆっくり強弱のつく揺れ（2つの波の重ね合わせ、裾ほど大きい）
+   ・マウス：布の上を横切ると、その高さの布が押されて跳ね返る
+   ・ホバー／スクロール（.is-parted）／タップ：両端の布が外へ開き、中央が少し持ち上がる
+   ・prefers-reduced-motion：静止した1枚を描くだけ */
+(function () {
+  var cv = document.getElementById('noren');
+  if (!cv || !cv.getContext) return;
+  var ctx = cv.getContext('2d');
+  var host = cv.parentElement;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var N = Math.min(4, Math.max(2, parseInt(cv.getAttribute('data-panels'), 10) || 3));
+  var CHAR = cv.getAttribute('data-char') || '';
+  var MON_SRC = cv.getAttribute('data-mon');
+  var AMP = .12;      /* 揺れ幅（布の幅に対する割合） */
+  var SPEED = 1;      /* 波の速さ（1 = 標準） */
+  var STRIPS = 44;    /* 布を何段に分けて描くか（多いほど滑らか） */
+
+  var W = 0, H = 0, dpr = 1, rail = 0, gap = 0, pw = 0, ph = 0;
+  var layers = [], monImg = null, colors = {};
+  var t0 = performance.now(), raf = 0, onScreen = true;
+  var part = 0, hover = false, tapUntil = 0;
+  var push = 0, pushV = 0, pushY = .5, lastPX = null, lastPT = 0;
+
+  function cssVar(n) { return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
+  function rgba(hex, a) {
+    var m = /^#([0-9a-f]{3,8})$/i.exec(hex);
+    if (!m) return hex;
+    var h = m[1]; if (h.length < 6) h = h.replace(/./g, function (c) { return c + c; });
+    return 'rgba(' + parseInt(h.slice(0, 2), 16) + ',' + parseInt(h.slice(2, 4), 16) + ',' + parseInt(h.slice(4, 6), 16) + ',' + a + ')';
+  }
+  function readColors() {
+    colors = {
+      bg: cssVar('--noren-bg') || '#26231f', fg: cssVar('--noren-fg') || '#f4efe6',
+      accent: cssVar('--accent') || '#b23a2a', rail: cssVar('--fg') || '#1c1a17',
+      font: cssVar('--mincho') || 'serif'
+    };
+  }
+
+  /* 家紋：<symbol id="mon"> を画像化（data-mon があればその画像） */
+  function loadMon() {
+    var src = MON_SRC;
+    if (!src) {
+      var sym = document.getElementById('mon');
+      if (!sym) return;
+      var vb = sym.getAttribute('viewBox') || '0 0 64 64';
+      var svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="' + vb + '" width="320" height="320">' +
+        '<style>.mon-ring,.mon-in{fill:none;stroke:' + colors.fg + '}</style>' +
+        '<g style="color:' + colors.fg + '" fill="currentColor">' + sym.innerHTML + '</g></svg>';
+      src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+    }
+    var img = new Image();
+    img.onload = function () { monImg = img; buildLayers(); if (reduce.matches) drawStatic(); };
+    img.src = src;
+  }
+
+  /* 布1枚ずつを平らな状態で描いておき、毎フレームは段ごとにずらして貼る */
+  function buildLayers() {
+    if (!W || !H) return;
+    rail = Math.max(5, Math.round(H * .016));
+    gap = Math.max(4, Math.round(W * .022));
+    pw = (W - gap * (N - 1)) / N;
+    ph = H - rail - Math.round(H * .05);
+    layers = [];
+    for (var i = 0; i < N; i++) {
+      var c = document.createElement('canvas');
+      c.width = Math.ceil(pw * dpr); c.height = Math.ceil(ph * dpr);
+      var g = c.getContext('2d'); g.scale(dpr, dpr);
+      g.fillStyle = colors.bg; g.fillRect(0, 0, pw, ph);
+      /* 織り目 */
+      g.fillStyle = 'rgba(255,255,255,.05)';
+      for (var x = 3; x < pw; x += 6) g.fillRect(x, 0, 1, ph);
+      g.fillStyle = 'rgba(0,0,0,.05)';
+      for (var y = 2; y < ph; y += 5) g.fillRect(0, y, pw, 1);
+      /* 竿にかかる折り返しの明るみと、裾の落ち影 */
+      var gr = g.createLinearGradient(0, 0, 0, ph);
+      gr.addColorStop(0, 'rgba(255,255,255,.16)'); gr.addColorStop(.05, 'rgba(255,255,255,.02)');
+      gr.addColorStop(.85, 'rgba(0,0,0,0)'); gr.addColorStop(1, 'rgba(0,0,0,.22)');
+      g.fillStyle = gr; g.fillRect(0, 0, pw, ph);
+      /* 裾の縫い目 */
+      g.fillStyle = rgba(colors.fg, .18); g.fillRect(0, ph - Math.max(8, ph * .03), pw, 1);
+      /* 中央の布：家紋と一文字 */
+      if (i === Math.floor((N - 1) / 2)) {
+        if (monImg) { var mw = pw * .62; g.drawImage(monImg, (pw - mw) / 2, ph * .15, mw, mw); }
+        if (CHAR) {
+          g.fillStyle = colors.accent; g.textAlign = 'center'; g.textBaseline = 'alphabetic';
+          g.font = '700 ' + Math.round(pw * .3) + 'px ' + colors.font;
+          g.fillText(CHAR, pw / 2, ph * .86);
+        }
+      }
+      layers.push(c);
+    }
+  }
+
+  /* 高さ v（0=竿, 1=裾）の布が、平らな状態から横に何px ずれているか */
+  function disp(i, v, t, wind) {
+    var env = Math.pow(v, 1.8);                           /* 竿に固定、裾ほど自由 */
+    var phase = i * .85;                                  /* 隣の布と少し位相をずらす */
+    var w1 = Math.sin(6.2832 * (v * .8 - t / 6.1) + phase);
+    var w2 = Math.sin(6.2832 * (v * 1.9 - t / 3.3) + phase * 1.7 + .9);
+    var x = env * pw * AMP * (.7 * w1 + .3 * w2) * (.35 + .65 * wind);
+    var side = (i - (N - 1) / 2) / Math.max(.5, (N - 1) / 2);   /* -1（左端）〜 1（右端） */
+    x += env * part * side * pw * .36;                    /* 開く：両端が外へ */
+    x += env * push * Math.exp(-Math.pow((v - pushY) * 2.6, 2));   /* マウスに押された部分 */
+    return x;
+  }
+
+  function draw(t, wind) {
+    var i, s, v;
+    var sh = ph / STRIPS;
+    var pts = [];
+    for (i = 0; i < N; i++) {
+      var center = i === Math.floor((N - 1) / 2);
+      /* 布がふくらむと裾が少し上がる（開くときは中央の布が持ち上がる） */
+      var lift = .025 + .035 * wind * (.5 + .5 * Math.sin(t * .5 + i)) + part * (center ? .06 : .015);
+      var xs = [], ys = [];
+      for (s = 0; s <= STRIPS; s++) {
+        v = s / STRIPS;
+        xs.push(i * (pw + gap) + disp(i, v, t, wind));
+        ys.push(rail + v * ph * (1 - lift * v * v));
+      }
+      pts.push({ xs: xs, ys: ys });
+    }
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+
+    /* 落ち影（布の形に沿う） */
+    if ('filter' in ctx) {
+      ctx.save(); ctx.filter = 'blur(10px)'; ctx.fillStyle = 'rgba(0,0,0,.26)';
+      ctx.beginPath();
+      for (i = 0; i < N; i++) {
+        var p = pts[i];
+        for (s = 0; s <= STRIPS; s++) { if (s === 0) ctx.moveTo(p.xs[s] + 4, p.ys[s] + 14); else ctx.lineTo(p.xs[s] + 4, p.ys[s] + 14); }
+        for (s = STRIPS; s >= 0; s--) ctx.lineTo(p.xs[s] + pw + 4, p.ys[s] + 14);
+        ctx.closePath();
+      }
+      ctx.fill(); ctx.restore();
+    }
+
+    /* 布：段ごとに平行四辺形で貼り、曲がりに応じて陰影を重ねる */
+    for (i = 0; i < N; i++) {
+      var q = pts[i], L = layers[i];
+      if (!L) continue;
+      for (s = 0; s < STRIPS; s++) {
+        var x0 = q.xs[s], x1 = q.xs[s + 1], y0 = q.ys[s], y1 = q.ys[s + 1];
+        var k = (x1 - x0) / (y1 - y0), d = (y1 - y0) / sh;
+        ctx.setTransform(dpr, 0, k * dpr, d * dpr, x0 * dpr, y0 * dpr);
+        ctx.drawImage(L, 0, s * sh * dpr, L.width, (sh + 1.5) * dpr, 0, 0, pw, sh + 1.5);
+        var curve = s > 0 && s < STRIPS ? (q.xs[s + 1] - 2 * q.xs[s] + q.xs[s - 1]) : 0;
+        var shade = curve * .24 + k * .12;
+        ctx.fillStyle = shade < 0 ? 'rgba(0,0,0,' + Math.min(.32, -shade) + ')' : 'rgba(255,255,255,' + Math.min(.12, shade * .6) + ')';
+        ctx.fillRect(0, 0, pw, sh + 1.5);
+      }
+    }
+
+    /* 竿 */
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    var rg = ctx.createLinearGradient(0, 0, 0, rail);
+    rg.addColorStop(0, rgba(colors.rail, .62)); rg.addColorStop(1, rgba(colors.rail, .3));
+    ctx.fillStyle = rg;
+    var r = rail / 2;
+    ctx.beginPath();
+    ctx.moveTo(r, 0); ctx.lineTo(W - r, 0); ctx.arc(W - r, r, r, -1.5708, 1.5708);
+    ctx.lineTo(r, rail); ctx.arc(r, r, r, 1.5708, 4.7124); ctx.closePath(); ctx.fill();
+  }
+
+  function drawStatic() { part = 0; push = 0; draw(1.7, .5); }
+
+  function frame(now) {
+    raf = 0;
+    if (!onScreen || document.hidden) return;
+    var t = (now - t0) / 1000 * SPEED;
+    var wind = .25 + .75 * (.5 + .5 * Math.sin(t * .31) * Math.sin(t * .11 + 1.3));
+    var want = (hover || now < tapUntil || cv.classList.contains('is-parted')) ? 1 : 0;
+    part += (want - part) * .045;
+    pushV += -push * .05 - pushV * .14; push += pushV;   /* ばね：押されて戻る */
+    draw(t, wind);
+    raf = requestAnimationFrame(frame);
+  }
+  function start() { if (!raf && !reduce.matches) raf = requestAnimationFrame(frame); }
+
+  function resize() {
+    var b = host.getBoundingClientRect();
+    if (!b.width || !b.height) return;
+    dpr = Math.min(2, window.devicePixelRatio || 1);
+    W = b.width; H = b.height;
+    cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+    readColors(); buildLayers();
+    if (reduce.matches) drawStatic();
+  }
+
+  /* マウス：横切る速さに応じて布を押す。タップは1.5秒だけ開く */
+  host.addEventListener('pointermove', function (e) {
+    var b = host.getBoundingClientRect();
+    var x = e.clientX - b.left, y = e.clientY - b.top, now = e.timeStamp;
+    if (lastPX !== null && now > lastPT) {
+      var vx = (x - lastPX) / (now - lastPT);
+      push = Math.max(-pw * .5, Math.min(pw * .5, push + vx * 9));
+      pushY = Math.max(0, Math.min(1, (y - rail) / ph));
+    }
+    lastPX = x; lastPT = now;
+  });
+  host.addEventListener('pointerenter', function () { hover = true; });
+  host.addEventListener('pointerleave', function () { hover = false; lastPX = null; });
+  host.addEventListener('pointerdown', function (e) { if (e.pointerType !== 'mouse') tapUntil = performance.now() + 1500; });
+
+  /* 画面外・別タブでは描画を止める */
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function (en) { onScreen = en[0].isIntersecting; if (onScreen) start(); }).observe(host);
+  }
+  document.addEventListener('visibilitychange', function () { if (!document.hidden) start(); });
+  if ('ResizeObserver' in window) new ResizeObserver(resize).observe(host);
+  else window.addEventListener('resize', resize);
+  /* テーマ切替：生地と家紋の色を取り直す */
+  new MutationObserver(function () { readColors(); buildLayers(); loadMon(); if (reduce.matches) drawStatic(); })
+    .observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { buildLayers(); if (reduce.matches) drawStatic(); });
+  reduce.addEventListener && reduce.addEventListener('change', function () { if (reduce.matches) { cancelAnimationFrame(raf); raf = 0; drawStatic(); } else start(); });
+
+  readColors(); resize(); loadMon(); start();
 })();
 
 /* ---- リビール（.rv が付いた要素を、兄弟ごとに少しずつ遅らせて表示） ---- */
