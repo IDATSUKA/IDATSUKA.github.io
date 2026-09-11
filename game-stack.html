@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stack — IDATSUKA</title>
+  <meta name="description" content="Stack — 精度を競うタワー積み上げゲーム。">
+  <meta property="og:title" content="Stack — IDATSUKA">
+  <meta property="og:description" content="Stack — 精度を競うタワー積み上げゲーム。">
+  <link rel="canonical" href="https://idatsuka.com/game-stack.html">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%2308090c'/><text x='16' y='22' text-anchor='middle' font-size='16' font-family='sans-serif' font-weight='300' fill='%23f2f4f7'>I</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Zen+Kaku+Gothic+New:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .game-header {
+      padding: 7rem 3rem 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .game-header h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 500;
+      letter-spacing: -.03em;
+      line-height: .92;
+      margin-bottom: .8rem;
+    }
+    .game-header p {
+      font-size: .82rem;
+      line-height: 1.9;
+      color: var(--muted);
+      font-family: var(--mono);
+    }
+    .game-container {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 2 / 3;
+      max-height: calc(100vh - 200px);
+      max-width: 480px;
+      margin: 2rem auto;
+      border: 1px solid var(--border);
+      background: #08090c;
+      overflow: hidden;
+    }
+    .game-container canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      touch-action: none;
+      -webkit-tap-highlight-color: transparent;
+      cursor: pointer;
+    }
+    .game-wrapper {
+      padding: 0 1.5rem 3rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .game-instructions {
+      font-family: var(--mono);
+      font-size: .55rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--dim);
+      margin-top: 1rem;
+      text-align: center;
+    }
+    @media (max-width: 900px) {
+      .game-header {
+        padding: 5.5rem 1.5rem 1.5rem;
+      }
+      .game-wrapper {
+        padding: 0 1rem 2rem;
+      }
+      .game-container {
+        max-height: calc(100vh - 160px);
+      }
+    }
+    @media (max-width: 480px) {
+      .game-container {
+        border-left: none;
+        border-right: none;
+        max-width: 100%;
+        aspect-ratio: auto;
+        height: calc(100vh - 160px);
+        margin: 0 auto;
+      }
+      .game-wrapper {
+        padding: 0 0 2rem;
+      }
+      .game-instructions {
+        padding: 0 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo"><img src="img/logo.svg" alt="Idatsuka"></a>
+  <ul class="nav-links">
+    <li><a href="about.html">Profile</a></li>
+    <li><a href="play.html" class="active">Play</a></li>
+    <li><a href="biz.html">Business</a></li>
+    <li><a href="store.html">Store</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <button class="menu-toggle" id="menuToggle" aria-label="メニュー"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="about.html">Profile</a>
+  <a href="play.html" class="active">Play</a>
+  <a href="biz.html">Business</a>
+  <a href="store.html">Store</a>
+  <a href="blog.html">Blog</a>
+  <a href="contact.html">Contact</a>
+</div>
+
+<header class="game-header">
+  <span class="label">Precision Tower</span>
+  <h1>Stack</h1>
+  <p>タップまたはスペースでスラブを落とす。ズレた分は削られる。</p>
+</header>
+
+<div class="game-wrapper">
+  <div class="game-container">
+    <canvas id="gameCanvas"></canvas>
+  </div>
+  <p class="game-instructions">Tap / Click / Space to drop &mdash; Perfect drops rebuild width<br><a href="ranking.html" style="color:#a8d8ea;text-decoration:none;opacity:0.6;">Ranking</a></p>
+</div>
+
+<footer>
+  <p>&copy; 2025 Idatsuka</p>
+  <ul class="footer-links">
+    <li><a href="about.html">Profile</a></li>
+    <li><a href="play.html">Play</a></li>
+    <li><a href="biz.html">Business</a></li>
+    <li><a href="store.html">Store</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+</footer>
+
+<script>
+// Mobile menu toggle
+document.getElementById('menuToggle').addEventListener('click', function() {
+  this.classList.toggle('open');
+  document.getElementById('mobileMenu').classList.toggle('open');
+});
+</script>
+
+<!-- Name Registration Overlay -->
+<div id="nameOverlay" style="
+  display:none;position:fixed;inset:0;z-index:9999;
+  background:rgba(8,9,12,0.95);
+  align-items:center;justify-content:center;
+  font-family:'Space Mono',monospace;
+">
+  <div style="text-align:center;max-width:320px;padding:2rem;">
+    <div style="color:#a8d8ea;font-size:1.1rem;margin-bottom:0.5rem;font-family:'Space Grotesk',sans-serif;font-weight:500;">STACK</div>
+    <div style="color:#6b7280;font-size:0.65rem;letter-spacing:0.12em;margin-bottom:2rem;">ENTER YOUR NAME</div>
+    <input id="nameInput" type="text" maxlength="16" placeholder="Name (1-16 chars)" autocomplete="off" style="
+      display:block;width:100%;box-sizing:border-box;
+      background:transparent;border:1px solid rgba(168,216,234,0.3);
+      color:#f2f4f7;font-family:'Space Mono',monospace;font-size:0.85rem;
+      padding:0.6rem 0.8rem;text-align:center;outline:none;
+      margin-bottom:0.5rem;
+    ">
+    <div id="nameError" style="color:#e87272;font-size:0.65rem;min-height:1.2rem;margin-bottom:1rem;"></div>
+    <button id="nameRegisterBtn" style="
+      background:transparent;border:1px solid rgba(168,216,234,0.4);
+      color:#a8d8ea;font-family:'Space Mono',monospace;font-size:0.75rem;
+      padding:0.5rem 2rem;cursor:pointer;letter-spacing:0.1em;
+    ">REGISTER</button>
+  </div>
+</div>
+
+<script src="js/leaderboard.js"></script>
+<script>
+// Leaderboard initialization and name registration
+(function() {
+  const overlay = document.getElementById('nameOverlay');
+  const nameInput = document.getElementById('nameInput');
+  const nameError = document.getElementById('nameError');
+  const nameRegisterBtn = document.getElementById('nameRegisterBtn');
+
+  // Hide overlay by default until we check
+  overlay.style.display = 'none';
+
+  async function initLeaderboard() {
+    await Leaderboard.init();
+    if (!Leaderboard.getName()) {
+      overlay.style.display = 'flex';
+      nameInput.focus();
+    }
+  }
+
+  nameRegisterBtn.addEventListener('click', async function() {
+    nameError.textContent = '';
+    const name = nameInput.value.trim();
+    if (!name) { nameError.textContent = '名前を入力してください'; return; }
+    nameRegisterBtn.disabled = true;
+    nameRegisterBtn.textContent = '...';
+    const res = await Leaderboard.registerName(name);
+    if (res.ok) {
+      overlay.style.display = 'none';
+    } else {
+      nameError.textContent = res.msg || 'エラーが発生しました';
+    }
+    nameRegisterBtn.disabled = false;
+    nameRegisterBtn.textContent = 'REGISTER';
+  });
+
+  nameInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') nameRegisterBtn.click();
+  });
+
+  initLeaderboard();
+})();
+</script>
+
+<script>
+(function() {
+  'use strict';
+
+  // ── Canvas Setup ──
+  const canvas = document.getElementById('gameCanvas');
+  const ctx = canvas.getContext('2d');
+  const container = canvas.parentElement;
+
+  let VW = 0, VH = 0;
+
+  function resizeCanvas() {
+    const rect = container.getBoundingClientRect();
+    const dpr = Math.min(window.devicePixelRatio || 1, 2.5);
+    const prevW = VW, prevH = VH;
+    VW = Math.max(1, rect.width);
+    VH = Math.max(1, rect.height);
+    canvas.width = Math.round(VW * dpr);
+    canvas.height = Math.round(VH * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    if (prevW > 0 && prevH > 0) rescale(prevW, prevH);
+    else layoutMetrics();
+  }
+
+  function W() { return VW; }
+  function H() { return VH; }
+
+  // ── Palette ──
+  const COL_ACCENT  = '#9fd6ec';
+  const COL_MUTED   = '#70767f';
+  const COL_DIM     = '#3a3f47';
+  const COL_FG      = '#f4f5f7';
+
+  // ── Motion preference ──
+  const mqReduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  function reduced() { return mqReduce.matches; }
+
+  // ── States ──
+  const STATE_TITLE = 0;
+  const STATE_PLAYING = 1;
+  const STATE_DEAD = 2;
+  let state = STATE_TITLE;
+
+  // ── Geometry ──
+  let slabH = 26;
+  let groundY = 0;
+  let baseW = 220;
+  let camY = 0;
+
+  function layoutMetrics() {
+    const w = W(), h = H();
+    slabH = Math.max(15, Math.min(30, h * 0.036));
+    groundY = h - h * 0.13;
+    baseW = Math.min(w * 0.46, 230);
+  }
+
+  // ── Game data ──
+  let tower = [];         // { x, w, flash }
+  let moving = null;      // { x, w, level }
+  let dir = 1;
+  let startSide = 1;
+  let speed = 160;
+  let score = 0;
+  let combo = 0;
+  let bestCombo = 0;
+  let highScore = parseInt(localStorage.getItem('stackHigh') || '0', 10);
+  let debris = [];
+  let particles = [];
+  let rings = [];
+  let floats = [];
+  let shake = 0;
+  let deadT = 0;
+  let toppleT = 0;
+  let timeNow = 0;
+  let lbResult = null;
+  let lbSubmitted = false;
+  let lastInput = 0;
+
+  // ── Helpers ──
+  function clamp(v, a, b) { return v < a ? a : (v > b ? b : v); }
+  function rand(a, b) { return Math.random() * (b - a) + a; }
+  function mix(a, b, t) {
+    return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t];
+  }
+  function rgb(c, a) {
+    return 'rgba(' + (c[0] | 0) + ',' + (c[1] | 0) + ',' + (c[2] | 0) + ',' + (a === undefined ? 1 : a) + ')';
+  }
+  function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
+
+  const C_LOW = [58, 63, 71];
+  const C_MID = [159, 214, 236];
+  const C_HI  = [238, 245, 250];
+  const colorCache = [];
+  function slabColor(i) {
+    if (colorCache[i]) return colorCache[i];
+    const t = Math.min(1, i / 64);
+    let c = t < 0.55 ? mix(C_LOW, C_MID, t / 0.55) : mix(C_MID, C_HI, (t - 0.55) / 0.45);
+    if (i % 2 === 0) c = [c[0] * 0.9, c[1] * 0.9, c[2] * 0.9];
+    const rec = { body: c, edge: mix(c, [255, 255, 255], 0.5) };
+    colorCache[i] = rec;
+    return rec;
+  }
+
+  // world y (px above ground) -> screen y
+  function sy2y(sy) { return groundY - sy + camY; }
+  function levelTopSy(level) { return (level + 1) * slabH; }
+
+  // ── Glow sprite (pre-rendered, additive) ──
+  function makeGlow(col) {
+    const s = 64;
+    const c = document.createElement('canvas');
+    c.width = c.height = s;
+    const g = c.getContext('2d');
+    const grad = g.createRadialGradient(s / 2, s / 2, 0, s / 2, s / 2, s / 2);
+    grad.addColorStop(0, 'rgba(' + col + ',1)');
+    grad.addColorStop(0.28, 'rgba(' + col + ',0.55)');
+    grad.addColorStop(1, 'rgba(' + col + ',0)');
+    g.fillStyle = grad;
+    g.fillRect(0, 0, s, s);
+    return c;
+  }
+  const GLOW_ACCENT = makeGlow('159,214,236');
+  const GLOW_WHITE = makeGlow('244,245,247');
+
+  // Even halo for slabs: vertical falloff, softened at both ends.
+  const GLOW_BAND = (function() {
+    const bw = 160, bh = 64;
+    const c = document.createElement('canvas');
+    c.width = bw; c.height = bh;
+    const g = c.getContext('2d');
+    const v = g.createLinearGradient(0, 0, 0, bh);
+    v.addColorStop(0, 'rgba(159,214,236,0)');
+    v.addColorStop(0.3, 'rgba(159,214,236,0.35)');
+    v.addColorStop(0.5, 'rgba(159,214,236,1)');
+    v.addColorStop(0.7, 'rgba(159,214,236,0.35)');
+    v.addColorStop(1, 'rgba(159,214,236,0)');
+    g.fillStyle = v;
+    g.fillRect(0, 0, bw, bh);
+    const hgr = g.createLinearGradient(0, 0, bw, 0);
+    hgr.addColorStop(0, 'rgba(0,0,0,0)');
+    hgr.addColorStop(0.16, 'rgba(0,0,0,1)');
+    hgr.addColorStop(0.84, 'rgba(0,0,0,1)');
+    hgr.addColorStop(1, 'rgba(0,0,0,0)');
+    g.globalCompositeOperation = 'destination-in';
+    g.fillStyle = hgr;
+    g.fillRect(0, 0, bw, bh);
+    return c;
+  })();
+
+  // ── Audio ──
+  let audioCtx = null;
+  let muted = localStorage.getItem('stackMute') === '1';
+  function ac() {
+    if (!audioCtx) {
+      try {
+        const AC = window.AudioContext || window.webkitAudioContext;
+        if (!AC) return null;
+        audioCtx = new AC();
+      } catch (e) { return null; }
+    }
+    if (audioCtx.state === 'suspended' && audioCtx.resume) audioCtx.resume();
+    return audioCtx;
+  }
+  function env(c, node, t, peak, dur) {
+    const g = c.createGain();
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(peak, t + 0.008);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    node.connect(g);
+    g.connect(c.destination);
+    return g;
+  }
+  function sfxDrop(power) {
+    if (muted) return;
+    const c = ac(); if (!c) return;
+    const t = c.currentTime;
+    const o = c.createOscillator();
+    o.type = 'sine';
+    o.frequency.setValueAtTime(180, t);
+    o.frequency.exponentialRampToValueAtTime(48, t + 0.15);
+    env(c, o, t, 0.13 + 0.1 * clamp(power, 0, 1), 0.26);
+    o.start(t); o.stop(t + 0.3);
+  }
+  function sfxPerfect(n) {
+    if (muted) return;
+    const c = ac(); if (!c) return;
+    const t = c.currentTime;
+    const f = 620 * Math.pow(2, Math.min(n, 8) / 12);
+    const o = c.createOscillator();
+    o.type = 'triangle';
+    o.frequency.setValueAtTime(f, t);
+    o.frequency.exponentialRampToValueAtTime(f * 2, t + 0.13);
+    env(c, o, t, 0.12, 0.2);
+    o.start(t); o.stop(t + 0.24);
+    const o2 = c.createOscillator();
+    o2.type = 'sine';
+    o2.frequency.setValueAtTime(f * 2, t);
+    o2.frequency.exponentialRampToValueAtTime(f * 3, t + 0.13);
+    env(c, o2, t, 0.045, 0.18);
+    o2.start(t); o2.stop(t + 0.22);
+  }
+  function sfxFail() {
+    if (muted) return;
+    const c = ac(); if (!c) return;
+    const t = c.currentTime;
+    const o = c.createOscillator();
+    o.type = 'sine';
+    o.frequency.setValueAtTime(210, t);
+    o.frequency.exponentialRampToValueAtTime(42, t + 0.55);
+    env(c, o, t, 0.2, 0.7);
+    o.start(t); o.stop(t + 0.75);
+  }
+
+  // ── FX emitters ──
+  function burst(x, sy, n, tint, spread, power) {
+    if (reduced()) return;
+    for (let i = 0; i < n; i++) {
+      const a = rand(0, Math.PI * 2);
+      const sp = rand(20, 120) * power;
+      particles.push({
+        x: x + rand(-spread, spread),
+        sy: sy + rand(-4, 4),
+        vx: Math.cos(a) * sp,
+        vy: Math.sin(a) * sp + rand(10, 70) * power,
+        life: 1,
+        decay: rand(1, 2.1),
+        size: rand(4, 11),
+        tint: tint
+      });
+    }
+  }
+  function dust(x, sy, n) {
+    if (reduced()) return;
+    for (let i = 0; i < n; i++) {
+      particles.push({
+        x: x + rand(-6, 6),
+        sy: sy + rand(-2, 2),
+        vx: rand(-40, 40),
+        vy: rand(-10, 40),
+        life: 1,
+        decay: rand(1.1, 2.4),
+        size: rand(3, 9),
+        tint: 0
+      });
+    }
+  }
+
+  // ── Setup / restart ──
+  function initGame() {
+    layoutMetrics();
+    const w = W();
+    tower = [{ x: (w - baseW) / 2, w: baseW, flash: 0 }];
+    debris = [];
+    particles = [];
+    rings = [];
+    floats = [];
+    score = 0;
+    combo = 0;
+    bestCombo = 0;
+    camY = 0;
+    shake = 0;
+    deadT = 0;
+    toppleT = 0;
+    lbResult = null;
+    lbSubmitted = false;
+    startSide = 1;
+    spawnMoving(baseW);
+  }
+
+  function spawnMoving(width) {
+    const w = W();
+    const level = tower.length;
+    const minX = 6, maxX = Math.max(6, w - width - 6);
+    startSide *= -1;
+    const fromLeft = startSide > 0;
+    moving = {
+      x: fromLeft ? minX : maxX,
+      w: width,
+      level: level
+    };
+    dir = fromLeft ? 1 : -1;
+    speed = Math.min(w * 1.05, (0.34 + level * 0.017) * w);
+  }
+
+  function rescale(prevW, prevH) {
+    const prevSlabH = slabH;
+    layoutMetrics();
+    const rx = W() / prevW;
+    for (const s of tower) { s.x *= rx; s.w *= rx; }
+    if (moving) { moving.x *= rx; moving.w *= rx; }
+    debris = [];
+    particles = [];
+    rings = [];
+    floats = [];
+    if (prevSlabH > 0) camY *= slabH / prevSlabH;
+  }
+
+  // ── Drop logic ──
+  function drop() {
+    if (!moving) return;
+    const prev = tower[tower.length - 1];
+    const w = W();
+    const mv = moving;
+    const topSy = levelTopSy(mv.level);
+
+    const cA = mv.x + mv.w / 2;
+    const cB = prev.x + prev.w / 2;
+    const off = cA - cB;
+    const tol = Math.max(6, prev.w * 0.04);
+
+    const oL = Math.max(mv.x, prev.x);
+    const oR = Math.min(mv.x + mv.w, prev.x + prev.w);
+    const overlap = oR - oL;
+
+    if (overlap <= 0.5) {
+      // total miss — the slab falls into the void
+      debris.push({
+        x: mv.x, sy: topSy, w: mv.w, h: slabH,
+        vx: (off > 0 ? 1 : -1) * 30, vy: 10, rot: 0,
+        vrot: (off > 0 ? 1 : -1) * 1.4, life: 1.6, col: slabColor(mv.level)
+      });
+      moving = null;
+      gameOver();
+      return;
+    }
+
+    if (Math.abs(off) <= tol) {
+      // ── PERFECT ──
+      combo++;
+      if (combo > bestCombo) bestCombo = combo;
+      let nx = cB - mv.w / 2;
+      let nw = mv.w;
+      if (combo >= 4 && nw < baseW) {
+        nw = Math.min(baseW, nw + baseW * 0.055);
+        nx = cB - nw / 2;
+      }
+      nx = clamp(nx, 2, Math.max(2, w - nw - 2));
+      tower.push({ x: nx, w: nw, flash: 1 });
+      score = tower.length - 1;
+      rings.push({ x: cB, sy: topSy - slabH / 2, w: nw, r: 0, max: Math.min(46, 18 + nw * 0.12), life: 1 });
+      burst(cB, topSy - slabH / 2, 16, 1, nw * 0.4, 1);
+      burst(nx, topSy - slabH / 2, 5, 1, 2, 0.7);
+      burst(nx + nw, topSy - slabH / 2, 5, 1, 2, 0.7);
+      floats.length = 0;
+      floats.push({ text: combo >= 2 ? 'PERFECT ×' + combo : 'PERFECT', x: cB, sy: topSy + slabH * 1.9, life: 1 });
+      sfxPerfect(combo - 1);
+    } else {
+      // ── SLICE ──
+      combo = 0;
+      const leftWaste = oL - mv.x;
+      const rightWaste = (mv.x + mv.w) - oR;
+      const col = slabColor(mv.level);
+      if (leftWaste > 0.6) {
+        debris.push({ x: mv.x, sy: topSy, w: leftWaste, h: slabH, vx: rand(-45, -12), vy: rand(10, 40), rot: 0, vrot: rand(-2.2, -0.6), life: 1.3, col: col });
+      }
+      if (rightWaste > 0.6) {
+        debris.push({ x: oR, sy: topSy, w: rightWaste, h: slabH, vx: rand(12, 45), vy: rand(10, 40), rot: 0, vrot: rand(0.6, 2.2), life: 1.3, col: col });
+      }
+      tower.push({ x: oL, w: overlap, flash: 0.35 });
+      score = tower.length - 1;
+      const wasteAmt = Math.max(leftWaste, rightWaste);
+      if (leftWaste > 0.6) dust(oL, topSy - slabH * 0.5, 5);
+      if (rightWaste > 0.6) dust(oR, topSy - slabH * 0.5, 5);
+      if (wasteAmt > 8 && !reduced()) shake = Math.min(9, 1.5 + wasteAmt * 0.07);
+      sfxDrop(clamp(wasteAmt / 40, 0, 1));
+    }
+
+    if (score > highScore) {
+      highScore = score;
+      localStorage.setItem('stackHigh', String(highScore));
+    }
+    spawnMoving(tower[tower.length - 1].w);
+  }
+
+  function gameOver() {
+    state = STATE_DEAD;
+    deadT = 0;
+    toppleT = 0;
+    if (!reduced()) shake = 10;
+    sfxFail();
+    burst(W() / 2, levelTopSy(tower.length - 1), 18, 0, W() * 0.12, 1.2);
+    if (typeof Leaderboard !== 'undefined' && Leaderboard.getName()) {
+      Leaderboard.submitScore('stack', score).then(function(res) {
+        lbResult = res;
+        lbSubmitted = true;
+      }).catch(function() { lbSubmitted = false; });
+    }
+  }
+
+  function startGame() {
+    if (state === STATE_DEAD && deadT < 0.8) return;
+    ac();
+    state = STATE_PLAYING;
+    initGame();
+  }
+
+  // ── Input ──
+  function canvasPoint(clientX, clientY) {
+    const rect = canvas.getBoundingClientRect();
+    return {
+      x: (clientX - rect.left) * (W() / rect.width),
+      y: (clientY - rect.top) * (H() / rect.height)
+    };
+  }
+  function inBox(p, b) {
+    return b && p.x >= b.x && p.x <= b.x + b.w && p.y >= b.y && p.y <= b.y + b.h;
+  }
+
+  function nameOverlayOpen() {
+    const ov = document.getElementById('nameOverlay');
+    return !!ov && ov.style.display !== 'none';
+  }
+
+  function handlePress(p) {
+    if (nameOverlayOpen()) return;
+    const now = performance.now();
+    if (now - lastInput < 110) return;
+    lastInput = now;
+
+    if (p && inBox(p, canvas._muteBtn)) {
+      muted = !muted;
+      localStorage.setItem('stackMute', muted ? '1' : '0');
+      if (!muted) { ac(); sfxPerfect(0); }
+      return;
+    }
+    if (state === STATE_DEAD && p && inBox(p, canvas._rankingBtn) && deadT > 0.8) {
+      window.location.href = 'ranking.html';
+      return;
+    }
+    if (state === STATE_PLAYING) { drop(); return; }
+    startGame();
+  }
+
+  canvas.addEventListener('pointerdown', function(e) {
+    e.preventDefault();
+    handlePress(canvasPoint(e.clientX, e.clientY));
+  });
+  canvas.addEventListener('contextmenu', function(e) { e.preventDefault(); });
+
+  window.addEventListener('keydown', function(e) {
+    const tag = (document.activeElement && document.activeElement.tagName) || '';
+    if (tag === 'INPUT' || tag === 'TEXTAREA' || nameOverlayOpen()) return;
+    if (e.key === ' ' || e.key === 'Spacebar' || e.key === 'Enter') {
+      e.preventDefault();
+      if (e.repeat) return;
+      handlePress(null);
+    } else if (e.key === 'm' || e.key === 'M') {
+      muted = !muted;
+      localStorage.setItem('stackMute', muted ? '1' : '0');
+    }
+  });
+
+  window.addEventListener('resize', resizeCanvas);
+
+  // ── Update ──
+  function update(dt) {
+    const w = W(), h = H();
+
+    if (state !== STATE_DEAD && moving) {
+      const minX = 6, maxX = Math.max(6, w - moving.w - 6);
+      moving.x += dir * speed * dt;
+      if (moving.x <= minX) { moving.x = minX; dir = 1; }
+      else if (moving.x >= maxX) { moving.x = maxX; dir = -1; }
+    }
+
+    // camera
+    const topLevel = tower.length;
+    let targetCam = h * 0.6 - groundY + topLevel * slabH;
+    if (targetCam < 0) targetCam = 0;
+    if (state === STATE_DEAD) targetCam -= Math.min(deadT, 1) * slabH * 0.6;
+    camY += (targetCam - camY) * Math.min(1, dt * 6);
+
+    // slab flash decay
+    for (const s of tower) if (s.flash > 0) s.flash = Math.max(0, s.flash - dt * 2.6);
+
+    // debris
+    for (let i = debris.length - 1; i >= 0; i--) {
+      const d = debris[i];
+      d.vy -= 2000 * dt;
+      d.sy += d.vy * dt;
+      d.x += d.vx * dt;
+      d.rot += d.vrot * dt;
+      d.life -= dt * 0.85;
+      if (d.life <= 0 || sy2y(d.sy) > h + 120) debris.splice(i, 1);
+    }
+
+    // particles
+    for (let i = particles.length - 1; i >= 0; i--) {
+      const p = particles[i];
+      p.vy -= 220 * dt;
+      p.sy += p.vy * dt;
+      p.x += p.vx * dt;
+      p.vx *= (1 - Math.min(1, dt * 2.2));
+      p.life -= dt * p.decay;
+      if (p.life <= 0) particles.splice(i, 1);
+    }
+
+    // rings
+    for (let i = rings.length - 1; i >= 0; i--) {
+      const r = rings[i];
+      r.r += (r.max - r.r) * Math.min(1, dt * 6);
+      r.life -= dt * 2.1;
+      if (r.life <= 0) rings.splice(i, 1);
+    }
+
+    // floating text
+    for (let i = floats.length - 1; i >= 0; i--) {
+      const f = floats[i];
+      f.sy += 58 * dt;
+      f.life -= dt * 1.45;
+      if (f.life <= 0) floats.splice(i, 1);
+    }
+
+    if (shake > 0) shake = Math.max(0, shake - dt * 34);
+    if (state === STATE_DEAD) { deadT += dt; toppleT = Math.min(1, toppleT + dt * 0.55); }
+  }
+
+  // ── Drawing ──
+  function drawBackground(w, h) {
+    const depth = Math.min(1, tower.length / 55);
+    const top = mix([10, 11, 15], [2, 2, 5], depth);
+    const g = ctx.createLinearGradient(0, 0, 0, h);
+    g.addColorStop(0, rgb(top));
+    g.addColorStop(0.62, '#07080a');
+    g.addColorStop(1, '#050506');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, w, h);
+
+    // parallax dot grid
+    const sp = 34;
+    const off = ((camY * 0.35) % sp + sp) % sp;
+    ctx.fillStyle = 'rgba(159,214,236,' + (0.08 - depth * 0.03).toFixed(3) + ')';
+    for (let y = -sp + off; y < h + sp; y += sp) {
+      for (let x = sp / 2; x < w; x += sp) {
+        ctx.fillRect(x, y, 1, 1);
+      }
+    }
+
+    // ambient glow behind the top of the tower
+    const topY = sy2y(levelTopSy(tower.length - 1));
+    const rad = Math.max(w * 0.55, 160);
+    const a0 = 0.055 + depth * 0.045;
+    const ag = ctx.createRadialGradient(w / 2, topY, 0, w / 2, topY, rad);
+    ag.addColorStop(0, 'rgba(159,214,236,' + a0.toFixed(4) + ')');
+    ag.addColorStop(0.22, 'rgba(159,214,236,' + (a0 * 0.62).toFixed(4) + ')');
+    ag.addColorStop(0.45, 'rgba(159,214,236,' + (a0 * 0.3).toFixed(4) + ')');
+    ag.addColorStop(0.7, 'rgba(159,214,236,' + (a0 * 0.1).toFixed(4) + ')');
+    ag.addColorStop(1, 'rgba(159,214,236,0)');
+    ctx.fillStyle = ag;
+    ctx.fillRect(0, topY - rad, w, rad * 2);
+  }
+
+  function drawSlab(x, topY, wid, colRec, flash, glow) {
+    ctx.fillStyle = rgb(colRec.body);
+    ctx.fillRect(x, topY, wid, slabH);
+    // 1px lighter top edge
+    ctx.fillStyle = rgb(colRec.edge, 0.9);
+    ctx.fillRect(x, topY, wid, 1);
+    // base shadow line
+    ctx.fillStyle = 'rgba(0,0,0,0.3)';
+    ctx.fillRect(x, topY + slabH - 1, wid, 1);
+    if (flash > 0) {
+      ctx.fillStyle = 'rgba(255,255,255,' + (flash * 0.85).toFixed(3) + ')';
+      ctx.fillRect(x, topY, 2, slabH);
+      ctx.fillRect(x + wid - 2, topY, 2, slabH);
+      ctx.fillStyle = 'rgba(255,255,255,' + (flash * 0.2).toFixed(3) + ')';
+      ctx.fillRect(x, topY, wid, slabH);
+    }
+    if (glow) {
+      ctx.save();
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.globalAlpha = glow;
+      const pad = slabH * 0.9;
+      ctx.drawImage(GLOW_BAND, x - pad, topY - slabH * 0.75, wid + pad * 2, slabH * 2.5);
+      ctx.restore();
+    }
+  }
+
+  function drawTower(w, h) {
+    // ground line
+    const gy = sy2y(0);
+    if (gy > -20 && gy < h + 20) {
+      const lg = ctx.createLinearGradient(0, 0, w, 0);
+      lg.addColorStop(0, 'rgba(159,214,236,0)');
+      lg.addColorStop(0.5, 'rgba(159,214,236,0.16)');
+      lg.addColorStop(1, 'rgba(159,214,236,0)');
+      ctx.fillStyle = lg;
+      ctx.fillRect(0, gy, w, 1);
+    }
+
+    const topIdx = tower.length - 1;
+    for (let i = 0; i < tower.length; i++) {
+      const s = tower[i];
+      const topY = sy2y(levelTopSy(i));
+      if (topY > h + slabH || topY < -slabH * 2) continue;
+      const glow = (i > topIdx - 3) ? 0.13 * (1 - (topIdx - i) * 0.32) : 0;
+      drawSlab(s.x, topY, s.w, slabColor(i), s.flash, glow);
+    }
+  }
+
+  function drawDebris(h) {
+    for (const d of debris) {
+      const y = sy2y(d.sy);
+      if (y < -80 || y > h + 120) continue;
+      ctx.save();
+      ctx.globalAlpha = clamp(d.life, 0, 1) * 0.85;
+      ctx.translate(d.x + d.w / 2, y + d.h / 2);
+      ctx.rotate(d.rot);
+      ctx.fillStyle = rgb(d.col.body);
+      ctx.fillRect(-d.w / 2, -d.h / 2, d.w, d.h);
+      ctx.fillStyle = rgb(d.col.edge, 0.7);
+      ctx.fillRect(-d.w / 2, -d.h / 2, d.w, 1);
+      ctx.restore();
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  function drawParticles() {
+    if (!particles.length) return;
+    ctx.save();
+    ctx.globalCompositeOperation = 'lighter';
+    for (const p of particles) {
+      const a = clamp(p.life, 0, 1);
+      ctx.globalAlpha = a * 0.75;
+      const s = p.size * (0.5 + a * 0.8);
+      const img = p.tint ? GLOW_ACCENT : GLOW_WHITE;
+      ctx.drawImage(img, p.x - s / 2, sy2y(p.sy) - s / 2, s, s);
+    }
+    ctx.restore();
+    ctx.globalAlpha = 1;
+  }
+
+  // Expanding frame that echoes the slab's own geometry
+  function drawRings() {
+    for (const r of rings) {
+      const a = clamp(r.life, 0, 1);
+      const y = sy2y(r.sy);
+      const hx = r.w / 2 + r.r;
+      const hy = slabH / 2 + r.r * 0.55;
+      ctx.save();
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.strokeStyle = 'rgba(159,214,236,' + (a * a * 0.5).toFixed(3) + ')';
+      ctx.lineWidth = 1;
+      ctx.strokeRect(r.x - hx, y - hy, hx * 2, hy * 2);
+      ctx.restore();
+    }
+  }
+
+  function drawFloats(w) {
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    for (const f of floats) {
+      const a = clamp(f.life, 0, 1);
+      ctx.font = '700 ' + Math.min(w * 0.032, 13) + 'px "Space Mono", monospace';
+      ctx.fillStyle = 'rgba(159,214,236,' + (a * 0.95).toFixed(3) + ')';
+      ctx.fillText(f.text, f.x, sy2y(f.sy));
+    }
+  }
+
+  function drawMuteBtn(w) {
+    const size = 15;
+    const bx = w - size - 16, by = 15;
+    canvas._muteBtn = { x: bx - 12, y: by - 12, w: size + 24, h: size + 24 };
+    ctx.save();
+    ctx.strokeStyle = muted ? 'rgba(112,118,127,0.55)' : 'rgba(159,214,236,0.6)';
+    ctx.fillStyle = ctx.strokeStyle;
+    ctx.lineWidth = 1;
+    // speaker body
+    ctx.beginPath();
+    ctx.moveTo(bx + 1, by + 5);
+    ctx.lineTo(bx + 4, by + 5);
+    ctx.lineTo(bx + 8, by + 1);
+    ctx.lineTo(bx + 8, by + 14);
+    ctx.lineTo(bx + 4, by + 10);
+    ctx.lineTo(bx + 1, by + 10);
+    ctx.closePath();
+    ctx.fill();
+    if (muted) {
+      ctx.beginPath();
+      ctx.moveTo(bx + 10, by + 5);
+      ctx.lineTo(bx + 15, by + 10);
+      ctx.moveTo(bx + 15, by + 5);
+      ctx.lineTo(bx + 10, by + 10);
+      ctx.stroke();
+    } else {
+      ctx.beginPath();
+      ctx.arc(bx + 8, by + 7.5, 4.5, -0.9, 0.9);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(bx + 8, by + 7.5, 7.5, -0.8, 0.8);
+      ctx.globalAlpha = 0.6;
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  function hairline(w, y, halfW, alpha) {
+    const g = ctx.createLinearGradient(w / 2 - halfW, 0, w / 2 + halfW, 0);
+    g.addColorStop(0, 'rgba(159,214,236,0)');
+    g.addColorStop(0.5, 'rgba(159,214,236,' + alpha + ')');
+    g.addColorStop(1, 'rgba(159,214,236,0)');
+    ctx.strokeStyle = g;
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(w / 2 - halfW, y);
+    ctx.lineTo(w / 2 + halfW, y);
+    ctx.stroke();
+  }
+
+  function drawUI(w, h) {
+    canvas._restartBtn = null;
+    canvas._rankingBtn = null;
+
+    if (state === STATE_TITLE) {
+      ctx.fillStyle = 'rgba(6,6,7,0.68)';
+      ctx.fillRect(0, 0, w, h);
+
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+
+      ctx.font = '500 ' + Math.min(w * 0.13, 52) + 'px "Space Grotesk", sans-serif';
+      ctx.fillStyle = COL_ACCENT;
+      ctx.fillText('STACK', w / 2, h * 0.33);
+
+      hairline(w, h * 0.33 + 30, 62, 0.55);
+
+      ctx.font = '400 ' + Math.min(w * 0.028, 11) + 'px "Space Mono", monospace';
+      ctx.fillStyle = COL_MUTED;
+      ctx.fillText('PRECISION TOWER', w / 2, h * 0.33 + 52);
+
+      ctx.font = '400 ' + Math.min(w * 0.033, 13) + 'px "Zen Kaku Gothic New", sans-serif';
+      ctx.fillStyle = 'rgba(195,200,208,0.78)';
+      ctx.fillText('タップでスラブを落とす。ズレた分は削られる。', w / 2, h * 0.45);
+
+      const pulse = 0.45 + Math.sin(timeNow * 3.4) * 0.35;
+      ctx.font = '400 ' + Math.min(w * 0.03, 11) + 'px "Space Mono", monospace';
+      ctx.fillStyle = 'rgba(159,214,236,' + pulse.toFixed(3) + ')';
+      ctx.fillText('TAP OR SPACE TO START', w / 2, h * 0.53);
+
+      if (highScore > 0) {
+        ctx.font = '400 ' + Math.min(w * 0.026, 10) + 'px "Space Mono", monospace';
+        ctx.fillStyle = COL_DIM;
+        ctx.fillText('BEST: ' + highScore, w / 2, h * 0.595);
+      }
+
+      const pName = (typeof Leaderboard !== 'undefined') ? Leaderboard.getName() : null;
+      if (pName) {
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'top';
+        ctx.font = '400 ' + Math.min(w * 0.022, 9) + 'px "Space Mono", monospace';
+        ctx.fillStyle = 'rgba(112,118,127,0.55)';
+        ctx.fillText(pName, 16, 17);
+      }
+    }
+
+    if (state === STATE_PLAYING) {
+      // score, large mono
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
+      ctx.font = '700 ' + Math.min(w * 0.15, 58) + 'px "Space Mono", monospace';
+      ctx.fillStyle = 'rgba(244,245,247,0.9)';
+      ctx.fillText(String(score), w / 2, h * 0.055);
+
+      if (combo >= 2) {
+        ctx.font = '700 ' + Math.min(w * 0.028, 11) + 'px "Space Mono", monospace';
+        ctx.fillStyle = 'rgba(159,214,236,0.9)';
+        ctx.fillText('COMBO ×' + combo, w / 2, h * 0.055 + Math.min(w * 0.15, 58) + 6);
+      }
+
+      // player name, top-left
+      ctx.textAlign = 'left';
+      const pName = (typeof Leaderboard !== 'undefined') ? Leaderboard.getName() : null;
+      if (pName) {
+        ctx.font = '400 ' + Math.min(w * 0.022, 9) + 'px "Space Mono", monospace';
+        ctx.fillStyle = 'rgba(112,118,127,0.55)';
+        ctx.fillText(pName, 16, 17);
+      }
+      ctx.font = '400 ' + Math.min(w * 0.022, 9) + 'px "Space Mono", monospace';
+      ctx.fillStyle = 'rgba(58,63,71,0.9)';
+      ctx.fillText('BEST ' + highScore, 16, 31);
+    }
+
+    if (state === STATE_DEAD) {
+      const overlayAlpha = Math.min(deadT / 0.7, 0.86);
+      ctx.fillStyle = 'rgba(6,6,7,' + overlayAlpha.toFixed(3) + ')';
+      ctx.fillRect(0, 0, w, h);
+
+      if (deadT > 0.3) {
+        const fadeIn = Math.min((deadT - 0.3) / 0.5, 1);
+        ctx.globalAlpha = fadeIn;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+
+        ctx.font = '500 ' + Math.min(w * 0.085, 34) + 'px "Space Grotesk", sans-serif';
+        ctx.fillStyle = COL_ACCENT;
+        ctx.fillText('GAME OVER', w / 2, h * 0.28);
+
+        hairline(w, h * 0.28 + 22, 50, 0.4);
+
+        const dName = (typeof Leaderboard !== 'undefined') ? Leaderboard.getName() : null;
+        if (dName) {
+          ctx.font = '400 ' + Math.min(w * 0.022, 9) + 'px "Space Mono", monospace';
+          ctx.fillStyle = 'rgba(112,118,127,0.6)';
+          ctx.fillText(dName, w / 2, h * 0.375);
+        }
+
+        ctx.font = '400 ' + Math.min(w * 0.026, 10) + 'px "Space Mono", monospace';
+        ctx.fillStyle = COL_MUTED;
+        ctx.fillText('SLABS STACKED', w / 2, h * 0.42);
+
+        ctx.font = '700 ' + Math.min(w * 0.11, 44) + 'px "Space Mono", monospace';
+        ctx.fillStyle = COL_FG;
+        ctx.fillText(String(score), w / 2, h * 0.485);
+
+        ctx.font = '400 ' + Math.min(w * 0.026, 10) + 'px "Space Mono", monospace';
+        if (lbSubmitted && lbResult && lbResult.isNew) {
+          ctx.fillStyle = COL_ACCENT;
+          ctx.fillText('NEW PERSONAL BEST', w / 2, h * 0.545);
+        } else if (lbSubmitted && lbResult && lbResult.best !== undefined) {
+          ctx.fillStyle = COL_DIM;
+          ctx.fillText('BEST: ' + lbResult.best, w / 2, h * 0.545);
+        } else {
+          ctx.fillStyle = COL_DIM;
+          ctx.fillText('BEST: ' + highScore, w / 2, h * 0.545);
+        }
+
+        if (bestCombo >= 2) {
+          ctx.font = '400 ' + Math.min(w * 0.024, 9) + 'px "Space Mono", monospace';
+          ctx.fillStyle = 'rgba(112,118,127,0.6)';
+          ctx.fillText('BEST COMBO ×' + bestCombo, w / 2, h * 0.585);
+        }
+
+        if (deadT > 0.75) {
+          const btnW = Math.min(w * 0.5, 168);
+          const btnH = 36;
+          const btnX = w / 2 - btnW / 2;
+          const btnY = h * 0.66 - btnH / 2;
+
+          ctx.strokeStyle = 'rgba(159,214,236,0.4)';
+          ctx.lineWidth = 1;
+          ctx.strokeRect(btnX, btnY, btnW, btnH);
+          ctx.font = '400 ' + Math.min(w * 0.028, 11) + 'px "Space Mono", monospace';
+          ctx.fillStyle = COL_ACCENT;
+          ctx.fillText('RESTART', w / 2, h * 0.66);
+          canvas._restartBtn = { x: btnX, y: btnY, w: btnW, h: btnH };
+
+          const rankY = h * 0.75 - btnH / 2;
+          ctx.strokeStyle = 'rgba(159,214,236,0.22)';
+          ctx.strokeRect(btnX, rankY, btnW, btnH);
+          ctx.fillStyle = 'rgba(159,214,236,0.7)';
+          ctx.fillText('RANKING', w / 2, h * 0.75);
+          canvas._rankingBtn = { x: btnX, y: rankY, w: btnW, h: btnH };
+        }
+
+        ctx.globalAlpha = 1;
+      }
+    }
+
+    drawMuteBtn(w);
+  }
+
+  function draw() {
+    const w = W(), h = H();
+    ctx.setTransform(canvas.width / w, 0, 0, canvas.height / h, 0, 0);
+    ctx.clearRect(0, 0, w, h);
+    drawBackground(w, h);
+
+    ctx.save();
+    if (shake > 0.1 && !reduced()) {
+      ctx.translate(rand(-shake, shake) * 0.6, rand(-shake, shake) * 0.6);
+    }
+    if (state === STATE_DEAD && toppleT > 0 && !reduced()) {
+      const ang = easeOut(toppleT) * 0.03;
+      ctx.translate(w / 2, sy2y(0));
+      ctx.rotate(ang);
+      ctx.translate(-w / 2, -sy2y(0));
+      ctx.globalAlpha = 1 - toppleT * 0.35;
+    }
+
+    drawTower(w, h);
+    drawDebris(h);
+    if (state !== STATE_DEAD && moving) {
+      const topY = sy2y(levelTopSy(moving.level));
+      drawSlab(moving.x, topY, moving.w, slabColor(moving.level), 0, 0.22);
+    }
+    drawRings();
+    drawParticles();
+    drawFloats(w);
+    ctx.restore();
+    ctx.globalAlpha = 1;
+
+    // vignette
+    const vg = ctx.createRadialGradient(w / 2, h / 2, 0, w / 2, h / 2, Math.max(w, h) * 0.78);
+    vg.addColorStop(0, 'rgba(0,0,0,0)');
+    vg.addColorStop(0.45, 'rgba(0,0,0,0.05)');
+    vg.addColorStop(0.7, 'rgba(0,0,0,0.2)');
+    vg.addColorStop(0.88, 'rgba(0,0,0,0.38)');
+    vg.addColorStop(1, 'rgba(0,0,0,0.52)');
+    ctx.fillStyle = vg;
+    ctx.fillRect(0, 0, w, h);
+
+    drawUI(w, h);
+  }
+
+  // ── Loop ──
+  let last = 0;
+  function loop(ts) {
+    if (!last) last = ts;
+    const dt = Math.min(0.05, (ts - last) / 1000);
+    last = ts;
+    timeNow += dt;
+    update(dt);
+    draw();
+    requestAnimationFrame(loop);
+  }
+
+  resizeCanvas();
+  initGame();
+  requestAnimationFrame(loop);
+
+})();
+</script>
+<script src="js/motion.js" defer></script>
+</body>
+</html>
