@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+<html lang="ja" data-theme="paper">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- ============================================================
+  NOREN（暖簾）— 老舗のための Web サイトテンプレート v1.0
+  by IDATSUKA (https://idatsuka.com)
+
+  明治・大正・昭和創業の店（茶舗・菓子舗・酒蔵・旅館・工房・呉服店…）
+  のための、1ファイル完結の縦書き和風テンプレートです。
+
+  ■ カスタマイズ手順
+  1. 下の <title> / meta description / OGP / canonical / favicon を差し替え
+  2. <style> 冒頭の :root で配色を調整（夜テーマは [data-theme="ink"]）
+  3. 「EDIT:」コメントの付いた箇所のテキストを自分の店の内容に差し替え
+  4. 創業年は Hero の data-founded="1902" を書き換えるだけ。
+     和暦（明治三十五年）・Since・創業年数は JavaScript が自動計算します
+  5. 1ファイル完結。サーバーにアップロードするだけで公開できます
+
+  ■ 収録しているもの
+  ・昼（paper）／夜（ink）の2テーマ切替（選択はブラウザに保存）
+  ・縦書きの屋号・セクション見出し（900px 以下では自動で横書き）
+  ・暖簾モチーフ（ゆっくり揺れ、スクロール・ホバーで少し開く）
+  ・年表（明治→令和の元号帯。PC は横組み、スマホは縦組み）
+  ・家紋プレースホルダー（SVG）、落款（朱印）、和紙の繊維テクスチャ
+  ・品書き／店舗案内／お知らせ／FAQ／お問い合わせ
+  ・prefers-reduced-motion 対応、外部ライブラリ・外部画像ゼロ
+
+  ■ 掲載内容について（景品表示法）
+  店名・人物名・受賞歴・数字はすべて「◯◯」「△△」等のプレースホルダーです。
+  実在しない実績・口コミ・受賞歴を書かないようご注意ください。
+
+  ライセンス: 個人・商用利用可 / テンプレートとしての再販・再配布は不可
+============================================================ -->
+
+<!-- EDIT: ページタイトルと説明文（店名・業種・地域を入れると検索で見つかりやすくなります） -->
+<title>◯◯屋 — 明治三十五年創業の◯◯</title>
+<meta name="description" content="明治三十五年創業。△△町で◯◯をつくり続けている◯◯屋の公式サイトです。品書き・店舗案内・お知らせ。">
+
+<!-- EDIT: OGP（SNS でシェアされたときの表示）。og:url と og:image は公開URLに合わせて差し替えてください
+     例: <meta property="og:image" content="https://example.com/ogp.jpg"> -->
+<meta property="og:title" content="◯◯屋 — 明治三十五年創業の◯◯">
+<meta property="og:description" content="明治三十五年創業。△△町で◯◯をつくり続けている◯◯屋の公式サイトです。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://example.com/">
+<meta property="og:site_name" content="◯◯屋">
+
+<!-- EDIT: 正規URL（canonical）。公開するURLに書き換えてください -->
+<link rel="canonical" href="https://example.com/">
+
+<!-- EDIT: ブラウザのUI色（スマホのアドレスバー等）。テーマ切替時に自動更新されます -->
+<meta name="theme-color" content="#f4efe6" id="themeColor">
+
+<!-- EDIT: ファビコン（SVG内蔵）。円＝家紋、中の朱色の線を自分の印に変えてもOK。
+     画像を使う場合は <link rel="icon" href="favicon.png"> に置き換えてください -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%231c1a17'/%3E%3Ccircle cx='32' cy='32' r='19' fill='none' stroke='%23f4efe6' stroke-width='3'/%3E%3Cpath d='M24 25v14M40 25v14M25 24h14M25 40h14' stroke='%23b23a2a' stroke-width='3' stroke-linecap='square'/%3E%3C/svg%3E">
+
+<!-- 保存済みテーマを描画前に適用（ちらつき防止）。触らなくてOK -->
+<script>(function(){try{var t=localStorage.getItem('noren-theme');if(t==='paper'||t==='ink'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;700&family=Noto+Sans+JP:wght@300;400;500&family=Space+Mono&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   THEME — 昼（paper / 和紙）。ここを変えるだけで全体の印象が変わります
+============================================================ */
+:root, [data-theme="paper"] {
+  color-scheme: light;
+  --bg: #f4efe6;          /* 和紙の生成り（背景） */
+  --bg2: #ece5d9;         /* 一段沈めた面（カード・表の帯） */
+  --fg: #1c1a17;          /* 墨（本文） */
+  --fg-dim: #4f4a43;      /* 補助文字 */
+  --muted: #6b645b;       /* さらに薄い文字・ラベル */
+  --accent: #b23a2a;      /* 朱 — 落款・罫・一文字だけに使う色 */
+  --gold: #b8a36b;        /* 金の細罫（年表のレール等） */
+  --border: rgba(28,26,23,.15);   /* 罫線 */
+  --border-soft: rgba(28,26,23,.08);
+  --noren-bg: #26231f;    /* 暖簾の生地の色 */
+  --noren-fg: #f4efe6;    /* 暖簾に染め抜いた家紋の色 */
+  --shadow: rgba(28,26,23,.10);
+  --grain: .05;           /* 和紙の繊維テクスチャの強さ */
+
+  --mincho: 'Shippori Mincho', 'Hiragino Mincho ProN', 'Yu Mincho', serif;
+  --gothic: 'Noto Sans JP', 'Hiragino Sans', sans-serif;
+  --mono: 'Space Mono', monospace;
+  --maxw: 1180px;
+  --ease: cubic-bezier(.16,1,.3,1);
+}
+
+/* EDIT: 夜テーマ（ink / 墨）。ナビの「昼／夜」で切り替わります。
+   最初から夜で表示したい場合は <html lang="ja" data-theme="paper"> を
+   <html lang="ja" data-theme="ink"> に変更してください */
+[data-theme="ink"] {
+  color-scheme: dark;
+  --bg: #1c1a17;
+  --bg2: #23211d;
+  --fg: #f2ece2;
+  --fg-dim: #c2bbae;
+  --muted: #8d8578;
+  --accent: #c9503c;      /* 同じ朱。暗い地の上でも読めるよう少しだけ明るく */
+  --gold: #b8a36b;
+  --border: rgba(244,239,230,.16);
+  --border-soft: rgba(244,239,230,.08);
+  --noren-bg: #ece5d9;
+  --noren-fg: #1c1a17;
+  --shadow: rgba(0,0,0,.45);
+  --grain: .06;
+}
+
+/* ============================================================
+   BASE
+============================================================ */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 5.5rem; }
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: var(--gothic); font-weight: 300;
+  line-height: 2; letter-spacing: .04em;
+  -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  transition: background-color .6s var(--ease), color .6s var(--ease);
+}
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+::selection { background: var(--accent); color: var(--bg); }
+:focus-visible { outline: 1px solid var(--accent); outline-offset: 4px; }
+
+/* 和紙の繊維テクスチャ（静止・SVG生成）。--grain で強さを調整、不要なら削除 */
+body::after {
+  content: ''; position: fixed; inset: 0; z-index: 9999; pointer-events: none;
+  opacity: var(--grain);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9 .32' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)'/%3E%3C/svg%3E");
+  background-size: 240px 240px;
+}
+
+.container { max-width: var(--maxw); margin: 0 auto; padding: 0 1.5rem; }
+section { padding: 6rem 0; border-top: 1px solid var(--border-soft); }
+h1, h2, h3, .mincho { font-family: var(--mincho); font-weight: 500; font-feature-settings: 'palt' 1; }
+
+/* ============================================================
+   セクションの縦書き見出し（一・二・三…）
+   900px 以下では自動で横書きに切り替わります
+============================================================ */
+.sec { display: grid; grid-template-columns: 5rem 1fr; gap: 2.5rem; align-items: start; }
+.mark {
+  writing-mode: vertical-rl; display: flex; align-items: center; gap: 1.1rem;
+  position: sticky; top: 6.5rem; font-weight: 500; margin: 0;
+  color: var(--fg);
+}
+.mark-no {
+  font-family: var(--mincho); font-size: 1.05rem; letter-spacing: .1em;
+  color: var(--accent);
+}
+.mark-line { width: 1px; height: 2.4rem; background: var(--gold); flex: none; }
+.mark-ttl { font-family: var(--mincho); font-size: 1.3rem; letter-spacing: .32em; }
+.mark-en {
+  font-family: var(--mono); font-size: .55rem; letter-spacing: .26em;
+  text-transform: uppercase; color: var(--muted);
+}
+.sec-body { min-width: 0; }
+.lead { font-size: .95rem; color: var(--fg-dim); max-width: 42rem; }
+.lead + .lead { margin-top: 1.2rem; }
+
+code { font-family: var(--mono); font-size: .84em; color: var(--accent); }
+
+/* 落款（朱印）。EDIT: 「印」の文字を屋号の一文字に変えても綺麗です */
+.seal {
+  width: 3.1rem; height: 3.1rem; flex: none; display: grid; place-items: center;
+  border: 2px solid var(--accent); border-radius: 3px; color: var(--accent);
+  font-family: var(--mincho); font-size: 1.35rem; line-height: 1;
+  transform: rotate(-3deg); background: color-mix(in srgb, var(--accent) 7%, transparent);
+}
+
+/* ============================================================
+   NAV — 追従。下スクロールで隠れ、上スクロールで戻ります
+============================================================ */
+.progress {
+  position: fixed; top: 0; left: 0; z-index: 200; width: 100%; height: 2px;
+  background: var(--accent); transform: scaleX(0); transform-origin: left;
+  pointer-events: none;
+}
+nav {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  padding: .85rem 1.5rem; border-bottom: 1px solid var(--border-soft);
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  transition: transform .5s var(--ease), background-color .6s var(--ease), border-color .6s var(--ease);
+}
+nav.nav-hide { transform: translateY(-102%); }
+nav.scrolled { border-bottom-color: var(--border); }
+.brand { display: inline-flex; align-items: center; gap: .6rem; }
+.brand svg { width: 22px; height: 22px; flex: none; }
+.brand-name { font-family: var(--mincho); font-size: 1.02rem; letter-spacing: .22em; }
+.nav-right { display: flex; align-items: center; gap: 1.4rem; }
+.nav-links { display: flex; gap: 1.35rem; list-style: none; }
+.nav-links a {
+  position: relative; font-size: .78rem; letter-spacing: .12em; color: var(--fg-dim);
+  padding-bottom: .25rem; transition: color .4s var(--ease);
+}
+.nav-links a::after {
+  content: ''; position: absolute; left: 0; bottom: 0; width: 100%; height: 1px;
+  background: var(--accent); transform: scaleX(0); transform-origin: right;
+  transition: transform .5s var(--ease);
+}
+.nav-links a:hover { color: var(--fg); }
+.nav-links a:hover::after { transform: scaleX(1); transform-origin: left; }
+
+/* 昼／夜 切替 */
+.theme-btn {
+  display: inline-flex; align-items: center; gap: .35rem;
+  font-family: var(--mincho); font-size: .82rem; letter-spacing: .1em;
+  border: 1px solid var(--border); border-radius: 999px; padding: .28rem .7rem;
+  color: var(--muted); transition: border-color .4s var(--ease);
+}
+.theme-btn:hover { border-color: var(--accent); }
+.theme-btn span { transition: color .4s var(--ease); }
+.theme-btn .t-sep { color: var(--border); }
+[data-theme="paper"] .theme-btn .t-day { color: var(--accent); }
+[data-theme="ink"] .theme-btn .t-night { color: var(--accent); }
+
+/* ハンバーガー（900px 以下で表示） */
+.menu-toggle { display: none; flex-direction: column; gap: 5px; width: 30px; height: 30px; align-items: center; justify-content: center; }
+.menu-toggle span { display: block; width: 20px; height: 1px; background: var(--fg); transition: transform .35s var(--ease), opacity .3s; }
+.menu-toggle.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.menu-toggle.open span:nth-child(2) { opacity: 0; }
+.menu-toggle.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+.mobile-menu {
+  display: none; position: fixed; inset: 3.6rem 0 auto 0; z-index: 99;
+  flex-direction: column; padding: .5rem 1.5rem 1.4rem;
+  background: color-mix(in srgb, var(--bg) 97%, transparent);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.mobile-menu.open { display: flex; animation: fadeUp .35s var(--ease); }
+.mobile-menu a {
+  font-family: var(--mincho); font-size: 1rem; letter-spacing: .14em;
+  padding: .85rem 0; border-bottom: 1px solid var(--border-soft);
+}
+.mobile-menu a:last-child { border-bottom: 0; }
+
+/* ============================================================
+   HERO — 縦書きの屋号 ＋ 暖簾
+============================================================ */
+.hero {
+  position: relative; border-top: 0; overflow: hidden;
+  padding: 5rem 0 6rem; min-height: min(84vh, 860px); min-height: min(84svh, 860px);
+  display: flex; flex-direction: column; justify-content: center;
+}
+.hero .container { position: relative; z-index: 1; width: 100%; }
+/* 背景のほのかな光（行灯のような暖かい滲み） */
+.hero::before {
+  content: ''; position: absolute; z-index: 0; width: 70vmin; height: 70vmin;
+  right: 8%; top: 4%; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(circle at center, color-mix(in srgb, var(--gold) 18%, transparent), transparent 66%);
+  animation: drift 26s ease-in-out infinite alternate;
+}
+@keyframes drift { from { transform: none; } to { transform: translate(-6%, 6%) scale(1.08); } }
+
+/* width: fit-content にしておくと、右側の暖簾にマウスが届きます（ホバーで少し開く） */
+.hero-inner { display: flex; align-items: flex-start; gap: 2.6rem; width: fit-content; max-width: 100%; }
+
+/* --- 縦書きの屋号 --- */
+.hero-type { display: flex; flex-direction: row-reverse; align-items: flex-start; gap: 1.6rem; }
+.hero-name {
+  writing-mode: vertical-rl; font-family: var(--mincho); font-weight: 700;
+  font-size: clamp(2.8rem, 6.4vw, 5rem); letter-spacing: .16em; line-height: 1.05;
+  margin: 0; max-height: 58vh;
+}
+.hero-name .ch { display: inline-block; opacity: 0; animation: inkIn 1.1s var(--ease) forwards; }
+.hero-name .ch:nth-child(2) { animation-delay: .13s; }
+.hero-name .ch:nth-child(3) { animation-delay: .26s; }
+@keyframes inkIn { from { opacity: 0; transform: translateY(-14px); } to { opacity: 1; transform: none; } }
+/* 縦書きの中では flex-direction: column が「右から左へ」の列組みになります */
+.hero-side { writing-mode: vertical-rl; display: flex; flex-direction: column; gap: 1.5rem; align-items: flex-start; padding-top: .5rem; }
+.hero-yomi {
+  font-family: var(--mincho); font-size: .82rem; letter-spacing: .5em; color: var(--muted);
+  animation: fadeUp 1s .45s var(--ease) both;
+}
+.hero-kakun {
+  font-family: var(--mincho); font-size: clamp(.95rem, 1.5vw, 1.15rem);
+  letter-spacing: .28em; color: var(--fg-dim); line-height: 1.9;
+  animation: fadeUp 1s .6s var(--ease) both;
+}
+.hero-kakun em { font-style: normal; color: var(--accent); }
+
+/* --- 創業の帯（和暦は data-founded から自動計算） --- */
+.hero-foot { margin-top: 2.6rem; display: flex; align-items: center; gap: 1.6rem; flex-wrap: wrap; animation: fadeUp 1s .8s var(--ease) both; }
+.era-badge {
+  display: inline-flex; align-items: baseline; flex-wrap: wrap; gap: .55rem;
+  padding: .5rem 1.1rem; border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--bg2) 60%, transparent);
+}
+.era-jp { font-family: var(--mincho); font-size: 1rem; letter-spacing: .18em; }
+.era-en, .era-years { font-family: var(--mono); font-size: .64rem; letter-spacing: .18em; color: var(--muted); }
+.era-years { color: var(--accent); }
+.era-sep { color: var(--border); }
+.hero-scroll {
+  position: absolute; bottom: 2.2rem; z-index: 1;
+  left: max(1.5rem, calc((100% - var(--maxw)) / 2 + 1.5rem));
+  display: flex; align-items: center; gap: .7rem;
+  font-family: var(--mono); font-size: .55rem; letter-spacing: .3em;
+  text-transform: uppercase; color: var(--muted);
+}
+.hero-scroll::after {
+  content: ''; width: 42px; height: 1px; background: linear-gradient(90deg, var(--muted), transparent);
+  animation: scrollPulse 3s var(--ease) infinite;
+}
+@keyframes scrollPulse {
+  0% { transform: scaleX(0); transform-origin: left; }
+  45% { transform: scaleX(1); transform-origin: left; }
+  55% { transform: scaleX(1); transform-origin: right; }
+  100% { transform: scaleX(0); transform-origin: right; }
+}
+@keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+/* ============================================================
+   暖簾（のれん）— このテンプレートの signature
+   ゆっくり揺れ、スクロールとホバーで少しだけ開きます
+============================================================ */
+.hero-art {
+  position: absolute; top: 0; right: 7vw; z-index: 2;
+  width: min(27vw, 300px); height: min(54vh, 440px);
+  pointer-events: auto;
+}
+.noren { position: relative; width: 100%; height: 100%; display: flex; flex-direction: column; }
+/* 竿（暖簾を吊るす棒） */
+.noren-rail {
+  height: 6px; border-radius: 3px; flex: none;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--fg) 55%, transparent), color-mix(in srgb, var(--fg) 30%, transparent));
+  box-shadow: 0 2px 10px -4px var(--shadow);
+}
+.noren-set { flex: 1; display: flex; gap: 6px; min-height: 0; }
+.noren-panel {
+  flex: 1; min-width: 0; transform-origin: 50% 0;
+  transition: transform 1.2s var(--ease);
+}
+.noren-cloth {
+  position: relative; height: 100%; transform-origin: 50% 0; overflow: hidden;
+  background:
+    repeating-linear-gradient(90deg, rgba(255,255,255,.045) 0 1px, transparent 1px 7px),
+    linear-gradient(180deg, color-mix(in srgb, var(--noren-bg) 88%, #fff 12%) 0 2%, var(--noren-bg) 12%);
+  box-shadow: inset 0 -28px 34px -28px rgba(0,0,0,.55), 0 24px 40px -26px var(--shadow);
+  animation: sway 9s ease-in-out infinite alternate;
+}
+/* 裾の縫い目 */
+.noren-cloth::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: 11px; height: 1px;
+  background: color-mix(in srgb, var(--noren-fg) 18%, transparent);
+}
+.noren-panel:nth-child(2) .noren-cloth { animation-duration: 11s; animation-delay: -2s; }
+.noren-panel:nth-child(3) .noren-cloth { animation-duration: 10s; animation-delay: -4s; }
+/* 竿を支点に、数px だけゆっくり揺れます */
+@keyframes sway {
+  from { transform: rotate(-.6deg); }
+  to   { transform: rotate(.6deg); }
+}
+/* 家紋（中央のパネルに染め抜き） */
+.noren-mon { position: absolute; left: 50%; top: 16%; width: 62%; translate: -50% 0; }
+.noren-mon svg { width: 100%; height: auto; display: block; }
+/* 屋号の一文字（朱） */
+.noren-char {
+  position: absolute; left: 0; right: 0; bottom: 14%; text-align: center;
+  font-family: var(--mincho); font-weight: 700; font-size: clamp(1.4rem, 3.4vw, 2.1rem);
+  color: var(--accent); letter-spacing: .1em;
+}
+/* スクロール／ホバーで少し開く */
+.noren.is-parted .noren-panel:first-child, .hero-art:hover .noren-panel:first-child { transform: rotate(-1.6deg); }
+.noren.is-parted .noren-panel:last-child, .hero-art:hover .noren-panel:last-child { transform: rotate(1.6deg); }
+.noren.is-parted .noren-panel:nth-child(2), .hero-art:hover .noren-panel:nth-child(2) { transform: scaleY(.972); }
+
+/* 家紋のプレースホルダー（共通） */
+.mon-ring { fill: none; stroke: currentColor; }
+.mon-in { stroke: currentColor; fill: none; }
+
+/* ============================================================
+   一 — ごあいさつ
+============================================================ */
+.greet { display: grid; grid-template-columns: 1fr auto; gap: 3rem; align-items: start; }
+/* 縦書きの引用（一節）。900px 以下では横書きになります */
+.quote {
+  writing-mode: vertical-rl; font-family: var(--mincho); font-size: 1.12rem;
+  letter-spacing: .22em; line-height: 2.1; max-height: 27rem;
+  padding: .4rem 1.6rem .4rem 0; border-right: 1px solid var(--accent);
+  color: var(--fg); margin: 0;
+}
+.quote cite { display: block; font-style: normal; font-size: .74rem; letter-spacing: .2em; color: var(--muted); margin-right: 1.4rem; }
+.sign { display: flex; align-items: center; gap: 1.1rem; margin-top: 2.4rem; }
+.sign-name { font-family: var(--mincho); font-size: 1.05rem; letter-spacing: .18em; }
+.sign-role { display: block; font-family: var(--mono); font-size: .58rem; letter-spacing: .2em; color: var(--muted); }
+
+/* ============================================================
+   二 — 年表（centrepiece）
+   PC: 元号ごとの横帯 ／ 900px 以下: 縦一列
+============================================================ */
+.chrono { position: relative; display: grid; grid-template-columns: repeat(5, 1fr); margin-top: .5rem; }
+/* 金の細罫（レール）。セクションが見えたら横に伸びます */
+.chrono::before {
+  content: ''; position: absolute; left: 0; right: 0; top: 5.6rem; height: 1px;
+  background: var(--gold); opacity: .55; transform: scaleX(0); transform-origin: left;
+  transition: transform 1.8s var(--ease);
+}
+.chrono.on::before { transform: none; }
+.chrono-era { padding: 0 1rem 0 1.1rem; border-left: 1px solid var(--border-soft); }
+.chrono-era:first-child { border-left: 0; padding-left: 0; }
+.chrono-head {
+  height: 5.6rem; display: flex; flex-direction: column; justify-content: flex-end;
+  padding-bottom: .9rem; position: relative;
+}
+.chrono-head::after {
+  content: ''; position: absolute; left: 0; bottom: -3.5px; width: 7px; height: 7px;
+  border-radius: 50%; background: var(--bg); border: 1px solid var(--gold);
+}
+.chrono-era:first-child .chrono-head::after { background: var(--accent); border-color: var(--accent); }
+.chrono-name { font-family: var(--mincho); font-size: 1.45rem; letter-spacing: .22em; }
+.chrono-range { font-family: var(--mono); font-size: .56rem; letter-spacing: .14em; color: var(--muted); }
+.chrono-list { list-style: none; padding-top: 1.5rem; display: flex; flex-direction: column; gap: 1.5rem; }
+.chrono-y {
+  display: block; font-family: var(--mincho); font-size: .86rem; letter-spacing: .14em;
+  color: var(--fg); margin-bottom: .25rem;
+}
+.chrono-y i { font-style: normal; font-family: var(--mono); font-size: .6rem; letter-spacing: .1em; color: var(--muted); margin-left: .5rem; }
+.chrono-t { font-size: .82rem; line-height: 1.95; color: var(--fg-dim); }
+.chrono-note { margin-top: 2.6rem; font-size: .72rem; color: var(--muted); }
+
+/* ============================================================
+   三 — こだわり／製法
+============================================================ */
+.craft-list { display: grid; gap: 0; }
+.craft {
+  display: grid; grid-template-columns: 4.5rem 1fr; gap: 1.8rem; align-items: start;
+  padding: 2.2rem 0; border-bottom: 1px solid var(--border-soft);
+}
+.craft:first-child { border-top: 1px solid var(--border-soft); }
+.craft-no {
+  font-family: var(--mincho); font-size: 1.6rem; letter-spacing: .1em; color: var(--gold);
+  line-height: 1.2; transition: color .5s var(--ease);
+}
+.craft:hover .craft-no { color: var(--accent); }
+.craft h3 { font-size: 1.18rem; letter-spacing: .14em; margin-bottom: .6rem; }
+.craft p { font-size: .86rem; color: var(--fg-dim); max-width: 44rem; }
+
+/* ============================================================
+   四 — 品書き
+============================================================ */
+.menu-list { list-style: none; display: grid; grid-template-columns: repeat(2, 1fr); gap: 0 3rem; }
+.menu-item { padding: 1.4rem 0; border-bottom: 1px solid var(--border-soft); }
+.menu-row { display: flex; align-items: baseline; gap: .3rem; }
+.menu-name { font-family: var(--mincho); font-size: 1.02rem; letter-spacing: .1em; }
+.menu-dot { flex: 1; border-bottom: 1px dotted var(--border); transform: translateY(-.3em); min-width: 1.5rem; }
+.menu-price { font-family: var(--mono); font-size: .76rem; letter-spacing: .06em; color: var(--fg-dim); white-space: nowrap; }
+.menu-desc { font-size: .76rem; color: var(--muted); margin-top: .15rem; }
+.menu-note { margin-top: 1.8rem; font-size: .74rem; color: var(--muted); }
+
+/* ============================================================
+   五 — 店舗案内
+============================================================ */
+.shop-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2.6rem; align-items: start; }
+.info-table { width: 100%; border-collapse: collapse; font-size: .84rem; }
+.info-table th, .info-table td { text-align: left; padding: .95rem .4rem; border-bottom: 1px solid var(--border-soft); vertical-align: top; }
+.info-table th {
+  width: 6.5rem; font-family: var(--mincho); font-weight: 500; letter-spacing: .18em;
+  color: var(--fg); white-space: nowrap;
+}
+.info-table td { color: var(--fg-dim); }
+/* 地図プレースホルダー */
+.map {
+  position: relative; aspect-ratio: 4/3; border: 1px solid var(--border);
+  background:
+    linear-gradient(90deg, var(--border-soft) 1px, transparent 1px) 0 0 / 34px 34px,
+    linear-gradient(180deg, var(--border-soft) 1px, transparent 1px) 0 0 / 34px 34px,
+    linear-gradient(150deg, var(--bg2), var(--bg));
+  display: grid; place-items: center; text-align: center; padding: 1.5rem;
+}
+.map::before {
+  content: ''; position: absolute; left: 50%; top: 44%; width: 12px; height: 12px;
+  translate: -50% -50%; border-radius: 50% 50% 50% 0; rotate: -45deg;
+  border: 2px solid var(--accent);
+}
+.map p { margin-top: 3.2rem; font-family: var(--mono); font-size: .58rem; letter-spacing: .22em; text-transform: uppercase; color: var(--muted); }
+
+/* ============================================================
+   六 — お知らせ
+============================================================ */
+.news-list { list-style: none; }
+.news-item { border-bottom: 1px solid var(--border-soft); }
+.news-item:first-child { border-top: 1px solid var(--border-soft); }
+.news-item a { display: grid; grid-template-columns: 7.5rem 5.5rem 1fr; gap: 1rem; align-items: baseline; padding: 1.35rem .2rem; transition: background-color .5s var(--ease); }
+.news-item a:hover { background: var(--bg2); }
+.news-date { font-family: var(--mono); font-size: .68rem; letter-spacing: .1em; color: var(--muted); }
+.news-cat {
+  font-size: .64rem; letter-spacing: .16em; color: var(--accent);
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  padding: .1rem .5rem; justify-self: start; white-space: nowrap;
+}
+.news-ttl { font-size: .88rem; transition: transform .5s var(--ease); }
+.news-item a:hover .news-ttl { transform: translateX(.35rem); }
+
+/* ============================================================
+   七 — FAQ
+============================================================ */
+.faq-list { display: flex; flex-direction: column; }
+.faq-item { border-bottom: 1px solid var(--border-soft); }
+.faq-item:first-child { border-top: 1px solid var(--border-soft); }
+.faq-item summary {
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  list-style: none; cursor: pointer; padding: 1.3rem .2rem;
+  font-family: var(--mincho); font-size: .96rem; letter-spacing: .08em;
+  transition: color .4s var(--ease);
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary:hover { color: var(--accent); }
+.faq-icon { position: relative; width: 15px; height: 15px; flex: none; transition: transform .5s var(--ease); }
+.faq-icon::before, .faq-icon::after { content: ''; position: absolute; left: 50%; top: 50%; background: var(--muted); translate: -50% -50%; }
+.faq-icon::before { width: 11px; height: 1px; }
+.faq-icon::after { width: 1px; height: 11px; }
+.faq-item[open]:not(.closing) .faq-icon { transform: rotate(90deg); }
+.faq-item[open]:not(.closing) .faq-icon::before, .faq-item[open]:not(.closing) .faq-icon::after { background: var(--accent); }
+.faq-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .5s var(--ease); }
+.faq-item[open]:not(.closing) .faq-body { grid-template-rows: 1fr; }
+.faq-body > div { overflow: hidden; min-height: 0; }
+.faq-body p { font-size: .82rem; color: var(--fg-dim); max-width: 44rem; padding: 0 .2rem 1.4rem; }
+
+/* ============================================================
+   八 — お問い合わせ
+============================================================ */
+.cta { text-align: center; }
+.cta-title { font-size: clamp(1.5rem, 3.4vw, 2.3rem); letter-spacing: .16em; line-height: 1.8; margin-bottom: 1.4rem; }
+.cta-sub { font-size: .86rem; color: var(--fg-dim); max-width: 34rem; margin: 0 auto 2.6rem; }
+.cta-actions { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+.btn {
+  position: relative; isolation: isolate; overflow: hidden; display: inline-block;
+  padding: .95rem 2.6rem; border: 1px solid var(--fg);
+  font-family: var(--mincho); font-size: .9rem; letter-spacing: .2em;
+  transition: color .5s var(--ease), border-color .5s var(--ease);
+}
+.btn::before {
+  content: ''; position: absolute; inset: 0; z-index: -1; background: var(--fg);
+  transform: translateY(101%); transition: transform .6s var(--ease);
+}
+.btn:hover { color: var(--bg); }
+.btn:hover::before { transform: none; }
+.btn-accent { border-color: var(--accent); color: var(--accent); }
+.btn-accent::before { background: var(--accent); }
+.btn-accent:hover { color: var(--bg); }
+.cta-tel { margin-top: 2.4rem; font-family: var(--mono); font-size: .72rem; letter-spacing: .14em; color: var(--muted); }
+.cta-tel a { color: var(--fg-dim); border-bottom: 1px solid var(--border); }
+
+/* ============================================================
+   FOOTER
+============================================================ */
+footer { border-top: 1px solid var(--border); padding: 3.4rem 0 2.6rem; font-size: .74rem; color: var(--muted); }
+.footer-grid { display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: end; }
+.footer-brand { display: flex; align-items: center; gap: .7rem; margin-bottom: .6rem; }
+.footer-brand svg { width: 26px; height: 26px; }
+.footer-name { font-family: var(--mincho); font-size: 1.05rem; letter-spacing: .2em; color: var(--fg); }
+.footer-links { display: flex; flex-wrap: wrap; gap: 1.1rem; list-style: none; margin-bottom: .8rem; justify-content: flex-end; }
+.footer-links a, .footer-meta a { color: var(--fg-dim); transition: color .4s var(--ease); }
+.footer-links a:hover, .footer-meta a:hover { color: var(--accent); }
+.footer-meta { text-align: right; }
+.footer-ver { display: block; font-family: var(--mono); font-size: .55rem; letter-spacing: .2em; margin-top: .5rem; }
+
+/* ============================================================
+   MOTION — スクロールで静かに立ち上がる（.rv が付いた要素）
+============================================================ */
+.rv { opacity: 0; transform: translateY(16px); transition: opacity 1s var(--ease), transform 1s var(--ease); }
+.rv.on { opacity: 1; transform: none; }
+
+/* ============================================================
+   RESPONSIVE — 900px 以下は縦書きをやめて横書きに
+============================================================ */
+@media (max-width: 900px) {
+  section { padding: 3.8rem 0; }
+  .nav-links { display: none; }
+  .menu-toggle { display: flex; }
+  .nav-right { gap: .7rem; }
+
+  /* 見出しを横書きへ */
+  .sec { grid-template-columns: 1fr; gap: 1.4rem; }
+  .mark { writing-mode: horizontal-tb; position: static; gap: .8rem; }
+  .mark-line { width: 2rem; height: 1px; }
+  .mark-ttl { font-size: 1.15rem; letter-spacing: .22em; }
+
+  /* Hero */
+  .hero { padding: 2.4rem 0 3.6rem; min-height: 0; }
+  .hero-inner { flex-direction: column; gap: 2rem; width: 100%; }
+  .hero-art { position: static; order: -1; width: 100%; max-width: 260px; height: 180px; margin: 0 auto 1.8rem; }
+  .hero-scroll { display: none; }
+  .hero-type { flex-direction: column; align-items: flex-start; gap: .9rem; width: 100%; }
+  .hero-name { writing-mode: horizontal-tb; font-size: clamp(2.4rem, 13vw, 3.4rem); letter-spacing: .12em; max-height: none; display: flex; }
+  .hero-side { writing-mode: horizontal-tb; flex-direction: column; gap: .5rem; padding-top: 0; }
+  .hero-yomi { letter-spacing: .34em; }
+  .hero-kakun { letter-spacing: .14em; }
+  .hero-foot { margin-top: 1.8rem; gap: 1.1rem; }
+  .hero::before { width: 92vw; height: 92vw; right: -20%; top: -4%; }
+
+  /* ごあいさつ */
+  .greet { grid-template-columns: 1fr; gap: 2rem; }
+  .quote {
+    writing-mode: horizontal-tb; max-height: none; font-size: 1rem; letter-spacing: .12em;
+    line-height: 2.1; border-right: 0; border-left: 1px solid var(--accent);
+    padding: .2rem 0 .2rem 1.2rem;
+  }
+  .quote cite { margin-right: 0; margin-top: .9rem; }
+
+  /* 年表を縦一列に */
+  .chrono { grid-template-columns: 1fr; }
+  .chrono::before {
+    top: .3rem; bottom: .3rem; left: 0; right: auto; width: 1px; height: auto;
+    transform: scaleY(0); transform-origin: top; transition-duration: 1.4s;
+  }
+  .chrono.on::before { transform: none; }
+  .chrono-era { border-left: 1px solid var(--border-soft); padding: 0 0 1.8rem 1.5rem; }
+  .chrono-era:first-child { border-left: 1px solid var(--border-soft); padding-left: 1.5rem; }
+  .chrono-head { height: auto; flex-direction: row; justify-content: flex-start; align-items: baseline; gap: .9rem; padding: 1.4rem 0 .6rem; }
+  .chrono-era:first-child .chrono-head { padding-top: .2rem; }
+  .chrono-head::after { left: calc(-1.5rem - 4px); bottom: auto; top: 2rem; }
+  .chrono-era:first-child .chrono-head::after { top: .8rem; }
+  .chrono-name { font-size: 1.2rem; }
+  .chrono-list { padding-top: .4rem; gap: 1.2rem; }
+
+  /* その他 */
+  .craft { grid-template-columns: 3rem 1fr; gap: 1rem; padding: 1.8rem 0; }
+  .menu-list { grid-template-columns: 1fr; gap: 0; }
+  .shop-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .news-item a { grid-template-columns: 1fr; gap: .35rem; padding: 1.1rem .2rem; }
+  .footer-grid { grid-template-columns: 1fr; align-items: start; }
+  .footer-links { justify-content: flex-start; }
+  .footer-meta { text-align: left; }
+  .btn { padding: .85rem 2rem; }
+}
+
+@media (max-width: 560px) {
+  .era-sep { display: none; }
+  .era-badge { gap: .2rem .9rem; }
+}
+
+@media (max-width: 420px) {
+  .container { padding: 0 1.2rem; }
+  .info-table th { width: 5rem; letter-spacing: .1em; }
+  .era-badge { padding: .45rem .8rem; }
+}
+
+/* ============================================================
+   動きを抑える設定のユーザーには、静かなまま表示します
+============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important; animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important; transition-delay: 0ms !important;
+  }
+  html { scroll-behavior: auto; }
+  .rv { opacity: 1; transform: none; }
+  .hero-name .ch { opacity: 1; }
+  .chrono::before { transform: none !important; }
+  .noren-cloth { animation: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- スクロール進捗（朱の細線） -->
+<div class="progress" id="progress" aria-hidden="true"></div>
+
+<nav id="nav">
+  <!-- EDIT: 屋号とナビの家紋。家紋SVGは下の <symbol> を差し替えると全箇所に反映されます -->
+  <a href="#hero" class="brand">
+    <svg viewBox="0 0 64 64" aria-hidden="true"><use href="#mon"></use></svg>
+    <span class="brand-name">◯◯屋</span>
+  </a>
+  <div class="nav-right">
+    <!-- EDIT: ナビのリンク。不要な項目は削除してください -->
+    <ul class="nav-links">
+      <li><a href="#greeting">ごあいさつ</a></li>
+      <li><a href="#chrono">年表</a></li>
+      <li><a href="#craft">こだわり</a></li>
+      <li><a href="#menu">品書き</a></li>
+      <li><a href="#shop">店舗案内</a></li>
+      <li><a href="#news">お知らせ</a></li>
+    </ul>
+    <button type="button" class="theme-btn" id="themeToggle" aria-label="夜のテーマに切り替え">
+      <span class="t-day">昼</span><span class="t-sep">／</span><span class="t-night">夜</span>
+    </button>
+    <button type="button" class="menu-toggle" id="menuToggle" aria-label="メニュー" aria-expanded="false" aria-controls="mobileMenu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#greeting">ごあいさつ</a>
+  <a href="#chrono">年表</a>
+  <a href="#craft">こだわり／製法</a>
+  <a href="#menu">品書き</a>
+  <a href="#shop">店舗案内</a>
+  <a href="#news">お知らせ</a>
+  <a href="#faq">よくあるご質問</a>
+  <a href="#contact">お問い合わせ</a>
+</div>
+
+<!-- ============================================================
+  EDIT: 家紋（かもん）プレースホルダー。
+  ここ1か所を差し替えるだけで、ナビ・暖簾・フッターの家紋がすべて変わります。
+  実際の家紋SVGのパスを貼るか、画像を使う場合は各 <svg><use href="#mon"></svg> を
+  <img src="mon.svg" alt=""> に置き換えてください。
+============================================================ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="mon" viewBox="0 0 64 64">
+    <circle class="mon-ring" cx="32" cy="32" r="26" stroke-width="3"/>
+    <path class="mon-in" d="M24 18v28M40 18v28M18 24h28M18 40h28" stroke-width="3" stroke-linecap="square"/>
+    <circle class="mon-in" cx="32" cy="32" r="4.5" stroke-width="2.5"/>
+  </symbol>
+</svg>
+
+<main>
+
+<!-- ============================================================
+  HERO — 屋号・家訓・創業の帯・暖簾
+============================================================ -->
+<section id="hero" class="hero">
+  <!-- EDIT: 暖簾。中央パネルの家紋と朱の一文字を店のものに差し替えてください。
+       パネルを2枚にしたい場合は .noren-panel をひとつ削除するだけでOKです -->
+  <div class="hero-art">
+    <div class="noren" id="noren" aria-hidden="true">
+      <div class="noren-rail"></div>
+      <div class="noren-set">
+        <div class="noren-panel"><div class="noren-cloth"></div></div>
+        <div class="noren-panel">
+          <div class="noren-cloth">
+            <span class="noren-mon" style="color:var(--noren-fg)"><svg viewBox="0 0 64 64"><use href="#mon"></use></svg></span>
+            <!-- EDIT: 暖簾に染め抜く一文字（屋号の一字など） -->
+            <span class="noren-char">屋</span>
+          </div>
+        </div>
+        <div class="noren-panel"><div class="noren-cloth"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-type">
+        <!-- EDIT: 屋号。1文字ずつ <span class="ch"> で囲むと、順に墨が置かれるように現れます -->
+        <h1 class="hero-name"><span class="ch">◯</span><span class="ch">◯</span><span class="ch">屋</span></h1>
+        <div class="hero-side">
+          <!-- EDIT: 家訓・一行のことば（<em> で囲むと朱色になります） -->
+          <p class="hero-kakun">一碗に、百年の<em>手</em>しごとを。</p>
+          <!-- EDIT: 屋号のよみ -->
+          <p class="hero-yomi">まるまるや</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="hero-foot">
+      <!-- EDIT: 創業年はここだけ！ data-founded="1902" を書き換えると
+           「明治三十五年 創業」「Since 1902」「創業 124 年」がすべて自動で更新されます。
+           月日がわかる場合は data-founded-month="5" data-founded-day="1" を追加すると、
+           元号の切り替わり年（1912 / 1926 / 1989 / 2019）も正確に判定します -->
+      <p class="era-badge" data-founded="1902">
+        <span class="era-jp">明治三十五年 創業</span>
+        <span class="era-sep" aria-hidden="true">·</span>
+        <span class="era-en">Since 1902</span>
+        <span class="era-sep" aria-hidden="true">·</span>
+        <span class="era-years">創業 124 年</span>
+      </p>
+      <!-- EDIT: 落款（朱印）。「印」を屋号の一文字に変えても綺麗です -->
+      <span class="seal" aria-hidden="true">印</span>
+    </div>
+  </div>
+  <span class="hero-scroll" aria-hidden="true">Scroll</span>
+</section>
+
+<!-- ============================================================
+  一 — ごあいさつ
+============================================================ -->
+<section id="greeting">
+  <div class="container sec">
+    <h2 class="mark rv">
+      <span class="mark-no">一</span><span class="mark-line" aria-hidden="true"></span>
+      <span class="mark-ttl">ごあいさつ</span><span class="mark-en">Greeting</span>
+    </h2>
+    <div class="sec-body">
+      <div class="greet">
+        <div>
+          <!-- EDIT: 代表のあいさつ文（2〜3段落） -->
+          <p class="lead rv">
+            当店は明治三十五年、△△町の小さな店先から始まりました。
+            以来、材料の選び方も、火の入れ方も、初代の手つきをそのままに受け継いでいます。
+          </p>
+          <p class="lead rv">
+            時代が変わっても、店に入られたお客様が最初に触れるのは暖簾です。
+            その一枚の向こうにある仕事が、百年前と変わらないものであるように。
+            それだけを考えて、今日も店を開けています。
+          </p>
+          <p class="lead rv">
+            ここに書く文章は、代表者の言葉で構いません。
+            うまく書こうとせず、日々の仕事のことを2〜3段落でお書きください。
+          </p>
+          <!-- EDIT: 署名（代表者名・肩書き） -->
+          <div class="sign rv">
+            <span class="seal" aria-hidden="true">印</span>
+            <span>
+              <span class="sign-name">五代目 ◯◯ ◯◯</span>
+              <span class="sign-role">Fifth Generation / Owner</span>
+            </span>
+          </div>
+        </div>
+        <!-- EDIT: 縦書きで見せたい一節（家訓・口伝など、短いほど効きます） -->
+        <blockquote class="quote rv">
+          急がず、変えず、絶やさず。<br>
+          手を抜けば、味が先に覚えている。
+          <cite>— 初代の口ぐせ（家訓・伝承）</cite>
+        </blockquote>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+  二 — 年表（このテンプレートの中心）
+  EDIT: 元号の帯（明治〜令和）はそのまま、<li> を増減して出来事を書き換えてください。
+  年は「和暦（西暦）／出来事」の順です。事実だけを、控えめにお書きください。
+============================================================ -->
+<section id="chrono">
+  <div class="container sec">
+    <h2 class="mark rv">
+      <span class="mark-no">二</span><span class="mark-line" aria-hidden="true"></span>
+      <span class="mark-ttl">年表</span><span class="mark-en">Chronicle</span>
+    </h2>
+    <div class="sec-body">
+      <p class="lead rv">明治から令和まで、店が歩いてきた道のりです。</p>
+
+      <div class="chrono" id="chrono">
+        <div class="chrono-era">
+          <div class="chrono-head">
+            <span class="chrono-name">明治</span>
+            <span class="chrono-range">1868 — 1912</span>
+          </div>
+          <ul class="chrono-list">
+            <li class="rv"><span class="chrono-y">明治三十五年<i>1902</i></span><p class="chrono-t">初代 ◯◯ ◯◯ が △△町に店を構える。</p></li>
+            <li class="rv"><span class="chrono-y">明治四十二年<i>1909</i></span><p class="chrono-t">現在まで続く製法の原型が定まる。</p></li>
+          </ul>
+        </div>
+
+        <div class="chrono-era">
+          <div class="chrono-head">
+            <span class="chrono-name">大正</span>
+            <span class="chrono-range">1912 — 1926</span>
+          </div>
+          <ul class="chrono-list">
+            <li class="rv"><span class="chrono-y">大正五年<i>1916</i></span><p class="chrono-t">二代目が家業を継ぐ。</p></li>
+            <li class="rv"><span class="chrono-y">大正十二年<i>1923</i></span><p class="chrono-t">店舗を現在地へ移す。</p></li>
+          </ul>
+        </div>
+
+        <div class="chrono-era">
+          <div class="chrono-head">
+            <span class="chrono-name">昭和</span>
+            <span class="chrono-range">1926 — 1989</span>
+          </div>
+          <ul class="chrono-list">
+            <li class="rv"><span class="chrono-y">昭和八年<i>1933</i></span><p class="chrono-t">看板の品「◯◯」をつくり始める。</p></li>
+            <li class="rv"><span class="chrono-y">昭和三十年<i>1955</i></span><p class="chrono-t">工房を新しく建てる。</p></li>
+            <li class="rv"><span class="chrono-y">昭和五十四年<i>1979</i></span><p class="chrono-t">三代目就任。</p></li>
+          </ul>
+        </div>
+
+        <div class="chrono-era">
+          <div class="chrono-head">
+            <span class="chrono-name">平成</span>
+            <span class="chrono-range">1989 — 2019</span>
+          </div>
+          <ul class="chrono-list">
+            <li class="rv"><span class="chrono-y">平成三年<i>1991</i></span><p class="chrono-t">四代目就任。包装を一新する。</p></li>
+            <li class="rv"><span class="chrono-y">平成十八年<i>2006</i></span><p class="chrono-t">店舗を改装し、喫茶の席を設ける。</p></li>
+          </ul>
+        </div>
+
+        <div class="chrono-era">
+          <div class="chrono-head">
+            <span class="chrono-name">令和</span>
+            <span class="chrono-range">2019 —</span>
+          </div>
+          <ul class="chrono-list">
+            <li class="rv"><span class="chrono-y">令和二年<i>2020</i></span><p class="chrono-t">オンラインでの販売を始める。</p></li>
+            <li class="rv"><span class="chrono-y">令和六年<i>2024</i></span><p class="chrono-t">五代目就任。暖簾を掛け替える。</p></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- EDIT: 注記（記録が残っていない年がある場合など） -->
+      <p class="chrono-note rv">※ 年表の内容はすべて記入例です。記録が確認できる事実のみをご記載ください。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+  三 — こだわり／製法
+============================================================ -->
+<section id="craft">
+  <div class="container sec">
+    <h2 class="mark rv">
+      <span class="mark-no">三</span><span class="mark-line" aria-hidden="true"></span>
+      <span class="mark-ttl">こだわり</span><span class="mark-en">Craft</span>
+    </h2>
+    <div class="sec-body">
+      <!-- EDIT: 3〜4項目。番号は 壹・貳・參・肆（大字）。一・二・三でも構いません -->
+      <div class="craft-list">
+        <div class="craft rv">
+          <span class="craft-no" aria-hidden="true">壹</span>
+          <div>
+            <h3>素材を選ぶ</h3>
+            <p>どの産地の、どの時期のものを使っているか。仕入れ先との付き合いの長さ。ここに書けることは、そのまま店の信用になります。数字や順位ではなく、事実を短く書いてください。</p>
+          </div>
+        </div>
+        <div class="craft rv">
+          <span class="craft-no" aria-hidden="true">貳</span>
+          <div>
+            <h3>手でつくる</h3>
+            <p>機械に任せていない工程、時間のかかる工程を具体的に。「何日寝かせる」「何度で炊く」といった、目に浮かぶ言葉が効きます。</p>
+          </div>
+        </div>
+        <div class="craft rv">
+          <span class="craft-no" aria-hidden="true">參</span>
+          <div>
+            <h3>受け継ぐ</h3>
+            <p>道具・木型・帳面など、代々使い続けているものについて。写真を入れる場合は、この段落の下に <code>&lt;img&gt;</code> を足してください。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+  四 — 品書き
+============================================================ -->
+<section id="menu">
+  <div class="container sec">
+    <h2 class="mark rv">
+      <span class="mark-no">四</span><span class="mark-line" aria-hidden="true"></span>
+      <span class="mark-ttl">品書き</span><span class="mark-en">Products</span>
+    </h2>
+    <div class="sec-body">
+      <!-- EDIT: 商品名・説明・価格。<li> を複製すれば何品でも増やせます。
+           価格は「¥0,000」のままだと未入力とわかる状態です。必ず実際の税込価格に差し替えてください -->
+      <ul class="menu-list">
+        <li class="menu-item rv">
+          <div class="menu-row"><span class="menu-name">◯◯（六個入）</span><span class="menu-dot" aria-hidden="true"></span><span class="menu-price">¥0,000</span></div>
+          <p class="menu-desc">看板の品。ひとことで特徴を書いてください。</p>
+        </li>
+        <li class="menu-item rv">
+          <div class="menu-row"><span class="menu-name">◯◯（十二個入）</span><span class="menu-dot" aria-hidden="true"></span><span class="menu-price">¥0,000</span></div>
+          <p class="menu-desc">贈答用の箱入り。のし対応の有無など。</p>
+        </li>
+        <li class="menu-item rv">
+          <div class="menu-row"><span class="menu-name">季節の△△（春）</span><span class="menu-dot" aria-hidden="true"></span><span class="menu-price">¥0,000</span></div>
+          <p class="menu-desc">季節限定の品。販売期間を添えると親切です。</p>
+        </li>
+        <li class="menu-item rv">
+          <div class="menu-row"><span class="menu-name">季節の△△（秋）</span><span class="menu-dot" aria-hidden="true"></span><span class="menu-price">¥0,000</span></div>
+          <p class="menu-desc">季節限定の品。</p>
+        </li>
+        <li class="menu-item rv">
+          <div class="menu-row"><span class="menu-name">□□詰合せ</span><span class="menu-dot" aria-hidden="true"></span><span class="menu-price">¥0,000</span></div>
+          <p class="menu-desc">組み合わせの内容を簡潔に。</p>
+        </li>
+        <li class="menu-item rv">
+          <div class="menu-row"><span class="menu-name">お茶（店内）</span><span class="menu-dot" aria-hidden="true"></span><span class="menu-price">¥000</span></div>
+          <p class="menu-desc">店内でお召し上がりの場合。</p>
+        </li>
+      </ul>
+      <!-- EDIT: 注記（税込表示・送料・日持ちなど） -->
+      <p class="menu-note rv">※ 価格はすべて記入例です。実際の税込価格・内容量・消費期限に差し替えてください。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+  五 — 店舗案内
+============================================================ -->
+<section id="shop">
+  <div class="container sec">
+    <h2 class="mark rv">
+      <span class="mark-no">五</span><span class="mark-line" aria-hidden="true"></span>
+      <span class="mark-ttl">店舗案内</span><span class="mark-en">Access</span>
+    </h2>
+    <div class="sec-body">
+      <div class="shop-grid">
+        <!-- EDIT: 店舗情報。行の増減も自由です -->
+        <table class="info-table rv">
+          <tbody>
+            <tr><th>店名</th><td>◯◯屋</td></tr>
+            <tr><th>住所</th><td>〒000-0000<br>◯◯県◯◯市△△町0-0-0</td></tr>
+            <tr><th>電話</th><td><a href="tel:00-0000-0000">00-0000-0000</a></td></tr>
+            <tr><th>営業時間</th><td>10:00 — 18:00<br>（喫茶は 17:30 まで）</td></tr>
+            <tr><th>定休日</th><td>水曜日・第三火曜日<br>年末年始</td></tr>
+            <!-- data-founded は Hero と同じ年を入れてください（自動で和暦になります） -->
+            <tr><th>創業</th><td><span data-founded="1902">明治三十五年（1902年）創業</span></td></tr>
+            <tr><th>アクセス</th><td>◯◯線 △△駅 徒歩0分<br>駐車場 0台</td></tr>
+          </tbody>
+        </table>
+
+        <div>
+          <!-- EDIT: 地図。ここをGoogleマップの埋め込みに差し替えてください。
+               Googleマップ → 共有 → 地図を埋め込む → <iframe> をコピーし、
+               下の <div class="map"> ごと置き換えます。
+               例: <iframe src="https://www.google.com/maps/embed?pb=..." width="100%" height="380"
+                    style="border:0" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe> -->
+          <div class="map rv">
+            <p>Map embed placeholder<br>地図の埋め込み位置</p>
+          </div>
+          <p class="menu-note rv" style="margin-top:1.1rem">※ 埋め込み地図は Google マップの利用規約に従ってご利用ください。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+  六 — お知らせ
+============================================================ -->
+<section id="news">
+  <div class="container sec">
+    <h2 class="mark rv">
+      <span class="mark-no">六</span><span class="mark-line" aria-hidden="true"></span>
+      <span class="mark-ttl">お知らせ</span><span class="mark-en">News</span>
+    </h2>
+    <div class="sec-body">
+      <!-- EDIT: お知らせ3件（記入例）。日付・分類・見出し・リンク先を差し替えてください -->
+      <ul class="news-list">
+        <li class="news-item rv"><a href="#news">
+          <span class="news-date">2026.04.01</span>
+          <span class="news-cat">季節</span>
+          <span class="news-ttl">春の△△の販売を始めました。</span>
+        </a></li>
+        <li class="news-item rv"><a href="#news">
+          <span class="news-date">2026.02.20</span>
+          <span class="news-cat">お休み</span>
+          <span class="news-ttl">三月の臨時休業日のお知らせ。</span>
+        </a></li>
+        <li class="news-item rv"><a href="#news">
+          <span class="news-date">2026.01.08</span>
+          <span class="news-cat">店より</span>
+          <span class="news-ttl">本年もよろしくお願いいたします。</span>
+        </a></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+  七 — よくあるご質問
+============================================================ -->
+<section id="faq">
+  <div class="container sec">
+    <h2 class="mark rv">
+      <span class="mark-no">七</span><span class="mark-line" aria-hidden="true"></span>
+      <span class="mark-ttl">よくあるご質問</span><span class="mark-en">FAQ</span>
+    </h2>
+    <div class="sec-body">
+      <!-- EDIT: 質問と回答。<details open> を付けると最初から開いた状態になります -->
+      <div class="faq-list">
+        <details class="faq-item rv" open>
+          <summary>贈答用の包装はできますか？<span class="faq-icon" aria-hidden="true"></span></summary>
+          <div class="faq-body"><div><p>のし・掛け紙・風呂敷など、対応できる内容をここに書いてください。追加料金がかかる場合は、その旨も明記します。</p></div></div>
+        </details>
+        <details class="faq-item rv">
+          <summary>日持ちはどのくらいですか？<span class="faq-icon" aria-hidden="true"></span></summary>
+          <div class="faq-body"><div><p>商品ごとの消費期限・保存方法をお書きください。食品を扱う場合は、表示のルール（食品表示法）に沿った記載をおすすめします。</p></div></div>
+        </details>
+        <details class="faq-item rv">
+          <summary>発送はしていますか？<span class="faq-icon" aria-hidden="true"></span></summary>
+          <div class="faq-body"><div><p>配送の可否・送料・お届け日数を書いてください。通信販売を行う場合は、特定商取引法に基づく表記のページも別途ご用意ください。</p></div></div>
+        </details>
+        <details class="faq-item rv">
+          <summary>店内で食べられますか？<span class="faq-icon" aria-hidden="true"></span></summary>
+          <div class="faq-body"><div><p>喫茶席の有無・席数・予約の可否など。バリアフリー情報を添えると親切です。</p></div></div>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+  八 — お問い合わせ
+============================================================ -->
+<section id="contact">
+  <div class="container sec">
+    <h2 class="mark rv">
+      <span class="mark-no">八</span><span class="mark-line" aria-hidden="true"></span>
+      <span class="mark-ttl">お問い合わせ</span><span class="mark-en">Contact</span>
+    </h2>
+    <div class="sec-body">
+      <div class="cta">
+        <!-- EDIT: 見出しと案内文 -->
+        <h3 class="cta-title rv">暖簾を、くぐりにいらしてください。</h3>
+        <p class="cta-sub rv">ご贈答のご相談、お品書きにない品のご注文、取材のお申し込みなど、お気軽にお問い合わせください。</p>
+        <div class="cta-actions rv">
+          <!-- EDIT: メールアドレス／フォームのURL -->
+          <a href="mailto:info@example.com" class="btn btn-accent">メールで問い合わせる</a>
+          <a href="#shop" class="btn">店舗案内をみる</a>
+        </div>
+        <!-- EDIT: 電話番号と受付時間 -->
+        <p class="cta-tel rv">お電話 <a href="tel:00-0000-0000">00-0000-0000</a> ／ 受付 10:00 — 18:00（定休日を除く）</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="container footer-grid">
+    <div>
+      <!-- EDIT: 屋号とコピーライト -->
+      <div class="footer-brand">
+        <svg viewBox="0 0 64 64" aria-hidden="true" style="color:var(--fg)"><use href="#mon"></use></svg>
+        <span class="footer-name">◯◯屋</span>
+      </div>
+      <p>&copy; 2026 ◯◯屋</p>
+      <p><span data-founded="1902">明治三十五年（1902年）創業</span></p>
+    </div>
+    <div class="footer-meta">
+      <ul class="footer-links">
+        <li><a href="#greeting">ごあいさつ</a></li>
+        <li><a href="#chrono">年表</a></li>
+        <li><a href="#menu">品書き</a></li>
+        <li><a href="#shop">店舗案内</a></li>
+        <li><a href="#contact">お問い合わせ</a></li>
+        <li><a href="#hero">↑</a></li>
+      </ul>
+      <p><a href="https://idatsuka.com/store.html">← Store に戻る</a></p>
+      <span class="footer-ver">NOREN Template v1.0 — 個人・商用利用可／再販不可</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   和暦（元号）変換 — data-founded="1902" から
+   「明治三十五年 創業」「Since 1902」「創業 124 年」を組み立てます
+   ・元号: 明治 1868 / 大正 1912 / 昭和 1926 / 平成 1989 / 令和 2019
+   ・元年は「元」（例: 令和元年）
+   ・年だけを指定した場合、元号が替わった年（1912 / 1926 / 1989 / 2019）は
+     「新しい元号の元年」として扱います（例: 1912 → 大正元年）。
+     旧元号で表記したい場合は data-founded-month / data-founded-day を足してください
+     （例: 1912年3月創業 → data-founded="1912" data-founded-month="3" → 明治45年）
+============================================================ */
+(function () {
+  var ERAS = [
+    { name: '令和', start: 2019, m: 5,  d: 1  },
+    { name: '平成', start: 1989, m: 1,  d: 8  },
+    { name: '昭和', start: 1926, m: 12, d: 25 },
+    { name: '大正', start: 1912, m: 7,  d: 30 },
+    { name: '明治', start: 1868, m: 1,  d: 25 }
+  ];
+
+  /* 数字を漢数字に（1 は「元」、99 まで対応） */
+  function kanji(n) {
+    if (n === 1) return '元';
+    var k = ['', '一', '二', '三', '四', '五', '六', '七', '八', '九'];
+    if (n < 10) return k[n];
+    var t = Math.floor(n / 10), o = n % 10;
+    return (t === 1 ? '' : k[t]) + '十' + (o ? k[o] : '');
+  }
+
+  /* 西暦 → { era: '明治', year: 35 }。明治より前は null */
+  function toJapaneseEra(year, month, day) {
+    var known = (month !== null && month !== undefined && !isNaN(month));
+    for (var i = 0; i < ERAS.length; i++) {
+      var e = ERAS[i];
+      if (year > e.start) return { era: e.name, year: year - e.start + 1 };
+      if (year === e.start) {
+        if (!known) return { era: e.name, year: 1 };          /* 年のみ → 新元号の元年 */
+        var mm = +month, dd = day ? +day : 1;
+        if (mm > e.m || (mm === e.m && dd >= e.d)) return { era: e.name, year: 1 };
+        /* 改元日より前 → ひとつ前の元号で数え直す（次のループへ） */
+      }
+    }
+    return null;
+  }
+
+  /* 創業からの年数（月日がわかる場合は記念日前を切り下げ） */
+  function yearsSince(year, month, day) {
+    var now = new Date(), n = now.getFullYear() - year;
+    if (month) {
+      var m = now.getMonth() + 1, d = now.getDate();
+      if (m < +month || (m === +month && d < (day ? +day : 1))) n -= 1;
+    }
+    return Math.max(n, 0);
+  }
+
+  window.NOREN = { toJapaneseEra: toJapaneseEra, kanji: kanji, yearsSince: yearsSince };
+
+  document.querySelectorAll('[data-founded]').forEach(function (el) {
+    var y = parseInt(el.getAttribute('data-founded'), 10);
+    if (!y) return;
+    var mo = el.getAttribute('data-founded-month');
+    var da = el.getAttribute('data-founded-day');
+    var e = toJapaneseEra(y, mo, da);
+    var jp = e ? (e.era + kanji(e.year) + '年') : (y + '年');
+    var yrs = yearsSince(y, mo, da);
+
+    var elJp = el.querySelector('.era-jp');
+    if (elJp) {
+      elJp.textContent = jp + ' 創業';
+      el.querySelector('.era-en').textContent = 'Since ' + y;
+      el.querySelector('.era-years').textContent = '創業 ' + yrs + ' 年';
+    } else {
+      el.textContent = jp + '（' + y + '年）創業';
+    }
+    el.setAttribute('title', jp + '創業 · 創業 ' + yrs + ' 年');
+  });
+})();
+
+/* ---- 昼／夜テーマ（localStorage に保存・theme-color も同期） ---- */
+(function () {
+  var root = document.documentElement;
+  var key = 'noren-theme';
+  var meta = document.getElementById('themeColor');
+  var btn = document.getElementById('themeToggle');
+  function sync() {
+    var t = root.getAttribute('data-theme') === 'ink' ? 'ink' : 'paper';
+    if (meta) meta.setAttribute('content', getComputedStyle(root).getPropertyValue('--bg').trim() || '#f4efe6');
+    if (btn) btn.setAttribute('aria-label', t === 'ink' ? '昼のテーマに切り替え' : '夜のテーマに切り替え');
+  }
+  sync();
+  if (btn) btn.addEventListener('click', function () {
+    var next = root.getAttribute('data-theme') === 'ink' ? 'paper' : 'ink';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem(key, next); } catch (e) {}
+    sync();
+  });
+})();
+
+/* ---- モバイルメニュー ---- */
+(function () {
+  var toggle = document.getElementById('menuToggle');
+  var menu = document.getElementById('mobileMenu');
+  var nav = document.getElementById('nav');
+  if (!toggle || !menu) return;
+  function close() {
+    toggle.classList.remove('open'); menu.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+  }
+  toggle.addEventListener('click', function () {
+    var open = menu.classList.toggle('open');
+    toggle.classList.toggle('open', open);
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if (open && nav) nav.classList.remove('nav-hide');
+  });
+  menu.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', close); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+})();
+
+/* ---- スクロール進捗（朱の細線）／ナビの自動非表示／暖簾が少し開く ---- */
+(function () {
+  var nav = document.getElementById('nav');
+  var bar = document.getElementById('progress');
+  var menu = document.getElementById('mobileMenu');
+  var noren = document.getElementById('noren');
+  var last = window.scrollY, ticking = false, parted = false;
+  function update() {
+    var y = window.scrollY;
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    if (bar) bar.style.transform = 'scaleX(' + (max > 0 ? Math.min(1, y / max) : 0) + ')';
+    if (nav) {
+      nav.classList.toggle('scrolled', y > 20);
+      if (!(menu && menu.classList.contains('open'))) {
+        if (y > last + 6 && y > 160) nav.classList.add('nav-hide');
+        else if (y < last - 6 || y <= 160) nav.classList.remove('nav-hide');
+      }
+    }
+    if (noren) {
+      var want = y > 60;
+      if (want !== parted) { parted = want; noren.classList.toggle('is-parted', want); }
+    }
+    last = y; ticking = false;
+  }
+  window.addEventListener('scroll', function () {
+    if (!ticking) { ticking = true; requestAnimationFrame(update); }
+  }, { passive: true });
+  update();
+})();
+
+/* ---- リビール（.rv が付いた要素を、兄弟ごとに少しずつ遅らせて表示） ---- */
+(function () {
+  var counts = new Map();
+  document.querySelectorAll('.rv').forEach(function (el) {
+    var p = el.parentElement;
+    var n = counts.get(p) || 0;
+    counts.set(p, n + 1);
+    el.style.transitionDelay = Math.min(n * 90, 420) + 'ms';
+  });
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      e.target.classList.add('on');
+      io.unobserve(e.target);
+      setTimeout(function () { e.target.style.transitionDelay = ''; }, 1600);
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -6% 0px' });
+  document.querySelectorAll('.rv, #chrono').forEach(function (el) { io.observe(el); });
+})();
+
+/* ---- FAQ（<details> の高さをなめらかに。JS が無くても開閉します） ---- */
+(function () {
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.querySelectorAll('details.faq-item').forEach(function (d) {
+    var summary = d.querySelector('summary');
+    var body = d.querySelector('.faq-body');
+    if (!summary || !body) return;
+    summary.addEventListener('click', function (e) {
+      e.preventDefault();
+      if (d.classList.contains('closing')) return;
+      if (!d.open) {
+        if (reduce) { d.open = true; return; }
+        d.classList.add('closing');
+        d.open = true;
+        void body.offsetHeight;
+        d.classList.remove('closing');
+      } else {
+        if (reduce) { d.open = false; return; }
+        d.classList.add('closing');
+        var done = false;
+        var finish = function () { if (done) return; done = true; d.open = false; d.classList.remove('closing'); };
+        body.addEventListener('transitionend', finish, { once: true });
+        setTimeout(finish, 650);
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>
