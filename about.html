@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Profile — IDATSUKA | デザインと制作姿勢</title>
-  <meta name="description" content="東京を拠点に活動するデザイナー、Idatsuka。UI/UX・ブランディング・Webを軸に、構造とタイポグラフィで伝わる体験をつくります。">
-  <meta property="og:title" content="Profile — IDATSUKA | デザインと制作姿勢">
-  <meta property="og:description" content="東京を拠点に活動するデザイナー、Idatsuka。UI/UX・ブランディング・Webを軸に、構造とタイポグラフィで伝わる体験をつくります。">
+  <title>Profile — IDATSUKA | クリエイターとしての表現と探求</title>
+  <meta name="description" content="表現を楽しみ、デザインを探求するクリエイター、Idatsuka。アートやゲーム、Webの制作を通じて、アイデアをかたちにしています。">
+  <meta property="og:title" content="Profile — IDATSUKA | クリエイターとしての表現と探求">
+  <meta property="og:description" content="表現を楽しみ、デザインを探求するクリエイター、Idatsuka。アートやゲーム、Webの制作を通じて、アイデアをかたちにしています。">
   <link rel="canonical" href="https://idatsuka.com/about.html">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%2308090c'/><text x='16' y='22' text-anchor='middle' font-size='16' font-family='sans-serif' font-weight='300' fill='%23f2f4f7'>I</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -39,12 +39,9 @@
 .profile-intro { color: var(--fg-dim); font-size: .95rem; line-height: 2; margin-top: 1.2rem; }
 .profile-actions { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 2rem; }
 .profile-page .btn, .profile-page .btn-filled { font-family: inherit; font-size: .8rem; letter-spacing: .04em; min-height: 48px; padding: .8rem 1.25rem; gap: 1rem; }
-.profile-identity { position: relative; aspect-ratio: 4/5; border: 1px solid var(--border-strong); background: radial-gradient(ellipse at 65% 35%, #20303c 0, #10161c 45%, #0b0c0e 80%); overflow: hidden; padding: 1.6rem; display: flex; flex-direction: column; justify-content: space-between; }
-.identity-grid { position: absolute; inset: 0; background-image: linear-gradient(#ffffff06 1px, transparent 1px),linear-gradient(90deg,#ffffff06 1px,transparent 1px); background-size: 38px 38px; }
-.identity-top, .identity-bottom { position: relative; font-family: var(--mono); font-size: .65rem; letter-spacing: .1em; color: var(--accent); }
-.identity-bottom span { color: var(--muted); font-size: .6rem; }
-.identity-letter { position: absolute; inset: 0; display: flex; justify-content: center; align-items: center; font-size: clamp(10rem, 25vw, 22rem); line-height: 1; font-weight: 300; letter-spacing: -.1em; padding-right: .1em; color: #dae5eb; }
-.identity-letter span { color: var(--accent); }
+.profile-portrait { margin: 0; border: 1px solid var(--border-strong); background: var(--bg2); }
+.profile-portrait img { display: block; width: 100%; height: auto; }
+.profile-portrait figcaption { padding: 1rem; font-family: var(--mono); font-size: .6rem; color: var(--fg-dim); letter-spacing: .06em; }
 .profile-section { border-top: 1px solid var(--border-strong); padding: 5.5rem 0; }
 .profile-section-grid { display: grid; grid-template-columns: 1fr 1.6fr; gap: 5rem; }
 .profile-page h2 { font-size: clamp(1.65rem, 2.6vw, 2.25rem); font-weight: 500; line-height: 1.65; letter-spacing: .025em; }
@@ -79,8 +76,6 @@
 }
 @media (max-width: 600px) {
   .profile-hero-grid { grid-template-columns: 1fr; gap: 2.5rem; }
-  .profile-identity { aspect-ratio: 1.5; }
-  .identity-letter { font-size: 12rem; }
   .profile-section { padding: 3.5rem 0; }
   .profile-section-heading { display: block; }
   .profile-section-heading p { margin-top: 1rem; }
@@ -124,30 +119,28 @@
     <div>
       <p class="label">Profile / Tokyo, Japan</p>
       <h1>Idatsuka<span>.</span></h1>
-      <p class="profile-role">UI/UX · Branding · Web Design</p>
+      <p class="profile-role">Creator / Exploring Design</p>
       <p class="profile-role">会社名：IDATSUKA</p>
-      <p class="profile-lead">本質を見つめ、<br>伝わるかたちへ。</p>
-      <p class="profile-intro">東京を拠点に活動するデザイナー。<br>情報を整理し、構造とタイポグラフィで<br class="desktop-break">使いやすく、心に残るデジタル体験をつくります。</p>
+      <p class="profile-lead">表現を楽しみ、<br>デザインを探求する。</p>
+      <p class="profile-intro">東京を拠点に活動するクリエイター。<br>アートやゲーム、Webの制作を通じて、<br class="desktop-break">アイデアをかたちにしています。</p>
       <div class="profile-actions">
-        <a class="btn-filled" href="works.html">制作実績を見る <span aria-hidden="true">↗</span></a>
+        <a class="btn-filled" href="works.html">制作作品を見る <span aria-hidden="true">↗</span></a>
         <a class="btn" href="contact.html">制作を相談する <span aria-hidden="true">↗</span></a>
       </div>
     </div>
-    <div class="profile-identity" aria-hidden="true">
-      <div class="identity-grid"></div>
-      <span class="identity-top">IDATSUKA / DESIGN</span>
-      <span class="identity-letter">i<span>.</span></span>
-      <span class="identity-bottom">Less, with intention.<br><span>Structure. Type. Space.</span></span>
-    </div>
+    <figure class="profile-portrait">
+      <img src="img/profile-creator.jpg" alt="Idatsukaのプロフィールポートレート" width="1086" height="1448" fetchpriority="high">
+      <figcaption>IDATSUKA — Creator / Exploring Design</figcaption>
+    </figure>
   </div>
 </header>
 
 <section class="profile-section" aria-labelledby="approach-title">
   <div class="container profile-section-grid">
-    <div><p class="label">01 — Approach</p><h2 id="approach-title">削ぎ落とす。<br>本質を残す。</h2></div>
+    <div><p class="label">01 — Approach</p><h2 id="approach-title">好奇心から、<br>表現を育てる。</h2></div>
     <div class="profile-copy">
-      <p>私が大切にしているのは、デザインの「引き算」です。何を伝え、どこへ導くのか。その目的を見つめ、必要な情報に自然と目が向く構造を考えます。</p>
-      <p>余白、文字の大きさ、要素の並び。一つひとつの関係を整えることで、見た目の美しさと使いやすさをつなぎます。</p>
+      <p>好奇心を出発点に、まずはつくってみる。その試行錯誤の中で、自分らしい表現を探しています。アートやゲーム、Webなど、形式にとらわれずにアイデアをかたちにすることを大切にしています。</p>
+      <p>これから深めていきたいのは、表現を「伝わる体験」へと育てるデザインの力。余白やタイポグラフィ、使いやすさを学びながら、感性と設計の両方でつくれるクリエイターを目指しています。</p>
       <p>音楽、建築、写真から受け取ったリズムや空気感も、制作の原点です。静けさの中に、確かな個性がある表現を目指しています。</p>
     </div>
   </div>
@@ -156,13 +149,13 @@
 <section class="profile-section" aria-labelledby="focus-title">
   <div class="container">
     <p class="label">02 — Focus</p>
-    <div class="profile-section-heading"><h2 id="focus-title">考えることから、<br>かたちにすることまで。</h2><p>体験・印象・実装をつなぐ、<br>3つのデザイン領域。</p></div>
+    <div class="profile-section-heading"><h2 id="focus-title">つくりながら、<br>表現の幅を広げる。</h2><p>いま取り組む表現と、<br>これから深めたいこと。</p></div>
     <div class="profile-focus-grid">
-      <article class="profile-focus"><span class="focus-number">01 / EXPERIENCE</span><h3>UI / UX Design</h3><p>情報の優先順位とユーザーの動線を整理し、迷わず使える画面を設計します。</p><ul><li>情報設計・ユーザーリサーチ</li><li>UIデザイン・プロトタイピング</li></ul></article>
-      <article class="profile-focus"><span class="focus-number">02 / IDENTITY</span><h3>Branding</h3><p>ブランドらしさを言葉と視覚で整理し、一貫した印象をつくります。</p><ul><li>ロゴ・ビジュアルアイデンティティ</li><li>ブランドガイドライン</li></ul></article>
-      <article class="profile-focus"><span class="focus-number">03 / DIGITAL</span><h3>Web Design</h3><p>画面の大きさや操作のしやすさまで考え、Web上の体験をかたちにします。</p><ul><li>レスポンシブデザイン</li><li>HTML・CSS・JavaScript</li></ul></article>
+      <article class="profile-focus"><span class="focus-number">01 / EXPRESSION</span><h3>Art &amp; Visual</h3><p>心が動いた風景やイメージを出発点に、色や質感、構図を試しながら表現を探ります。</p><ul><li>ビジュアル制作</li><li>世界観・表現の探求</li></ul></article>
+      <article class="profile-focus"><span class="focus-number">02 / INTERACTION</span><h3>Games &amp; Web</h3><p>見るだけでなく、触れて楽しめるものへ。ゲームやWebを通じて、アイデアを体験に変えていきます。</p><ul><li>ゲーム・Webの制作</li><li>インタラクティブな表現</li></ul></article>
+      <article class="profile-focus"><span class="focus-number">03 / EXPLORATION</span><h3>Design Exploration</h3><p>見た目の美しさと、伝わりやすさを両立するために。制作と学びを重ね、デザインへの理解を深めていきます。</p><ul><li>UI/UX・情報設計の学び</li><li>タイポグラフィ・ブランド表現の探求</li></ul></article>
     </div>
-    <p class="profile-support">表現の幅を広げる領域：モーションデザイン / イラストレーション / 写真</p>
+    <p class="profile-support">制作のヒント：音楽 / 建築 / 写真</p>
   </div>
 </section>
 
@@ -170,7 +163,7 @@
   <div class="container profile-section-grid">
     <div><p class="label">03 — Explore</p><h2 id="explore-title">制作と、<br>その周辺。</h2></div>
     <div class="profile-links">
-      <a href="works.html"><div><h3>Works</h3><p>デザインの制作実績を見る</p></div><span aria-hidden="true">↗</span></a>
+      <a href="works.html"><div><h3>Works</h3><p>デザインの制作作品を見る</p></div><span aria-hidden="true">↗</span></a>
       <a href="play.html"><div><h3>Play</h3><p>ゲームやアートを通じて、表現に触れる</p></div><span aria-hidden="true">↗</span></a>
       <a href="blog.html"><div><h3>Journal</h3><p>デザインや日々の着想を読む</p></div><span aria-hidden="true">↗</span></a>
     </div>
@@ -181,7 +174,7 @@
   <div class="container">
     <p class="label">Let’s create together</p>
     <h2 id="contact-title">次のアイデアを、<br>一緒にかたちに。</h2>
-    <p>Webサイト、UI/UX、ブランディングのご相談は<br>お問い合わせページからお聞かせください。</p>
+    <p>制作のご相談やコラボレーションのお話は、<br>お問い合わせページからお聞かせください。</p>
     <a href="contact.html" class="btn-filled">お問い合わせ <span aria-hidden="true">↗</span></a>
   </div>
 </section>
