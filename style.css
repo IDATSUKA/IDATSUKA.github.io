@@ -837,6 +837,7 @@ nav.nav-hidden { transform: translateY(-100%); }
   .works-grid { grid-template-columns: 1fr; }
   .work-card { padding: 2rem 1.5rem; }
   .project-hero { padding: 7.5rem 1.5rem 3rem; }
+  .project-visual, .project-gallery-full { aspect-ratio: 16/9; }
   .project-section { padding: 3rem 1.5rem; }
   .project-two-col { grid-template-columns: 1fr; gap: 1.5rem; }
   .project-gallery { grid-template-columns: 1fr; }
