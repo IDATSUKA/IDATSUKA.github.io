@@ -11,7 +11,7 @@
 - **Store ページ** (`store.html`) — 商品一覧・購入導線
 - **商品第1号** — ポートフォリオHTMLテンプレート「ZEN」
   - 実物: `products/template-zen/`（ライブデモとして公開）
-  - 配布用zip: `products/idatsuka-template-zen-v1.0.zip`
+  - 配布用zip: `products/idatsuka-template-zen-v1.1.zip`
 - **販売モデル** — 「無料ダウンロード + 応援購入（¥2,980）」方式
   - リポジトリが公開のため、zipを完全に有料ゲートすることは不可。
     完全有料化したい場合は BOOTH / Gumroad にzipを預ける（下記）
@@ -25,7 +25,7 @@
 
 ### A. BOOTH（pixiv）— 日本語・審査ほぼなし・手数料 5.6% + ¥22
 1. https://booth.pm でショップ開設
-2. 「デジタル商品」として `products/idatsuka-template-zen-v1.0.zip` をアップロード、価格 ¥2,980（または「¥0以上で自由価格」）
+2. 「デジタル商品」として `products/idatsuka-template-zen-v1.1.zip` をアップロード、価格 ¥2,980（または「¥0以上で自由価格」）
 3. 商品URLをコピー
 
 ### B. Stripe Payment Links — 手数料 3.6%

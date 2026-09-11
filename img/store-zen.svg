@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <defs>
+    <radialGradient id="zg" cx="72%" cy="28%" r="45%">
+      <stop offset="0%" stop-color="#7fd4c1" stop-opacity=".22"/>
+      <stop offset="100%" stop-color="#0a0b0e" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="zdots" width="26" height="26" patternUnits="userSpaceOnUse">
+      <circle cx="1" cy="1" r="1" fill="rgba(255,255,255,.07)"/>
+    </pattern>
+    <radialGradient id="zmask" cx="70%" cy="35%" r="55%">
+      <stop offset="0%" stop-color="#fff"/><stop offset="100%" stop-color="#000"/>
+    </radialGradient>
+    <mask id="zm"><rect width="800" height="450" fill="url(#zmask)"/></mask>
+  </defs>
+  <rect width="800" height="450" fill="#0a0b0e"/>
+  <rect width="800" height="450" fill="url(#zdots)" mask="url(#zm)"/>
+  <rect width="800" height="450" fill="url(#zg)"/>
+  <!-- layout hints -->
+  <rect x="60" y="44" width="70" height="4" rx="2" fill="#22252e"/>
+  <rect x="640" y="44" width="30" height="4" rx="2" fill="#22252e"/>
+  <rect x="690" y="44" width="30" height="4" rx="2" fill="#22252e"/>
+  <rect x="60" y="150" width="140" height="6" rx="3" fill="#2a2e38"/>
+  <rect x="60" y="176" width="420" height="30" rx="4" fill="#f0f2f5" opacity=".9"/>
+  <rect x="60" y="216" width="330" height="30" rx="4" fill="#7fd4c1" opacity=".85"/>
+  <rect x="60" y="268" width="260" height="6" rx="3" fill="#3a3f4a"/>
+  <rect x="60" y="284" width="200" height="6" rx="3" fill="#3a3f4a"/>
+  <!-- cards -->
+  <g stroke="#22252e" fill="#101218">
+    <rect x="60" y="340" width="210" height="80" rx="2"/>
+    <rect x="295" y="340" width="210" height="80" rx="2"/>
+    <rect x="530" y="340" width="210" height="80" rx="2"/>
+  </g>
+  <circle cx="165" cy="380" r="16" fill="none" stroke="#7fd4c1" stroke-opacity=".5"/>
+  <rect x="386" y="366" width="28" height="28" fill="none" stroke="#7fd4c1" stroke-opacity=".5" transform="rotate(45 400 380)"/>
+  <path d="M635,364 V396 M619,380 H651" stroke="#7fd4c1" stroke-opacity=".5"/>
+  <text x="740" y="80" fill="#f0f2f5" font-family="'Space Mono', ui-monospace, monospace" font-size="30" letter-spacing="8" text-anchor="end">ZEN</text>
+  <text x="740" y="102" fill="#646c78" font-family="'Space Mono', ui-monospace, monospace" font-size="9" letter-spacing="3" text-anchor="end">MINIMAL PORTFOLIO · v1.1</text>
+</svg>

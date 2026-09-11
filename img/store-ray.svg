@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <defs>
+    <linearGradient id="rbeam" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ffb347" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#ffb347" stop-opacity=".55"/>
+      <stop offset="100%" stop-color="#ffb347" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="rblur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="28"/></filter>
+    <radialGradient id="rglow" cx="70%" cy="0%" r="60%">
+      <stop offset="0%" stop-color="#ffb347" stop-opacity=".18"/>
+      <stop offset="100%" stop-color="#07080c" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="rdots" width="26" height="26" patternUnits="userSpaceOnUse">
+      <circle cx="1" cy="1" r="1" fill="rgba(255,255,255,.07)"/>
+    </pattern>
+    <radialGradient id="rmask" cx="65%" cy="30%" r="55%">
+      <stop offset="0%" stop-color="#fff"/><stop offset="100%" stop-color="#000"/>
+    </radialGradient>
+    <mask id="rm"><rect width="800" height="450" fill="url(#rmask)"/></mask>
+  </defs>
+  <rect width="800" height="450" fill="#07080c"/>
+  <rect width="800" height="450" fill="url(#rdots)" mask="url(#rm)"/>
+  <rect width="800" height="450" fill="url(#rglow)"/>
+  <!-- the ray -->
+  <rect x="-100" y="190" width="1000" height="70" fill="url(#rbeam)" filter="url(#rblur)" transform="rotate(-22 400 225)"/>
+  <rect x="-100" y="224" width="1000" height="2" fill="#ffb347" opacity=".45" transform="rotate(-22 400 225)"/>
+  <!-- layout hints -->
+  <rect x="60" y="44" width="40" height="4" rx="2" fill="#1c2029"/>
+  <rect x="600" y="40" width="60" height="12" rx="6" fill="#1c2029"/>
+  <rect x="672" y="40" width="68" height="12" rx="6" fill="#ffb347" opacity=".85"/>
+  <rect x="60" y="150" width="120" height="6" rx="3" fill="#2a2e38"/>
+  <rect x="60" y="176" width="380" height="30" rx="4" fill="#f4f6f8" opacity=".9"/>
+  <rect x="60" y="216" width="150" height="30" rx="4" fill="#ffb347" opacity=".9"/>
+  <rect x="222" y="216" width="200" height="30" rx="4" fill="#f4f6f8" opacity=".9"/>
+  <rect x="60" y="268" width="300" height="6" rx="3" fill="#3a3f4a"/>
+  <rect x="60" y="300" width="90" height="26" rx="2" fill="#ffb347"/>
+  <rect x="162" y="300" width="110" height="26" rx="2" fill="none" stroke="#3a3f4a"/>
+  <!-- feature cells -->
+  <g stroke="#1c2029" fill="#0b0d12">
+    <rect x="60" y="356" width="220" height="60"/>
+    <rect x="290" y="356" width="220" height="60"/>
+    <rect x="520" y="356" width="220" height="60"/>
+  </g>
+  <g fill="#ffb347" font-family="'Space Mono', ui-monospace, monospace" font-size="8" letter-spacing="2">
+    <text x="76" y="378">01</text><text x="306" y="378">02</text><text x="536" y="378">03</text>
+  </g>
+  <text x="740" y="80" fill="#f4f6f8" font-family="'Space Mono', ui-monospace, monospace" font-size="30" letter-spacing="8" text-anchor="end">RAY</text>
+  <text x="740" y="102" fill="#6a7280" font-family="'Space Mono', ui-monospace, monospace" font-size="9" letter-spacing="3" text-anchor="end">ONE-OFFER LANDING · v1.1</text>
+</svg>
