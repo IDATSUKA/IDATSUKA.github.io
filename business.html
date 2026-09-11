@@ -13,6 +13,47 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Zen+Kaku+Gothic+New:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <style>
+    /* Pricing cards */
+    .price-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--border); }
+    .price-card { background: var(--bg); padding: 1.9rem 1.7rem; position: relative; transition: background .35s; }
+    .price-card:hover { background: var(--bg2); }
+    .price-card--standard { border-top: 2px solid var(--accent); }
+    .price-tag {
+      position: absolute; top: -1px; right: 1.7rem; transform: translateY(-100%);
+      font-family: var(--mono); font-size: .5rem; letter-spacing: .2em; text-transform: uppercase;
+      color: var(--bg); background: var(--accent); padding: .3rem .6rem;
+    }
+    .price-name { font-size: .88rem; font-weight: 500; margin-bottom: .6rem; }
+    .price-amount { font-family: var(--mono); font-size: .95rem; color: var(--fg); margin-bottom: .9rem; }
+    .price-desc { font-family: var(--mono); font-size: .6rem; color: var(--muted); line-height: 1.9; }
+    .price-note { font-size: .78rem; color: var(--muted); margin-top: 1.5rem; }
+    @media (max-width: 900px) { .price-grid { grid-template-columns: 1fr; } .price-tag { right: 1.5rem; } }
+
+    /* FAQ accordion */
+    .faq-list { border-top: 1px solid var(--border); }
+    .faq-item { border-bottom: 1px solid var(--border); }
+    .faq-item > summary {
+      list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+      gap: 1.5rem; padding: 1.5rem 0; transition: padding-left .35s var(--ease-out);
+    }
+    .faq-item > summary::-webkit-details-marker { display: none; }
+    .faq-item:hover > summary { padding-left: .6rem; }
+    .faq-q { font-size: .95rem; font-weight: 500; }
+    .faq-plus {
+      flex-shrink: 0; width: 1.4rem; height: 1.4rem; position: relative;
+      font-family: var(--mono); color: var(--accent); transition: transform .35s var(--ease-out);
+    }
+    .faq-plus::before { content: '+'; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 1rem; }
+    .faq-item[open] > summary .faq-plus { transform: rotate(45deg); }
+    .faq-item > .faq-a-wrap {
+      display: grid; grid-template-rows: 0fr;
+      transition: grid-template-rows .4s var(--ease-out);
+    }
+    .faq-item[open] > .faq-a-wrap { grid-template-rows: 1fr; }
+    .faq-a-inner { overflow: hidden; }
+    .faq-a { font-size: .82rem; line-height: 1.95; color: var(--muted); padding-bottom: 1.6rem; max-width: 640px; }
+  </style>
 </head>
 <body>
 
@@ -60,27 +101,27 @@
     <div class="skills-grid">
       <div class="skill-item rv">
         <p class="skill-item-name">UI / UX Design</p>
-        <p class="skill-item-tools">ユーザーリサーチ、ペルソナ設計、情報アーキテクチャ、ワイヤーフレーム、インタラクションデザイン、プロトタイプ制作、ユーザビリティテスト。使いやすさと美しさを両立するインターフェースを設計します。</p>
+        <p class="skill-item-tools">使いやすさと美しさを両立するインターフェースを設計します。<br>納品物：ペルソナ／情報設計図、ワイヤーフレーム、インタラクティブプロトタイプ、ユーザビリティテスト結果。</p>
       </div>
       <div class="skill-item rv">
         <p class="skill-item-name">Branding</p>
-        <p class="skill-item-tools">ブランド戦略、ネーミング、ロゴデザイン、カラーシステム、タイポグラフィ、ブランドガイドライン策定。ブランドの本質を深く理解し、一貫した視覚言語へ翻訳します。</p>
+        <p class="skill-item-tools">ブランドの本質を深く理解し、一貫した視覚言語へ翻訳します。<br>納品物：ロゴデータ一式、カラー／タイポグラフィシステム、ブランドガイドラインPDF。</p>
       </div>
       <div class="skill-item rv">
         <p class="skill-item-name">Web Design</p>
-        <p class="skill-item-tools">レスポンシブ設計、コンポーネント設計、デザインシステム構築、フロントエンド実装。パフォーマンスとアクセシビリティを考慮した、美しいWebサイトを制作します。</p>
+        <p class="skill-item-tools">パフォーマンスとアクセシビリティを考慮した、美しいWebサイトを制作します。<br>納品物：デザインファイル一式、コンポーネント設計書、実装済みサイト。</p>
       </div>
       <div class="skill-item rv">
         <p class="skill-item-name">Motion Design</p>
-        <p class="skill-item-tools">UIアニメーション、マイクロインタラクション、ブランドモーション、ローディング演出、トランジション設計。動きでブランドに命を吹き込み、体験を豊かにします。</p>
+        <p class="skill-item-tools">動きでブランドに命を吹き込み、体験を豊かにします。<br>納品物：UIアニメーション仕様、マイクロインタラクション実装、ブランドモーション動画。</p>
       </div>
       <div class="skill-item rv">
         <p class="skill-item-name">Creative Direction</p>
-        <p class="skill-item-tools">ビジュアルコンセプト策定、アートディレクション、撮影ディレクション、チームマネジメント。プロジェクト全体の方向性をコンセプトから実装まで一貫して伴走します。</p>
+        <p class="skill-item-tools">プロジェクト全体の方向性をコンセプトから実装まで一貫して伴走します。<br>納品物：ビジュアルコンセプト資料、アートディレクションガイド、進行管理。</p>
       </div>
       <div class="skill-item rv">
         <p class="skill-item-name">Consultation</p>
-        <p class="skill-item-tools">デザインレビュー、UX監査、デザインシステム評価、チーム育成、ワークショップ。外部の視点でデザイン品質と組織のデザイン力を向上させます。</p>
+        <p class="skill-item-tools">外部の視点でデザイン品質と組織のデザイン力を向上させます。<br>納品物：デザインレビュー報告書、UX監査レポート、ワークショップ資料。</p>
       </div>
     </div>
   </div>
@@ -90,34 +131,29 @@
 <section>
   <div class="container">
     <span class="label rv">02 — Process</span>
-    <div class="about-timeline">
-      <div class="tl-item rv">
-        <span class="tl-year">01</span>
-        <div>
-          <p class="tl-role">ヒアリング</p>
-          <p class="tl-desc">プロジェクトの目的、課題、ターゲットを深く理解する。</p>
-        </div>
+    <p class="rv" style="font-size:.92rem;line-height:1.9;color:var(--fg-dim);max-width:600px;margin-bottom:3rem;">
+      4つのステップで、ヒアリングから納品後のサポートまで一貫して伴走します。
+    </p>
+    <div class="proc-rail">
+      <div class="proc-step rv">
+        <span class="proc-num">01</span>
+        <p class="proc-title">ヒアリング</p>
+        <p class="proc-desc">プロジェクトの目的、課題、ターゲットを深く理解する。</p>
       </div>
-      <div class="tl-item rv">
-        <span class="tl-year">02</span>
-        <div>
-          <p class="tl-role">リサーチ & 設計</p>
-          <p class="tl-desc">競合分析、ユーザー調査を経て、情報設計とワイヤーフレームを作成。</p>
-        </div>
+      <div class="proc-step rv">
+        <span class="proc-num">02</span>
+        <p class="proc-title">リサーチ & 設計</p>
+        <p class="proc-desc">競合分析、ユーザー調査を経て、情報設計とワイヤーフレームを作成。</p>
       </div>
-      <div class="tl-item rv">
-        <span class="tl-year">03</span>
-        <div>
-          <p class="tl-role">デザイン & プロトタイプ</p>
-          <p class="tl-desc">ビジュアルデザインを制作し、プロトタイプで検証。</p>
-        </div>
+      <div class="proc-step rv">
+        <span class="proc-num">03</span>
+        <p class="proc-title">デザイン & プロトタイプ</p>
+        <p class="proc-desc">ビジュアルデザインを制作し、プロトタイプで検証。</p>
       </div>
-      <div class="tl-item rv">
-        <span class="tl-year">04</span>
-        <div>
-          <p class="tl-role">納品 & サポート</p>
-          <p class="tl-desc">最終納品物の引き渡しと、運用開始後のサポート。</p>
-        </div>
+      <div class="proc-step rv">
+        <span class="proc-num">04</span>
+        <p class="proc-title">納品 & サポート</p>
+        <p class="proc-desc">最終納品物の引き渡しと、運用開始後のサポート。</p>
       </div>
     </div>
   </div>
@@ -130,23 +166,25 @@
     <p class="rv" style="font-size:.92rem;line-height:1.9;color:var(--fg-dim);max-width:600px;margin-bottom:2.5rem;">
       プロジェクトの規模に応じた3つのプランをご用意しています。すべてのプランにヒアリング・リサーチ・修正対応が含まれます。
     </p>
-    <div class="skills-grid">
-      <div class="skill-item rv">
-        <p class="skill-item-name">Light</p>
-        <p class="skill-item-tools" style="margin-bottom:.8rem;">¥300,000〜</p>
-        <p class="skill-item-tools">小規模なデザインニーズに最適。ロゴデザイン、名刺デザイン、基本的なブランドガイドラインを含みます。納期は約2〜3週間。修正は2回まで対応。</p>
+    <div class="price-grid">
+      <div class="price-card rv">
+        <p class="price-name">Light</p>
+        <p class="price-amount">¥300,000〜</p>
+        <p class="price-desc">小規模なデザインニーズに最適。ロゴデザイン、名刺デザイン、基本的なブランドガイドラインを含みます。納期は約2〜3週間。修正は2回まで対応。</p>
       </div>
-      <div class="skill-item rv">
-        <p class="skill-item-name">Standard</p>
-        <p class="skill-item-tools" style="margin-bottom:.8rem;">¥800,000〜</p>
-        <p class="skill-item-tools">ブランディングとWebサイトを一括でカバー。ロゴ・VI設計に加え、レスポンシブWebサイト（5〜10ページ）の設計・実装を含みます。納期は約1〜2ヶ月。修正は3回まで対応。</p>
+      <div class="price-card price-card--standard rv">
+        <span class="price-tag">Standard</span>
+        <p class="price-name">Standard</p>
+        <p class="price-amount">¥800,000〜</p>
+        <p class="price-desc">ブランディングとWebサイトを一括でカバー。ロゴ・VI設計に加え、レスポンシブWebサイト（5〜10ページ）の設計・実装を含みます。納期は約1〜2ヶ月。修正は3回まで対応。</p>
       </div>
-      <div class="skill-item rv">
-        <p class="skill-item-name">Premium</p>
-        <p class="skill-item-tools" style="margin-bottom:.8rem;">¥1,500,000〜</p>
-        <p class="skill-item-tools">フルスコープのデザインプロジェクト。ブランド戦略策定からUI/UX設計、モーションデザイン、デザインシステム構築まで包括的に対応。専任ディレクターが伴走し、納品後3ヶ月のサポート付き。</p>
+      <div class="price-card rv">
+        <p class="price-name">Premium</p>
+        <p class="price-amount">¥1,500,000〜</p>
+        <p class="price-desc">フルスコープのデザインプロジェクト。ブランド戦略策定からUI/UX設計、モーションデザイン、デザインシステム構築まで包括的に対応。専任ディレクターが伴走し、納品後3ヶ月のサポート付き。</p>
       </div>
     </div>
+    <p class="price-note rv">価格は目安です。内容に応じてお見積もりします。</p>
   </div>
 </section>
 
@@ -157,42 +195,27 @@
     <p class="rv" style="font-size:.92rem;line-height:1.9;color:var(--fg-dim);max-width:600px;margin-bottom:2.5rem;">
       よくいただくご質問をまとめました。
     </p>
-    <div class="about-timeline">
-      <div class="tl-item rv">
-        <span class="tl-year">Q1</span>
-        <div>
-          <p class="tl-role">まだ要件が固まっていませんが、相談できますか？</p>
-          <p class="tl-desc">もちろんです。プロジェクトの初期段階からご相談いただけます。ヒアリングを通じて課題を整理し、最適なアプローチをご提案します。初回のご相談は無料で承っておりますので、お気軽にお問い合わせください。</p>
-        </div>
-      </div>
-      <div class="tl-item rv">
-        <span class="tl-year">Q2</span>
-        <div>
-          <p class="tl-role">プロジェクトの期間はどのくらいですか？</p>
-          <p class="tl-desc">規模によって異なりますが、ロゴデザイン単体で2〜3週間、ブランディング＋Webサイトで1〜2ヶ月、フルスコープのプロジェクトで3〜6ヶ月が目安です。スケジュールはプロジェクト開始前に明確にお伝えします。</p>
-        </div>
-      </div>
-      <div class="tl-item rv">
-        <span class="tl-year">Q3</span>
-        <div>
-          <p class="tl-role">修正は何回まで対応してもらえますか？</p>
-          <p class="tl-desc">プランに応じて修正回数が設定されています（Light: 2回、Standard: 3回、Premium: 回数無制限）。大幅な方向転換が発生した場合は、追加のお見積もりをご相談させていただく場合があります。</p>
-        </div>
-      </div>
-      <div class="tl-item rv">
-        <span class="tl-year">Q4</span>
-        <div>
-          <p class="tl-role">リモートでの進行は可能ですか？</p>
-          <p class="tl-desc">はい、すべてのプロジェクトをリモートで進行可能です。Figma、Slack、Zoomなどのツールを活用し、密なコミュニケーションを維持します。もちろん、対面でのお打ち合わせにも対応いたします。</p>
-        </div>
-      </div>
-      <div class="tl-item rv">
-        <span class="tl-year">Q5</span>
-        <div>
-          <p class="tl-role">納品後のサポートはありますか？</p>
-          <p class="tl-desc">Premiumプランには納品後3ヶ月のサポートが含まれています。その他のプランでも、運用に関するご相談や軽微な修正には柔軟に対応いたします。長期的なデザインパートナーとしてもご依頼いただけます。</p>
-        </div>
-      </div>
+    <div class="faq-list">
+      <details class="faq-item rv" open>
+        <summary><span class="faq-q">Q1. まだ要件が固まっていませんが、相談できますか？</span><span class="faq-plus"></span></summary>
+        <div class="faq-a-wrap"><div class="faq-a-inner"><p class="faq-a">もちろんです。プロジェクトの初期段階からご相談いただけます。ヒアリングを通じて課題を整理し、最適なアプローチをご提案します。初回のご相談は無料で承っておりますので、お気軽にお問い合わせください。</p></div></div>
+      </details>
+      <details class="faq-item rv">
+        <summary><span class="faq-q">Q2. プロジェクトの期間はどのくらいですか？</span><span class="faq-plus"></span></summary>
+        <div class="faq-a-wrap"><div class="faq-a-inner"><p class="faq-a">規模によって異なりますが、ロゴデザイン単体で2〜3週間、ブランディング＋Webサイトで1〜2ヶ月、フルスコープのプロジェクトで3〜6ヶ月が目安です。スケジュールはプロジェクト開始前に明確にお伝えします。</p></div></div>
+      </details>
+      <details class="faq-item rv">
+        <summary><span class="faq-q">Q3. 修正は何回まで対応してもらえますか？</span><span class="faq-plus"></span></summary>
+        <div class="faq-a-wrap"><div class="faq-a-inner"><p class="faq-a">プランに応じて修正回数が設定されています（Light: 2回、Standard: 3回、Premium: 回数無制限）。大幅な方向転換が発生した場合は、追加のお見積もりをご相談させていただく場合があります。</p></div></div>
+      </details>
+      <details class="faq-item rv">
+        <summary><span class="faq-q">Q4. リモートでの進行は可能ですか？</span><span class="faq-plus"></span></summary>
+        <div class="faq-a-wrap"><div class="faq-a-inner"><p class="faq-a">はい、すべてのプロジェクトをリモートで進行可能です。Figma、Slack、Zoomなどのツールを活用し、密なコミュニケーションを維持します。もちろん、対面でのお打ち合わせにも対応いたします。</p></div></div>
+      </details>
+      <details class="faq-item rv">
+        <summary><span class="faq-q">Q5. 納品後のサポートはありますか？</span><span class="faq-plus"></span></summary>
+        <div class="faq-a-wrap"><div class="faq-a-inner"><p class="faq-a">Premiumプランには納品後3ヶ月のサポートが含まれています。その他のプランでも、運用に関するご相談や軽微な修正には柔軟に対応いたします。長期的なデザインパートナーとしてもご依頼いただけます。</p></div></div>
+      </details>
     </div>
   </div>
 </section>
