@@ -639,6 +639,11 @@ document.getElementById('menuToggle').addEventListener('click', function() {
         Leaderboard.submitScore('void-runner', score).then(function(res) {
           lbResult = res;
           lbSubmitted = true;
+          // Keep the local best in step with the shared leaderboard best
+          if (res && res.ok && res.best > highScore) {
+            highScore = res.best;
+            localStorage.setItem('voidRunnerHigh', String(highScore));
+          }
         }).catch(function() {
           lbSubmitted = true;
         });

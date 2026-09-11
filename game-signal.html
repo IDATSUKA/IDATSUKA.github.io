@@ -699,7 +699,14 @@ document.getElementById('menuToggle').addEventListener('click', function() {
 
     // Submit score to leaderboard
     Leaderboard.submitScore('signal', score).then(function(res) {
-      if (res && res.ok && res.isNew) {
+      if (!res || !res.ok) return;
+      // Keep the HUD best in step with the shared leaderboard best
+      if (res.best > highScore) {
+        highScore = res.best;
+        localStorage.setItem('signal-highscore', highScore.toString());
+        hudBest.textContent = highScore.toString();
+      }
+      if (res.isNew && score > 0) {
         statusEl.textContent = 'ゲームオーバー — 自己ベスト更新！ ' + score;
       }
     }).catch(function() { /* ignore leaderboard errors */ });
