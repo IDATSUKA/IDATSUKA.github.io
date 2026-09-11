@@ -71,6 +71,122 @@
       width: 100%; height: 100%;
       pointer-events: none;
     }
+    .landing-door-bg {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover; opacity: .08; pointer-events: none;
+      transform: scale(1.06);
+      transition: opacity .6s, transform 1.2s var(--ease-out);
+      mask-image: radial-gradient(ellipse 60% 70% at 50% 50%, black 20%, transparent 80%);
+      -webkit-mask-image: radial-gradient(ellipse 60% 70% at 50% 50%, black 20%, transparent 80%);
+    }
+    .landing-door:hover .landing-door-bg { opacity: .22; transform: scale(1); }
+    .landing-door > :not(.landing-door-bg) { position: relative; z-index: 1; }
+
+    /* Featured bento */
+    .featured { padding: 6rem 0 5rem; border-top: 1px solid var(--border); }
+    .featured-head {
+      display: flex; align-items: baseline; justify-content: space-between;
+      gap: 2rem; margin-bottom: 2.4rem; flex-wrap: wrap;
+    }
+    .featured-lead {
+      font-size: clamp(1.4rem, 3vw, 2.2rem); font-weight: 450;
+      letter-spacing: -.02em; color: var(--fg);
+    }
+    .bento {
+      display: grid; grid-template-columns: 1.35fr 1fr;
+      grid-template-rows: 1fr 1fr; gap: 1px;
+      background: var(--border); border: 1px solid var(--border);
+    }
+    .bento-card {
+      position: relative; background: var(--bg); overflow: hidden;
+      display: flex; flex-direction: column; min-height: 240px;
+      transition: background .35s;
+    }
+    .bento-tall { grid-row: span 2; min-height: 520px; }
+    .bento-card:hover { background: var(--bg2); }
+    .bento-media {
+      flex: 1; overflow: hidden; position: relative;
+    }
+    .bento-media img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      transition: transform 1s var(--ease-out), filter .5s;
+      filter: brightness(.9);
+    }
+    .bento-card:hover .bento-media img { transform: scale(1.05); filter: brightness(1.08); }
+    .bento-media::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(6,6,7,.75), transparent 55%);
+      pointer-events: none;
+    }
+    .bento-body {
+      position: absolute; left: 0; right: 0; bottom: 0;
+      padding: 1.6rem 1.8rem; display: flex; flex-direction: column; gap: .3rem;
+    }
+    .bento-cat {
+      font-family: var(--mono); font-size: .54rem; letter-spacing: .26em;
+      text-transform: uppercase; color: var(--accent); opacity: .9;
+    }
+    .bento-title { font-size: 1.35rem; font-weight: 500; letter-spacing: -.02em; }
+    .bento-tall .bento-title { font-size: clamp(1.8rem, 3vw, 2.4rem); }
+    .bento-desc { font-size: .82rem; color: var(--fg-dim); max-width: 34ch; line-height: 1.8; }
+    .bento-arrow {
+      font-family: var(--mono); font-size: .58rem; letter-spacing: .2em;
+      text-transform: uppercase; color: var(--muted); margin-top: .6rem;
+      transition: color .3s, transform .3s var(--ease-out);
+    }
+    .bento-card:hover .bento-arrow { color: var(--accent); transform: translateX(4px); }
+
+    /* Statement */
+    .statement {
+      position: relative; overflow: hidden; text-align: center;
+      padding: 8rem 0; border-top: 1px solid var(--border);
+      background: var(--bg2);
+    }
+    .statement-glow {
+      position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
+      width: 70vw; height: 70vw; max-width: 900px; max-height: 900px;
+      background: radial-gradient(circle, rgba(159,214,236,.07) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .statement .container { position: relative; }
+    .statement .label { display: inline-block; }
+    .statement-text {
+      font-size: clamp(1.7rem, 4.4vw, 3.4rem); font-weight: 450;
+      letter-spacing: -.03em; line-height: 1.35;
+      margin: 0 auto 2.4rem; max-width: 16em;
+      background: linear-gradient(135deg, var(--fg) 50%, rgba(244,245,247,.45));
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .statement-text em {
+      font-style: normal;
+      background: linear-gradient(135deg, var(--accent), #d6eef7);
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Journal */
+    .journal { padding: 6rem 0 5rem; border-top: 1px solid var(--border); }
+    .journal-all {
+      font-family: var(--mono); font-size: .58rem; letter-spacing: .2em;
+      text-transform: uppercase; color: var(--muted); transition: color .3s;
+    }
+    .journal-all:hover { color: var(--accent); }
+    .journal-list { border-top: 1px solid var(--border); }
+    .journal .post-item:last-child { border-bottom: 1px solid var(--border); }
+
+    .br-m { display: none; }
+    @media (max-width: 600px) {
+      .br-m { display: inline; }
+      .statement-text { font-size: clamp(1.6rem, 7.2vw, 2rem); }
+    }
+    @media (max-width: 900px) {
+      .featured, .journal { padding: 4.5rem 0 3.5rem; }
+      .bento { grid-template-columns: 1fr; grid-template-rows: auto; }
+      .bento-tall { grid-row: auto; min-height: 380px; }
+      .bento-card { min-height: 260px; }
+      .statement { padding: 5.5rem 0; }
+    }
     .landing-stats {
       display: grid; grid-template-columns: repeat(4, 1fr);
       border-top: 1px solid var(--border);
@@ -151,18 +267,103 @@
 
 <div class="landing-split">
   <a href="play.html" class="landing-door rv">
+    <img class="landing-door-bg" src="img/game-signal.svg" alt="" aria-hidden="true">
     <span class="landing-door-label">Hobby & Creative</span>
     <h2 class="landing-door-title">Play.</h2>
     <p class="landing-door-desc">ゲーム、アート、実験的プロジェクト。<br>遊びから生まれるクリエイティブ。</p>
     <span class="landing-door-arrow">&darr;</span>
   </a>
   <a href="biz.html" class="landing-door rv">
+    <img class="landing-door-bg" src="img/work-03.svg" alt="" aria-hidden="true">
     <span class="landing-door-label">Professional</span>
     <h2 class="landing-door-title">Business.</h2>
     <p class="landing-door-desc">デザインポートフォリオ、サービス、お問い合わせ。<br>ビジネスとしてのデザイン。</p>
     <span class="landing-door-arrow">&darr;</span>
   </a>
 </div>
+
+<!-- Featured -->
+<section class="featured">
+  <div class="container">
+    <div class="featured-head">
+      <span class="label rv" style="margin-bottom:0;">Selected</span>
+      <p class="featured-lead rv">いま見てほしいもの。</p>
+    </div>
+  </div>
+  <div class="container bento">
+    <a href="game-void-runner.html" class="bento-card bento-tall rv">
+      <div class="bento-media"><img src="img/game-void-runner.svg" alt="Void Runner"></div>
+      <div class="bento-body">
+        <span class="bento-cat">Game — Endless Runner</span>
+        <h3 class="bento-title">Void Runner</h3>
+        <p class="bento-desc">闇の中を走り抜けるプロシージャル生成ランナー。今すぐブラウザで。</p>
+        <span class="bento-arrow">Play &rarr;</span>
+      </div>
+    </a>
+    <a href="work-01.html" class="bento-card rv">
+      <div class="bento-media"><img src="img/work-01.svg" alt="KUROMOJI"></div>
+      <div class="bento-body">
+        <span class="bento-cat">Spec — Branding</span>
+        <h3 class="bento-title">KUROMOJI</h3>
+        <span class="bento-arrow">View &rarr;</span>
+      </div>
+    </a>
+    <a href="game-lattice.html" class="bento-card rv">
+      <div class="bento-media"><img src="img/game-lattice.svg" alt="Lattice"></div>
+      <div class="bento-body">
+        <span class="bento-cat">Art Toy — Generative</span>
+        <h3 class="bento-title">Lattice</h3>
+        <span class="bento-arrow">Touch &rarr;</span>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- Statement -->
+<section class="statement">
+  <div class="statement-glow" aria-hidden="true"></div>
+  <div class="container">
+    <span class="label rv">Philosophy</span>
+    <p class="statement-text rv">削ぎ落とした先に<br class="br-m">残るものを、<br><em>デザイン</em>と呼んでいます。</p>
+    <a href="about.html" class="btn rv">Profile &rarr;</a>
+  </div>
+</section>
+
+<!-- Journal -->
+<section class="journal">
+  <div class="container">
+    <div class="featured-head">
+      <span class="label rv" style="margin-bottom:0;">Journal</span>
+      <a href="blog.html" class="journal-all rv">All articles &rarr;</a>
+    </div>
+    <div class="journal-list">
+      <a href="blog-01.html" class="post-item rv">
+        <span class="post-num">01</span>
+        <div>
+          <span class="post-tag">Process</span>
+          <h3 class="post-title">デザインシステムを0から構築する — 実践的アプローチ</h3>
+        </div>
+        <div class="post-meta"><span class="post-date">2025.02.28</span></div>
+      </a>
+      <a href="blog-02.html" class="post-item rv">
+        <span class="post-num">02</span>
+        <div>
+          <span class="post-tag">Culture</span>
+          <h3 class="post-title">Tokyo Underground — 東京の地下に流れるエネルギー</h3>
+        </div>
+        <div class="post-meta"><span class="post-date">2025.01.14</span></div>
+      </a>
+      <a href="blog-03.html" class="post-item rv">
+        <span class="post-num">03</span>
+        <div>
+          <span class="post-tag">Design</span>
+          <h3 class="post-title">タイポグラフィは感情だ — 字間と行間の詩学</h3>
+        </div>
+        <div class="post-meta"><span class="post-date">2024.12.05</span></div>
+      </a>
+    </div>
+  </div>
+</section>
 
 <div class="landing-stats rv">
   <div class="landing-stat">
@@ -222,7 +423,10 @@ const statIO = new IntersectionObserver(entries => {
     })(t0);
   });
 }, { threshold: .5 });
-document.querySelectorAll('.landing-stat-num').forEach(el => statIO.observe(el));
+document.querySelectorAll('.landing-stat-num').forEach(el => {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { el.textContent = el.dataset.count; return; }
+  statIO.observe(el);
+});
 
 // ── Hero particle orb ──
 (function() {
@@ -291,17 +495,20 @@ document.querySelectorAll('.landing-stat-num').forEach(el => statIO.observe(el))
     mouseY = (e.clientY / window.innerHeight - .5);
   }, { passive: true });
 
-  const baseTilt = 1.12;
+  // Shallow pitch: the ring reads as a perspective ellipse, not a circle
+  const baseTilt = 0.68;
 
   function draw(t) {
     ctx.clearRect(0, 0, W, H);
     curX += (mouseX - curX) * .03;
     curY += (mouseY - curY) * .03;
 
-    const cx = W / 2, cy = H * .5;
-    const R = Math.min(W, H) * .30;
+    // Ring centre sits above the text block so the far rim clears the
+    // eyebrow label and the bright near rim lands just under the tagline
+    const cx = W / 2, cy = H * .40;
+    const R = Math.min(W * .27, H * .34);
     const fov = R * 1.7;
-    const tilt = baseTilt + curY * .14;
+    const tilt = baseTilt + curY * .12;
     const cosT = Math.cos(tilt), sinT = Math.sin(tilt);
     const yaw = curX * .22;
     const cosY = Math.cos(yaw), sinY = Math.sin(yaw);
