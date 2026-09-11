@@ -5,16 +5,93 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Blog — IDATSUKA</title>
   <meta name="description" content="IDATSUKA のブログ・ノート。デザイン、カルチャー、思考の断片。">
+  <meta property="og:type" content="website">
   <meta property="og:title" content="Blog — IDATSUKA">
   <meta property="og:description" content="IDATSUKA のブログ・ノート。デザイン、カルチャー、思考の断片。">
+  <meta property="og:url" content="https://idatsuka.com/blog.html">
+  <meta property="og:image" content="https://idatsuka.com/img/blog/cover-01.svg">
   <link rel="canonical" href="https://idatsuka.com/blog.html">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%2308090c'/><text x='16' y='22' text-anchor='middle' font-size='16' font-family='sans-serif' font-weight='300' fill='%23f2f4f7'>I</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Zen+Kaku+Gothic+New:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <style>
+  /* ── Blog index — page-scoped extensions (never leaks to .post-item elsewhere) ── */
+  .blog-page .page-header { display: flex; flex-direction: column; }
+  .blog-page .blog-count {
+    font-family: var(--mono); font-size: .54rem; letter-spacing: .26em; text-transform: uppercase;
+    color: var(--muted); margin-top: 1.4rem; display: flex; align-items: center; gap: .7rem;
+  }
+  .blog-page .blog-count::before {
+    content: ''; width: 26px; height: 1px; background: var(--accent); opacity: .55;
+  }
+  .blog-page .blog-count b { font-weight: 400; color: var(--accent); }
+
+  /* Featured — cover art */
+  .blog-page .featured-thumb { position: relative; background: var(--bg2); }
+  .blog-page .featured-thumb::after {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(105deg, rgba(6,6,7,0) 45%, rgba(6,6,7,.55) 100%);
+    opacity: .9; transition: opacity .6s var(--ease-out);
+  }
+  .blog-page .featured-post:hover .featured-thumb::after { opacity: .5; }
+  .blog-page .featured-thumb img { transition: transform .8s var(--ease-out), filter .6s var(--ease-out); }
+  .blog-page .featured-post:hover .featured-thumb img { filter: brightness(1.14); }
+
+  /* List items — thumbnail column */
+  .blog-page .post-item {
+    grid-template-columns: 3.4rem 8.5rem 1fr auto;
+    gap: 1.9rem; align-items: center;
+  }
+  .blog-page .post-thumb {
+    position: relative; aspect-ratio: 16/9; overflow: hidden;
+    background: var(--bg2); border: 1px solid var(--border);
+    filter: brightness(.8) saturate(.9);
+    transition: filter .5s var(--ease-out), border-color .5s var(--ease-out), transform .6s var(--ease-out);
+  }
+  .blog-page .post-thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .blog-page .post-thumb::after {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    box-shadow: inset 0 0 0 1px rgba(159,214,236,0);
+    transition: box-shadow .5s var(--ease-out);
+  }
+  .blog-page .post-item:hover .post-thumb {
+    filter: brightness(1.3) saturate(1.05);
+    border-color: var(--accent-soft);
+    transform: translateY(-2px);
+  }
+  .blog-page .post-item:hover .post-thumb::after { box-shadow: inset 0 0 22px rgba(159,214,236,.16); }
+  .blog-page .post-body { min-width: 0; }
+  .blog-page .post-excerpt { max-width: 58ch; }
+  .blog-page .post-meta { align-self: center; }
+  .blog-page .post-item.is-out { display: none; }
+  .blog-page .featured-post.is-out { display: none; }
+
+  /* Empty-state, only if a filter matches nothing */
+  .blog-page .posts-empty {
+    display: none; padding: 3.5rem 0; text-align: center;
+    font-family: var(--mono); font-size: .58rem; letter-spacing: .22em;
+    text-transform: uppercase; color: var(--dim);
+  }
+  .blog-page .posts-empty.on { display: block; }
+
+  @media (max-width: 900px) {
+    .blog-page .post-item {
+      grid-template-columns: 5.4rem 1fr;
+      gap: .35rem 1rem; align-items: start; padding: 1.5rem 0;
+    }
+    .blog-page .post-thumb { grid-column: 1; grid-row: 1 / span 2; align-self: start; }
+    .blog-page .post-body { grid-column: 2; grid-row: 1; }
+    .blog-page .post-meta { grid-column: 2; grid-row: 2; text-align: left; display: flex; gap: 1rem; }
+    .blog-page .post-meta .post-date { margin-bottom: 0; }
+    .blog-page .post-excerpt { display: none; }
+    .blog-page .post-thumb { filter: brightness(.95) saturate(.95); }
+    .blog-page .blog-count { margin-top: 1rem; }
+  }
+  </style>
 </head>
-<body>
+<body class="blog-page">
 
 <nav>
   <a href="/" class="logo"><img src="img/logo.svg" alt="Idatsuka"></a>
@@ -41,34 +118,35 @@
 <header class="page-header">
   <span class="label">Blog / Notes</span>
   <h1>Writing.</h1>
+  <p class="blog-count"><b id="postCount">05</b> <span id="postCountLabel">Articles</span></p>
 </header>
 
 <div class="tag-bar">
   <span class="tag-label">Filter:</span>
-  <button class="tag-btn active">All</button>
-  <button class="tag-btn">Design</button>
-  <button class="tag-btn">Culture</button>
-  <button class="tag-btn">Process</button>
-  <button class="tag-btn">Notes</button>
+  <button class="tag-btn active" data-tag="all">All</button>
+  <button class="tag-btn" data-tag="Design">Design</button>
+  <button class="tag-btn" data-tag="Culture">Culture</button>
+  <button class="tag-btn" data-tag="Process">Process</button>
+  <button class="tag-btn" data-tag="Notes">Notes</button>
 </div>
 
 <main>
 
   <!-- Featured -->
-  <a href="blog-05.html" class="featured-post rv">
+  <a href="blog-01.html" class="featured-post rv" data-tag="Process">
     <div class="featured-thumb">
-      <img src="img/blog-featured.svg" alt="ダークの中に宿る光" loading="lazy">
+      <img src="img/blog/cover-01.svg" alt="モジュラーグリッドとデザイントークンを抽象化したカバーアート" loading="lazy" width="800" height="450">
     </div>
     <div class="featured-content">
       <p class="featured-badge">Featured</p>
-      <span class="featured-tag">Design</span>
-      <h2 class="featured-title">ダークの中に宿る光 — 透明なデザインの力</h2>
+      <span class="featured-tag">Process</span>
+      <h2 class="featured-title">デザインシステムを0から構築する — 実践的アプローチ</h2>
       <p class="featured-excerpt">
-        闇の中にこそ、光は最も美しく宿る。研ぎ澄まされた透明な表現の交差点に、最も強いデザインが生まれると私は信じている。
+        監査、Design Tokens、コンポーネント化、そして運用のリアル。教科書通りにはいかなかった半年間を、フェーズごとに振り返る。
       </p>
       <div class="featured-meta">
-        <span>2025.03.15</span>
-        <span>8 min read</span>
+        <span>2025.02.28</span>
+        <span>6 min read</span>
       </div>
     </div>
   </a>
@@ -76,13 +154,16 @@
   <!-- Posts -->
   <div class="posts-container rv">
     <div class="posts-header">
-      <span>All Posts</span>
+      <span id="postsHeaderLabel">All Posts</span>
       <span>Latest</span>
     </div>
 
-    <a href="blog-01.html" class="post-item">
+    <a href="blog-01.html" class="post-item rv" data-tag="Process">
       <span class="post-num">01</span>
-      <div>
+      <div class="post-thumb">
+        <img src="img/blog/cover-01.svg" alt="" loading="lazy" width="800" height="450">
+      </div>
+      <div class="post-body">
         <span class="post-tag">Process</span>
         <h2 class="post-title">デザインシステムを0から構築する — 実践的アプローチ</h2>
         <p class="post-excerpt">スタートアップにおいてデザインシステムをゼロから立ち上げた経験から学んだこと。</p>
@@ -93,9 +174,12 @@
       </div>
     </a>
 
-    <a href="blog-02.html" class="post-item">
+    <a href="blog-02.html" class="post-item rv" data-tag="Culture">
       <span class="post-num">02</span>
-      <div>
+      <div class="post-thumb">
+        <img src="img/blog/cover-02.svg" alt="" loading="lazy" width="800" height="450">
+      </div>
+      <div class="post-body">
         <span class="post-tag">Culture</span>
         <h2 class="post-title">Tokyo Underground — 東京の地下に流れるエネルギー</h2>
         <p class="post-excerpt">渋谷、新宿、六本木。東京のクラブシーンが私のデザインに与え続けるもの。</p>
@@ -106,9 +190,12 @@
       </div>
     </a>
 
-    <a href="blog-03.html" class="post-item">
+    <a href="blog-03.html" class="post-item rv" data-tag="Design">
       <span class="post-num">03</span>
-      <div>
+      <div class="post-thumb">
+        <img src="img/blog/cover-03.svg" alt="" loading="lazy" width="800" height="450">
+      </div>
+      <div class="post-body">
         <span class="post-tag">Design</span>
         <h2 class="post-title">タイポグラフィは感情だ — 字間と行間の詩学</h2>
         <p class="post-excerpt">たった1pxの違いが、テキストの印象を完全に変える。タイポグラフィへの偏執的なこだわり。</p>
@@ -119,9 +206,12 @@
       </div>
     </a>
 
-    <a href="blog-04.html" class="post-item">
+    <a href="blog-04.html" class="post-item rv" data-tag="Process">
       <span class="post-num">04</span>
-      <div>
+      <div class="post-thumb">
+        <img src="img/blog/cover-04.svg" alt="" loading="lazy" width="800" height="450">
+      </div>
+      <div class="post-body">
         <span class="post-tag">Process</span>
         <h2 class="post-title">クライアントとのコミュニケーション — デザイナーの言語</h2>
         <p class="post-excerpt">「もっとポップに」「なんかいい感じに」を翻訳するためのフレームワーク。</p>
@@ -132,9 +222,12 @@
       </div>
     </a>
 
-    <a href="blog-05.html" class="post-item">
+    <a href="blog-05.html" class="post-item rv" data-tag="Design">
       <span class="post-num">05</span>
-      <div>
+      <div class="post-thumb">
+        <img src="img/blog/cover-05.svg" alt="" loading="lazy" width="800" height="450">
+      </div>
+      <div class="post-body">
         <span class="post-tag">Design</span>
         <h2 class="post-title">ブランキングの美学 — 余白が語るもの</h2>
         <p class="post-excerpt">何も置かないことで生まれる緊張感。余白はデザインの沈黙ではなく、最も雄弁な要素だ。</p>
@@ -144,10 +237,12 @@
         <span class="post-read">5 min</span>
       </div>
     </a>
+
+    <p class="posts-empty" id="postsEmpty">No articles in this tag — see Short Notes below.</p>
   </div>
 
   <!-- Short Notes -->
-  <div class="notes-section">
+  <div class="notes-section" id="notes">
     <div class="notes-inner rv">
       <span class="label">Short Notes</span>
       <div class="notes-grid">
@@ -204,16 +299,50 @@ document.getElementById('menuToggle').addEventListener('click', function() {
   this.classList.toggle('open');
   document.getElementById('mobileMenu').classList.toggle('open');
 });
-document.querySelectorAll('.tag-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.tag-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
+
+/* ── Tag filtering ── */
+(function () {
+  var items    = Array.prototype.slice.call(document.querySelectorAll('.post-item[data-tag]'));
+  var featured = document.querySelector('.featured-post[data-tag]');
+  var notes    = document.getElementById('notes');
+  var empty    = document.getElementById('postsEmpty');
+  var count    = document.getElementById('postCount');
+  var countLbl = document.getElementById('postCountLabel');
+  var headLbl  = document.getElementById('postsHeaderLabel');
+
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+
+  function apply(tag) {
+    var shown = 0;
+    items.forEach(function (el) {
+      var hit = (tag === 'all' || el.dataset.tag === tag);
+      el.classList.toggle('is-out', !hit);
+      if (hit) shown++;
+    });
+    if (featured) {
+      featured.classList.toggle('is-out', !(tag === 'all' || featured.dataset.tag === tag));
+    }
+    if (empty) empty.classList.toggle('on', shown === 0);
+    if (count) count.textContent = pad(shown);
+    if (countLbl) countLbl.textContent = shown === 1 ? 'Article' : 'Articles';
+    if (headLbl) headLbl.textContent = tag === 'all' ? 'All Posts' : tag;
+    if (notes) notes.style.display = (tag === 'Notes' || tag === 'all') ? '' : 'none';
+  }
+
+  document.querySelectorAll('.tag-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      document.querySelectorAll('.tag-btn').forEach(function (b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      apply(btn.dataset.tag || 'all');
+    });
   });
-});
-const io = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
+})();
+
+/* ── Reveals ── */
+var io = new IntersectionObserver(function (entries) {
+  entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
 }, { threshold: 0.1 });
-document.querySelectorAll('.rv').forEach(el => io.observe(el));
+document.querySelectorAll('.rv').forEach(function (el) { io.observe(el); });
 </script>
 <script src="js/motion.js" defer></script>
 </body>

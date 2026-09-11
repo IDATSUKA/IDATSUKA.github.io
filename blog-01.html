@@ -7,14 +7,118 @@
   <meta name="description" content="スタートアップでデザインシステムをゼロから構築した実践記録。監査、Design Tokens、コンポーネント化、そして運用のリアルまで、フェーズごとの学びをまとめました。">
   <meta property="og:title" content="デザインシステムを0から構築する — 実践的アプローチ — IDATSUKA">
   <meta property="og:description" content="スタートアップでデザインシステムをゼロから構築した実践記録。監査、Design Tokens、コンポーネント化、そして運用のリアルまで、フェーズごとの学びをまとめました。">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://idatsuka.com/blog-01.html">
+  <meta property="og:image" content="https://idatsuka.com/img/blog/cover-01.svg">
   <link rel="canonical" href="https://idatsuka.com/blog-01.html">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%2308090c'/><text x='16' y='22' text-anchor='middle' font-size='16' font-family='sans-serif' font-weight='300' fill='%23f2f4f7'>I</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Zen+Kaku+Gothic+New:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <style>
+  /* ── Article — page-scoped editorial layer ── */
+  .article-page .article-header { border-bottom: none; padding-bottom: 2.4rem; max-width: 820px; }
+  .article-page .article-meta { align-items: center; }
+
+  /* Cover hero */
+  .article-cover {
+    position: relative; aspect-ratio: 21/9; max-height: 520px; overflow: hidden;
+    background: var(--bg2);
+    border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  }
+  .article-cover img { width: 100%; height: 100%; object-fit: cover; }
+  .article-cover::after {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background:
+      linear-gradient(180deg, rgba(6,6,7,.45) 0%, rgba(6,6,7,0) 26%, rgba(6,6,7,0) 58%, rgba(6,6,7,.96) 100%);
+  }
+  .article-cover-caption {
+    position: absolute; left: 3rem; bottom: 1.3rem; z-index: 2;
+    font-family: var(--mono); font-size: .5rem; letter-spacing: .26em;
+    text-transform: uppercase; color: var(--dim);
+  }
+
+  /* Key points */
+  .article-keys { max-width: 640px; padding: 3rem 3rem 0; }
+  .article-keys-inner {
+    border: 1px solid var(--border); border-left: 1px solid var(--accent-soft);
+    background: linear-gradient(115deg, rgba(159,214,236,.045), rgba(159,214,236,0) 62%);
+    padding: 1.7rem 1.9rem 1.8rem;
+  }
+  .article-keys-label {
+    font-family: var(--mono); font-size: .5rem; letter-spacing: .28em;
+    text-transform: uppercase; color: var(--accent); display: block; margin-bottom: 1.1rem; opacity: .9;
+  }
+  .article-keys ol { list-style: none; margin: 0; padding: 0; counter-reset: k; }
+  .article-keys li {
+    counter-increment: k; position: relative; padding-left: 2.1rem;
+    font-size: .84rem; line-height: 1.95; color: var(--fg-dim);
+  }
+  .article-keys li + li { margin-top: .7rem; }
+  .article-keys li::before {
+    content: counter(k, decimal-leading-zero);
+    position: absolute; left: 0; top: .1em;
+    font-family: var(--mono); font-size: .55rem; letter-spacing: .1em;
+    color: var(--accent); opacity: .8;
+  }
+
+  /* Section anchors */
+  .article-page .article-body h2 { scroll-margin-top: 6rem; }
+  .article-page .article-body h2 .anchor {
+    font-family: var(--mono); font-size: .6rem; color: var(--accent);
+    opacity: 0; margin-left: .55rem; transition: opacity .3s var(--ease-out);
+  }
+  .article-page .article-body h2:hover .anchor,
+  .article-page .article-body h2 .anchor:focus-visible { opacity: .75; }
+
+  /* Pull quote */
+  .article-page .article-body blockquote.pull {
+    margin: 3rem 0; padding: 1.7rem 0 1.6rem;
+    border: none; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    background: none; font-style: normal;
+    font-size: 1.06rem; line-height: 1.9; letter-spacing: -.012em; color: var(--fg);
+    position: relative;
+  }
+  .article-page .article-body blockquote.pull::before {
+    content: ''; position: absolute; left: 0; top: -1px; width: 46px; height: 1px;
+    background: var(--accent);
+  }
+
+  /* Footer nav */
+  .article-page .article-footer { padding-bottom: 2.6rem; }
+  .article-page .project-nav a { padding: 2.4rem 3rem; gap: .5rem; }
+  .article-page .project-nav-label { color: var(--muted); }
+  .article-page .project-nav-title { font-size: .9rem; line-height: 1.55; }
+  .article-page .project-nav a:first-child .project-nav-title::before {
+    content: '\2190'; color: var(--accent); opacity: .5; margin-right: .55rem;
+    display: inline-block; transition: transform .4s var(--ease-out), opacity .4s var(--ease-out);
+  }
+  .article-page .project-nav a:last-child .project-nav-title::after {
+    content: '\2192'; color: var(--accent); opacity: .5; margin-left: .55rem;
+    display: inline-block; transition: transform .4s var(--ease-out), opacity .4s var(--ease-out);
+  }
+  .article-page .project-nav a:first-child:hover .project-nav-title::before {
+    transform: translateX(-4px); opacity: 1;
+  }
+  .article-page .project-nav a:last-child:hover .project-nav-title::after {
+    transform: translateX(4px); opacity: 1;
+  }
+
+  @media (max-width: 900px) {
+    .article-cover { aspect-ratio: 16/9; max-height: 320px; }
+    .article-cover-caption { left: 1.5rem; bottom: 1rem; }
+    .article-keys { padding: 2.2rem 1.5rem 0; }
+    .article-keys-inner { padding: 1.4rem 1.3rem 1.5rem; }
+    .article-page .project-nav { grid-template-columns: 1fr; }
+    .article-page .project-nav a { padding: 1.7rem 1.5rem; }
+    .article-page .project-nav a:last-child {
+      text-align: left; border-left: none; border-top: 1px solid var(--border);
+    }
+  }
+  </style>
 </head>
-<body>
+<body class="article-page">
 
 <nav>
   <a href="/" class="logo"><img src="img/logo.svg" alt="Idatsuka"></a>
@@ -48,18 +152,34 @@
   <p class="article-header-desc">あるスタートアップで、デザインシステムをゼロから立ち上げた。教科書通りにはいかなかったその過程と、現場で得た学びをフェーズごとに振り返る。</p>
 </header>
 
+<div class="article-cover rv">
+  <img src="img/blog/cover-01.svg" alt="モジュラーグリッドとデザイントークンを抽象化したカバーアート" width="800" height="450">
+  <span class="article-cover-caption">Cover — Modular Grid / Tokens</span>
+</div>
+
+<div class="article-keys rv">
+  <div class="article-keys-inner">
+    <span class="article-keys-label">Key Points</span>
+    <ol>
+      <li>コンポーネントより先に監査から始める。現状を一枚に並べることが、チームの共通認識をつくる。</li>
+      <li>Design Tokens はプリミティブとセマンティックの二層で組む。後の変更が一箇所で済む。</li>
+      <li>追うべきは完成度ではなく採用率。システムを運び続けるのは、仕組みではなく人だ。</li>
+    </ol>
+  </div>
+</div>
+
 <article class="article-body">
   <p>昨年、あるスタートアップでデザインシステムの構築を任された。プロダクトはすでに数万人のユーザーを抱え、デザイナーは3人、エンジニアは15人。誰もが「そろそろ必要だよね」と口にしながら、誰も手をつけられていない状態だった。この記事は、その半年間の記録であり、これから同じ道を歩む人への<strong>実践的なメモ</strong>でもある。</p>
 
-  <h2>なぜ必要だったのか</h2>
+  <h2 id="why">なぜ必要だったのか<a class="anchor" href="#why" aria-label="このセクションへのリンク">#</a></h2>
   <p>きっかけは、チームのスケーリングだった。デザイナーが1人の頃は、その人の頭の中がデザインシステムだった。しかし3人になった瞬間、同じ「プライマリーボタン」が3種類の青で実装され、余白のルールは人によって8pxだったり10pxだったりした。エンジニアからは「どれが正なのか分からない」という声が上がり、レビューのたびに些細なスタイル議論で時間が溶けていった。</p>
   <p>つまり問題はデザインの美しさではなく、<strong>意思決定のコスト</strong>だった。システムとは、繰り返される判断を一度だけ済ませるための仕組みだ。そう定義し直したことで、経営層への説明もすんなり通った。</p>
 
-  <h2>Phase 1 — 監査と棚卸し</h2>
+  <h2 id="audit">Phase 1 — 監査と棚卸し<a class="anchor" href="#audit" aria-label="このセクションへのリンク">#</a></h2>
   <p>最初にやったのは、新しいものを作ることではなく、今あるものを全部並べることだった。プロダクト内の全画面をスクリーンショットに撮り、ボタン、フォーム、カード、モーダルをひたすら切り出してFigmaの一枚のボードに貼っていく。地味で退屈な作業だが、これを飛ばすと必ず後で痛い目を見る。</p>
   <p>結果は想像以上にひどかった。ボタンだけで34バリエーション、グレーは22色。しかしこの「惨状の可視化」こそが最大の成果だった。チーム全員が同じ画像を見て、同じ危機感を共有できたからだ。</p>
 
-  <h2>Phase 2 — Design Tokensから始める</h2>
+  <h2 id="tokens">Phase 2 — Design Tokensから始める<a class="anchor" href="#tokens" aria-label="このセクションへのリンク">#</a></h2>
   <p>コンポーネントから着手したくなる気持ちを抑えて、まずDesign Tokensを定義した。カラー、タイポグラフィ、スペーシング、角丸、シャドウ。プリミティブな値（<strong>blue-500</strong>のような原色パレット）と、意味を持つセマンティックトークン（<strong>color-action-primary</strong>のような用途名）の二層構造にした。</p>
   <p>この二層構造のおかげで、後にブランドカラーを微調整したときも、変更は一箇所で済んだ。トークンはJSONで管理し、FigmaとコードのCSS変数に同期する。デザインと実装が同じ言語を話し始めた瞬間だった。</p>
 
@@ -67,11 +187,13 @@
 
   <p>これはチームで決めた合言葉だ。網羅性よりも採用率。ドキュメントの美しさよりも、明日のプルリクエストで使われること。優先順位を間違えたシステムは、立派な廃墟になる。</p>
 
-  <h2>Phase 3 — コンポーネント化</h2>
+  <h2 id="components">Phase 3 — コンポーネント化<a class="anchor" href="#components" aria-label="このセクションへのリンク">#</a></h2>
   <p>トークンが固まったら、ようやくコンポーネントだ。考え方のベースにはAtomic Designを置いたが、<strong>厳格にしすぎない</strong>ことを最初に決めた。「これはAtomかMoleculeか」という神学論争は時間の無駄でしかない。実際にはAtom、Component、Patternの3階層に簡略化し、迷ったら使用頻度の高い方に寄せるルールにした。</p>
   <p>着手順は監査データに基づいて決めた。出現頻度の高いボタン、テキストフィールド、カードの3つから始め、2週間ごとに数個ずつリリースしていく。一気に全部作らない。小さく出して、フィードバックをもらい、直す。プロダクト開発と同じリズムだ。</p>
 
-  <h2>運用のリアル</h2>
+  <blockquote class="pull rv">システムとは、繰り返される判断を一度だけ済ませるための仕組みだ。</blockquote>
+
+  <h2 id="operations">運用のリアル<a class="anchor" href="#operations" aria-label="このセクションへのリンク">#</a></h2>
   <p>システムは作って終わりではない。むしろ作ってからが本番だ。運用で効いたのは次の3つだった。</p>
   <ul>
     <li><strong>週1回30分の「システム定例」</strong> — 追加・変更の判断をその場で即決し、滞留させない。</li>
@@ -82,13 +204,18 @@
 
   <hr>
 
-  <h2>振り返りと学び</h2>
+  <h2 id="learnings">振り返りと学び<a class="anchor" href="#learnings" aria-label="このセクションへのリンク">#</a></h2>
   <p>半年を振り返って、学びを3つに絞るならこうなる。第一に、<strong>監査から始めること</strong>。現状の可視化が共通認識をつくる。第二に、トークンという土台に先に投資すること。第三に、完成度よりも採用率を追うこと。</p>
   <p>デザインシステムは銀の弾丸ではない。しかし、チームが同じ言葉で話すための辞書にはなる。そして辞書は、使われるほどに育っていく。もしあなたのチームが今まさにスケーリングの痛みを感じているなら、まずはスクリーンショットを全部並べるところから始めてみてほしい。</p>
 </article>
 
 <div class="article-footer">
-  <a href="blog.html" class="article-back">&larr; Back to Blog</a>
+  <a href="blog.html" class="article-back">&larr; Back to Journal</a>
+</div>
+
+<div class="project-nav rv">
+  <a href="blog.html"><span class="project-nav-label">Index</span><span class="project-nav-title">Journal — All Articles</span></a>
+  <a href="blog-02.html"><span class="project-nav-label">Next Article</span><span class="project-nav-title">Tokyo Underground — 東京の地下に流れるエネルギー</span></a>
 </div>
 
 <footer>
@@ -108,6 +235,10 @@ document.getElementById('menuToggle').addEventListener('click', function() {
   this.classList.toggle('open');
   document.getElementById('mobileMenu').classList.toggle('open');
 });
+var io = new IntersectionObserver(function (entries) {
+  entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
+}, { threshold: 0.08 });
+document.querySelectorAll('.rv').forEach(function (el) { io.observe(el); });
 </script>
 
 <script src="js/motion.js" defer></script>

@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450" role="img" aria-label="Two wave systems converging into one signal">
+  <defs>
+    <linearGradient id="c4-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#07080a"/>
+      <stop offset="1" stop-color="#0b0d11"/>
+    </linearGradient>
+    <linearGradient id="c4-a" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#9fd6ec" stop-opacity="0"/>
+      <stop offset="0.28" stop-color="#9fd6ec" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#9fd6ec" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="c4-b" x1="1" y1="0" x2="0" y2="0">
+      <stop offset="0" stop-color="#c49a90" stop-opacity="0"/>
+      <stop offset="0.28" stop-color="#c49a90" stop-opacity="0.4"/>
+      <stop offset="1" stop-color="#c49a90" stop-opacity="0.75"/>
+    </linearGradient>
+    <radialGradient id="c4-node" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#e8f6ff" stop-opacity="0.9"/>
+      <stop offset="0.3" stop-color="#9fd6ec" stop-opacity="0.42"/>
+      <stop offset="1" stop-color="#9fd6ec" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="c4-vig" cx="0.5" cy="0.5" r="0.78">
+      <stop offset="0.5" stop-color="#06070a" stop-opacity="0"/>
+      <stop offset="1" stop-color="#06070a" stop-opacity="0.85"/>
+    </radialGradient>
+    <filter id="c4-soft" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="14"/>
+    </filter>
+  </defs>
+
+  <rect width="800" height="450" fill="url(#c4-bg)"/>
+
+  <!-- centre axis -->
+  <path d="M400 40V410" stroke="#ffffff" stroke-opacity="0.06" stroke-width="1" stroke-dasharray="3 7"/>
+  <path d="M60 225H740" stroke="#ffffff" stroke-opacity="0.05" stroke-width="1"/>
+
+  <!-- system A — from the left, wide amplitude collapsing to the centre -->
+  <g fill="none" stroke="url(#c4-a)" stroke-linecap="round">
+    <path d="M20 225C90 105 160 105 230 165S330 250 400 225" stroke-width="2.4" stroke-opacity="0.95"/>
+    <path d="M20 225C90 145 160 145 230 185S330 243 400 225" stroke-width="1.6" stroke-opacity="0.6"/>
+    <path d="M20 225C90 185 160 185 230 205S330 236 400 225" stroke-width="1.2" stroke-opacity="0.38"/>
+    <path d="M20 225C90 305 160 305 230 265S330 200 400 225" stroke-width="1.6" stroke-opacity="0.5"/>
+    <path d="M20 225C90 345 160 345 230 285S330 192 400 225" stroke-width="1.2" stroke-opacity="0.3"/>
+  </g>
+
+  <!-- system B — from the right, secondary clay tint -->
+  <g fill="none" stroke="url(#c4-b)" stroke-linecap="round">
+    <path d="M780 225C710 330 640 330 570 280S470 202 400 225" stroke-width="2.2" stroke-opacity="0.9"/>
+    <path d="M780 225C710 296 640 296 570 258S470 210 400 225" stroke-width="1.5" stroke-opacity="0.55"/>
+    <path d="M780 225C710 262 640 262 570 240S470 218 400 225" stroke-width="1.1" stroke-opacity="0.34"/>
+    <path d="M780 225C710 155 640 155 570 195S470 248 400 225" stroke-width="1.5" stroke-opacity="0.45"/>
+    <path d="M780 225C780 225 640 108 570 168S470 256 400 225" stroke-width="1" stroke-opacity="0.22"/>
+  </g>
+
+  <!-- convergence bloom -->
+  <circle cx="400" cy="225" r="92" fill="url(#c4-node)" opacity="0.55"/>
+  <circle cx="400" cy="225" r="34" fill="#9fd6ec" fill-opacity="0.2" filter="url(#c4-soft)"/>
+  <circle cx="400" cy="225" r="6" fill="#eaf7ff" opacity="0.95"/>
+  <circle cx="400" cy="225" r="16" fill="none" stroke="#9fd6ec" stroke-opacity="0.5" stroke-width="1"/>
+  <circle cx="400" cy="225" r="30" fill="none" stroke="#9fd6ec" stroke-opacity="0.22" stroke-width="1"/>
+  <circle cx="400" cy="225" r="48" fill="none" stroke="#9fd6ec" stroke-opacity="0.1" stroke-width="1"/>
+
+  <!-- speaker origins -->
+  <circle cx="20" cy="225" r="4" fill="#9fd6ec" fill-opacity="0.7"/>
+  <circle cx="780" cy="225" r="4" fill="#c49a90" fill-opacity="0.6"/>
+
+  <!-- sampling ticks along the axis -->
+  <g stroke="#ffffff" stroke-opacity="0.12" stroke-width="1">
+    <path d="M120 402v10M200 402v10M280 402v10M360 402v10M440 402v10M520 402v10M600 402v10M680 402v10"/>
+  </g>
+  <path d="M120 407H680" stroke="#ffffff" stroke-opacity="0.055" stroke-width="1"/>
+  <path d="M396 398v18M404 398v18" stroke="#9fd6ec" stroke-opacity="0.45" stroke-width="1"/>
+
+  <rect width="800" height="450" fill="url(#c4-vig)"/>
+</svg>

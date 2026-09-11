@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450" role="img" aria-label="Modular grid and design tokens">
+  <defs>
+    <linearGradient id="c1-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#07080a"/>
+      <stop offset="1" stop-color="#0d0f14"/>
+    </linearGradient>
+    <linearGradient id="c1-ramp" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#9fd6ec" stop-opacity="0.08"/>
+      <stop offset="1" stop-color="#9fd6ec" stop-opacity="0.85"/>
+    </linearGradient>
+    <linearGradient id="c1-fade" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#9fd6ec" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#9fd6ec" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="c1-glow" cx="0.62" cy="0.38" r="0.55">
+      <stop offset="0" stop-color="#9fd6ec" stop-opacity="0.13"/>
+      <stop offset="1" stop-color="#9fd6ec" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="c1-vig" cx="0.5" cy="0.5" r="0.78">
+      <stop offset="0.55" stop-color="#06070a" stop-opacity="0"/>
+      <stop offset="1" stop-color="#06070a" stop-opacity="0.85"/>
+    </radialGradient>
+    <filter id="c1-soft" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="16"/>
+    </filter>
+  </defs>
+
+  <rect width="800" height="450" fill="url(#c1-bg)"/>
+  <rect width="800" height="450" fill="url(#c1-glow)"/>
+
+  <!-- baseline module grid: 12 columns x 8 rows on a 48px module -->
+  <g stroke="#ffffff" stroke-opacity="0.05" stroke-width="1">
+    <path d="M64 0V450M112 0V450M160 0V450M208 0V450M256 0V450M304 0V450M352 0V450M400 0V450M448 0V450M496 0V450M544 0V450M592 0V450M640 0V450M688 0V450M736 0V450"/>
+    <path d="M0 54H800M0 102H800M0 150H800M0 198H800M0 246H800M0 294H800M0 342H800M0 390H800"/>
+  </g>
+
+  <!-- gutters emphasised -->
+  <g stroke="#9fd6ec" stroke-opacity="0.14" stroke-width="1">
+    <path d="M160 0V450M400 0V450M640 0V450"/>
+    <path d="M0 150H800M0 294H800"/>
+  </g>
+
+  <!-- composed modules -->
+  <g>
+    <rect x="160" y="102" width="96" height="96" fill="#9fd6ec" fill-opacity="0.055" stroke="#9fd6ec" stroke-opacity="0.30"/>
+    <rect x="256" y="102" width="144" height="48" fill="#9fd6ec" fill-opacity="0.03" stroke="#9fd6ec" stroke-opacity="0.16"/>
+    <rect x="400" y="150" width="96" height="144" fill="#9fd6ec" fill-opacity="0.10" stroke="#9fd6ec" stroke-opacity="0.58"/>
+    <rect x="496" y="198" width="144" height="96" fill="#9fd6ec" fill-opacity="0.025" stroke="#9fd6ec" stroke-opacity="0.14"/>
+    <rect x="208" y="246" width="96" height="48" fill="#6f7f9e" fill-opacity="0.10" stroke="#6f7f9e" stroke-opacity="0.30"/>
+    <rect x="592" y="102" width="48" height="48" fill="#9fd6ec" fill-opacity="0.16" stroke="#9fd6ec" stroke-opacity="0.5"/>
+  </g>
+
+  <!-- glow behind the hero module -->
+  <rect x="400" y="150" width="96" height="144" fill="#9fd6ec" fill-opacity="0.22" filter="url(#c1-soft)"/>
+
+  <!-- module anchors -->
+  <g fill="#9fd6ec">
+    <circle cx="160" cy="150" r="2.6" fill-opacity="0.85"/>
+    <circle cx="400" cy="150" r="2.6" fill-opacity="0.85"/>
+    <circle cx="400" cy="294" r="2.6" fill-opacity="0.85"/>
+    <circle cx="640" cy="294" r="2.6" fill-opacity="0.5"/>
+    <circle cx="160" cy="294" r="2.6" fill-opacity="0.5"/>
+    <circle cx="496" cy="150" r="2" fill-opacity="0.35"/>
+    <circle cx="496" cy="294" r="2" fill-opacity="0.35"/>
+  </g>
+
+  <!-- token scale ramp -->
+  <g>
+    <rect x="64" y="366" width="26" height="26" fill="#9fd6ec" fill-opacity="0.07"/>
+    <rect x="96" y="366" width="26" height="26" fill="#9fd6ec" fill-opacity="0.15"/>
+    <rect x="128" y="366" width="26" height="26" fill="#9fd6ec" fill-opacity="0.28"/>
+    <rect x="160" y="366" width="26" height="26" fill="#9fd6ec" fill-opacity="0.45"/>
+    <rect x="192" y="366" width="26" height="26" fill="#9fd6ec" fill-opacity="0.66"/>
+    <rect x="224" y="366" width="26" height="26" fill="#9fd6ec" fill-opacity="0.9"/>
+  </g>
+
+  <!-- spacing scale ticks -->
+  <g stroke="#9fd6ec" stroke-opacity="0.4" stroke-width="1.5" stroke-linecap="square">
+    <path d="M592 372h8"/>
+    <path d="M592 380h16"/>
+    <path d="M592 388h32"/>
+    <path d="M592 396h64"/>
+  </g>
+  <path d="M592 360h144" stroke="url(#c1-fade)" stroke-width="1"/>
+
+  <!-- semantic link line -->
+  <path d="M250 379H392" stroke="#9fd6ec" stroke-opacity="0.22" stroke-width="1" stroke-dasharray="3 5"/>
+  <circle cx="400" cy="379" r="3.5" fill="none" stroke="#9fd6ec" stroke-opacity="0.55"/>
+
+  <rect width="800" height="450" fill="url(#c1-vig)"/>
+</svg>

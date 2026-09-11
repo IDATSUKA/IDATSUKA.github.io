@@ -7,14 +7,118 @@
   <meta name="description" content="「もっとポップに」という曖昧なフィードバックの裏側にあるもの。クライアントとデザイナーの言語の違いを乗り越え、共通言語をつくるためのコミュニケーション論。">
   <meta property="og:title" content="クライアントとのコミュニケーション — デザイナーの言語 — IDATSUKA">
   <meta property="og:description" content="「もっとポップに」という曖昧なフィードバックの裏側にあるもの。クライアントとデザイナーの言語の違いを乗り越え、共通言語をつくるためのコミュニケーション論。">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://idatsuka.com/blog-04.html">
+  <meta property="og:image" content="https://idatsuka.com/img/blog/cover-04.svg">
   <link rel="canonical" href="https://idatsuka.com/blog-04.html">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%2308090c'/><text x='16' y='22' text-anchor='middle' font-size='16' font-family='sans-serif' font-weight='300' fill='%23f2f4f7'>I</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Zen+Kaku+Gothic+New:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <style>
+  /* ── Article — page-scoped editorial layer ── */
+  .article-page .article-header { border-bottom: none; padding-bottom: 2.4rem; max-width: 820px; }
+  .article-page .article-meta { align-items: center; }
+
+  /* Cover hero */
+  .article-cover {
+    position: relative; aspect-ratio: 21/9; max-height: 520px; overflow: hidden;
+    background: var(--bg2);
+    border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  }
+  .article-cover img { width: 100%; height: 100%; object-fit: cover; }
+  .article-cover::after {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background:
+      linear-gradient(180deg, rgba(6,6,7,.45) 0%, rgba(6,6,7,0) 26%, rgba(6,6,7,0) 58%, rgba(6,6,7,.96) 100%);
+  }
+  .article-cover-caption {
+    position: absolute; left: 3rem; bottom: 1.3rem; z-index: 2;
+    font-family: var(--mono); font-size: .5rem; letter-spacing: .26em;
+    text-transform: uppercase; color: var(--dim);
+  }
+
+  /* Key points */
+  .article-keys { max-width: 640px; padding: 3rem 3rem 0; }
+  .article-keys-inner {
+    border: 1px solid var(--border); border-left: 1px solid var(--accent-soft);
+    background: linear-gradient(115deg, rgba(159,214,236,.045), rgba(159,214,236,0) 62%);
+    padding: 1.7rem 1.9rem 1.8rem;
+  }
+  .article-keys-label {
+    font-family: var(--mono); font-size: .5rem; letter-spacing: .28em;
+    text-transform: uppercase; color: var(--accent); display: block; margin-bottom: 1.1rem; opacity: .9;
+  }
+  .article-keys ol { list-style: none; margin: 0; padding: 0; counter-reset: k; }
+  .article-keys li {
+    counter-increment: k; position: relative; padding-left: 2.1rem;
+    font-size: .84rem; line-height: 1.95; color: var(--fg-dim);
+  }
+  .article-keys li + li { margin-top: .7rem; }
+  .article-keys li::before {
+    content: counter(k, decimal-leading-zero);
+    position: absolute; left: 0; top: .1em;
+    font-family: var(--mono); font-size: .55rem; letter-spacing: .1em;
+    color: var(--accent); opacity: .8;
+  }
+
+  /* Section anchors */
+  .article-page .article-body h2 { scroll-margin-top: 6rem; }
+  .article-page .article-body h2 .anchor {
+    font-family: var(--mono); font-size: .6rem; color: var(--accent);
+    opacity: 0; margin-left: .55rem; transition: opacity .3s var(--ease-out);
+  }
+  .article-page .article-body h2:hover .anchor,
+  .article-page .article-body h2 .anchor:focus-visible { opacity: .75; }
+
+  /* Pull quote */
+  .article-page .article-body blockquote.pull {
+    margin: 3rem 0; padding: 1.7rem 0 1.6rem;
+    border: none; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    background: none; font-style: normal;
+    font-size: 1.06rem; line-height: 1.9; letter-spacing: -.012em; color: var(--fg);
+    position: relative;
+  }
+  .article-page .article-body blockquote.pull::before {
+    content: ''; position: absolute; left: 0; top: -1px; width: 46px; height: 1px;
+    background: var(--accent);
+  }
+
+  /* Footer nav */
+  .article-page .article-footer { padding-bottom: 2.6rem; }
+  .article-page .project-nav a { padding: 2.4rem 3rem; gap: .5rem; }
+  .article-page .project-nav-label { color: var(--muted); }
+  .article-page .project-nav-title { font-size: .9rem; line-height: 1.55; }
+  .article-page .project-nav a:first-child .project-nav-title::before {
+    content: '\2190'; color: var(--accent); opacity: .5; margin-right: .55rem;
+    display: inline-block; transition: transform .4s var(--ease-out), opacity .4s var(--ease-out);
+  }
+  .article-page .project-nav a:last-child .project-nav-title::after {
+    content: '\2192'; color: var(--accent); opacity: .5; margin-left: .55rem;
+    display: inline-block; transition: transform .4s var(--ease-out), opacity .4s var(--ease-out);
+  }
+  .article-page .project-nav a:first-child:hover .project-nav-title::before {
+    transform: translateX(-4px); opacity: 1;
+  }
+  .article-page .project-nav a:last-child:hover .project-nav-title::after {
+    transform: translateX(4px); opacity: 1;
+  }
+
+  @media (max-width: 900px) {
+    .article-cover { aspect-ratio: 16/9; max-height: 320px; }
+    .article-cover-caption { left: 1.5rem; bottom: 1rem; }
+    .article-keys { padding: 2.2rem 1.5rem 0; }
+    .article-keys-inner { padding: 1.4rem 1.3rem 1.5rem; }
+    .article-page .project-nav { grid-template-columns: 1fr; }
+    .article-page .project-nav a { padding: 1.7rem 1.5rem; }
+    .article-page .project-nav a:last-child {
+      text-align: left; border-left: none; border-top: 1px solid var(--border);
+    }
+  }
+  </style>
 </head>
-<body>
+<body class="article-page">
 
 <nav>
   <a href="/" class="logo"><img src="img/logo.svg" alt="Idatsuka"></a>
@@ -48,21 +152,37 @@
   <p class="article-header-desc">「もっとポップに」と言われたとき、あなたは何をしますか。曖昧なフィードバックの裏側にある本当の声を聞き取るための、コミュニケーションの技術について。</p>
 </header>
 
+<div class="article-cover rv">
+  <img src="img/blog/cover-04.svg" alt="二つの波の系がひとつに収束していく様子を抽象化したカバーアート" width="800" height="450">
+  <span class="article-cover-caption">Cover — Two Systems / One Signal</span>
+</div>
+
+<div class="article-keys rv">
+  <div class="article-keys-inner">
+    <span class="article-keys-label">Key Points</span>
+    <ol>
+      <li>曖昧なフィードバックはリテラシーの問題ではなく、話している言語の違いから生まれる。</li>
+      <li>ムードボードで「違う」と言われたら理由を聞く。否定の言葉にブランド観が現れる。</li>
+      <li>デザインの選択を相手のビジネスの言葉で語れば、議論は好き嫌いから有効性へ移る。</li>
+    </ol>
+  </div>
+</div>
+
 <article class="article-body">
   <p>「もっとポップにしてもらえますか？」——デザイナーなら誰もが一度は受け取ったことのあるフィードバックだろう。彩度を上げればいいのか。角を丸くすればいいのか。フォントを変えればいいのか。この言葉だけでは、何をすればいいのか分からない。そして多くの場合、言われた通りに「ポップ」にした修正案は、なぜか却下される。</p>
   <p>かつての私は、こうしたフィードバックを「クライアントのデザインリテラシーの問題」だと考えていた。しかし経験を重ねるうちに、それは間違いだと気づいた。問題はリテラシーではない。<strong>私たちとクライアントが、そもそも違う言語を話している</strong>ということなのだ。</p>
 
-  <h2>なぜすれ違うのか</h2>
+  <h2 id="gap">なぜすれ違うのか<a class="anchor" href="#gap" aria-label="このセクションへのリンク">#</a></h2>
   <p>デザイナーは「余白」「ジャンプ率」「トンマナ」「視線誘導」といった専門の語彙で世界を見ている。一方クライアントは、自分のビジネスの言葉——売上、顧客、競合、ブランドイメージ——で世界を見ている。同じ画面を見ていても、見えているものがまったく違う。</p>
   <p>「もっとポップに」という言葉は、クライアントの言語からデザイナーの言語への、不完全な翻訳である。その奥には「若い層に届いていない気がする」「競合より地味に見える」「自社の勢いが表現されていない」といった、ビジネス上の不安が隠れていることが多い。翻訳された言葉だけを受け取って手を動かすと、本当の課題を外したまま修正を重ねることになる。</p>
 
-  <h2>ムードボードという共通言語</h2>
+  <h2 id="moodboard">ムードボードという共通言語<a class="anchor" href="#moodboard" aria-label="このセクションへのリンク">#</a></h2>
   <p>言語が違うなら、共通言語をつくればいい。私が最も頼りにしているのがムードボードだ。プロジェクトの初期に、方向性の異なるビジュアルの束をいくつか用意し、クライアントと一緒に眺めながら「これは近い」「これは違う」と仕分けていく。</p>
   <p>このとき重要なのは、正解を当てにいくことではなく、<strong>「違う」と言われたときに理由を聞くこと</strong>だ。「この写真は高級すぎる」「この色はうちらしくない」——否定の言葉の中にこそ、クライアントが持っているブランド観が現れる。言葉では定義できなかった「らしさ」が、具体的なビジュアルを前にすると驚くほど雄弁に語られる。</p>
   <blockquote>「クライアントは問題を感じている。ただ、それをデザインの言葉で表現できないだけだ。」</blockquote>
   <p>この前提に立てば、曖昧なフィードバックは「無茶な注文」ではなく「解読すべきメッセージ」に変わる。解読の責任は、専門家である私たちの側にある。</p>
 
-  <h2>「なぜ？」を5回聞く</h2>
+  <h2 id="five-whys">「なぜ？」を5回聞く<a class="anchor" href="#five-whys" aria-label="このセクションへのリンク">#</a></h2>
   <p>トヨタの生産方式に「なぜを5回繰り返す」という考え方がある。これはフィードバックの解読にもそのまま使える。</p>
   <ul>
     <li>「もっとポップに」——なぜそう感じますか？</li>
@@ -72,21 +192,29 @@
   </ul>
   <p>「ポップにする」ことが目的なのではない。「20代に新商品を届けるためのトーン設計」が課題だったのだ。ここまで掘り下げられれば、彩度を上げるかどうかという表層の話ではなく、設計レベルでの提案ができる。尋問にならないよう、好奇心を持って対話として聞くのがコツだ。</p>
 
-  <h2>デザインの選択を「理由」で語る</h2>
+  <h2 id="reasons">デザインの選択を「理由」で語る<a class="anchor" href="#reasons" aria-label="このセクションへのリンク">#</a></h2>
   <p>解読と同じくらい重要なのが、こちらの提案の伝え方である。「この余白がきれいなので」という説明は、デザイナーの言語だ。クライアントの言語に翻訳するなら、「情報を絞って余白を取ることで、一番伝えたい新商品に視線が集まります」となる。</p>
   <p>すべてのデザインの選択には理由がある。その理由を、相手のビジネスの言葉で語れるか。これができると、デザインの議論は「好き嫌い」の応酬から「目的に対して有効かどうか」の検証へと変わる。プレゼンの場で守るべきは自分の美意識ではなく、議論の土俵である。</p>
 
-  <h2>フィードバックの受け取り方</h2>
+  <blockquote class="pull rv">解読の責任は、専門家である私たちの側にある。</blockquote>
+
+  <h2 id="receiving">フィードバックの受け取り方<a class="anchor" href="#receiving" aria-label="このセクションへのリンク">#</a></h2>
   <p>それでも、厳しいフィードバックは心に刺さる。何日もかけた案を一言で否定されれば、防御的になるのが人間だ。しかし防御の姿勢は、解読のチャンスを潰してしまう。</p>
   <p>私が意識しているのは、フィードバックを<strong>「攻撃」ではなく「発見」として受け取る</strong>ことだ。クライアントの違和感は、自分一人では絶対に得られなかった情報である。「却下された」のではなく「課題の輪郭が一つ明確になった」と捉え直す。実際、プロジェクトを振り返ると、決定的な改善のきっかけは大抵、最初は受け入れがたかったフィードバックの中にある。</p>
 
   <hr>
 
+  <h2 id="dialogue">コミュニケーションもデザインの一部だ<a class="anchor" href="#dialogue" aria-label="このセクションへのリンク">#</a></h2>
   <p>デザイナーの仕事は、美しいものをつくることだけではない。クライアントの中にある言葉にならない思いを聞き取り、形に翻訳し、その理由を語ること。つまり、<strong>コミュニケーションそのものがデザインの一部</strong>なのだ。「もっとポップに」という言葉に出会ったら、それは対話を始める合図だと思ってほしい。良いデザインは、良い対話からしか生まれない。</p>
 </article>
 
 <div class="article-footer">
-  <a href="blog.html" class="article-back">&larr; Back to Blog</a>
+  <a href="blog.html" class="article-back">&larr; Back to Journal</a>
+</div>
+
+<div class="project-nav rv">
+  <a href="blog-03.html"><span class="project-nav-label">Previous</span><span class="project-nav-title">タイポグラフィは感情だ — 字間と行間の詩学</span></a>
+  <a href="blog-05.html"><span class="project-nav-label">Next Article</span><span class="project-nav-title">ブランキングの美学 — 余白が語るもの</span></a>
 </div>
 
 <footer>
@@ -106,6 +234,10 @@ document.getElementById('menuToggle').addEventListener('click', function() {
   this.classList.toggle('open');
   document.getElementById('mobileMenu').classList.toggle('open');
 });
+var io = new IntersectionObserver(function (entries) {
+  entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
+}, { threshold: 0.08 });
+document.querySelectorAll('.rv').forEach(function (el) { io.observe(el); });
 </script>
 
 <script src="js/motion.js" defer></script>

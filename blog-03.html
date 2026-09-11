@@ -7,14 +7,118 @@
   <meta name="description" content="1pxの字間調整に30分かける理由。フォント選び、行間、和欧混植、余白——タイポグラフィが言葉の体温を決めるという話。">
   <meta property="og:title" content="タイポグラフィは感情だ — 字間と行間の詩学 — IDATSUKA">
   <meta property="og:description" content="1pxの字間調整に30分かける理由。フォント選び、行間、和欧混植、余白——タイポグラフィが言葉の体温を決めるという話。">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://idatsuka.com/blog-03.html">
+  <meta property="og:image" content="https://idatsuka.com/img/blog/cover-03.svg">
   <link rel="canonical" href="https://idatsuka.com/blog-03.html">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%2308090c'/><text x='16' y='22' text-anchor='middle' font-size='16' font-family='sans-serif' font-weight='300' fill='%23f2f4f7'>I</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Zen+Kaku+Gothic+New:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <style>
+  /* ── Article — page-scoped editorial layer ── */
+  .article-page .article-header { border-bottom: none; padding-bottom: 2.4rem; max-width: 820px; }
+  .article-page .article-meta { align-items: center; }
+
+  /* Cover hero */
+  .article-cover {
+    position: relative; aspect-ratio: 21/9; max-height: 520px; overflow: hidden;
+    background: var(--bg2);
+    border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  }
+  .article-cover img { width: 100%; height: 100%; object-fit: cover; }
+  .article-cover::after {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background:
+      linear-gradient(180deg, rgba(6,6,7,.45) 0%, rgba(6,6,7,0) 26%, rgba(6,6,7,0) 58%, rgba(6,6,7,.96) 100%);
+  }
+  .article-cover-caption {
+    position: absolute; left: 3rem; bottom: 1.3rem; z-index: 2;
+    font-family: var(--mono); font-size: .5rem; letter-spacing: .26em;
+    text-transform: uppercase; color: var(--dim);
+  }
+
+  /* Key points */
+  .article-keys { max-width: 640px; padding: 3rem 3rem 0; }
+  .article-keys-inner {
+    border: 1px solid var(--border); border-left: 1px solid var(--accent-soft);
+    background: linear-gradient(115deg, rgba(159,214,236,.045), rgba(159,214,236,0) 62%);
+    padding: 1.7rem 1.9rem 1.8rem;
+  }
+  .article-keys-label {
+    font-family: var(--mono); font-size: .5rem; letter-spacing: .28em;
+    text-transform: uppercase; color: var(--accent); display: block; margin-bottom: 1.1rem; opacity: .9;
+  }
+  .article-keys ol { list-style: none; margin: 0; padding: 0; counter-reset: k; }
+  .article-keys li {
+    counter-increment: k; position: relative; padding-left: 2.1rem;
+    font-size: .84rem; line-height: 1.95; color: var(--fg-dim);
+  }
+  .article-keys li + li { margin-top: .7rem; }
+  .article-keys li::before {
+    content: counter(k, decimal-leading-zero);
+    position: absolute; left: 0; top: .1em;
+    font-family: var(--mono); font-size: .55rem; letter-spacing: .1em;
+    color: var(--accent); opacity: .8;
+  }
+
+  /* Section anchors */
+  .article-page .article-body h2 { scroll-margin-top: 6rem; }
+  .article-page .article-body h2 .anchor {
+    font-family: var(--mono); font-size: .6rem; color: var(--accent);
+    opacity: 0; margin-left: .55rem; transition: opacity .3s var(--ease-out);
+  }
+  .article-page .article-body h2:hover .anchor,
+  .article-page .article-body h2 .anchor:focus-visible { opacity: .75; }
+
+  /* Pull quote */
+  .article-page .article-body blockquote.pull {
+    margin: 3rem 0; padding: 1.7rem 0 1.6rem;
+    border: none; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    background: none; font-style: normal;
+    font-size: 1.06rem; line-height: 1.9; letter-spacing: -.012em; color: var(--fg);
+    position: relative;
+  }
+  .article-page .article-body blockquote.pull::before {
+    content: ''; position: absolute; left: 0; top: -1px; width: 46px; height: 1px;
+    background: var(--accent);
+  }
+
+  /* Footer nav */
+  .article-page .article-footer { padding-bottom: 2.6rem; }
+  .article-page .project-nav a { padding: 2.4rem 3rem; gap: .5rem; }
+  .article-page .project-nav-label { color: var(--muted); }
+  .article-page .project-nav-title { font-size: .9rem; line-height: 1.55; }
+  .article-page .project-nav a:first-child .project-nav-title::before {
+    content: '\2190'; color: var(--accent); opacity: .5; margin-right: .55rem;
+    display: inline-block; transition: transform .4s var(--ease-out), opacity .4s var(--ease-out);
+  }
+  .article-page .project-nav a:last-child .project-nav-title::after {
+    content: '\2192'; color: var(--accent); opacity: .5; margin-left: .55rem;
+    display: inline-block; transition: transform .4s var(--ease-out), opacity .4s var(--ease-out);
+  }
+  .article-page .project-nav a:first-child:hover .project-nav-title::before {
+    transform: translateX(-4px); opacity: 1;
+  }
+  .article-page .project-nav a:last-child:hover .project-nav-title::after {
+    transform: translateX(4px); opacity: 1;
+  }
+
+  @media (max-width: 900px) {
+    .article-cover { aspect-ratio: 16/9; max-height: 320px; }
+    .article-cover-caption { left: 1.5rem; bottom: 1rem; }
+    .article-keys { padding: 2.2rem 1.5rem 0; }
+    .article-keys-inner { padding: 1.4rem 1.3rem 1.5rem; }
+    .article-page .project-nav { grid-template-columns: 1fr; }
+    .article-page .project-nav a { padding: 1.7rem 1.5rem; }
+    .article-page .project-nav a:last-child {
+      text-align: left; border-left: none; border-top: 1px solid var(--border);
+    }
+  }
+  </style>
 </head>
-<body>
+<body class="article-page">
 
 <nav>
   <a href="/" class="logo"><img src="img/logo.svg" alt="Idatsuka"></a>
@@ -48,34 +152,58 @@
   <p class="article-header-desc">なぜ1pxの字間調整に30分もかけるのか。文字の声、行間の呼吸、余白の力。タイポグラフィが感情を運ぶ仕組みについての覚え書き。</p>
 </header>
 
+<div class="article-cover rv">
+  <img src="img/blog/cover-03.svg" alt="ベースラインと文字の骨格のリズムを幾何学に置き換えたカバーアート" width="800" height="450">
+  <span class="article-cover-caption">Cover — Baselines / Rhythm</span>
+</div>
+
+<div class="article-keys rv">
+  <div class="article-keys-inner">
+    <span class="article-keys-label">Key Points</span>
+    <ol>
+      <li>フォント選びは声色選び。文字は選ばれた瞬間から、すべてのページで喋り続ける。</li>
+      <li>行間は呼吸。数値は出発点にすぎず、最後は声に出して読んで決める。</li>
+      <li>余白は読者が言葉を受け取るための時間。窮屈な言葉は早口に聞こえる。</li>
+    </ol>
+  </div>
+</div>
+
 <article class="article-body">
   <p>先日、見出しの字間を1px詰めるかどうかで30分悩んだ。傍から見れば狂気の沙汰かもしれない。でも僕にとってその1pxは、文章の<strong>声のトーン</strong>を決める1pxだ。詰めれば言葉は強く、断定的に響く。開けば、ふっと息を抜いたように柔らかくなる。タイポグラフィは情報の整列ではない。感情の調律だ。</p>
 
-  <h2>文字は沈黙しない</h2>
+  <h2 id="voice">文字は沈黙しない<a class="anchor" href="#voice" aria-label="このセクションへのリンク">#</a></h2>
   <p>同じ「ありがとう」という言葉でも、明朝体で組めば手紙のように丁寧に、丸ゴシックで組めば友達の声のように親しげに聞こえる。読者は文字を「読む」前に、書体の声を「聞いて」いる。だから<strong>フォント選びは声色選び</strong>だと僕は思っている。</p>
   <p>プロジェクトの最初に書体を決めるとき、僕はいつも「このブランドが人だったら、どんな声で話すか」を考える。低く落ち着いた声か、よく通る明るい声か。文字は決して沈黙しない。選んだ瞬間から、すべてのページで喋り続ける。</p>
 
-  <h2>行間は呼吸</h2>
+  <h2 id="breath">行間は呼吸<a class="anchor" href="#breath" aria-label="このセクションへのリンク">#</a></h2>
   <p>行間は、文章の呼吸のリズムだ。行間が詰まったテキストは、息継ぎなしで話し続ける人のように読者を疲れさせる。逆に開きすぎた行間は、言葉同士のつながりをほどいてしまい、文章が散漫に見える。</p>
   <p>和文の本文なら行送りはおよそ1.7〜1.9倍を起点に、行長と文字サイズに合わせて微調整する。けれど数値はあくまで出発点だ。最後は声に出して読んでみて、自分の息継ぎと行の折り返しが合うかどうかで決める。読みやすい文章とは、書き手の呼吸が再現される文章のことだ。</p>
 
   <blockquote>「タイポグラフィとは、言葉に服を着せることではない。言葉の体温を決めることだ。」</blockquote>
 
-  <h2>和文と欧文の混植</h2>
+  <h2 id="mixed-setting">和文と欧文の混植<a class="anchor" href="#mixed-setting" aria-label="このセクションへのリンク">#</a></h2>
   <p>日本語のタイポグラフィで最も難しく、最も面白いのが和欧混植だ。和文と欧文は骨格がまったく違う。漢字とかなは正方形のリズムで進み、ラテン文字は固有の幅で流れる。何も考えずに混ぜると、欧文だけが沈んだり、浮いたりする。</p>
   <p>だから欧文のサイズをわずかに上げ、ベースラインを調整し、前後にほんの少しアキを入れる。うまくいった混植は、二つの言語が同じ温度で会話しているように見える。<strong>InterとNoto Sans JP</strong>の組み合わせをこのサイトで使っているのも、その温度が揃う組み合わせを探した結果だ。</p>
 
-  <h2>余白が文字を活かす</h2>
+  <h2 id="space">余白が文字を活かす<a class="anchor" href="#space" aria-label="このセクションへのリンク">#</a></h2>
   <p>音楽が休符で生きるように、文字は余白で生きる。見出しの上に十分な余白があるだけで、その言葉は「間」を持って語り始める。余白は何もない空間ではなく、<strong>読者が言葉を受け取るための時間</strong>だ。</p>
   <p>窮屈なレイアウトの言葉は、どんなに良い言葉でも早口に聞こえる。余白を削ってコンテンツを詰め込みたくなったときは、いつも思い出す。沈黙のないスピーチに、心を動かされた人はいない。</p>
 
+  <blockquote class="pull rv">読みやすい文章とは、書き手の呼吸が再現される文章のことだ。</blockquote>
+
   <hr>
 
+  <h2 id="one-pixel">1pxは、たしかに誰かに届いている<a class="anchor" href="#one-pixel" aria-label="このセクションへのリンク">#</a></h2>
   <p>結局のところ、タイポグラフィは最も親密なデザイン領域だと思う。色やレイアウトより先に、読者の内なる声に直接触れるからだ。誰かがこの文章を読むとき、その頭の中で響いている声の高さと速さと体温を、僕は字間と行間で設計している。だから今日も、1pxに30分をかける。その1pxは、たしかに誰かに届いている。</p>
 </article>
 
 <div class="article-footer">
-  <a href="blog.html" class="article-back">&larr; Back to Blog</a>
+  <a href="blog.html" class="article-back">&larr; Back to Journal</a>
+</div>
+
+<div class="project-nav rv">
+  <a href="blog-02.html"><span class="project-nav-label">Previous</span><span class="project-nav-title">Tokyo Underground — 東京の地下に流れるエネルギー</span></a>
+  <a href="blog-04.html"><span class="project-nav-label">Next Article</span><span class="project-nav-title">クライアントとのコミュニケーション — デザイナーの言語</span></a>
 </div>
 
 <footer>
@@ -95,6 +223,10 @@ document.getElementById('menuToggle').addEventListener('click', function() {
   this.classList.toggle('open');
   document.getElementById('mobileMenu').classList.toggle('open');
 });
+var io = new IntersectionObserver(function (entries) {
+  entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
+}, { threshold: 0.08 });
+document.querySelectorAll('.rv').forEach(function (el) { io.observe(el); });
 </script>
 
 <script src="js/motion.js" defer></script>

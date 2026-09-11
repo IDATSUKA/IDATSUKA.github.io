@@ -7,14 +7,118 @@
   <meta name="description" content="金曜深夜の渋谷から始まる、東京のアンダーグラウンドカルチャー探訪。クラブの照明、フライヤーの芸術、音楽とタイポグラフィの関係について。">
   <meta property="og:title" content="Tokyo Underground — 東京の地下に流れるエネルギー — IDATSUKA">
   <meta property="og:description" content="金曜深夜の渋谷から始まる、東京のアンダーグラウンドカルチャー探訪。クラブの照明、フライヤーの芸術、音楽とタイポグラフィの関係について。">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://idatsuka.com/blog-02.html">
+  <meta property="og:image" content="https://idatsuka.com/img/blog/cover-02.svg">
   <link rel="canonical" href="https://idatsuka.com/blog-02.html">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%2308090c'/><text x='16' y='22' text-anchor='middle' font-size='16' font-family='sans-serif' font-weight='300' fill='%23f2f4f7'>I</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Zen+Kaku+Gothic+New:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <style>
+  /* ── Article — page-scoped editorial layer ── */
+  .article-page .article-header { border-bottom: none; padding-bottom: 2.4rem; max-width: 820px; }
+  .article-page .article-meta { align-items: center; }
+
+  /* Cover hero */
+  .article-cover {
+    position: relative; aspect-ratio: 21/9; max-height: 520px; overflow: hidden;
+    background: var(--bg2);
+    border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  }
+  .article-cover img { width: 100%; height: 100%; object-fit: cover; }
+  .article-cover::after {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background:
+      linear-gradient(180deg, rgba(6,6,7,.45) 0%, rgba(6,6,7,0) 26%, rgba(6,6,7,0) 58%, rgba(6,6,7,.96) 100%);
+  }
+  .article-cover-caption {
+    position: absolute; left: 3rem; bottom: 1.3rem; z-index: 2;
+    font-family: var(--mono); font-size: .5rem; letter-spacing: .26em;
+    text-transform: uppercase; color: var(--dim);
+  }
+
+  /* Key points */
+  .article-keys { max-width: 640px; padding: 3rem 3rem 0; }
+  .article-keys-inner {
+    border: 1px solid var(--border); border-left: 1px solid var(--accent-soft);
+    background: linear-gradient(115deg, rgba(159,214,236,.045), rgba(159,214,236,0) 62%);
+    padding: 1.7rem 1.9rem 1.8rem;
+  }
+  .article-keys-label {
+    font-family: var(--mono); font-size: .5rem; letter-spacing: .28em;
+    text-transform: uppercase; color: var(--accent); display: block; margin-bottom: 1.1rem; opacity: .9;
+  }
+  .article-keys ol { list-style: none; margin: 0; padding: 0; counter-reset: k; }
+  .article-keys li {
+    counter-increment: k; position: relative; padding-left: 2.1rem;
+    font-size: .84rem; line-height: 1.95; color: var(--fg-dim);
+  }
+  .article-keys li + li { margin-top: .7rem; }
+  .article-keys li::before {
+    content: counter(k, decimal-leading-zero);
+    position: absolute; left: 0; top: .1em;
+    font-family: var(--mono); font-size: .55rem; letter-spacing: .1em;
+    color: var(--accent); opacity: .8;
+  }
+
+  /* Section anchors */
+  .article-page .article-body h2 { scroll-margin-top: 6rem; }
+  .article-page .article-body h2 .anchor {
+    font-family: var(--mono); font-size: .6rem; color: var(--accent);
+    opacity: 0; margin-left: .55rem; transition: opacity .3s var(--ease-out);
+  }
+  .article-page .article-body h2:hover .anchor,
+  .article-page .article-body h2 .anchor:focus-visible { opacity: .75; }
+
+  /* Pull quote */
+  .article-page .article-body blockquote.pull {
+    margin: 3rem 0; padding: 1.7rem 0 1.6rem;
+    border: none; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    background: none; font-style: normal;
+    font-size: 1.06rem; line-height: 1.9; letter-spacing: -.012em; color: var(--fg);
+    position: relative;
+  }
+  .article-page .article-body blockquote.pull::before {
+    content: ''; position: absolute; left: 0; top: -1px; width: 46px; height: 1px;
+    background: var(--accent);
+  }
+
+  /* Footer nav */
+  .article-page .article-footer { padding-bottom: 2.6rem; }
+  .article-page .project-nav a { padding: 2.4rem 3rem; gap: .5rem; }
+  .article-page .project-nav-label { color: var(--muted); }
+  .article-page .project-nav-title { font-size: .9rem; line-height: 1.55; }
+  .article-page .project-nav a:first-child .project-nav-title::before {
+    content: '\2190'; color: var(--accent); opacity: .5; margin-right: .55rem;
+    display: inline-block; transition: transform .4s var(--ease-out), opacity .4s var(--ease-out);
+  }
+  .article-page .project-nav a:last-child .project-nav-title::after {
+    content: '\2192'; color: var(--accent); opacity: .5; margin-left: .55rem;
+    display: inline-block; transition: transform .4s var(--ease-out), opacity .4s var(--ease-out);
+  }
+  .article-page .project-nav a:first-child:hover .project-nav-title::before {
+    transform: translateX(-4px); opacity: 1;
+  }
+  .article-page .project-nav a:last-child:hover .project-nav-title::after {
+    transform: translateX(4px); opacity: 1;
+  }
+
+  @media (max-width: 900px) {
+    .article-cover { aspect-ratio: 16/9; max-height: 320px; }
+    .article-cover-caption { left: 1.5rem; bottom: 1rem; }
+    .article-keys { padding: 2.2rem 1.5rem 0; }
+    .article-keys-inner { padding: 1.4rem 1.3rem 1.5rem; }
+    .article-page .project-nav { grid-template-columns: 1fr; }
+    .article-page .project-nav a { padding: 1.7rem 1.5rem; }
+    .article-page .project-nav a:last-child {
+      text-align: left; border-left: none; border-top: 1px solid var(--border);
+    }
+  }
+  </style>
 </head>
-<body>
+<body class="article-page">
 
 <nav>
   <a href="/" class="logo"><img src="img/logo.svg" alt="Idatsuka"></a>
@@ -48,36 +152,59 @@
   <p class="article-header-desc">金曜深夜の渋谷、地下へと続く階段の先にあるもの。東京のアンダーグラウンドカルチャーが、デザイナーとしての自分に教えてくれたことを書き留めておく。</p>
 </header>
 
+<div class="article-cover rv">
+  <img src="img/blog/cover-02.svg" alt="地下鉄の路線図のような線と夜のグロウを抽象化したカバーアート" width="800" height="450">
+  <span class="article-cover-caption">Cover — Night Lines / Tokyo</span>
+</div>
+
+<div class="article-keys rv">
+  <div class="article-keys-inner">
+    <span class="article-keys-label">Key Points</span>
+    <ol>
+      <li>光が少ないほど、ひとつの光に意味が宿る。闇を基準に、何を光らせるかを決める。</li>
+      <li>90年代のフライヤーは情報伝達の効率より、その夜の「空気」を伝えようとしていた。</li>
+      <li>BPM とカーニングは同じリズムの言語。文字組みにも「テンポを決める」工程がある。</li>
+    </ol>
+  </div>
+</div>
+
 <article class="article-body">
   <p>金曜の深夜0時過ぎ、渋谷。終電を逃した人々が交差点に散らばる頃、僕は雑居ビルの裏にある狭い階段を降りていく。看板はほとんど出ていない。重い扉を開けた瞬間、低音が胸を直接叩く。ここが東京のもうひとつの顔、<strong>地下に流れるエネルギー</strong>の源流だ。地上の東京が情報過多の光なら、地下の東京は選び抜かれた闇でできている。</p>
 
-  <h2>闇の中のデザイン</h2>
+  <h2 id="darkness">闇の中のデザイン<a class="anchor" href="#darkness" aria-label="このセクションへのリンク">#</a></h2>
   <p>クラブの空間設計は、考えてみれば究極のミニマリズムだ。基本は完全な暗闇。そこにレーザーの一筋、ストロボの一閃、煙に滲むLEDの面が置かれる。光が少ないからこそ、ひとつひとつの光に意味が宿る。VJの映像はフロアの呼吸に合わせて明滅し、照明はDJのビルドアップと完璧に同期する。</p>
   <p>これは画面のデザインとまったく同じ構造だと気づいた。要素を足すのではなく、闇——つまり余白——を基準に、何を光らせるかを決める。<strong>コントラストと階層は、暗闇の中でこそ最も雄弁になる</strong>。僕がダークUIを設計するとき、頭の中にはいつもあの地下のフロアがある。</p>
 
-  <h2>フライヤーという芸術</h2>
+  <h2 id="flyers">フライヤーという芸術<a class="anchor" href="#flyers" aria-label="このセクションへのリンク">#</a></h2>
   <p>東京のクラブカルチャーを語るうえで、フライヤーを外すことはできない。特に90年代——インターネット以前の東京では、フライヤーこそがメディアであり、招待状であり、作品だった。芝浦や西麻布のクラブの入り口に積まれた紙の束は、その夜の音を予告する小さなポスターギャラリーだった。</p>
   <p>あの時代のフライヤーは自由だ。判読ぎりぎりまで歪んだタイポグラフィ、蛍光インクの特色、銀紙への印刷。情報伝達の効率なんて二の次で、まず「空気」を伝えようとしていた。手に取った瞬間に、その夜の温度が分かる。今のデザインが失いがちな体温が、あの紙にはあった。</p>
 
   <blockquote>「最高のデザインは、暗闇の中で光を見つけたときに生まれる」</blockquote>
 
-  <h2>音楽とタイポグラフィ</h2>
+  <h2 id="rhythm">音楽とタイポグラフィ<a class="anchor" href="#rhythm" aria-label="このセクションへのリンク">#</a></h2>
   <p>フロアで踊りながら、よく考えることがある。音楽とタイポグラフィは、実は同じ言語なのではないかと。BPMはリズムであり、タイポグラフィにおけるカーニングや行送りもまたリズムだ。詰まった字間は速い4つ打ちのような緊張感を生み、ゆったり開いた字間はアンビエントのように呼吸する。</p>
   <p>テクノのレーベルのジャケットに、グリッドの効いたサンセリフが多いのは偶然ではない。反復と正確さの美学が、音にも文字にも貫かれている。<strong>BPM130の文字組み</strong>と<strong>BPM90の文字組み</strong>は、確かに存在する。そう考えるようになってから、僕の文字組みには「テンポを決める」という工程が増えた。</p>
 
-  <h2>Underground to Mainstream</h2>
+  <blockquote class="pull rv">コントラストと階層は、暗闇の中でこそ最も雄弁になる。</blockquote>
+
+  <h2 id="mainstream">Underground to Mainstream<a class="anchor" href="#mainstream" aria-label="このセクションへのリンク">#</a></h2>
   <p>地下で生まれたものは、やがて地上に吸い上げられる。クラブのフライヤーで実験されたタイポグラフィは、数年後にファッションブランドの広告になり、ストリートの感覚は大手企業のキャンペーンに現れる。それを「商業化」と嘆く人もいるが、僕は文化の循環だと思っている。</p>
   <p>大切なのは、源流が枯れないことだ。誰かが採算を度外視して、狭い地下室で新しい何かを試し続けている限り、東京のデザインは更新され続ける。だから僕は、地下に通うことをインプットだと胸を張って言う。</p>
 
   <hr>
 
-  <h2>深夜3時の帰り道</h2>
+  <h2 id="after-hours">深夜3時の帰り道<a class="anchor" href="#after-hours" aria-label="このセクションへのリンク">#</a></h2>
   <p>クラブを出ると、深夜3時の渋谷は不思議なほど静かだ。耳の奥にはまだ低音の残響があり、目は暗闇に慣れたままで、街の光がやけに鮮やかに見える。タクシーを待ちながら思う。今夜見た光と闇のコントラスト、あのフライヤーの紙の質感、フロアのリズム——その全部が、月曜の仕事のどこかに必ず流れ込む。</p>
   <p>東京の地下に流れるエネルギーは、観光ガイドには載らない。けれど、この街のクリエイティブの心拍は、間違いなくあの地下から打たれている。</p>
 </article>
 
 <div class="article-footer">
-  <a href="blog.html" class="article-back">&larr; Back to Blog</a>
+  <a href="blog.html" class="article-back">&larr; Back to Journal</a>
+</div>
+
+<div class="project-nav rv">
+  <a href="blog-01.html"><span class="project-nav-label">Previous</span><span class="project-nav-title">デザインシステムを0から構築する — 実践的アプローチ</span></a>
+  <a href="blog-03.html"><span class="project-nav-label">Next Article</span><span class="project-nav-title">タイポグラフィは感情だ — 字間と行間の詩学</span></a>
 </div>
 
 <footer>
@@ -97,6 +224,10 @@ document.getElementById('menuToggle').addEventListener('click', function() {
   this.classList.toggle('open');
   document.getElementById('mobileMenu').classList.toggle('open');
 });
+var io = new IntersectionObserver(function (entries) {
+  entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
+}, { threshold: 0.08 });
+document.querySelectorAll('.rv').forEach(function (el) { io.observe(el); });
 </script>
 
 <script src="js/motion.js" defer></script>

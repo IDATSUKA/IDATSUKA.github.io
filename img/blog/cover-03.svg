@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450" role="img" aria-label="Baselines, x-height and letterform rhythm as geometry">
+  <defs>
+    <linearGradient id="c3-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#08080a"/>
+      <stop offset="1" stop-color="#0c0d11"/>
+    </linearGradient>
+    <linearGradient id="c3-rule" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#9fd6ec" stop-opacity="0"/>
+      <stop offset="0.12" stop-color="#9fd6ec" stop-opacity="0.55"/>
+      <stop offset="0.88" stop-color="#9fd6ec" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#9fd6ec" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="c3-rule-dim" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="0.1" stop-color="#ffffff" stop-opacity="0.13"/>
+      <stop offset="0.9" stop-color="#ffffff" stop-opacity="0.13"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="c3-stem" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#9fd6ec" stop-opacity="0.10"/>
+      <stop offset="1" stop-color="#9fd6ec" stop-opacity="0.62"/>
+    </linearGradient>
+    <radialGradient id="c3-glow" cx="0.5" cy="0.56" r="0.6">
+      <stop offset="0" stop-color="#9fd6ec" stop-opacity="0.11"/>
+      <stop offset="1" stop-color="#9fd6ec" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="c3-vig" cx="0.5" cy="0.5" r="0.8">
+      <stop offset="0.5" stop-color="#07070a" stop-opacity="0"/>
+      <stop offset="1" stop-color="#07070a" stop-opacity="0.82"/>
+    </radialGradient>
+    <filter id="c3-soft" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="12"/>
+    </filter>
+  </defs>
+
+  <rect width="800" height="450" fill="url(#c3-bg)"/>
+  <rect width="800" height="450" fill="url(#c3-glow)"/>
+
+  <!-- type metrics: ascender / cap / x-height / baseline / descender -->
+  <path d="M60 128H740" stroke="url(#c3-rule-dim)" stroke-width="1" stroke-dasharray="2 6"/>
+  <path d="M60 156H740" stroke="url(#c3-rule-dim)" stroke-width="1"/>
+  <path d="M60 214H740" stroke="url(#c3-rule-dim)" stroke-width="1" stroke-dasharray="4 6"/>
+  <path d="M60 300H740" stroke="url(#c3-rule)" stroke-width="1.4"/>
+  <path d="M60 340H740" stroke="url(#c3-rule-dim)" stroke-width="1" stroke-dasharray="2 6"/>
+  <path d="M60 300H740" stroke="#9fd6ec" stroke-opacity="0.35" stroke-width="3" filter="url(#c3-soft)"/>
+
+  <!-- metric ticks on the left -->
+  <g stroke="#9fd6ec" stroke-opacity="0.4" stroke-width="1">
+    <path d="M48 128h10M48 156h10M48 214h10M48 300h14M48 340h10"/>
+  </g>
+  <path d="M54 156V300" stroke="#9fd6ec" stroke-opacity="0.22" stroke-width="1"/>
+
+  <!-- letterform skeleton: stems standing on the baseline, x-height rhythm -->
+  <g>
+    <rect x="96" y="156" width="7" height="144" fill="url(#c3-stem)"/>
+    <rect x="130" y="214" width="7" height="86" fill="url(#c3-stem)" opacity="0.75"/>
+    <rect x="164" y="214" width="7" height="126" fill="url(#c3-stem)" opacity="0.6"/>
+    <rect x="204" y="214" width="7" height="86" fill="url(#c3-stem)" opacity="0.85"/>
+
+    <rect x="262" y="128" width="7" height="172" fill="url(#c3-stem)"/>
+    <rect x="292" y="214" width="7" height="86" fill="url(#c3-stem)" opacity="0.7"/>
+    <rect x="330" y="214" width="7" height="86" fill="url(#c3-stem)" opacity="0.5"/>
+
+    <rect x="392" y="156" width="9" height="144" fill="#9fd6ec" fill-opacity="0.9"/>
+    <rect x="424" y="214" width="7" height="86" fill="url(#c3-stem)" opacity="0.9"/>
+    <rect x="456" y="214" width="7" height="126" fill="url(#c3-stem)" opacity="0.55"/>
+
+    <rect x="516" y="128" width="7" height="172" fill="url(#c3-stem)" opacity="0.8"/>
+    <rect x="548" y="214" width="7" height="86" fill="url(#c3-stem)" opacity="0.6"/>
+    <rect x="584" y="214" width="7" height="86" fill="url(#c3-stem)" opacity="0.45"/>
+    <rect x="624" y="156" width="7" height="144" fill="url(#c3-stem)" opacity="0.5"/>
+    <rect x="660" y="214" width="7" height="86" fill="url(#c3-stem)" opacity="0.35"/>
+    <rect x="700" y="214" width="7" height="86" fill="url(#c3-stem)" opacity="0.22"/>
+  </g>
+
+  <!-- bowls / counters: arcs hung from the x-height -->
+  <g fill="none" stroke="#9fd6ec" stroke-opacity="0.30" stroke-width="1.4">
+    <path d="M137 257a21 21 0 0 0 42 0a21 21 0 0 0-42 0"/>
+    <path d="M299 257a21 21 0 0 0 42 0a21 21 0 0 0-42 0" stroke-opacity="0.18"/>
+    <path d="M431 257a21 21 0 0 0 42 0a21 21 0 0 0-42 0" stroke-opacity="0.22"/>
+  </g>
+  <path d="M401 257a21 21 0 0 1 0 0" stroke="none"/>
+
+  <!-- highlighted stem bloom -->
+  <rect x="392" y="156" width="9" height="144" fill="#9fd6ec" fill-opacity="0.5" filter="url(#c3-soft)"/>
+
+  <!-- tracking measure under the baseline -->
+  <g stroke="#9fd6ec" stroke-opacity="0.35" stroke-width="1">
+    <path d="M96 386v10M137 386v10M181 386v10M229 386v10M282 386v10M340 386v10M403 386v10"/>
+  </g>
+  <path d="M96 391H403" stroke="#9fd6ec" stroke-opacity="0.16" stroke-width="1"/>
+  <g stroke="#8d96a3" stroke-opacity="0.28" stroke-width="1">
+    <path d="M456 386v10M494 386v10M532 386v10M570 386v10M608 386v10M646 386v10M684 386v10"/>
+  </g>
+  <path d="M456 391H684" stroke="#8d96a3" stroke-opacity="0.14" stroke-width="1"/>
+
+  <!-- kerning delta marker -->
+  <path d="M392 84v72M401 84v72" stroke="#9fd6ec" stroke-opacity="0.22" stroke-width="1"/>
+  <path d="M370 100h22M401 100h22" stroke="#9fd6ec" stroke-opacity="0.5" stroke-width="1"/>
+  <path d="M392 96v8M401 96v8" stroke="#9fd6ec" stroke-opacity="0.75" stroke-width="1.4"/>
+
+  <rect width="800" height="450" fill="url(#c3-vig)"/>
+</svg>

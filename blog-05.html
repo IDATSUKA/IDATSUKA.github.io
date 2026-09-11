@@ -7,14 +7,118 @@
   <meta name="description" content="何も置かないことには勇気がいる。Negative SpaceとWhite Spaceの違い、建築における余白、そしてデジタルデザインで余白が果たす役割について考える。">
   <meta property="og:title" content="ブランキングの美学 — 余白が語るもの — IDATSUKA">
   <meta property="og:description" content="何も置かないことには勇気がいる。Negative SpaceとWhite Spaceの違い、建築における余白、そしてデジタルデザインで余白が果たす役割について考える。">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://idatsuka.com/blog-05.html">
+  <meta property="og:image" content="https://idatsuka.com/img/blog/cover-05.svg">
   <link rel="canonical" href="https://idatsuka.com/blog-05.html">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%2308090c'/><text x='16' y='22' text-anchor='middle' font-size='16' font-family='sans-serif' font-weight='300' fill='%23f2f4f7'>I</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Zen+Kaku+Gothic+New:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <style>
+  /* ── Article — page-scoped editorial layer ── */
+  .article-page .article-header { border-bottom: none; padding-bottom: 2.4rem; max-width: 820px; }
+  .article-page .article-meta { align-items: center; }
+
+  /* Cover hero */
+  .article-cover {
+    position: relative; aspect-ratio: 21/9; max-height: 520px; overflow: hidden;
+    background: var(--bg2);
+    border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  }
+  .article-cover img { width: 100%; height: 100%; object-fit: cover; }
+  .article-cover::after {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background:
+      linear-gradient(180deg, rgba(6,6,7,.45) 0%, rgba(6,6,7,0) 26%, rgba(6,6,7,0) 58%, rgba(6,6,7,.96) 100%);
+  }
+  .article-cover-caption {
+    position: absolute; left: 3rem; bottom: 1.3rem; z-index: 2;
+    font-family: var(--mono); font-size: .5rem; letter-spacing: .26em;
+    text-transform: uppercase; color: var(--dim);
+  }
+
+  /* Key points */
+  .article-keys { max-width: 640px; padding: 3rem 3rem 0; }
+  .article-keys-inner {
+    border: 1px solid var(--border); border-left: 1px solid var(--accent-soft);
+    background: linear-gradient(115deg, rgba(159,214,236,.045), rgba(159,214,236,0) 62%);
+    padding: 1.7rem 1.9rem 1.8rem;
+  }
+  .article-keys-label {
+    font-family: var(--mono); font-size: .5rem; letter-spacing: .28em;
+    text-transform: uppercase; color: var(--accent); display: block; margin-bottom: 1.1rem; opacity: .9;
+  }
+  .article-keys ol { list-style: none; margin: 0; padding: 0; counter-reset: k; }
+  .article-keys li {
+    counter-increment: k; position: relative; padding-left: 2.1rem;
+    font-size: .84rem; line-height: 1.95; color: var(--fg-dim);
+  }
+  .article-keys li + li { margin-top: .7rem; }
+  .article-keys li::before {
+    content: counter(k, decimal-leading-zero);
+    position: absolute; left: 0; top: .1em;
+    font-family: var(--mono); font-size: .55rem; letter-spacing: .1em;
+    color: var(--accent); opacity: .8;
+  }
+
+  /* Section anchors */
+  .article-page .article-body h2 { scroll-margin-top: 6rem; }
+  .article-page .article-body h2 .anchor {
+    font-family: var(--mono); font-size: .6rem; color: var(--accent);
+    opacity: 0; margin-left: .55rem; transition: opacity .3s var(--ease-out);
+  }
+  .article-page .article-body h2:hover .anchor,
+  .article-page .article-body h2 .anchor:focus-visible { opacity: .75; }
+
+  /* Pull quote */
+  .article-page .article-body blockquote.pull {
+    margin: 3rem 0; padding: 1.7rem 0 1.6rem;
+    border: none; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    background: none; font-style: normal;
+    font-size: 1.06rem; line-height: 1.9; letter-spacing: -.012em; color: var(--fg);
+    position: relative;
+  }
+  .article-page .article-body blockquote.pull::before {
+    content: ''; position: absolute; left: 0; top: -1px; width: 46px; height: 1px;
+    background: var(--accent);
+  }
+
+  /* Footer nav */
+  .article-page .article-footer { padding-bottom: 2.6rem; }
+  .article-page .project-nav a { padding: 2.4rem 3rem; gap: .5rem; }
+  .article-page .project-nav-label { color: var(--muted); }
+  .article-page .project-nav-title { font-size: .9rem; line-height: 1.55; }
+  .article-page .project-nav a:first-child .project-nav-title::before {
+    content: '\2190'; color: var(--accent); opacity: .5; margin-right: .55rem;
+    display: inline-block; transition: transform .4s var(--ease-out), opacity .4s var(--ease-out);
+  }
+  .article-page .project-nav a:last-child .project-nav-title::after {
+    content: '\2192'; color: var(--accent); opacity: .5; margin-left: .55rem;
+    display: inline-block; transition: transform .4s var(--ease-out), opacity .4s var(--ease-out);
+  }
+  .article-page .project-nav a:first-child:hover .project-nav-title::before {
+    transform: translateX(-4px); opacity: 1;
+  }
+  .article-page .project-nav a:last-child:hover .project-nav-title::after {
+    transform: translateX(4px); opacity: 1;
+  }
+
+  @media (max-width: 900px) {
+    .article-cover { aspect-ratio: 16/9; max-height: 320px; }
+    .article-cover-caption { left: 1.5rem; bottom: 1rem; }
+    .article-keys { padding: 2.2rem 1.5rem 0; }
+    .article-keys-inner { padding: 1.4rem 1.3rem 1.5rem; }
+    .article-page .project-nav { grid-template-columns: 1fr; }
+    .article-page .project-nav a { padding: 1.7rem 1.5rem; }
+    .article-page .project-nav a:last-child {
+      text-align: left; border-left: none; border-top: 1px solid var(--border);
+    }
+  }
+  </style>
 </head>
-<body>
+<body class="article-page">
 
 <nav>
   <a href="/" class="logo"><img src="img/logo.svg" alt="Idatsuka"></a>
@@ -48,24 +152,40 @@
   <p class="article-header-desc">埋めることは簡単で、空けることは難しい。何も置かないという選択が、なぜデザインの中で最も雄弁になりうるのか。余白について考える。</p>
 </header>
 
+<div class="article-cover rv">
+  <img src="img/blog/cover-05.svg" alt="広い余白の中に置かれた、たったひとつの要素を描いたカバーアート" width="800" height="450">
+  <span class="article-cover-caption">Cover — One Element / Empty Field</span>
+</div>
+
+<div class="article-keys rv">
+  <div class="article-keys-inner">
+    <span class="article-keys-label">Key Points</span>
+    <ol>
+      <li>余白は「まだ何も入っていない場所」ではなく、すでに役割を果たしている場所である。</li>
+      <li>要素を引き立てたいなら、飾るのではなく周囲を空ける。光を見せたいなら影をつくる。</li>
+      <li>余白を先にデザインする。空間のリズムを決めてから、要素を流し込む。</li>
+    </ol>
+  </div>
+</div>
+
 <article class="article-body">
   <p>デザインの仕事をしていて、最も説明が難しいのが余白である。「ここ、空いてますけど何か入れられませんか？」——この質問に何度向き合ってきただろう。スペースがあれば情報を足したくなるのは自然な心理だ。だからこそ、<strong>何も置かないことには勇気がいる</strong>。余白は怠慢の産物ではなく、意志を持った選択なのだということを、今日は書いてみたい。</p>
 
-  <h2>余白は「空」ではない</h2>
+  <h2 id="not-empty">余白は「空」ではない<a class="anchor" href="#not-empty" aria-label="このセクションへのリンク">#</a></h2>
   <p>英語では余白を表す言葉が二つある。White SpaceとNegative Spaceだ。White Spaceは文字通り「何も置かれていない領域」を指すが、Negative Spaceはもう一歩踏み込んだ概念で、<strong>置かれたものの形を成立させるための、対になる空間</strong>を意味する。彫刻家が石を彫るとき、削り取られた部分が像の輪郭を決めるように、ネガティブスペースは主役の輪郭を決める。</p>
   <p>つまり余白は「まだ何も入っていない場所」ではない。すでに役割を果たしている場所なのだ。ロゴの周囲の保護エリア、見出しの上の大きな空き、段落の間の呼吸——それらを削れば、残された要素の意味まで一緒に痩せていく。</p>
 
-  <h2>建築と余白</h2>
+  <h2 id="architecture">建築と余白<a class="anchor" href="#architecture" aria-label="このセクションへのリンク">#</a></h2>
   <p>余白の力を最も体感できるのは、建築かもしれない。安藤忠雄のコンクリート建築を訪れると、装飾を削ぎ落とした打ち放しの壁と、計算された空隙の中で、光と影だけが主役になる瞬間がある。壁に何かが「ある」からではなく、何も「ない」からこそ、差し込む一筋の光が劇的に立ち上がる。</p>
   <p>これはグラフィックや画面のデザインにそのまま翻訳できる教訓だ。要素を引き立てたければ、要素を飾るのではなく、その周囲を空ける。光を見せたければ、影をつくる。</p>
   <blockquote>「余白とは、デザイナーの自信である。」</blockquote>
   <p>不安なデザインほど要素で埋まり、確信のあるデザインほど空間が残る。伝えるべきものが定まっていれば、それ以外を置く必要がないからだ。余白の量は、そのまま設計の解像度を映す鏡である。</p>
 
-  <h2>デジタルデザインにおける余白の力</h2>
+  <h2 id="digital">デジタルデザインにおける余白の力<a class="anchor" href="#digital" aria-label="このセクションへのリンク">#</a></h2>
   <p>スクリーンの世界では、余白はさらに実利的な意味を持つ。十分な行間は可読性を上げ、要素間の距離はグルーピングを伝え、ボタン周りの空きはタップのしやすさを決める。情報過多の画面でユーザーが最初に感じるのは「読みにくい」ではなく「読みたくない」だ。余白は、読む前の印象——心理的なハードル——を下げる最初のUIなのである。</p>
   <p>高級ブランドのサイトを思い浮かべてほしい。画面の大半が空白で、商品が一つだけ静かに置かれている。あの余白は美学であると同時に、「私たちは一つひとつに価値がある」という無言のメッセージでもある。</p>
 
-  <h2>余白を「デザインする」</h2>
+  <h2 id="designing-space">余白を「デザインする」<a class="anchor" href="#designing-space" aria-label="このセクションへのリンク">#</a></h2>
   <p>余白は要素を配置した「残り」ではない。私は最近、むしろ逆の順序で考えるようになった。まず空間のリズム——詰まる場所、開く場所——を決めてから、要素を流し込む。余白を先にデザインするのだ。</p>
   <ul>
     <li>余白に階層をつくる。大・中・小の空きを使い分け、関係の近さを距離で語る。</li>
@@ -73,16 +193,24 @@
     <li>一番大きな余白を、一番伝えたいものの隣に置く。</li>
   </ul>
 
-  <h2>Less is More、その先へ</h2>
+  <blockquote class="pull rv">不安なデザインほど要素で埋まり、確信のあるデザインほど空間が残る。</blockquote>
+
+  <h2 id="beyond">Less is More、その先へ<a class="anchor" href="#beyond" aria-label="このセクションへのリンク">#</a></h2>
   <p>ミース・ファン・デル・ローエの「Less is More」は、削ることの美学として語り継がれてきた。しかし余白の本質は、単に「少ないこと」ではないと思う。削った先に何を残すか、空けた場所で何を語らせるか。<strong>余白は沈黙ではなく、声の一つ</strong>なのだ。</p>
 
   <hr>
 
+  <h2 id="choice">何も置かないという選択<a class="anchor" href="#choice" aria-label="このセクションへのリンク">#</a></h2>
   <p>次にレイアウトに向かうとき、空いたスペースを「埋めるべき場所」ではなく「すでに働いている場所」として見てみてほしい。何も置かないという選択を堂々とできたとき、デザインは一段静かに、そして雄弁になる。</p>
 </article>
 
 <div class="article-footer">
-  <a href="blog.html" class="article-back">&larr; Back to Blog</a>
+  <a href="blog.html" class="article-back">&larr; Back to Journal</a>
+</div>
+
+<div class="project-nav rv">
+  <a href="blog-04.html"><span class="project-nav-label">Previous</span><span class="project-nav-title">クライアントとのコミュニケーション — デザイナーの言語</span></a>
+  <a href="blog.html"><span class="project-nav-label">Index</span><span class="project-nav-title">Journal — All Articles</span></a>
 </div>
 
 <footer>
@@ -102,6 +230,10 @@ document.getElementById('menuToggle').addEventListener('click', function() {
   this.classList.toggle('open');
   document.getElementById('mobileMenu').classList.toggle('open');
 });
+var io = new IntersectionObserver(function (entries) {
+  entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
+}, { threshold: 0.08 });
+document.querySelectorAll('.rv').forEach(function (el) { io.observe(el); });
 </script>
 
 <script src="js/motion.js" defer></script>

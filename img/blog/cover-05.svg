@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450" role="img" aria-label="A single small element held in a large empty field">
+  <defs>
+    <linearGradient id="c5-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#080809"/>
+      <stop offset="1" stop-color="#0a0b0e"/>
+    </linearGradient>
+    <radialGradient id="c5-halo" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#9fd6ec" stop-opacity="0.30"/>
+      <stop offset="0.45" stop-color="#9fd6ec" stop-opacity="0.08"/>
+      <stop offset="1" stop-color="#9fd6ec" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="c5-fade-h" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#9fd6ec" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#9fd6ec" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#9fd6ec" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="c5-fade-v" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#9fd6ec" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#9fd6ec" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#9fd6ec" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="c5-vig" cx="0.5" cy="0.5" r="0.8">
+      <stop offset="0.45" stop-color="#050607" stop-opacity="0"/>
+      <stop offset="1" stop-color="#050607" stop-opacity="0.9"/>
+    </radialGradient>
+    <filter id="c5-soft" x="-200%" y="-200%" width="500%" height="500%">
+      <feGaussianBlur stdDeviation="18"/>
+    </filter>
+  </defs>
+
+  <rect width="800" height="450" fill="url(#c5-bg)"/>
+
+  <!-- the field: almost nothing, only the faintest sense of a frame -->
+  <rect x="120" y="72" width="560" height="306" fill="none" stroke="#ffffff" stroke-opacity="0.045" stroke-width="1"/>
+
+  <!-- crossing guides through the element, dissolving into the dark -->
+  <path d="M120 274H680" stroke="url(#c5-fade-h)" stroke-width="1"/>
+  <path d="M296 72V378" stroke="url(#c5-fade-v)" stroke-width="1"/>
+
+  <!-- negative-space measure marks along the top and left edges -->
+  <g stroke="#9fd6ec" stroke-opacity="0.18" stroke-width="1">
+    <path d="M120 60h176"/>
+    <path d="M120 56v8M296 56v8"/>
+    <path d="M108 72v202"/>
+    <path d="M104 72h8M104 274h8"/>
+  </g>
+  <g stroke="#8d96a3" stroke-opacity="0.12" stroke-width="1">
+    <path d="M312 60h368"/>
+    <path d="M312 56v8M680 56v8"/>
+    <path d="M108 290v88"/>
+    <path d="M104 290h8M104 378h8"/>
+  </g>
+
+  <!-- the one element -->
+  <circle cx="296" cy="274" r="96" fill="url(#c5-halo)" opacity="0.55"/>
+  <rect x="284" y="262" width="24" height="24" fill="#9fd6ec" fill-opacity="0.5" filter="url(#c5-soft)"/>
+  <rect x="284" y="262" width="24" height="24" fill="#cfeaf7"/>
+
+  <!-- its whisper of a shadow on the field -->
+  <rect x="284" y="262" width="24" height="24" fill="none" stroke="#9fd6ec" stroke-opacity="0.25" stroke-width="1" transform="translate(0 46)"/>
+  <rect x="284" y="262" width="24" height="24" fill="none" stroke="#9fd6ec" stroke-opacity="0.1" stroke-width="1" transform="translate(0 92)"/>
+
+  <rect width="800" height="450" fill="url(#c5-vig)"/>
+</svg>

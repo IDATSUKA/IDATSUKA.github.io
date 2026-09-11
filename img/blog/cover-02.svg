@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450" role="img" aria-label="Subway-like lines converging under a night glow">
+  <defs>
+    <linearGradient id="c2-bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#05060a"/>
+      <stop offset="1" stop-color="#0c0d12"/>
+    </linearGradient>
+    <radialGradient id="c2-night" cx="0.5" cy="0.92" r="0.72">
+      <stop offset="0" stop-color="#9fd6ec" stop-opacity="0.20"/>
+      <stop offset="0.45" stop-color="#6f8fae" stop-opacity="0.07"/>
+      <stop offset="1" stop-color="#6f8fae" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="c2-sodium" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#d8a76a" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#d8a76a" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="c2-vig" cx="0.5" cy="0.5" r="0.8">
+      <stop offset="0.5" stop-color="#04050a" stop-opacity="0"/>
+      <stop offset="1" stop-color="#04050a" stop-opacity="0.88"/>
+    </radialGradient>
+    <filter id="c2-soft" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="10"/>
+    </filter>
+    <filter id="c2-soft-lg" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="26"/>
+    </filter>
+  </defs>
+
+  <rect width="800" height="450" fill="url(#c2-bg)"/>
+  <rect width="800" height="450" fill="url(#c2-night)"/>
+
+  <!-- faint street lattice -->
+  <g stroke="#ffffff" stroke-opacity="0.035" stroke-width="1">
+    <path d="M0 90H800M0 180H800M0 270H800M0 360H800"/>
+    <path d="M100 0V450M300 0V450M500 0V450M700 0V450"/>
+  </g>
+
+  <!-- glow beds under the main lines -->
+  <g filter="url(#c2-soft-lg)" stroke-linecap="round" fill="none" stroke-opacity="0.30">
+    <path d="M-20 120 L180 120 L260 200 L520 200 L600 280 L820 280" stroke="#9fd6ec" stroke-width="8"/>
+  </g>
+
+  <!-- line A — ice blue trunk -->
+  <path d="M-20 120 L180 120 L260 200 L520 200 L600 280 L820 280"
+        fill="none" stroke="#9fd6ec" stroke-opacity="0.85" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- line B — dim grey -->
+  <path d="M-20 330 L140 330 L230 240 L420 240 L500 160 L700 160 L760 100 L820 100"
+        fill="none" stroke="#8d96a3" stroke-opacity="0.42" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- line C — sodium amber, secondary tint -->
+  <path d="M-20 400 L260 400 L340 320 L340 120 L400 60 L820 60"
+        fill="none" stroke="#d8a76a" stroke-opacity="0.30" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- line D — hairline spur -->
+  <path d="M120 450 L120 300 L200 220 L200 40"
+        fill="none" stroke="#9fd6ec" stroke-opacity="0.18" stroke-width="1.2" stroke-linejoin="round"/>
+  <path d="M660 450 L660 340 L740 260 L820 260"
+        fill="none" stroke="#9fd6ec" stroke-opacity="0.16" stroke-width="1.2" stroke-linejoin="round"/>
+
+  <!-- interchange halo -->
+  <circle cx="340" cy="200" r="46" fill="url(#c2-sodium)" opacity="0.5"/>
+  <circle cx="340" cy="200" r="60" fill="#9fd6ec" opacity="0.10" filter="url(#c2-soft)"/>
+
+  <!-- stations -->
+  <g fill="#05060a" stroke="#9fd6ec" stroke-width="2">
+    <circle cx="180" cy="120" r="5.5" stroke-opacity="0.9"/>
+    <circle cx="340" cy="200" r="8" stroke-opacity="1"/>
+    <circle cx="520" cy="200" r="5.5" stroke-opacity="0.75"/>
+    <circle cx="600" cy="280" r="4.5" stroke-opacity="0.55"/>
+  </g>
+  <g fill="#05060a" stroke="#8d96a3" stroke-width="1.6" stroke-opacity="0.55">
+    <circle cx="230" cy="240" r="4"/>
+    <circle cx="500" cy="160" r="4"/>
+    <circle cx="700" cy="160" r="3.4"/>
+  </g>
+  <g fill="#05060a" stroke="#d8a76a" stroke-width="1.6" stroke-opacity="0.45">
+    <circle cx="340" cy="320" r="4"/>
+    <circle cx="400" cy="60" r="3.4"/>
+  </g>
+
+  <!-- station bloom -->
+  <circle cx="340" cy="200" r="3" fill="#e6f6ff" opacity="0.95"/>
+  <circle cx="180" cy="120" r="2" fill="#cfeaf7" opacity="0.7"/>
+
+  <!-- descending stair marks -->
+  <g stroke="#9fd6ec" stroke-opacity="0.13" stroke-width="1">
+    <path d="M40 424h36M48 436h36M56 448h36"/>
+  </g>
+
+  <rect width="800" height="450" fill="url(#c2-vig)"/>
+</svg>
