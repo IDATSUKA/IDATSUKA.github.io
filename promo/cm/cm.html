@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>IDATSUKA — 15s CM</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Zen+Kaku+Gothic+New:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<!-- offline font kit (session scratchpad); the Google link above is the online fallback -->
+<link rel="stylesheet" href="file:///tmp/claude-0/-home-user-IDATSUKA-github-io/f8afb125-c3c6-5b57-8f76-edb1a21c750f/scratchpad/fontkit/fonts.css">
+<link rel="stylesheet" href="../src/promo.css">
+<style>
+/* ════════════════════════════════════════════════════════════
+   IDATSUKA — 15.000 s motion-graphics CM
+   Everything is a pure function of the clock t (seconds), so
+   __CM.seek(t) renders the same pixels on every run.
+   ?ar=v  →  1080×1920 re-composed vertical layout.
+   ════════════════════════════════════════════════════════════ */
+html, body { background: #000; overflow: hidden; }
+.board { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
+.stage { width: 1920px; height: 1080px; }
+body.v .stage { width: 1080px; height: 1920px; }
+
+#cv { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+.vign {
+  position: absolute; inset: 0; pointer-events: none; z-index: 4;
+  background: radial-gradient(ellipse 78% 74% at 50% 48%, rgba(6,6,7,0) 32%, rgba(6,6,7,.88) 100%);
+}
+#grain {
+  position: absolute; inset: -20%; width: 140%; height: 140%;
+  pointer-events: none; z-index: 60; opacity: .055;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+#flash {
+  position: absolute; inset: 0; z-index: 55; pointer-events: none;
+  background: #dff0f8; opacity: 0;
+}
+#marker {
+  position: absolute; inset: 0; z-index: 99; background: #ffffff;
+}
+#marker.off { display: none; }
+
+/* ── groups ─────────────────────────────────────────────── */
+.grp {
+  position: absolute; inset: 0; z-index: 10;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; opacity: 0; visibility: hidden;
+  will-change: transform, opacity;
+}
+
+.mask { overflow: hidden; display: block; }
+.mask > span { display: block; will-change: transform; }
+
+.cap { display: flex; flex-direction: column; align-items: center; gap: 18px; }
+.cap .eyebrow { font-size: 15px; }
+.cap .h-jp { font-size: 64px; line-height: 1.24; white-space: nowrap; }
+body.v .cap .h-jp { font-size: 48px; }
+body.v .cap .eyebrow { font-size: 12px; letter-spacing: .28em; }
+
+/* b1 — ignition */
+#gIgnite img { width: 780px; filter: blur(1.4px) drop-shadow(0 0 60px rgba(159,214,236,.3)); }
+body.v #gIgnite img { width: 760px; }
+
+/* b2 — wordmark */
+#gMark { padding-bottom: 86px; }
+#gMark .lbl {
+  font-family: var(--mono); font-size: 18px; letter-spacing: .46em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 44px;
+}
+#gMark img { width: 930px; display: block; filter: drop-shadow(0 0 70px rgba(159,214,236,.3)); }
+#gMark .ln { width: 1px; background: linear-gradient(var(--accent-soft), transparent); margin: 34px 0 20px; }
+#gMark .sub { font-family: var(--mono); font-size: 15px; letter-spacing: .42em;
+              text-transform: uppercase; color: var(--fg-dim); }
+body.v #gMark { padding-bottom: 140px; }
+body.v #gMark img { width: 900px; }
+body.v #gMark .lbl { font-size: 14px; letter-spacing: .34em; margin-bottom: 42px; }
+
+/* b3 — games */
+#gGames .row { display: flex; align-items: center; justify-content: center; margin-top: 60px; }
+#gGames .side { width: 430px; flex: none; z-index: 1; }
+#gGames .side .tile { height: 242px; box-shadow: 0 24px 70px rgba(0,0,0,.7); }
+#gGames .side .tile img { filter: brightness(1.06); }
+#gGames .mid { width: 800px; flex: none; z-index: 3; }
+#gGames .browser-bar { height: 36px; }
+#gGames .browser-dots i { width: 7px; height: 7px; }
+#gGames .browser-url { font-size: 11px; padding: 4px 0 3px; }
+#gGames .browser-screen { height: 450px; }
+#gGames .tile-body { padding: 0 16px 14px; }
+#gGames .tile-cat { font-size: 8px; }
+#gGames .tile-title { font-size: 19px; }
+body.v #gGames .row { flex-direction: column; gap: 18px; margin-top: 46px; }
+body.v #gGames .side { width: 720px; }
+body.v #gGames .side .tile { height: 200px; }
+body.v #gGames .mid { width: 880px; }
+body.v #gGames .browser-screen { height: 474px; }
+
+/* b4 — tap */
+#gTap .pair { display: flex; gap: 46px; margin-top: 54px; align-items: flex-start; }
+#gTap .win { width: 660px; position: relative; }
+#gTap .browser-bar { height: 34px; }
+#gTap .browser-dots i { width: 7px; height: 7px; }
+#gTap .browser-url { font-size: 11px; padding: 4px 0 3px; }
+#gTap .browser-screen { height: 372px; }
+#gTap .wlabel {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .26em;
+  text-transform: uppercase; color: var(--muted); margin-top: 16px; text-align: left;
+}
+#gTap .wlabel b { color: var(--accent); font-weight: 400; }
+body.v #gTap .pair { flex-direction: column; gap: 30px; margin-top: 44px; }
+body.v #gTap .win { width: 880px; }
+body.v #gTap .browser-screen { height: 474px; }
+
+.cursor { position: absolute; z-index: 6; pointer-events: none; }
+.cursor svg { filter: drop-shadow(0 4px 14px rgba(0,0,0,.9)); }
+.cursor .ping, .cursor .ping2 {
+  position: absolute; border-radius: 50%; opacity: 0;
+  left: 0; top: 0; transform: translate(-50%,-50%);
+}
+.cursor .ping { width: 90px; height: 90px; border: 2px solid rgba(159,214,236,.6);
+                box-shadow: 0 0 40px rgba(159,214,236,.35); }
+.cursor .ping2 { width: 90px; height: 90px; border: 1px solid rgba(159,214,236,.35); }
+
+/* b5 — ranking */
+#gRank .board { width: 1140px; margin-top: 50px; padding: 30px 36px 24px; text-align: left; }
+#gRank .board-head { padding-bottom: 16px; margin-bottom: 16px; }
+#gRank .board-head .t { font-size: 24px; }
+#gRank .board-head .g { font-size: 11px; }
+#gRank .row { padding: 13px 0; grid-template-columns: 54px 1fr auto; gap: 20px; }
+#gRank .row .n { font-size: 16px; }
+#gRank .row .n.t1 { font-size: 21px; }
+#gRank .row .nm { font-size: 21px; line-height: 1.3; }
+#gRank .row .badge { font-size: 9px; }
+#gRank .row .sc { font-size: 21px; }
+#gRank .stamp { font-family: var(--mono); font-size: 11px; letter-spacing: .12em;
+                color: #656b75; margin-top: 18px; }
+body.v #gRank .board { width: 920px; margin-top: 44px; }
+body.v #gRank .row .nm { font-size: 19px; }
+body.v #gRank .row .sc { font-size: 19px; }
+
+/* b6 — filters */
+#gFilter .chips { justify-content: center; gap: 14px; margin-top: 54px; }
+#gFilter .chip { font-size: 15px; padding: 12px 24px 10px; letter-spacing: .18em; }
+#gFilter .codecard { width: 720px; margin-top: 48px; padding: 34px 40px 32px;
+                     align-items: flex-start; border-radius: 4px; gap: 14px; text-align: left; }
+#gFilter .codecard .lbl { font-size: 11px; }
+#gFilter .codecard .code { font-size: 54px; line-height: 1; white-space: pre; }
+#gFilter .codecard .act { display: flex; gap: 12px; margin-top: 6px; }
+#gFilter .codecard .act .tag { font-size: 11px; padding: 9px 18px 8px; }
+#gFilter .stamp { font-family: var(--mono); font-size: 11px; letter-spacing: .12em;
+                  color: #656b75; margin-top: 24px; }
+body.v #gFilter .chips { max-width: 900px; gap: 11px; }
+body.v #gFilter .chip { font-size: 13px; padding: 10px 18px 8px; }
+body.v #gFilter .codecard { width: 880px; }
+body.v #gFilter .codecard .code { font-size: 48px; }
+
+/* b7 — templates */
+#gTpl .fan { position: relative; width: 1320px; height: 505px; margin-top: 38px; }
+#gTpl .cover { position: absolute; width: 470px; border-radius: 4px; text-align: left;
+               left: 50%; top: 50px; margin-left: -235px; }
+#gTpl .cover-body { padding: 18px 22px 20px; display: flex; flex-direction: column; gap: 6px; }
+#gTpl .cover-cat { font-size: 10px; }
+#gTpl .cover-name { font-size: 25px; letter-spacing: .04em; }
+#gTpl .cover-price { font-size: 15px; margin-top: 3px; }
+#gTpl .cover-price .free { color: var(--accent); font-size: 13px; letter-spacing: .1em; }
+#gTpl .c-m { width: 510px; margin-left: -255px; top: 0; z-index: 3;
+             box-shadow: 0 56px 150px rgba(0,0,0,.88), 0 0 110px rgba(159,214,236,.1);
+             border-color: rgba(255,255,255,.2); }
+#gTpl .c-r .cover-body { align-items: flex-end; text-align: right; }
+#gTpl .pricebar { display: flex; align-items: baseline; gap: 20px; margin-top: 22px; }
+#gTpl .price-big { font-family: var(--mono); font-weight: 700; font-size: 48px; line-height: 1;
+                   color: var(--fg); text-shadow: 0 0 54px rgba(159,214,236,.22); }
+#gTpl .price-note { font-family: var(--jp); font-size: 19px; color: var(--fg-dim); font-weight: 300; }
+#gTpl .price-note b { color: var(--accent); font-weight: 500; }
+body.v #gTpl .fan { width: 960px; height: 800px; margin-top: 34px; }
+body.v #gTpl .cover { width: 470px; margin-left: -235px; top: 214px; }
+body.v #gTpl .c-m { width: 510px; margin-left: -255px; top: 190px; }
+body.v #gTpl .cover-name { font-size: 23px; }
+body.v #gTpl .pricebar { flex-direction: column; align-items: center; gap: 10px; margin-top: 20px; }
+body.v #gTpl .price-note { font-size: 16px; }
+
+/* b8 — tagline */
+#gTag .eyebrow { font-size: 16px; margin-bottom: 42px; }
+#gTag .tl { display: flex; gap: 0; }
+#gTag .tl .h-jp { font-size: 108px; line-height: 1.28; letter-spacing: .01em; white-space: nowrap; }
+#gTag .url { font-size: 22px; margin-top: 44px; }
+body.v #gTag .tl { flex-direction: column; align-items: center; }
+body.v #gTag .tl .h-jp { font-size: 104px; }
+body.v #gTag .eyebrow { font-size: 13px; margin-bottom: 34px; }
+
+/* b9 — end card */
+#gEnd { padding-bottom: 86px; }
+#gEnd img { width: 840px; display: block; filter: drop-shadow(0 0 66px rgba(159,214,236,.28)); }
+#gEnd .ln { width: 1px; background: linear-gradient(var(--accent-soft), transparent); margin: 32px 0 24px; }
+#gEnd .url { font-size: 34px; }
+#gEnd .sub { font-family: var(--mono); font-size: 14px; letter-spacing: .42em;
+             text-transform: uppercase; color: #99a1ab; margin-top: 22px; }
+body.v #gEnd { padding-bottom: 150px; }
+body.v #gEnd img { width: 880px; }
+body.v #gEnd .url { font-size: 30px; }
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+  <canvas id="cv"></canvas>
+  <div class="vign"></div>
+
+  <!-- ══ b1 — ignition ══ -->
+  <div class="grp" id="gIgnite">
+    <img src="../../img/logo.svg" alt="">
+  </div>
+
+  <!-- ══ b2 — wordmark ══ -->
+  <div class="grp" id="gMark">
+    <p class="lbl" id="mkLbl">Designer &amp; Creator — Tokyo</p>
+    <span class="mask" id="mkMask"><span><img src="../../img/logo.svg" alt="IDATSUKA"></span></span>
+    <span class="ln" id="mkLn"></span>
+    <p class="sub" id="mkSub">Design / Games / Art</p>
+  </div>
+
+  <!-- ══ b3 — games ══ -->
+  <div class="grp" id="gGames">
+    <div class="cap">
+      <span class="eyebrow" data-fade>01 — Browser Games</span>
+      <span class="mask"><span data-rise><h2 class="h-jp">簡単に遊べる、<em>ブラウザゲーム。</em></h2></span></span>
+    </div>
+    <div class="row">
+      <div class="side" data-slide="-1">
+        <div class="tile">
+          <img src="../../img/game-orbit.svg" alt="Orbit">
+          <div class="tile-body"><span class="tile-cat">One-Button</span><span class="tile-title">Orbit</span></div>
+        </div>
+      </div>
+      <div class="mid" data-pop>
+        <div class="browser">
+          <div class="browser-bar">
+            <span class="browser-dots"><i></i><i></i><i></i></span>
+            <span class="browser-url">idatsuka.com<b>/game-void-runner.html</b></span>
+          </div>
+          <div class="browser-screen"><img src="../../img/game-void-runner.svg" alt="Void Runner"></div>
+        </div>
+      </div>
+      <div class="side" data-slide="1">
+        <div class="tile">
+          <img src="../../img/game-stack.svg" alt="Stack">
+          <div class="tile-body"><span class="tile-cat">Precision</span><span class="tile-title">Stack</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ b4 — tap ══ -->
+  <div class="grp" id="gTap">
+    <div class="cap">
+      <span class="eyebrow" data-fade>Tap · Drag · Play</span>
+      <span class="mask"><span data-rise><h2 class="h-jp">ワンタップで、<em>すぐ動く。</em></h2></span></span>
+    </div>
+    <div class="pair">
+      <div class="win" data-par="-1">
+        <div class="browser">
+          <div class="browser-bar">
+            <span class="browser-dots"><i></i><i></i><i></i></span>
+            <span class="browser-url">idatsuka.com<b>/game-orbit.html</b></span>
+          </div>
+          <div class="browser-screen"><img src="../../img/game-orbit.svg" alt="Orbit"></div>
+        </div>
+        <p class="wlabel">Orbit — <b>One-Button Ring Runner</b></p>
+        <span class="cursor" id="cur">
+          <span class="ping2"></span><span class="ping"></span>
+          <svg width="34" height="44" viewBox="0 0 24 32">
+            <path d="M3 2 L3 26 L9.5 20 L13.5 29.5 L17.5 27.8 L13.6 18.6 L21.5 18.2 Z"
+                  fill="#f4f5f7" stroke="#060607" stroke-width="1.6" stroke-linejoin="round"/>
+          </svg>
+        </span>
+      </div>
+      <div class="win" data-par="1">
+        <div class="browser">
+          <div class="browser-bar">
+            <span class="browser-dots"><i></i><i></i><i></i></span>
+            <span class="browser-url">idatsuka.com<b>/game-stack.html</b></span>
+          </div>
+          <div class="browser-screen"><img src="../../img/game-stack.svg" alt="Stack"></div>
+        </div>
+        <p class="wlabel">Stack — <b>Precision Tower</b></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ b5 — ranking ══ -->
+  <div class="grp" id="gRank">
+    <div class="cap">
+      <span class="eyebrow" data-fade>02 — Ranking</span>
+      <span class="mask"><span data-rise><h2 class="h-jp">ランキングで<em>競え。</em></h2></span></span>
+    </div>
+    <div class="board" id="rkBoard">
+      <div class="board-head"><span class="t">Void Runner</span><span class="g">Ranking — All</span></div>
+      <div class="row" data-rk data-score="18420">
+        <span class="n t1">1</span>
+        <span class="nm">NOVA_K<span class="badges"><span class="badge">🇯🇵 JP</span><span class="badge">iOS</span></span></span>
+        <span class="sc">0</span>
+      </div>
+      <div class="row" data-rk data-score="17905">
+        <span class="n t2">2</span>
+        <span class="nm">hoshi.dev<span class="badges"><span class="badge">🇰🇷 KR</span><span class="badge">Android</span></span></span>
+        <span class="sc">0</span>
+      </div>
+      <div class="row" data-rk data-score="16330">
+        <span class="n t3">3</span>
+        <span class="nm">MIYU<span class="badges"><span class="badge">🇺🇸 US</span><span class="badge">macOS</span></span></span>
+        <span class="sc">0</span>
+      </div>
+      <div class="row me" data-rk data-score="15118">
+        <span class="n">4</span>
+        <span class="nm">YOU<span class="badges"><span class="badge">🇯🇵 JP</span><span class="badge">Windows</span></span></span>
+        <span class="sc">0</span>
+      </div>
+      <div class="row" data-rk data-score="14702">
+        <span class="n">5</span>
+        <span class="nm">kaze_09<span class="badges"><span class="badge">🇹🇼 TW</span><span class="badge">Android</span></span></span>
+        <span class="sc">0</span>
+      </div>
+    </div>
+    <p class="stamp" data-fade>※ ランキング表示はサンプル（架空の名前・スコア）です</p>
+  </div>
+
+  <!-- ══ b6 — filters ══ -->
+  <div class="grp" id="gFilter">
+    <div class="cap">
+      <span class="eyebrow" data-fade>Filter — OS · Country · Region · Friends</span>
+      <span class="mask"><span data-rise><h2 class="h-jp">OS・国・<em>フレンド</em>で絞り込む。</h2></span></span>
+    </div>
+    <div class="chips">
+      <span class="chip" data-chip>All</span>
+      <span class="chip" data-chip>OS — Windows</span>
+      <span class="chip" data-chip>Country — JP</span>
+      <span class="chip" data-chip>Region — Asia</span>
+      <span class="chip on" data-chip>Friends</span>
+    </div>
+    <div class="codecard" id="fcCard">
+      <span class="lbl">Your friend code</span>
+      <span class="code" id="fcCode">7K4M-92QX</span>
+      <span class="act">
+        <span class="tag on"><i class="dot"></i>Copy</span>
+        <span class="tag">Add friend</span>
+      </span>
+    </div>
+    <p class="stamp" data-fade>※ フレンドコードは表示例です</p>
+  </div>
+
+  <!-- ══ b7 — templates ══ -->
+  <div class="grp" id="gTpl">
+    <div class="cap">
+      <span class="eyebrow" data-fade>03 — Templates / ZEN · RAY · PULSE</span>
+      <span class="mask"><span data-rise><h2 class="h-jp">テンプレートが<em>充実。</em></h2></span></span>
+    </div>
+    <div class="fan">
+      <div class="cover c-l" data-cov="-1">
+        <img src="../../img/store-zen.svg" alt="ZEN">
+        <div class="cover-body">
+          <span class="cover-cat">Portfolio · v1.1</span>
+          <span class="cover-name">ZEN</span>
+          <span class="cover-price">¥2,980 <span class="free">/ 無料版あり</span></span>
+        </div>
+      </div>
+      <div class="cover c-r" data-cov="1">
+        <img src="../../img/store-pulse.svg" alt="PULSE">
+        <div class="cover-body">
+          <span class="cover-cat">Motion LP · v1.2</span>
+          <span class="cover-name">PULSE</span>
+          <span class="cover-price">¥2,980 <span class="free">/ 無料版あり</span></span>
+        </div>
+      </div>
+      <div class="cover c-m" data-cov="0">
+        <img src="../../img/store-ray.svg" alt="RAY">
+        <div class="cover-body">
+          <span class="cover-cat">Landing Page · v1.1</span>
+          <span class="cover-name">RAY</span>
+          <span class="cover-price">¥2,980 <span class="free">/ 無料版あり</span></span>
+        </div>
+      </div>
+    </div>
+    <div class="pricebar">
+      <span class="price-big" data-fade>¥2,980</span>
+      <span class="price-note" data-fade>応援価格 ／ <b>無料版あり</b> ／ 個人・商用利用可</span>
+    </div>
+  </div>
+
+  <!-- ══ b8 — tagline ══ -->
+  <div class="grp" id="gTag">
+    <span class="eyebrow" data-fade>idatsuka.com</span>
+    <div class="tl">
+      <span class="mask"><span data-tl><h2 class="h-jp">遊べる。</h2></span></span>
+      <span class="mask"><span data-tl><h2 class="h-jp">競える。</h2></span></span>
+      <span class="mask"><span data-tl><h2 class="h-jp"><em>作れる。</em></h2></span></span>
+    </div>
+    <span class="url" data-fade>Design / Games / Art — Tokyo</span>
+  </div>
+
+  <!-- ══ b9 — end card ══ -->
+  <div class="grp" id="gEnd">
+    <span class="mask" id="edMask"><span><img src="../../img/logo.svg" alt="IDATSUKA"></span></span>
+    <span class="ln" id="edLn"></span>
+    <span class="url" id="edUrl">idatsuka.com</span>
+    <p class="sub" id="edSub">Design / Games / Art</p>
+  </div>
+
+  <div id="flash"></div>
+  <div id="grain"></div>
+  <div id="marker"></div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  var VERT = /(^|[?&])ar=v/.test(location.search);
+  if (VERT) document.body.classList.add('v');
+
+  var W = VERT ? 1080 : 1920, H = VERT ? 1920 : 1080;
+  var DUR = 15.0;
+
+  var cv = document.getElementById('cv');
+  cv.width = W; cv.height = H;
+  var g = cv.getContext('2d');
+
+  /* ── seeded PRNG: nothing in this file may call Math.random ── */
+  var _s = 20250911;
+  function rnd() { _s = (_s * 1664525 + 1013904223) >>> 0; return _s / 4294967296; }
+  function rr(a, b) { return a + (b - a) * rnd(); }
+
+  /* ── easing ── */
+  function clamp01(x) { return x < 0 ? 0 : (x > 1 ? 1 : x); }
+  function lin(t, a, b) { return clamp01((t - a) / (b - a)); }
+  function eo(x) { /* ≈ cubic-bezier(.16,1,.3,1) */
+    return 1 - Math.pow(1 - x, 4.0);
+  }
+  function eio(x) { return x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; }
+  function eIn(x) { return x * x * x; }
+
+  /* ══════════════════════════════════════════════════════════
+     Canvas scenes — all stateless functions of t
+     ══════════════════════════════════════════════════════════ */
+  function sprite(stops) {
+    var c = document.createElement('canvas'); c.width = c.height = 32;
+    var x = c.getContext('2d');
+    var gr = x.createRadialGradient(16, 16, 0, 16, 16, 16);
+    for (var i = 0; i < stops.length; i++) gr.addColorStop(stops[i][0], stops[i][1]);
+    x.fillStyle = gr; x.fillRect(0, 0, 32, 32);
+    return c;
+  }
+  var SP = sprite([[0, 'rgba(255,255,255,1)'], [.25, 'rgba(199,231,244,.85)'],
+                   [.6, 'rgba(159,214,236,.25)'], [1, 'rgba(159,214,236,0)']]);
+
+  /* ── ring ── */
+  var RN = VERT ? 620 : 700;
+  var ring = [];
+  (function () {
+    for (var i = 0; i < RN; i++) {
+      ring.push({
+        th: (i / RN) * Math.PI * 2 + rr(-.01, .01),
+        ro: rr(-.11, .11), yo: rr(-.055, .055),
+        sz: rr(.7, 2.0), br: rnd() < .09 ? 1.7 : 1,
+        tw: rr(0, 6.283), tws: rr(.5, 1.8), dl: rnd()
+      });
+    }
+  })();
+  function drawRing(t, alpha, build) {
+    var cx = W / 2, cy = H * (VERT ? .46 : .47);
+    var R = VERT ? W * .425 : W * .330;
+    var spin = t * .16;
+    g.globalCompositeOperation = 'lighter';
+    for (var i = 0; i < RN; i++) {
+      var p = ring[i];
+      var b = build < 1 ? eo(clamp01((build - p.dl * .42) / .58)) : 1;
+      if (b <= 0) continue;
+      var th = p.th + spin;
+      var r = R * (1 + p.ro) * b;
+      var x = cx + Math.cos(th) * r;
+      var y = cy + Math.sin(th) * r * .33 + p.yo * R * .8;
+      var depth = (Math.sin(th) + 1) / 2;              /* 1 = front */
+      var s = p.sz * (.5 + depth * .8) * (VERT ? 1.1 : 1);
+      var tw = .62 + .38 * Math.sin(p.tw + t * p.tws * 2.4);
+      var a = alpha * b * p.br * tw * (.16 + depth * .5);
+      if (a <= .004) continue;
+      var d = s * 7.5;
+      g.globalAlpha = Math.min(a, 1);
+      g.drawImage(SP, x - d / 2, y - d / 2, d, d);
+    }
+    g.globalCompositeOperation = 'source-over';
+    g.globalAlpha = 1;
+  }
+
+  /* ── grid (perspective dot field, Lattice/Plexus flavour) ── */
+  var GCOLS = VERT ? 18 : 24, GROWS = 14;
+  function drawGrid(t, alpha) {
+    var horizon = H * .30;
+    g.globalCompositeOperation = 'lighter';
+    for (var r = 0; r < GROWS; r++) {
+      var k = (r + 1) / GROWS;
+      var z = Math.pow(k, 2.1);
+      var y = horizon + z * (H - horizon) * 1.06;
+      if (y > H + 40) continue;
+      var band = .5 + .5 * Math.cos((k * 3.4 - t * .42) * Math.PI * 2);
+      var rowA = alpha * (.03 + .46 * z) * (.4 + .6 * band);
+      var spread = .5 + z * 1.15;
+      for (var c = 0; c < GCOLS; c++) {
+        var u = (c / (GCOLS - 1) - .5) * spread;
+        var x = W / 2 + u * W;
+        if (x < -30 || x > W + 30) continue;
+        var d = (1.4 + z * 4.6) * 6;
+        var a = rowA * (1 - Math.abs(u) * .75);
+        if (a <= .004) continue;
+        g.globalAlpha = Math.min(a, 1);
+        g.drawImage(SP, x - d / 2, y - d / 2, d, d);
+      }
+    }
+    /* a few slow link lines */
+    g.globalCompositeOperation = 'source-over';
+    g.globalAlpha = alpha * .12;
+    g.strokeStyle = 'rgba(159,214,236,.5)';
+    g.lineWidth = 1;
+    for (var i = 0; i < 9; i++) {
+      var ph = (t * .06 + i / 9) % 1;
+      var yy = horizon + Math.pow(ph, 2.1) * (H - horizon) * 1.06;
+      g.beginPath(); g.moveTo(0, yy); g.lineTo(W, yy); g.stroke();
+    }
+    g.globalAlpha = 1;
+  }
+
+  /* ── streaks (Curl-Flow flavour, stateless: dashes running along fixed paths) ── */
+  var PATHS = [];
+  (function () {
+    var n = VERT ? 130 : 170;
+    for (var i = 0; i < n; i++) {
+      var x = rr(-.1, 1.1), y = rr(-.1, 1.1);
+      var a = Math.sin(x * 5.1 + y * 3.3) * 1.6 + Math.cos(y * 4.7 - x * 2.1) * 1.4;
+      var pts = [];
+      for (var k = 0; k < 9; k++) {
+        pts.push([x, y]);
+        a += Math.sin(x * 5.1 + y * 3.3 + k * .35) * .42;
+        x += Math.cos(a) * .035; y += Math.sin(a) * .035;
+      }
+      PATHS.push({ pts: pts, ph: rnd(), sp: rr(.09, .2), a: rr(.14, .5) });
+    }
+  })();
+  function drawStreaks(t, alpha) {
+    g.globalCompositeOperation = 'lighter';
+    g.lineCap = 'round';
+    for (var i = 0; i < PATHS.length; i++) {
+      var P = PATHS[i];
+      var u = (P.ph + t * P.sp) % 1;
+      var f = u * (P.pts.length - 2);
+      var j = Math.floor(f), fr = f - j;
+      var p0 = P.pts[j], p1 = P.pts[j + 1];
+      var x = (p0[0] + (p1[0] - p0[0]) * fr) * W;
+      var y = (p0[1] + (p1[1] - p0[1]) * fr) * H;
+      var x2 = p1[0] * W, y2 = p1[1] * H;
+      var fade = Math.sin(u * Math.PI);
+      g.globalAlpha = Math.min(alpha * P.a * fade, 1);
+      g.strokeStyle = 'rgba(214,238,247,.9)';
+      g.lineWidth = 1.3;
+      g.beginPath(); g.moveTo(x, y); g.lineTo(x2, y2); g.stroke();
+    }
+    g.globalCompositeOperation = 'source-over';
+    g.globalAlpha = 1;
+  }
+
+  /* ── aurora ── */
+  var AUR = [];
+  (function () {
+    for (var i = 0; i < 60; i++) AUR.push({ x: rr(0, 1), w: rr(.012, .05), h: rr(.3, 1), ph: rr(0, 6.28), sp: rr(.2, .7), a: rr(.12, .5) });
+  })();
+  var CURTAIN = (function () {
+    var c = document.createElement('canvas'); c.width = 4; c.height = 256;
+    var x = c.getContext('2d');
+    var gr = x.createLinearGradient(0, 0, 0, 256);
+    gr.addColorStop(0, 'rgba(159,214,236,0)');
+    gr.addColorStop(.55, 'rgba(159,214,236,.3)');
+    gr.addColorStop(1, 'rgba(214,240,250,1)');
+    x.fillStyle = gr; x.fillRect(0, 0, 4, 256);
+    return c;
+  })();
+  function drawAurora(t, alpha) {
+    var base = H * (VERT ? 1.02 : 1.04);
+    g.globalCompositeOperation = 'lighter';
+    for (var i = 0; i < AUR.length; i++) {
+      var A = AUR[i];
+      var wob = Math.sin(A.ph + t * A.sp) * .5 + .5;
+      var x = (A.x + Math.sin(A.ph + t * A.sp * .35) * .012) * W;
+      var w = A.w * W;
+      var h = H * (.26 + A.h * .42) * (.72 + wob * .38);
+      var a = alpha * A.a * (.55 + wob * .45);
+      g.globalAlpha = Math.min(a, 1);
+      g.drawImage(CURTAIN, x - w / 2, base - h, w, h);
+    }
+    g.globalCompositeOperation = 'source-over';
+    g.globalAlpha = 1;
+  }
+
+  /* ── scene schedule ── */
+  var SCENES = [
+    { a: -1,    b: 3.00,  fn: 'ring' },
+    { a: 3.00,  b: 6.40,  fn: 'grid' },
+    { a: 6.40,  b: 8.40,  fn: 'streaks' },
+    { a: 8.40,  b: 9.90,  fn: 'grid' },
+    { a: 9.90,  b: 13.40, fn: 'aurora' },
+    { a: 13.40, b: 99,    fn: 'ring' }
+  ];
+  var XF = 0.42;   /* crossfade */
+  function sceneWeights(t) {
+    var out = [];
+    for (var i = 0; i < SCENES.length; i++) {
+      var s = SCENES[i], w = 1;
+      if (t < s.a - XF / 2 || t > s.b + XF / 2) continue;
+      if (t < s.a + XF / 2) w = clamp01((t - (s.a - XF / 2)) / XF);
+      if (t > s.b - XF / 2) w = Math.min(w, clamp01(((s.b + XF / 2) - t) / XF));
+      if (w > .002) out.push([s.fn, w]);
+    }
+    return out;
+  }
+
+  function drawScenes(t) {
+    g.setTransform(1, 0, 0, 1, 0, 0);
+    g.clearRect(0, 0, W, H);
+    g.fillStyle = '#060607'; g.fillRect(0, 0, W, H);
+    var ws = sceneWeights(t);
+    var buildRing = lin(t, .08, 1.28);
+    for (var i = 0; i < ws.length; i++) {
+      var n = ws[i][0], a = ws[i][1];
+      if (n === 'ring') drawRing(t, a * .95, t < 2 ? buildRing : 1);
+      else if (n === 'grid') drawGrid(t, a * .62);
+      else if (n === 'streaks') drawStreaks(t, a);
+      else if (n === 'aurora') drawAurora(t, a * .95);
+    }
+    /* ambient centre glow, brighter on the hero beats */
+    var gl = .028 + .018 * Math.sin(t * .9);
+    var rg = g.createRadialGradient(W / 2, H * .48, 0, W / 2, H * .48, Math.max(W, H) * .55);
+    rg.addColorStop(0, 'rgba(159,214,236,' + gl.toFixed(3) + ')');
+    rg.addColorStop(1, 'rgba(159,214,236,0)');
+    g.fillStyle = rg; g.fillRect(0, 0, W, H);
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     DOM timeline
+     ══════════════════════════════════════════════════════════ */
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+
+  var GRP = {
+    ig: $('#gIgnite'), mk: $('#gMark'), gm: $('#gGames'), tp: $('#gTap'),
+    rk: $('#gRank'), fl: $('#gFilter'), tl: $('#gTpl'), tg: $('#gTag'), ed: $('#gEnd')
+  };
+  var flash = $('#flash'), grain = $('#grain'), marker = $('#marker');
+
+  var B = [
+    [0.00, 1.60], [1.60, 3.00], [3.00, 4.80], [4.80, 6.40], [6.40, 8.40],
+    [8.40, 9.90], [9.90, 11.80], [11.80, 13.40], [13.40, 15.00]
+  ];
+
+  function show(el, on, tr) {
+    el.style.opacity = on;
+    el.style.visibility = on > .002 ? 'visible' : 'hidden';
+    el.style.transform = tr || '';
+  }
+
+  /* group-level entry/exit envelope: in over 0.34s, out over 0.26s with a scale whip */
+  function env(t, i, opts) {
+    var a = B[i][0], b = B[i][1];
+    opts = opts || {};
+    var inD = opts.in == null ? .34 : opts.in;
+    var outD = opts.out == null ? .26 : opts.out;
+    if (t < a - .02 || t > b + outD) return null;
+    var pi = lin(t, a, a + inD);
+    var po = lin(t, b - outD, b);
+    var o = Math.min(eo(pi), 1 - eIn(po));
+    var sc = 1 + (1 - eo(pi)) * (opts.sIn == null ? .035 : opts.sIn)
+               + eIn(po) * (opts.sOut == null ? .05 : opts.sOut);
+    var bl = eIn(po) * (opts.blur == null ? 4 : opts.blur);
+    return { o: o, sc: sc, bl: bl, pi: pi, po: po };
+  }
+  function applyEnv(el, e) {
+    if (!e) { show(el, 0); el.style.filter = ''; return false; }
+    el.style.opacity = e.o;
+    el.style.visibility = e.o > .002 ? 'visible' : 'hidden';
+    el.style.transform = 'scale(' + e.sc.toFixed(4) + ')';
+    el.style.filter = e.bl > .35 ? 'blur(' + e.bl.toFixed(2) + 'px)' : '';
+    return true;
+  }
+
+  /* caption helper: eyebrow fade + masked headline rise */
+  function caption(grp, t, a) {
+    var eb = $('[data-fade]', grp), rs = $('[data-rise]', grp);
+    if (eb) {
+      var p = lin(t, a + .10, a + .48);
+      eb.style.opacity = eo(p);
+      eb.style.letterSpacing = (0.34 + (1 - eo(p)) * .26).toFixed(3) + 'em';
+    }
+    if (rs) {
+      var q = eo(lin(t, a + .04, a + .62));
+      rs.style.transform = 'translateY(' + ((1 - q) * 115).toFixed(2) + '%)';
+    }
+  }
+
+  /* ── b1 ignition ── */
+  var igImg = $('img', GRP.ig);
+  function b1(t) {
+    var e = env(t, 0, { in: .5, out: .22, sIn: .06, sOut: .09, blur: 9 });
+    if (!applyEnv(GRP.ig, e)) return;
+    var p = eo(lin(t, .35, 1.45));
+    igImg.style.opacity = (p * .22).toFixed(3);
+    igImg.style.transform = 'scale(' + (1.1 - p * .08).toFixed(4) + ')';
+    igImg.style.filter = 'blur(' + (3.4 - p * 2.2).toFixed(2) + 'px) drop-shadow(0 0 60px rgba(159,214,236,.3))';
+  }
+
+  /* ── b2 wordmark ── */
+  var mkLbl = $('#mkLbl'), mkMask = $('#mkMask'), mkIn = $('span', mkMask),
+      mkImg = $('img', mkMask), mkLn = $('#mkLn'), mkSub = $('#mkSub');
+  function b2(t) {
+    var a = B[1][0];
+    var e = env(t, 1, { in: .1, out: .30, sIn: 0, sOut: .12, blur: 9 });
+    if (!applyEnv(GRP.mk, e)) return;
+    var p = eo(lin(t, a + .02, a + .70));
+    mkIn.style.transform = 'translateY(' + ((1 - p) * 112).toFixed(2) + '%)';
+    mkImg.style.transform = 'scale(' + (1.055 - p * .055).toFixed(4) + ')';
+    mkImg.style.opacity = Math.min(1, p * 1.4);
+    var q = eo(lin(t, a + .16, a + .78));
+    mkLbl.style.opacity = q;
+    mkLbl.style.letterSpacing = (.46 + (1 - q) * .34).toFixed(3) + 'em';
+    var r = eo(lin(t, a + .42, a + .96));
+    mkLn.style.height = (r * 56).toFixed(1) + 'px';
+    mkLn.style.opacity = r;
+    var s = eo(lin(t, a + .58, a + 1.08));
+    mkSub.style.opacity = s;
+    mkSub.style.transform = 'translateY(' + ((1 - s) * 14).toFixed(1) + 'px)';
+  }
+
+  /* ── b3 games ── */
+  var gmSides = $$('[data-slide]', GRP.gm), gmMid = $('[data-pop]', GRP.gm);
+  function b3(t) {
+    var a = B[2][0];
+    var e = env(t, 2, { in: .30, out: .26 });
+    if (!applyEnv(GRP.gm, e)) return;
+    caption(GRP.gm, t, a);
+    var pm = eo(lin(t, a + .16, a + .86));
+    gmMid.style.transform = 'scale(' + (.86 + pm * .14).toFixed(4) + ') translateY(' + ((1 - pm) * 42).toFixed(1) + 'px)';
+    gmMid.style.opacity = pm;
+    for (var i = 0; i < gmSides.length; i++) {
+      var dir = +gmSides[i].dataset.slide;
+      var ps = eo(lin(t, a + .30 + i * .07, a + 1.05 + i * .07));
+      var dx = (1 - ps) * dir * (VERT ? 0 : 320);
+      var dy = VERT ? (1 - ps) * dir * 120 : 0;
+      var rot = dir * 3;
+      var tx = VERT ? 0 : dir * 26, ty = VERT ? 0 : 38;
+      gmSides[i].style.transform =
+        'translate(' + (dx + tx).toFixed(1) + 'px,' + (dy + ty).toFixed(1) + 'px) rotate(' + rot + 'deg)';
+      gmSides[i].style.opacity = ps;
+    }
+  }
+
+  /* ── b4 tap ── */
+  var tpWins = $$('[data-par]', GRP.tp), cur = $('#cur'),
+      ping = $('.ping', cur), ping2 = $('.ping2', cur);
+  function b4(t) {
+    var a = B[3][0];
+    var e = env(t, 3, { in: .30, out: .26 });
+    if (!applyEnv(GRP.tp, e)) return;
+    caption(GRP.tp, t, a);
+    for (var i = 0; i < tpWins.length; i++) {
+      var dir = +tpWins[i].dataset.par;
+      var p = eo(lin(t, a + .18 + i * .09, a + .96 + i * .09));
+      var drift = Math.sin((t - a) * 1.1 + i) * 5 * dir;
+      tpWins[i].style.transform =
+        'translate(' + ((1 - p) * dir * 70 + drift).toFixed(1) + 'px,' + ((1 - p) * 34).toFixed(1) + 'px) scale(' + (.95 + p * .05).toFixed(4) + ')';
+      tpWins[i].style.opacity = p;
+    }
+    /* cursor travels in, taps at +0.95 s */
+    var cp = eo(lin(t, a + .42, a + .98));
+    var x0 = VERT ? 640 : 560, y0 = VERT ? 470 : 400;
+    var x1 = VERT ? 430 : 392, y1 = VERT ? 300 : 250;
+    cur.style.opacity = cp;
+    cur.style.left = (x0 + (x1 - x0) * cp).toFixed(1) + 'px';
+    cur.style.top = (y0 + (y1 - y0) * cp).toFixed(1) + 'px';
+    var press = lin(t, a + .92, a + 1.02) - lin(t, a + 1.02, a + 1.14);
+    cur.style.transform = 'scale(' + (1 - press * .18).toFixed(3) + ')';
+    var k = lin(t, a + .96, a + 1.62);
+    var k2 = lin(t, a + 1.12, a + 1.78);
+    ping.style.opacity = (1 - k) * (k > 0 ? .85 : 0);
+    ping.style.transform = 'translate(-50%,-50%) scale(' + (.25 + k * 1.9).toFixed(3) + ')';
+    ping2.style.opacity = (1 - k2) * (k2 > 0 ? .45 : 0);
+    ping2.style.transform = 'translate(-50%,-50%) scale(' + (.25 + k2 * 2.9).toFixed(3) + ')';
+  }
+
+  /* ── b5 ranking ── */
+  var rkBoard = $('#rkBoard'), rkRows = $$('[data-rk]', GRP.rk),
+      rkStamp = $('.stamp', GRP.rk);
+  function fmt(n) { return n.toLocaleString('en-US'); }
+  function b5(t) {
+    var a = B[4][0];
+    var e = env(t, 4, { in: .30, out: .26 });
+    if (!applyEnv(GRP.rk, e)) return;
+    caption(GRP.rk, t, a);
+    var pb = eo(lin(t, a + .14, a + .90));
+    rkBoard.style.transform = 'translateY(' + ((1 - pb) * 60).toFixed(1) + 'px)';
+    rkBoard.style.opacity = pb;
+    for (var i = 0; i < rkRows.length; i++) {
+      var d = a + .32 + i * .11;
+      var p = eo(lin(t, d, d + .5));
+      rkRows[i].style.opacity = p;
+      rkRows[i].style.transform = 'translateY(' + ((1 - p) * 26).toFixed(1) + 'px)';
+      var target = +rkRows[i].dataset.score;
+      var c = eo(lin(t, d + .06, d + .78));
+      var sc = rkRows[i].querySelector('.sc');
+      var val = Math.round(target * c);
+      if (sc._v !== val) { sc.textContent = fmt(val); sc._v = val; }
+    }
+    rkStamp.style.opacity = eo(lin(t, a + 1.15, a + 1.6)) * .95;
+  }
+
+  /* ── b6 filters ── */
+  var chips = $$('[data-chip]', GRP.fl), fcCard = $('#fcCard'), fcCode = $('#fcCode'),
+      flStamp = $('.stamp', GRP.fl);
+  var CODE = '7K4M-92QX', GLY = 'ABCDEFGHJKLMNPQRSTUVWXYZ0123456789';
+  function b6(t) {
+    var a = B[5][0];
+    var e = env(t, 5, { in: .28, out: .24 });
+    if (!applyEnv(GRP.fl, e)) return;
+    caption(GRP.fl, t, a);
+    for (var i = 0; i < chips.length; i++) {
+      var d = a + .26 + i * .075;
+      var p = eo(lin(t, d, d + .38));
+      var over = Math.sin(clamp01((t - d) / .38) * Math.PI) * .09;
+      chips[i].style.opacity = p;
+      chips[i].style.transform = 'scale(' + (.8 + p * .2 + over).toFixed(4) + ')';
+    }
+    var pc = eo(lin(t, a + .58, a + 1.12));
+    fcCard.style.opacity = pc;
+    fcCard.style.transform = 'translateY(' + ((1 - pc) * 40).toFixed(1) + 'px)';
+    /* the code resolves left to right */
+    var res = lin(t, a + .64, a + 1.02) * CODE.length;
+    var out = '';
+    for (var j = 0; j < CODE.length; j++) {
+      if (CODE[j] === '-') { out += '-'; continue; }
+      if (j < res) out += CODE[j];
+      else if (j < res + 1.0) out += GLY[(Math.floor(t * 26) + j * 7) % GLY.length];
+      else out += ' ';
+    }
+    if (fcCode._v !== out) { fcCode.textContent = out; fcCode._v = out; }
+    flStamp.style.opacity = eo(lin(t, a + 1.0, a + 1.34)) * .95;
+  }
+
+  /* ── b7 templates ── */
+  var covers = $$('[data-cov]', GRP.tl), tplFades = $$('.pricebar [data-fade]', GRP.tl);
+  function b7(t) {
+    var a = B[6][0];
+    var e = env(t, 6, { in: .30, out: .26 });
+    if (!applyEnv(GRP.tl, e)) return;
+    caption(GRP.tl, t, a);
+    for (var i = 0; i < covers.length; i++) {
+      var dir = +covers[i].dataset.cov;
+      var d = a + .24 + Math.abs(dir) * .10;
+      var p = eo(lin(t, d, d + .78));
+      var X, Y, R;
+      if (VERT) {
+        X = dir * 122 * p; Y = dir * 216 * p; R = dir * 5 * p;
+        covers[i].style.transform = 'translate(' + X.toFixed(1) + 'px,' + (Y + (1 - p) * 30).toFixed(1) + 'px) rotate(' + R.toFixed(2) + 'deg) scale(' + (.92 + p * .08).toFixed(4) + ')';
+      } else {
+        X = dir * 425 * p; Y = Math.abs(dir) * 50 * p; R = dir * 7 * p;
+        covers[i].style.transform = 'translate(' + X.toFixed(1) + 'px,' + (Y + (1 - p) * 26).toFixed(1) + 'px) rotate(' + R.toFixed(2) + 'deg) scale(' + (.92 + p * .08).toFixed(4) + ')';
+      }
+      covers[i].style.opacity = Math.min(1, p * 1.5);
+    }
+    for (var k = 0; k < tplFades.length; k++) {
+      var q = eo(lin(t, a + .96 + k * .08, a + 1.42 + k * .08));
+      tplFades[k].style.opacity = q;
+      tplFades[k].style.transform = 'translateY(' + ((1 - q) * 16).toFixed(1) + 'px)';
+    }
+  }
+
+  /* ── b8 tagline ── */
+  var tlLines = $$('[data-tl]', GRP.tg), tgEb = $('.eyebrow', GRP.tg), tgUrl = $('.url', GRP.tg);
+  function b8(t) {
+    var a = B[7][0];
+    var e = env(t, 7, { in: .26, out: .28, sIn: .05, sOut: .06 });
+    if (!applyEnv(GRP.tg, e)) return;
+    var q = eo(lin(t, a + .06, a + .44));
+    tgEb.style.opacity = q;
+    tgEb.style.letterSpacing = (.34 + (1 - q) * .3).toFixed(3) + 'em';
+    for (var i = 0; i < tlLines.length; i++) {
+      var d = a + .18 + i * .19;
+      var p = eo(lin(t, d, d + .56));
+      tlLines[i].style.transform = 'translateY(' + ((1 - p) * 118).toFixed(2) + '%)';
+    }
+    var u = eo(lin(t, a + .92, a + 1.34));
+    tgUrl.style.opacity = u;
+    tgUrl.style.transform = 'translateY(' + ((1 - u) * 16).toFixed(1) + 'px)';
+  }
+
+  /* ── b9 end card ── */
+  var edMask = $('#edMask'), edIn = $('span', edMask), edImg = $('img', edMask),
+      edLn = $('#edLn'), edUrl = $('#edUrl'), edSub = $('#edSub');
+  function b9(t) {
+    var a = B[8][0];
+    var e = env(t, 8, { in: .16, out: 0, sIn: 0, sOut: 0, blur: 0 });
+    if (!applyEnv(GRP.ed, e)) return;
+    var p = eo(lin(t, a + .02, a + .72));
+    edIn.style.transform = 'translateY(' + ((1 - p) * 112).toFixed(2) + '%)';
+    edImg.style.transform = 'scale(' + (1.06 - p * .06).toFixed(4) + ')';
+    edImg.style.opacity = Math.min(1, p * 1.4);
+    var r = eo(lin(t, a + .38, a + .94));
+    edLn.style.height = (r * 52).toFixed(1) + 'px';
+    edLn.style.opacity = r;
+    var u = eo(lin(t, a + .52, a + 1.08));
+    edUrl.style.opacity = u;
+    edUrl.style.transform = 'translateY(' + ((1 - u) * 16).toFixed(1) + 'px)';
+    edUrl.style.letterSpacing = (.24 + (1 - u) * .18).toFixed(3) + 'em';
+    var s = eo(lin(t, a + .74, a + 1.26));
+    edSub.style.opacity = s;
+  }
+
+  /* ── whip flashes on the beat boundaries ── */
+  var CUTS = [1.60, 3.00, 4.80, 6.40, 8.40, 9.90, 11.80, 13.40];
+  function doFlash(t) {
+    var v = 0;
+    for (var i = 0; i < CUTS.length; i++) {
+      var c = CUTS[i];
+      if (t > c - .10 && t < c + .20) {
+        var p = (t - (c - .10)) / .30;
+        v = Math.max(v, Math.sin(Math.min(p, 1) * Math.PI) * (i === 7 ? .16 : .11));
+      }
+    }
+    flash.style.opacity = v.toFixed(4);
+  }
+
+  /* ── stepped grain drift ── */
+  var GST = [];
+  (function () { for (var i = 0; i < 24; i++) GST.push([rr(-9, 9), rr(-12, 12)]); })();
+  function doGrain(t) {
+    var k = Math.floor(t * 12) % GST.length;
+    grain.style.transform = 'translate(' + GST[k][0].toFixed(1) + '%,' + GST[k][1].toFixed(1) + '%)';
+  }
+
+  /* ══ master render ══ */
+  function render(t) {
+    if (t < 0) t = 0;
+    if (t > DUR) t = DUR;
+    drawScenes(t);
+    b1(t); b2(t); b3(t); b4(t); b5(t); b6(t); b7(t); b8(t); b9(t);
+    doFlash(t); doGrain(t);
+  }
+
+  /* ══ playback ══ */
+  var t0 = 0, playing = false;
+  function loop() {
+    if (!playing) return;
+    var t = (performance.now() - t0) / 1000;
+    render(t);
+    if (t < DUR + .25) requestAnimationFrame(loop);
+    else { render(DUR); playing = false; if (window.__CM) window.__CM.done = true; }
+  }
+
+  render(0);
+
+  window.__CM = {
+    DUR: DUR, W: W, H: H, done: false, vertical: VERT,
+    seek: function (t) { marker.classList.add('off'); render(t); },
+    start: function () {
+      marker.classList.add('off');
+      t0 = performance.now();
+      playing = true;
+      render(0);
+      requestAnimationFrame(loop);
+    }
+  };
+  document.documentElement.setAttribute('data-cm-ready', '1');
+})();
+</script>
+</body>
+</html>

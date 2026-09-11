@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>wide-templates 1920×1080</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Zen+Kaku+Gothic+New:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="file:///tmp/claude-0/-home-user-IDATSUKA-github-io/f8afb125-c3c6-5b57-8f76-edb1a21c750f/scratchpad/fontkit/fonts.css">
+<link rel="stylesheet" href="promo.css">
+<style>
+  .stage { width: 1920px; height: 1080px; }
+  .layer { padding: 96px 104px 90px; flex-direction: row; gap: 72px; }
+
+  .plate { opacity: .9; transform: scale(1.14) translate(10%, 6%); filter: brightness(1.2) saturate(.9); }
+  .veil-left { background: linear-gradient(to right, rgba(6,6,7,.97) 0%, rgba(6,6,7,.88) 26%, rgba(6,6,7,.34) 56%, rgba(6,6,7,.06) 84%); }
+  .glow-1 { right: -200px; top: 40px; width: 900px; height: 900px;
+            background: radial-gradient(circle, rgba(159,214,236,.12) 0%, transparent 64%); }
+
+  .col-l { width: 740px; display: flex; flex-direction: column; }
+  .col-r { flex: 1; position: relative; }
+
+  .mark { width: 300px; }
+  .eyebrow { font-size: 14px; margin-top: 58px; }
+  .h-jp { font-size: 84px; margin-top: 24px; line-height: 1.18; letter-spacing: 0; }
+  .body-jp { font-size: 20px; margin-top: 28px; }
+
+  .pricerow { display: flex; align-items: baseline; gap: 18px; margin-top: 34px; flex-wrap: wrap; }
+  .price-big {
+    font-family: var(--mono); font-weight: 700; font-size: 50px; line-height: 1;
+    color: var(--fg); text-shadow: 0 0 54px rgba(159,214,236,.22);
+  }
+  .price-note { font-family: var(--jp); font-size: 17px; color: var(--fg-dim); font-weight: 300; }
+  .price-note b { color: var(--accent); font-weight: 500; }
+
+  .tags { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 26px; }
+  .tags .tag { font-size: 11px; padding: 8px 16px 7px; }
+
+  .foot { margin-top: auto; }
+  .foot .rule { margin-bottom: 24px; }
+  .foot-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; }
+  .url { font-size: 26px; }
+  .note { font-size: 10px; white-space: nowrap; }
+
+  .cover { position: absolute; width: 430px; border-radius: 4px; }
+  .cover-body { padding: 18px 22px 20px; display: flex; flex-direction: column; gap: 6px; }
+  .cover-cat { font-size: 10px; }
+  .cover-name { font-size: 26px; letter-spacing: .04em; }
+  .cover-price { font-size: 14px; margin-top: 3px; }
+  .cover-price .free { color: var(--accent); font-size: 12px; letter-spacing: .1em; }
+
+  .c1 { left: 0;     top: 24px;  z-index: 1; transform: rotate(-2deg); }
+  .c2 { left: 235px; top: 210px; z-index: 2; }
+  .c3 { left: 470px; top: 396px; z-index: 3; transform: rotate(2deg);
+        box-shadow: 0 52px 140px rgba(0,0,0,.86), 0 0 100px rgba(159,214,236,.09);
+        border-color: rgba(255,255,255,.18); }
+
+  .stamp {
+    position: absolute; right: 0; bottom: 0;
+    font-family: var(--mono); font-size: 10px; letter-spacing: .1em; color: #656b75;
+  }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="plate" style="background-image:url('plates/aurora-1920x1080.jpg')"></div>
+  <div class="grid-lines"></div>
+  <div class="glow glow-1"></div>
+  <div class="veil-left"></div>
+  <div class="vignette"></div>
+  <div class="grain"></div>
+
+  <div class="layer">
+    <div class="col-l">
+      <img class="mark" src="../../img/logo.svg" alt="IDATSUKA">
+      <p class="eyebrow">03 — Templates / ZEN · RAY · PULSE</p>
+      <h1 class="h-jp">1ファイルで<br>完成する<br><em>ポートフォリオ。</em></h1>
+      <p class="body-jp">ビルドツール不要、日本語コメント付き。ダーク / ライト切替、<br>モバイルメニュー、アンビエントな演出まで入ったHTMLテンプレート。</p>
+
+      <div class="pricerow">
+        <span class="price-big">¥2,980</span>
+        <span class="price-note">応援価格 ／ <b>無料版あり</b> ／ 個人・商用利用可</span>
+      </div>
+
+      <div class="tags">
+        <span class="tag on"><i class="dot"></i>Live Demo</span>
+        <span class="tag">Free Download</span>
+        <span class="tag">No build step</span>
+      </div>
+
+      <div class="foot">
+        <div class="rule"></div>
+        <div class="foot-row">
+          <span class="url">idatsuka.com<span class="slash">/store</span></span>
+          <span class="note">Design / Games / Art — Tokyo</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-r">
+      <div class="cover c1">
+        <img src="../../img/store-zen.svg" alt="ZEN template">
+        <div class="cover-body">
+          <span class="cover-cat">Portfolio · v1.1</span>
+          <span class="cover-name">ZEN</span>
+          <span class="cover-price">¥2,980 <span class="free">/ 無料版あり</span></span>
+        </div>
+      </div>
+      <div class="cover c2">
+        <img src="../../img/store-ray.svg" alt="RAY template">
+        <div class="cover-body">
+          <span class="cover-cat">Landing Page · v1.1</span>
+          <span class="cover-name">RAY</span>
+          <span class="cover-price">¥2,980 <span class="free">/ 無料版あり</span></span>
+        </div>
+      </div>
+      <div class="cover c3">
+        <img src="../../img/store-pulse.svg" alt="PULSE template">
+        <div class="cover-body">
+          <span class="cover-cat">Motion LP · v1.2</span>
+          <span class="cover-name">PULSE</span>
+          <span class="cover-price">¥2,980 <span class="free">/ 無料版あり</span></span>
+        </div>
+      </div>
+      <p class="stamp">※ カバー画像はテンプレートのプレビューです</p>
+    </div>
+  </div>
+</div>
+</body>
+</html>

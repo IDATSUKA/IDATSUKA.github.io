@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>wide-games 1920×1080</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Zen+Kaku+Gothic+New:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="file:///tmp/claude-0/-home-user-IDATSUKA-github-io/f8afb125-c3c6-5b57-8f76-edb1a21c750f/scratchpad/fontkit/fonts.css">
+<link rel="stylesheet" href="promo.css">
+<style>
+  .stage { width: 1920px; height: 1080px; }
+  .layer { padding: 96px 104px 90px; flex-direction: row; gap: 76px; }
+
+  .plate { opacity: .95; transform: scale(1.22) translate(12%, -6%); filter: brightness(1.3); }
+  .veil-left { background: linear-gradient(to right, rgba(6,6,7,.96) 0%, rgba(6,6,7,.84) 26%, rgba(6,6,7,.22) 58%, rgba(6,6,7,0) 82%); }
+  .glow-1 { right: -240px; top: -220px; width: 1000px; height: 1000px; }
+  .glow-2 { left: -260px; bottom: -320px; width: 800px; height: 800px;
+            background: radial-gradient(circle, rgba(159,214,236,.08) 0%, transparent 64%); }
+
+  .col-l { width: 688px; display: flex; flex-direction: column; }
+  .col-r { flex: 1; display: flex; flex-direction: column; }
+
+  .mark { width: 300px; }
+  .eyebrow { font-size: 14px; margin-top: 58px; }
+  .h-jp { font-size: 100px; margin-top: 24px; line-height: 1.18; letter-spacing: 0; }
+  .body-jp { font-size: 21px; margin-top: 28px; }
+
+  .tags { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 34px; }
+  .tags .tag { font-size: 11px; padding: 8px 16px 7px; }
+
+  .foot { margin-top: auto; }
+  .foot .rule { margin-bottom: 24px; }
+  .foot-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; }
+  .url { font-size: 26px; }
+  .note { font-size: 10px; white-space: nowrap; }
+  .stamp {
+    font-family: var(--mono); font-size: 10px; letter-spacing: .1em;
+    color: #656b75; margin-top: 12px; text-align: right;
+  }
+
+  .browser { width: 100%; }
+  .browser-bar { height: 40px; }
+  .browser-dots i { width: 8px; height: 8px; }
+  .browser-url { font-size: 12px; padding: 5px 0 4px; }
+  .browser-screen { height: 530px; }
+
+  .row2 { display: flex; gap: 22px; margin-top: 30px; flex: 1; }
+  .board { flex: 1; padding: 20px 24px 14px; }
+  .board-head { padding-bottom: 12px; margin-bottom: 12px; }
+  .board-head .t { font-size: 18px; }
+  .board-head .g { font-size: 10px; }
+  .chips { gap: 7px; margin-bottom: 14px; }
+  .chip { font-size: 9.5px; padding: 5px 10px 4px; }
+  .row { padding: 8px 0; grid-template-columns: 34px 1fr auto; gap: 14px; }
+  .row .n { font-size: 12px; }
+  .row .nm { font-size: 15px; line-height: 1.25; }
+  .row .badge { font-size: 8px; }
+  .row .sc { font-size: 15px; }
+
+  .tilecol { width: 352px; display: flex; flex-direction: column; gap: 16px; }
+  .tilecol .tile { flex: 1; }
+  .tile-body { padding: 0 14px 12px; }
+  .tile-cat { font-size: 8px; }
+  .tile-title { font-size: 17px; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="plate" style="background-image:url('plates/ring-1920x1080.jpg')"></div>
+  <div class="grid-lines"></div>
+  <div class="glow glow-1"></div>
+  <div class="glow glow-2"></div>
+  <div class="veil-left"></div>
+  <div class="vignette"></div>
+  <div class="grain"></div>
+
+  <div class="layer">
+    <div class="col-l">
+      <img class="mark" src="../../img/logo.svg" alt="IDATSUKA">
+      <p class="eyebrow">01 — Browser Games &amp; Ranking</p>
+      <h1 class="h-jp">遊べる。<br><em>競える。</em></h1>
+      <p class="body-jp">ブラウザで、いますぐ。インストールもアカウントも不要。<br>Void Runner / Signal / Orbit / Stack / Aurora Pinball / Lattice.<br>名前を登録すれば、スコアはそのままランキングへ。</p>
+
+      <div class="tags">
+        <span class="tag on"><i class="dot"></i>No install</span>
+        <span class="tag">6 titles</span>
+        <span class="tag">OS · Country · Friends</span>
+      </div>
+
+      <div class="foot">
+        <div class="rule"></div>
+        <div class="foot-row">
+          <span class="url">idatsuka.com<span class="slash">/play</span></span>
+          <span class="note">Design / Games / Art — Tokyo</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-r">
+      <div class="browser">
+        <div class="browser-bar">
+          <span class="browser-dots"><i></i><i></i><i></i></span>
+          <span class="browser-url">idatsuka.com<b>/game-void-runner.html</b></span>
+        </div>
+        <div class="browser-screen"><img src="../../img/game-void-runner.svg" alt="Void Runner"></div>
+      </div>
+
+      <div class="row2">
+        <div class="board">
+          <div class="board-head"><span class="t">Void Runner</span><span class="g">Ranking — All</span></div>
+          <div class="chips">
+            <span class="chip on">All</span><span class="chip">OS</span>
+            <span class="chip">Country</span><span class="chip">Region</span><span class="chip">Friends</span>
+          </div>
+          <div class="row">
+            <span class="n t1">1</span>
+            <span class="nm">NOVA_K<span class="badges"><span class="badge">🇯🇵 JP</span><span class="badge">iOS</span></span></span>
+            <span class="sc">18,420</span>
+          </div>
+          <div class="row">
+            <span class="n t2">2</span>
+            <span class="nm">hoshi.dev<span class="badges"><span class="badge">🇰🇷 KR</span><span class="badge">Android</span></span></span>
+            <span class="sc">17,905</span>
+          </div>
+          <div class="row">
+            <span class="n t3">3</span>
+            <span class="nm">MIYU<span class="badges"><span class="badge">🇺🇸 US</span><span class="badge">macOS</span></span></span>
+            <span class="sc">16,330</span>
+          </div>
+          <div class="row me">
+            <span class="n">4</span>
+            <span class="nm">YOU<span class="badges"><span class="badge">🇯🇵 JP</span><span class="badge">Windows</span></span></span>
+            <span class="sc">15,118</span>
+          </div>
+        </div>
+
+        <div class="tilecol">
+          <div class="tile">
+            <img src="../../img/game-orbit.svg" alt="Orbit">
+            <div class="tile-body"><span class="tile-cat">One-Button Ring Runner</span><span class="tile-title">Orbit</span></div>
+          </div>
+          <div class="tile">
+            <img src="../../img/game-stack.svg" alt="Stack">
+            <div class="tile-body"><span class="tile-cat">Precision Tower</span><span class="tile-title">Stack</span></div>
+          </div>
+        </div>
+      </div>
+      <p class="stamp">※ ランキング表示はサンプル（架空の名前・スコア）です</p>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>IDATSUKA — storyboard frames 1920×1080</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Zen+Kaku+Gothic+New:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="file:///tmp/claude-0/-home-user-IDATSUKA-github-io/f8afb125-c3c6-5b57-8f76-edb1a21c750f/scratchpad/fontkit/fonts.css">
+<link rel="stylesheet" href="promo.css">
+<style>
+  body { overflow: auto; background: #000; }
+  .sb { width: 1920px; height: 1080px; margin: 0 0 24px; }
+  .sb .layer { align-items: center; justify-content: center; text-align: center; padding: 0; }
+
+  .center { display: flex; flex-direction: column; align-items: center; }
+
+  /* ── f01 — the ring forming around a ghost wordmark ── */
+  #f01 .plate {
+    transform: scale(1.06) translateY(-2%); filter: brightness(1.45);
+    -webkit-mask-image: conic-gradient(from 200deg, #000 0deg, #000 250deg, rgba(0,0,0,.15) 300deg, transparent 340deg);
+    mask-image: conic-gradient(from 200deg, #000 0deg, #000 250deg, rgba(0,0,0,.15) 300deg, transparent 340deg);
+  }
+  #f01 .ghost { width: 760px; opacity: .17; filter: blur(1.6px) drop-shadow(0 0 60px rgba(159,214,236,.25)); }
+  #f01 .seed {
+    position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
+    width: 10px; height: 10px; border-radius: 50%; background: #dff0f8;
+    box-shadow: 0 0 40px 12px rgba(159,214,236,.55), 0 0 120px 40px rgba(159,214,236,.2);
+  }
+
+  /* ── f02 — wordmark fully lit ── */
+  #f02 .plate { transform: scale(1.04) translateY(-3%); filter: brightness(1.35); }
+  #f02 .mark { width: 980px; filter: drop-shadow(0 0 70px rgba(159,214,236,.3)); }
+  #f02 .hero-label {
+    font-family: var(--mono); font-size: 17px; letter-spacing: .46em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 52px;
+  }
+  #f02 .line { width: 1px; height: 74px; margin: 50px 0 26px;
+    background: linear-gradient(var(--accent-soft), transparent); }
+  #f02 .sub { font-family: var(--mono); font-size: 15px; letter-spacing: .42em;
+    text-transform: uppercase; color: var(--fg-dim); }
+
+  /* ── shared caption block ── */
+  .cap { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+  .cap .eyebrow { font-size: 14px; }
+  .cap .h-jp { font-size: 62px; line-height: 1.25; }
+  .cap-sm .h-jp { font-size: 54px; }
+
+  /* ── f03 — games montage ── */
+  #f03 .row { display: flex; align-items: center; justify-content: center;
+              gap: 0; margin-top: 62px; grid-template-columns: none; border: none; padding: 0; }
+  #f03 .side { width: 430px; flex: none; z-index: 1; }
+  #f03 .side.l { transform: rotate(-3deg) translate(26px, 38px); }
+  #f03 .side.r { transform: rotate(3deg)  translate(-26px, 38px); }
+  #f03 .side .tile { height: 242px; box-shadow: 0 24px 70px rgba(0,0,0,.7); }
+  #f03 .side .tile img { filter: brightness(1.06); }
+  #f03 .mid { width: 800px; flex: none; z-index: 3; }
+  #f03 .browser-bar { height: 36px; }
+  #f03 .browser-dots i { width: 7px; height: 7px; }
+  #f03 .browser-url { font-size: 11px; padding: 4px 0 3px; }
+  #f03 .browser-screen { height: 450px; }
+  #f03 .tile-body { padding: 0 16px 14px; }
+  #f03 .tile-cat { font-size: 8px; }
+  #f03 .tile-title { font-size: 19px; }
+
+  /* ── f04 — Orbit + Stack close-up, cursor hint ── */
+  #f04 .pair { display: flex; gap: 46px; margin-top: 56px; align-items: flex-start; }
+  #f04 .win { width: 660px; position: relative; }
+  #f04 .browser-bar { height: 34px; }
+  #f04 .browser-dots i { width: 7px; height: 7px; }
+  #f04 .browser-url { font-size: 11px; padding: 4px 0 3px; }
+  #f04 .browser-screen { height: 372px; }
+  #f04 .wlabel {
+    font-family: var(--mono); font-size: 11px; letter-spacing: .26em;
+    text-transform: uppercase; color: var(--muted); margin-top: 16px; text-align: left;
+  }
+  #f04 .wlabel b { color: var(--accent); font-weight: 400; }
+  .cursor { position: absolute; z-index: 6; pointer-events: none; }
+  .cursor svg { filter: drop-shadow(0 4px 14px rgba(0,0,0,.9)); }
+  .cursor .ping {
+    position: absolute; left: -34px; top: -34px;
+    width: 78px; height: 78px; border-radius: 50%;
+    border: 2px solid rgba(159,214,236,.55);
+    box-shadow: 0 0 40px rgba(159,214,236,.35), inset 0 0 26px rgba(159,214,236,.18);
+  }
+  .cursor .ping2 {
+    position: absolute; left: -62px; top: -62px;
+    width: 134px; height: 134px; border-radius: 50%;
+    border: 1px solid rgba(159,214,236,.2);
+  }
+
+  /* ── f05 — ranking board ── */
+  #f05 .board { width: 1140px; margin-top: 52px; padding: 30px 36px 24px; text-align: left; }
+  #f05 .board-head { padding-bottom: 16px; margin-bottom: 16px; }
+  #f05 .board-head .t { font-size: 24px; }
+  #f05 .board-head .g { font-size: 11px; }
+  #f05 .row { padding: 13px 0; grid-template-columns: 54px 1fr auto; gap: 20px; }
+  #f05 .row .n { font-size: 16px; }
+  #f05 .row .n.t1 { font-size: 21px; }
+  #f05 .row .nm { font-size: 21px; line-height: 1.3; }
+  #f05 .row .badge { font-size: 9px; }
+  #f05 .row .sc { font-size: 21px; }
+  #f05 .stamp { font-family: var(--mono); font-size: 11px; letter-spacing: .12em;
+                color: #656b75; margin-top: 20px; }
+
+  /* ── f06 — chips + friend code ── */
+  #f06 .chips { justify-content: center; gap: 14px; margin-top: 54px; }
+  #f06 .chip { font-size: 15px; padding: 12px 24px 10px; letter-spacing: .18em; }
+  #f06 .codecard {
+    width: 720px; margin-top: 50px; padding: 34px 40px 32px; align-items: flex-start;
+    border-radius: 4px; gap: 14px;
+  }
+  #f06 .codecard .lbl { font-size: 11px; }
+  #f06 .codecard .code { font-size: 54px; line-height: 1; }
+  #f06 .codecard .act {
+    display: flex; gap: 12px; margin-top: 6px;
+  }
+  #f06 .codecard .act .tag { font-size: 11px; padding: 9px 18px 8px; }
+  #f06 .stamp { font-family: var(--mono); font-size: 11px; letter-spacing: .12em;
+                color: #656b75; margin-top: 26px; }
+
+  /* ── f07 — templates fanned ── */
+  #f07 .fan { position: relative; width: 1320px; height: 470px; margin-top: 44px; }
+  #f07 .cover { position: absolute; width: 470px; border-radius: 4px; text-align: left; }
+  #f07 .cover-body { padding: 18px 22px 20px; display: flex; flex-direction: column; gap: 6px; }
+  #f07 .cover-cat { font-size: 10px; }
+  #f07 .cover-name { font-size: 25px; letter-spacing: .04em; }
+  #f07 .cover-price { font-size: 15px; margin-top: 3px; }
+  #f07 .cover-price .free { color: var(--accent); font-size: 13px; letter-spacing: .1em; }
+  #f07 .c-l { left: 0;    top: 96px; transform: rotate(-7deg); z-index: 1; }
+  #f07 .c-r { right: 0;   top: 96px; transform: rotate(7deg);  z-index: 1; }
+  #f07 .c-r .cover-body { align-items: flex-end; text-align: right; }
+  #f07 .c-m { left: 50%;  top: 0; width: 510px; transform: translateX(-50%); z-index: 3;
+              box-shadow: 0 56px 150px rgba(0,0,0,.88), 0 0 110px rgba(159,214,236,.1);
+              border-color: rgba(255,255,255,.2); }
+  #f07 .pricebar { display: flex; align-items: baseline; gap: 20px; margin-top: 34px; }
+  #f07 .price-big { font-family: var(--mono); font-weight: 700; font-size: 48px; line-height: 1;
+                    color: var(--fg); text-shadow: 0 0 54px rgba(159,214,236,.22); }
+  #f07 .price-note { font-family: var(--jp); font-size: 19px; color: var(--fg-dim); font-weight: 300; }
+  #f07 .price-note b { color: var(--accent); font-weight: 500; }
+
+  /* ── f08 — tagline over a live scene ── */
+  #f08 .plate { transform: scale(1.05); filter: brightness(1.5); }
+  #f08 .h-jp { font-size: 106px; line-height: 1.3; letter-spacing: .01em; }
+  #f08 .eyebrow { font-size: 15px; margin-bottom: 40px; }
+  #f08 .url { font-size: 22px; margin-top: 46px; }
+
+  /* ── f09 — end card ── */
+  #f09 .plate { transform: scale(1.04) translateY(-4%); filter: brightness(1.1); opacity: .7; }
+  #f09 .mark { width: 820px; filter: drop-shadow(0 0 66px rgba(159,214,236,.26)); }
+  #f09 .line { width: 1px; height: 62px; margin: 44px 0 34px;
+    background: linear-gradient(var(--accent-soft), transparent); }
+  #f09 .url { font-size: 34px; }
+  #f09 .sub { font-family: var(--mono); font-size: 14px; letter-spacing: .42em;
+    text-transform: uppercase; color: var(--muted); margin-top: 30px; }
+</style>
+</head>
+<body>
+
+<!-- ═══ F01 — ignition: the ring forms around a ghost wordmark ═══ -->
+<div class="sb stage" id="f01">
+  <div class="plate" style="background-image:url('plates/ring-1920x1080.jpg')"></div>
+  <div class="glow" style="left:50%;top:50%;width:1100px;height:1100px;transform:translate(-50%,-50%);
+       background:radial-gradient(circle, rgba(159,214,236,.1) 0%, transparent 62%);"></div>
+  <div class="vignette"></div>
+  <div class="grain" style="opacity:.075;"></div>
+  <div class="layer">
+    <div class="center">
+      <img class="ghost" src="../../img/logo.svg" alt="">
+    </div>
+    <span class="seed"></span>
+  </div>
+</div>
+
+<!-- ═══ F02 — the wordmark, fully lit ═══ -->
+<div class="sb stage" id="f02">
+  <div class="plate" style="background-image:url('plates/ring-1920x1080.jpg')"></div>
+  <div class="grid-lines"></div>
+  <div class="glow" style="left:50%;top:46%;width:1300px;height:1300px;transform:translate(-50%,-50%);
+       background:radial-gradient(circle, rgba(159,214,236,.13) 0%, transparent 62%);"></div>
+  <div class="vignette"></div>
+  <div class="grain"></div>
+  <div class="layer">
+    <div class="center">
+      <p class="hero-label">Designer &amp; Creator — Tokyo</p>
+      <img class="mark" src="../../img/logo.svg" alt="IDATSUKA">
+      <span class="line"></span>
+      <p class="sub">Design / Games / Art</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ F03 — games montage ═══ -->
+<div class="sb stage" id="f03">
+  <div class="plate" style="background-image:url('plates/plexus-1920x1080.jpg');opacity:.85;
+       filter:brightness(1.6);transform:scale(1.1);"></div>
+  <div class="glow" style="left:50%;top:56%;width:1400px;height:1000px;transform:translate(-50%,-50%);
+       background:radial-gradient(ellipse, rgba(159,214,236,.1) 0%, transparent 64%);"></div>
+  <div class="vignette"></div>
+  <div class="grain"></div>
+  <div class="layer">
+    <div class="center">
+      <div class="cap">
+        <span class="eyebrow">01 — Browser Games</span>
+        <h2 class="h-jp">簡単に遊べる、<em>ブラウザゲーム。</em></h2>
+      </div>
+      <div class="row">
+        <div class="side l">
+          <div class="tile">
+            <img src="../../img/game-orbit.svg" alt="Orbit">
+            <div class="tile-body"><span class="tile-cat">One-Button</span><span class="tile-title">Orbit</span></div>
+          </div>
+        </div>
+        <div class="mid">
+          <div class="browser">
+            <div class="browser-bar">
+              <span class="browser-dots"><i></i><i></i><i></i></span>
+              <span class="browser-url">idatsuka.com<b>/game-void-runner.html</b></span>
+            </div>
+            <div class="browser-screen"><img src="../../img/game-void-runner.svg" alt="Void Runner"></div>
+          </div>
+        </div>
+        <div class="side r">
+          <div class="tile">
+            <img src="../../img/game-stack.svg" alt="Stack">
+            <div class="tile-body"><span class="tile-cat">Precision</span><span class="tile-title">Stack</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ F04 — Orbit + Stack close-up with a tap hint ═══ -->
+<div class="sb stage" id="f04">
+  <div class="plate" style="background-image:url('plates/lattice-1920x1080.jpg');opacity:.8;
+       filter:brightness(1.5);transform:scale(1.12);"></div>
+  <div class="glow" style="left:50%;top:52%;width:1300px;height:900px;transform:translate(-50%,-50%);
+       background:radial-gradient(ellipse, rgba(159,214,236,.09) 0%, transparent 64%);"></div>
+  <div class="vignette"></div>
+  <div class="grain"></div>
+  <div class="layer">
+    <div class="center">
+      <div class="cap cap-sm">
+        <span class="eyebrow">Tap · Drag · Play</span>
+        <h2 class="h-jp">ワンタップで、<em>すぐ動く。</em></h2>
+      </div>
+      <div class="pair">
+        <div class="win">
+          <div class="browser">
+            <div class="browser-bar">
+              <span class="browser-dots"><i></i><i></i><i></i></span>
+              <span class="browser-url">idatsuka.com<b>/game-orbit.html</b></span>
+            </div>
+            <div class="browser-screen"><img src="../../img/game-orbit.svg" alt="Orbit"></div>
+          </div>
+          <p class="wlabel">Orbit — <b>One-Button Ring Runner</b></p>
+          <span class="cursor" style="left:392px;top:250px;">
+            <span class="ping2"></span><span class="ping"></span>
+            <svg width="32" height="42" viewBox="0 0 24 32">
+              <path d="M3 2 L3 26 L9.5 20 L13.5 29.5 L17.5 27.8 L13.6 18.6 L21.5 18.2 Z"
+                    fill="#f4f5f7" stroke="#060607" stroke-width="1.6" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </div>
+        <div class="win">
+          <div class="browser">
+            <div class="browser-bar">
+              <span class="browser-dots"><i></i><i></i><i></i></span>
+              <span class="browser-url">idatsuka.com<b>/game-stack.html</b></span>
+            </div>
+            <div class="browser-screen"><img src="../../img/game-stack.svg" alt="Stack"></div>
+          </div>
+          <p class="wlabel">Stack — <b>Precision Tower</b></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ F05 — the ranking board rises ═══ -->
+<div class="sb stage" id="f05">
+  <div class="plate" style="background-image:url('plates/flow-1920x1080.jpg');opacity:.75;
+       filter:brightness(1.2);transform:scale(1.08);"></div>
+  <div class="glow" style="left:50%;top:54%;width:1500px;height:1000px;transform:translate(-50%,-50%);
+       background:radial-gradient(ellipse, rgba(159,214,236,.1) 0%, transparent 62%);"></div>
+  <div class="vignette"></div>
+  <div class="grain"></div>
+  <div class="layer">
+    <div class="center">
+      <div class="cap">
+        <span class="eyebrow">02 — Ranking</span>
+        <h2 class="h-jp">ランキングで<em>競え。</em></h2>
+      </div>
+      <div class="board">
+        <div class="board-head"><span class="t">Void Runner</span><span class="g">Ranking — All</span></div>
+        <div class="row">
+          <span class="n t1">1</span>
+          <span class="nm">NOVA_K<span class="badges"><span class="badge">🇯🇵 JP</span><span class="badge">iOS</span></span></span>
+          <span class="sc">18,420</span>
+        </div>
+        <div class="row">
+          <span class="n t2">2</span>
+          <span class="nm">hoshi.dev<span class="badges"><span class="badge">🇰🇷 KR</span><span class="badge">Android</span></span></span>
+          <span class="sc">17,905</span>
+        </div>
+        <div class="row">
+          <span class="n t3">3</span>
+          <span class="nm">MIYU<span class="badges"><span class="badge">🇺🇸 US</span><span class="badge">macOS</span></span></span>
+          <span class="sc">16,330</span>
+        </div>
+        <div class="row me">
+          <span class="n">4</span>
+          <span class="nm">YOU<span class="badges"><span class="badge">🇯🇵 JP</span><span class="badge">Windows</span></span></span>
+          <span class="sc">15,118</span>
+        </div>
+        <div class="row">
+          <span class="n">5</span>
+          <span class="nm">kaze_09<span class="badges"><span class="badge">🇹🇼 TW</span><span class="badge">Android</span></span></span>
+          <span class="sc">14,702</span>
+        </div>
+      </div>
+      <p class="stamp">※ ランキング表示はサンプル（架空の名前・スコア）です</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ F06 — filters + friend code ═══ -->
+<div class="sb stage" id="f06">
+  <div class="plate" style="background-image:url('plates/plexus-1920x1080.jpg');opacity:.8;
+       filter:brightness(1.6);transform:scale(1.14) translateY(6%);"></div>
+  <div class="glow" style="left:50%;top:50%;width:1200px;height:900px;transform:translate(-50%,-50%);
+       background:radial-gradient(ellipse, rgba(159,214,236,.11) 0%, transparent 62%);"></div>
+  <div class="vignette"></div>
+  <div class="grain"></div>
+  <div class="layer">
+    <div class="center">
+      <div class="cap cap-sm">
+        <span class="eyebrow">Filter — OS · Country · Region · Friends</span>
+        <h2 class="h-jp">OS・国・<em>フレンド</em>で絞り込む。</h2>
+      </div>
+      <div class="chips">
+        <span class="chip">All</span>
+        <span class="chip">OS — Windows</span>
+        <span class="chip">Country — JP</span>
+        <span class="chip">Region — Asia</span>
+        <span class="chip on">Friends</span>
+      </div>
+      <div class="codecard">
+        <span class="lbl">Your friend code</span>
+        <span class="code">7K4M&#8209;92QX</span>
+        <span class="act">
+          <span class="tag on"><i class="dot"></i>Copy</span>
+          <span class="tag">Add friend</span>
+        </span>
+      </div>
+      <p class="stamp">※ フレンドコードは表示例です</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ F07 — templates fanned ═══ -->
+<div class="sb stage" id="f07">
+  <div class="plate" style="background-image:url('plates/aurora-1920x1080.jpg');opacity:.85;
+       filter:brightness(1.25);transform:scale(1.08) translateY(4%);"></div>
+  <div class="glow" style="left:50%;top:52%;width:1400px;height:1000px;transform:translate(-50%,-50%);
+       background:radial-gradient(ellipse, rgba(159,214,236,.1) 0%, transparent 62%);"></div>
+  <div class="vignette"></div>
+  <div class="grain"></div>
+  <div class="layer">
+    <div class="center">
+      <div class="cap cap-sm">
+        <span class="eyebrow">03 — Templates / ZEN · RAY · PULSE</span>
+        <h2 class="h-jp">テンプレートが<em>充実。</em></h2>
+      </div>
+      <div class="fan">
+        <div class="cover c-l">
+          <img src="../../img/store-zen.svg" alt="ZEN">
+          <div class="cover-body">
+            <span class="cover-cat">Portfolio · v1.1</span>
+            <span class="cover-name">ZEN</span>
+            <span class="cover-price">¥2,980 <span class="free">/ 無料版あり</span></span>
+          </div>
+        </div>
+        <div class="cover c-r">
+          <img src="../../img/store-pulse.svg" alt="PULSE">
+          <div class="cover-body">
+            <span class="cover-cat">Motion LP · v1.2</span>
+            <span class="cover-name">PULSE</span>
+            <span class="cover-price">¥2,980 <span class="free">/ 無料版あり</span></span>
+          </div>
+        </div>
+        <div class="cover c-m">
+          <img src="../../img/store-ray.svg" alt="RAY">
+          <div class="cover-body">
+            <span class="cover-cat">Landing Page · v1.1</span>
+            <span class="cover-name">RAY</span>
+            <span class="cover-price">¥2,980 <span class="free">/ 無料版あり</span></span>
+          </div>
+        </div>
+      </div>
+      <div class="pricebar">
+        <span class="price-big">¥2,980</span>
+        <span class="price-note">応援価格 ／ <b>無料版あり</b> ／ 個人・商用利用可</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ F08 — the tagline over a live scene ═══ -->
+<div class="sb stage" id="f08">
+  <div class="plate" style="background-image:url('plates/aurora-1920x1080.jpg')"></div>
+  <div class="grid-lines"></div>
+  <div class="glow" style="left:50%;top:50%;width:1500px;height:1100px;transform:translate(-50%,-50%);
+       background:radial-gradient(ellipse, rgba(159,214,236,.12) 0%, transparent 62%);"></div>
+  <div class="vignette"></div>
+  <div class="grain"></div>
+  <div class="layer">
+    <div class="center">
+      <span class="eyebrow">idatsuka.com</span>
+      <h2 class="h-jp">遊べる。競える。<em>作れる。</em></h2>
+      <span class="url">Design / Games / Art — Tokyo</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ F09 — end card ═══ -->
+<div class="sb stage" id="f09">
+  <div class="plate" style="background-image:url('plates/ring-1920x1080.jpg')"></div>
+  <div class="glow" style="left:50%;top:46%;width:1200px;height:1200px;transform:translate(-50%,-50%);
+       background:radial-gradient(circle, rgba(159,214,236,.11) 0%, transparent 62%);"></div>
+  <div class="vignette"></div>
+  <div class="grain"></div>
+  <div class="layer">
+    <div class="center">
+      <img class="mark" src="../../img/logo.svg" alt="IDATSUKA">
+      <span class="line"></span>
+      <span class="url">idatsuka.com</span>
+      <p class="sub">Design / Games / Art</p>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

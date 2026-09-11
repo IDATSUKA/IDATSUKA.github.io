@@ -1,0 +1,346 @@
+/* ═══════════════════════════════════════════════════════════
+   IDATSUKA — Promo kit
+   Shared design system for the static ads, the storyboard frames
+   and the motion-graphics CM. Extends the tokens of /style.css.
+   ═══════════════════════════════════════════════════════════ */
+
+:root {
+  --bg:      #060607;
+  --bg2:     #0b0c0e;
+  --bg3:     #121317;
+  --fg:      #f4f5f7;
+  --fg-dim:  #c3c8d0;
+  --muted:   #70767f;
+  --dim:     #3a3f47;
+  --accent:  #9fd6ec;
+  --accent-soft: rgba(159,214,236,.55);
+  --border:  rgba(255,255,255,.055);
+  --border-strong: rgba(255,255,255,.12);
+  --mono:    'Space Mono', ui-monospace, monospace;
+  --sans:    'Space Grotesk', 'Zen Kaku Gothic New', sans-serif;
+  --jp:      'Zen Kaku Gothic New', 'Space Grotesk', sans-serif;
+  --ease-out: cubic-bezier(.16,1,.3,1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body { background: var(--bg); }
+body {
+  color: var(--fg);
+  font-family: var(--sans);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.8;
+  overflow: hidden;
+}
+img { display: block; max-width: 100%; }
+
+/* ── Stage ───────────────────────────────────────────────── */
+.stage {
+  position: relative;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+/* Hero-scene plate, pre-rendered from js/hero-scenes.js */
+.plate {
+  position: absolute; inset: 0;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  pointer-events: none;
+}
+
+/* Vignette / legibility veils */
+.veil-bottom {
+  position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(to top, rgba(6,6,7,.96) 0%, rgba(6,6,7,.72) 26%, rgba(6,6,7,0) 62%);
+}
+.veil-top {
+  position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(to bottom, rgba(6,6,7,.9) 0%, rgba(6,6,7,0) 34%);
+}
+.veil-left {
+  position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(to right, rgba(6,6,7,.94) 0%, rgba(6,6,7,.66) 38%, rgba(6,6,7,0) 74%);
+}
+.vignette {
+  position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse 78% 74% at 50% 48%, rgba(6,6,7,0) 38%, rgba(6,6,7,.72) 100%);
+}
+
+/* Ambient ice-blue glow */
+.glow {
+  position: absolute; pointer-events: none;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(159,214,236,.16) 0%, rgba(159,214,236,.05) 40%, transparent 68%);
+  filter: blur(2px);
+}
+
+/* Film grain — same generator as the site, a touch stronger for print/feed */
+.grain {
+  position: absolute; inset: -20%;
+  width: 140%; height: 140%;
+  pointer-events: none; z-index: 90;
+  opacity: .05; mix-blend-mode: normal;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Faint technical grid */
+.grid-lines {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255,255,255,.028) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.028) 1px, transparent 1px);
+  background-size: 92px 92px;
+  mask-image: radial-gradient(ellipse 70% 70% at 50% 45%, #000 10%, transparent 76%);
+  -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 45%, #000 10%, transparent 76%);
+}
+
+.layer { position: relative; z-index: 10; height: 100%; display: flex; flex-direction: column; }
+
+/* ── Typography ──────────────────────────────────────────── */
+.eyebrow {
+  font-family: var(--mono);
+  text-transform: uppercase;
+  color: var(--accent);
+  letter-spacing: .34em;
+  line-height: 1;
+  white-space: nowrap;
+}
+.kicker {
+  font-family: var(--mono);
+  text-transform: uppercase;
+  color: var(--muted);
+  letter-spacing: .3em;
+  line-height: 1.9;
+}
+.h-jp {
+  font-family: var(--jp);
+  font-weight: 500;
+  letter-spacing: .012em;
+  line-height: 1.22;
+  color: var(--fg);
+}
+.h-jp em {
+  font-style: normal;
+  color: var(--accent);
+  text-shadow: 0 0 48px rgba(159,214,236,.32);
+}
+.h-en {
+  font-family: var(--sans);
+  font-weight: 500;
+  letter-spacing: -.03em;
+  line-height: 1.05;
+}
+.body-jp {
+  font-family: var(--jp);
+  font-weight: 300;
+  color: var(--fg-dim);
+  line-height: 2;
+  letter-spacing: .02em;
+}
+.rule {
+  height: 1px; width: 100%;
+  background: linear-gradient(90deg, var(--accent-soft), rgba(159,214,236,.08) 46%, transparent);
+}
+.tag {
+  display: inline-flex; align-items: center; gap: .55em;
+  font-family: var(--mono); text-transform: uppercase;
+  letter-spacing: .2em; color: var(--fg-dim);
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  background: rgba(11,12,14,.62);
+}
+.tag.on {
+  color: var(--accent);
+  border-color: var(--accent-soft);
+  background: rgba(159,214,236,.09);
+}
+.dot { width: .42em; height: .42em; border-radius: 50%; background: currentColor; }
+
+/* ── Wordmark + URL lockup ───────────────────────────────── */
+.mark { display: block; filter: drop-shadow(0 0 34px rgba(159,214,236,.18)); }
+.url {
+  font-family: var(--mono);
+  letter-spacing: .24em;
+  color: var(--fg);
+  text-transform: lowercase;
+  white-space: nowrap;
+}
+.url .slash { color: var(--accent); }
+
+/* ── Browser window frame (the games run in a browser) ───── */
+.browser {
+  position: relative;
+  background: #0a0b0d;
+  border: 1px solid var(--border-strong);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow:
+    0 40px 120px rgba(0,0,0,.72),
+    0 0 0 1px rgba(159,214,236,.05),
+    0 0 90px rgba(159,214,236,.06);
+}
+.browser-bar {
+  display: flex; align-items: center; gap: .7em;
+  padding: 0 1em;
+  background: #101216;
+  border-bottom: 1px solid var(--border);
+}
+.browser-dots { display: flex; gap: .45em; }
+.browser-dots i { display: block; border-radius: 50%; background: #2b3038; }
+.browser-url {
+  flex: 1;
+  font-family: var(--mono);
+  color: var(--muted);
+  letter-spacing: .06em;
+  background: #080a0c;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  text-align: center;
+  overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+}
+.browser-url b { color: var(--fg-dim); font-weight: 400; }
+.browser-screen { position: relative; overflow: hidden; background: #060607; }
+.browser-screen img { width: 100%; height: 100%; object-fit: cover; }
+.browser-screen::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(6,6,7,.4), transparent 46%);
+  pointer-events: none;
+}
+
+/* ── Phone frame (portrait UI: the ranking board) ────────── */
+.phone {
+  position: relative;
+  border: 1px solid var(--border-strong);
+  border-radius: 30px;
+  background: #0a0b0d;
+  padding: 10px;
+  box-shadow:
+    0 44px 130px rgba(0,0,0,.78),
+    0 0 84px rgba(159,214,236,.07);
+}
+.phone::before {
+  content: ''; position: absolute; top: 10px; left: 50%;
+  transform: translateX(-50%);
+  width: 26%; height: 7px; border-radius: 0 0 9px 9px;
+  background: #101216; z-index: 3;
+}
+.phone-screen {
+  position: relative; overflow: hidden;
+  border-radius: 22px; background: var(--bg);
+  height: 100%;
+}
+
+/* ── Game tile ───────────────────────────────────────────── */
+.tile {
+  position: relative; overflow: hidden;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+}
+.tile img { width: 100%; height: 100%; object-fit: cover; filter: brightness(.94); }
+.tile::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(6,6,7,.88) 0%, rgba(6,6,7,.15) 46%, transparent 70%);
+}
+.tile-body {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 2;
+  display: flex; flex-direction: column; gap: .18em;
+}
+.tile-cat {
+  font-family: var(--mono); text-transform: uppercase;
+  letter-spacing: .22em; color: var(--accent); opacity: .92;
+}
+.tile-title { font-weight: 500; letter-spacing: -.02em; color: var(--fg); line-height: 1.2; }
+
+/* ── Ranking board mock ──────────────────────────────────── */
+.board {
+  background: rgba(8,9,11,.9);
+  border: 1px solid var(--border-strong);
+  backdrop-filter: blur(8px);
+}
+.board-head {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 1em; border-bottom: 1px solid var(--border);
+}
+.board-head .t { font-weight: 500; letter-spacing: -.01em; }
+.board-head .g {
+  font-family: var(--mono); text-transform: uppercase;
+  letter-spacing: .22em; color: var(--accent);
+}
+.chips { display: flex; flex-wrap: wrap; align-items: center; }
+.chip {
+  display: inline-flex; align-items: center; gap: .4em;
+  font-family: var(--mono); text-transform: uppercase;
+  letter-spacing: .12em; color: var(--muted);
+  border: 1px solid var(--dim);
+  white-space: nowrap;
+}
+.chip.on { color: var(--accent); border-color: var(--accent-soft); background: rgba(159,214,236,.09); }
+.row {
+  display: grid; align-items: center;
+  grid-template-columns: 2.6em 1fr auto;
+  border-bottom: 1px solid var(--border);
+}
+.row:last-child { border-bottom: none; }
+.row.me { background: rgba(159,214,236,.045); }
+.row .n { font-family: var(--mono); color: var(--dim); text-align: center; }
+.row .n.t1 { color: var(--accent); font-weight: 700; }
+.row .n.t2, .row .n.t3 { color: var(--fg-dim); font-weight: 700; }
+.row .nm { color: var(--fg); letter-spacing: .01em; }
+.row .nm .you {
+  font-family: var(--mono); text-transform: uppercase; letter-spacing: .14em;
+  color: var(--accent); border: 1px solid rgba(159,214,236,.3);
+  padding: .05em .45em; margin-left: .6em; vertical-align: middle;
+}
+.row .badges { display: flex; gap: .4em; margin-top: .25em; }
+.row .badge {
+  font-family: var(--mono); text-transform: uppercase; letter-spacing: .08em;
+  color: var(--muted); border: 1px solid var(--border-strong); padding: .04em .4em;
+}
+.row .sc { font-family: var(--mono); font-weight: 700; color: var(--fg); text-align: right; }
+
+/* ── Friend-code card ────────────────────────────────────── */
+.codecard {
+  border: 1px solid var(--border-strong);
+  background: rgba(11,12,14,.86);
+  display: flex; flex-direction: column;
+}
+.codecard .lbl {
+  font-family: var(--mono); text-transform: uppercase;
+  letter-spacing: .28em; color: var(--muted);
+}
+.codecard .code {
+  font-family: var(--mono); font-weight: 700; color: var(--accent);
+  letter-spacing: .2em;
+  text-shadow: 0 0 40px rgba(159,214,236,.35);
+}
+
+/* ── Template cover card ─────────────────────────────────── */
+.cover {
+  position: relative; overflow: hidden;
+  background: var(--bg2);
+  border: 1px solid var(--border-strong);
+  box-shadow: 0 40px 110px rgba(0,0,0,.72);
+}
+.cover img { width: 100%; display: block; }
+.cover-body { border-top: 1px solid var(--border); background: rgba(6,6,7,.86); }
+.cover-name { font-weight: 500; letter-spacing: -.01em; color: var(--fg); line-height: 1.3; }
+.cover-cat {
+  font-family: var(--mono); text-transform: uppercase;
+  letter-spacing: .22em; color: var(--muted);
+}
+.cover-price { font-family: var(--mono); color: var(--fg); }
+.cover-price s { color: var(--dim); text-decoration: none; }
+.cover-free { font-family: var(--mono); color: var(--accent); }
+
+/* ── Footer lockup bar ───────────────────────────────────── */
+.lockup {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 2em; border-top: 1px solid var(--border);
+}
+.lockup .left { display: flex; align-items: center; gap: 1.4em; }
+.note {
+  font-family: var(--mono); color: #6a707a;
+  letter-spacing: .16em; text-transform: uppercase;
+}

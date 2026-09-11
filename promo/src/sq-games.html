@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>sq-games 1080×1080</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Zen+Kaku+Gothic+New:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<!-- offline font kit (session scratchpad); the Google link above is the online fallback -->
+<link rel="stylesheet" href="file:///tmp/claude-0/-home-user-IDATSUKA-github-io/f8afb125-c3c6-5b57-8f76-edb1a21c750f/scratchpad/fontkit/fonts.css">
+<link rel="stylesheet" href="promo.css">
+<style>
+  .stage { width: 1080px; height: 1080px; }
+  .layer { padding: 74px 72px 68px; }
+
+  .plate { opacity: .95; transform: scale(1.18) translateY(-4%); filter: brightness(1.25); }
+  .glow-1 { left: -180px; top: -220px; width: 900px; height: 900px; }
+  .glow-2 { right: -240px; bottom: -300px; width: 860px; height: 860px;
+            background: radial-gradient(circle, rgba(159,214,236,.1) 0%, transparent 64%); }
+
+  .top { display: flex; align-items: center; justify-content: space-between; }
+  .mark { width: 252px; }
+  .top .tag { font-size: 11px; padding: 7px 16px 6px; }
+
+  .eyebrow { font-size: 13px; margin-top: 62px; }
+  .h-jp { font-size: 78px; margin-top: 22px; }
+  .body-jp { font-size: 19px; margin-top: 20px; max-width: 30em; }
+
+  .visual { position: relative; height: 402px; margin-top: 38px; }
+
+  .browser { position: absolute; left: 0; top: 6px; width: 604px; }
+  .browser-bar { height: 34px; }
+  .browser-dots i { width: 7px; height: 7px; }
+  .browser-url { font-size: 10px; padding: 4px 0 3px; }
+  .browser-screen { height: 318px; }
+
+  .board { position: absolute; right: 0; top: 74px; width: 358px; padding: 18px 20px 16px; }
+  .board-head { padding-bottom: 11px; margin-bottom: 11px; }
+  .board-head .t { font-size: 15px; }
+  .board-head .g { font-size: 9px; }
+  .chips { gap: 6px; margin-bottom: 13px; }
+  .chip { font-size: 8.5px; padding: 4px 8px 3px; }
+  .row { padding: 8px 0; grid-template-columns: 30px 1fr auto; gap: 10px; }
+  .row .n { font-size: 11px; }
+  .row .nm { font-size: 13.5px; line-height: 1.3; }
+  .row .nm .you { font-size: 7.5px; }
+  .row .badge { font-size: 7.5px; }
+  .row .sc { font-size: 13px; }
+
+  .veil-bottom {
+    background: linear-gradient(to top, rgba(6,6,7,.9) 0%, rgba(6,6,7,.4) 9%, rgba(6,6,7,0) 24%);
+  }
+
+  .lockup { margin-top: auto; padding-top: 28px; align-items: flex-end; border-top: none; }
+  .foot-rule { margin-top: auto; }
+  .url { font-size: 22px; }
+  .notes { text-align: right; display: flex; flex-direction: column; gap: 5px; }
+  .note { font-size: 9.5px; }
+  .note.jp { font-family: var(--mono); letter-spacing: .1em; text-transform: none; color: #656b75; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="plate" style="background-image:url('plates/ring-1080x1080.jpg')"></div>
+  <div class="grid-lines"></div>
+  <div class="glow glow-1"></div>
+  <div class="glow glow-2"></div>
+  <div class="vignette"></div>
+  <div class="veil-bottom"></div>
+  <div class="grain"></div>
+
+  <div class="layer">
+    <div class="top">
+      <img class="mark" src="../../img/logo.svg" alt="IDATSUKA">
+      <span class="tag on"><i class="dot"></i>No install</span>
+    </div>
+
+    <p class="eyebrow">01 — Browser Games &amp; Ranking</p>
+    <h1 class="h-jp">ブラウザで、<br><em>すぐ遊べる。</em></h1>
+    <p class="body-jp">Void Runner / Signal / Orbit / Stack / Aurora Pinball / Lattice.<br>スコアは名前を登録してランキングへ。</p>
+
+    <div class="visual">
+      <div class="browser">
+        <div class="browser-bar">
+          <span class="browser-dots"><i></i><i></i><i></i></span>
+          <span class="browser-url">idatsuka.com<b>/game-void-runner.html</b></span>
+        </div>
+        <div class="browser-screen"><img src="../../img/game-void-runner.svg" alt="Void Runner"></div>
+      </div>
+
+      <div class="board">
+        <div class="board-head">
+          <span class="t">Void Runner</span>
+          <span class="g">Ranking</span>
+        </div>
+        <div class="chips">
+          <span class="chip on">All</span>
+          <span class="chip">OS</span>
+          <span class="chip">Country</span>
+          <span class="chip">Friends</span>
+        </div>
+        <div class="row">
+          <span class="n t1">1</span>
+          <span class="nm">NOVA_K
+            <span class="badges"><span class="badge">🇯🇵 JP</span><span class="badge">iOS</span></span>
+          </span>
+          <span class="sc">18,420</span>
+        </div>
+        <div class="row">
+          <span class="n t2">2</span>
+          <span class="nm">hoshi.dev
+            <span class="badges"><span class="badge">🇰🇷 KR</span><span class="badge">Android</span></span>
+          </span>
+          <span class="sc">17,905</span>
+        </div>
+        <div class="row">
+          <span class="n t3">3</span>
+          <span class="nm">MIYU
+            <span class="badges"><span class="badge">🇺🇸 US</span><span class="badge">macOS</span></span>
+          </span>
+          <span class="sc">16,330</span>
+        </div>
+        <div class="row me">
+          <span class="n">4</span>
+          <span class="nm">YOU
+            <span class="badges"><span class="badge">🇯🇵 JP</span><span class="badge">Windows</span></span>
+          </span>
+          <span class="sc">15,118</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="rule foot-rule"></div>
+    <div class="lockup">
+      <div class="left">
+        <span class="url">idatsuka.com<span class="slash">/play</span></span>
+      </div>
+      <div class="notes">
+        <span class="note">Design / Games / Art — Tokyo</span>
+        <span class="note jp">※ ランキング表示はサンプル（架空の名前・スコア）です</span>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

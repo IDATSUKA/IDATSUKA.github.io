@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>story-all 1080×1920</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Zen+Kaku+Gothic+New:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="file:///tmp/claude-0/-home-user-IDATSUKA-github-io/f8afb125-c3c6-5b57-8f76-edb1a21c750f/scratchpad/fontkit/fonts.css">
+<link rel="stylesheet" href="promo.css">
+<style>
+  .stage { width: 1080px; height: 1920px; }
+  .layer { padding: 92px 80px 80px; }
+
+  .plate { opacity: .9; transform: scale(1.06); filter: brightness(1.3); }
+  .veil-top { background: linear-gradient(to bottom, rgba(6,6,7,.95) 0%, rgba(6,6,7,.72) 18%, rgba(6,6,7,.34) 34%, rgba(6,6,7,0) 50%); }
+  .veil-bottom { background: linear-gradient(to top, rgba(6,6,7,.96) 0%, rgba(6,6,7,.82) 26%, rgba(6,6,7,.4) 48%, rgba(6,6,7,0) 66%); }
+  .glow-1 { left: 50%; top: 300px; width: 1100px; height: 1100px; transform: translateX(-50%);
+            background: radial-gradient(circle, rgba(159,214,236,.13) 0%, transparent 62%); }
+
+  .top { display: flex; align-items: center; justify-content: space-between; }
+  .mark { width: 268px; }
+  .top .tag { font-size: 11.5px; padding: 8px 17px 7px; }
+
+  .eyebrow { font-size: 14px; margin-top: 52px; }
+  .h-jp { font-size: 92px; margin-top: 24px; letter-spacing: 0; line-height: 1.16; }
+  .body-jp { font-size: 21px; margin-top: 24px; }
+
+  .blocks { margin-top: 44px; display: flex; flex-direction: column; gap: 36px; }
+  .blk { display: grid; grid-template-columns: 58px 1fr; align-items: start; }
+  .blk-n {
+    font-family: var(--mono); font-size: 13px; font-weight: 700;
+    letter-spacing: .18em; color: var(--accent); padding-top: 3px;
+  }
+  .blk-n::after {
+    content: ''; display: block; width: 1px; height: 26px;
+    margin: 10px 0 0 6px; background: linear-gradient(rgba(159,214,236,.5), transparent);
+  }
+  .blk-h {
+    font-family: var(--jp); font-weight: 500; font-size: 27px;
+    color: var(--fg); letter-spacing: .01em; line-height: 1.5;
+  }
+  .blk-s {
+    font-family: var(--mono); font-size: 10px; letter-spacing: .26em;
+    text-transform: uppercase; color: var(--muted); margin-top: 8px;
+  }
+
+  .tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 11px; margin-top: 20px; }
+  .tile { height: 114px; }
+  .tile-body { padding: 0 9px 9px; }
+  .tile-cat { font-size: 6.5px; letter-spacing: .18em; }
+  .tile-title { font-size: 13px; }
+
+  .board { margin-top: 20px; padding: 20px 22px 16px; }
+  .board-head { padding-bottom: 12px; margin-bottom: 12px; }
+  .board-head .t { font-size: 17px; }
+  .board-head .g { font-size: 9.5px; }
+  .chips { gap: 7px; margin-bottom: 14px; }
+  .chip { font-size: 9.5px; padding: 5px 10px 4px; }
+  .row { padding: 9px 0; grid-template-columns: 36px 1fr auto; gap: 12px; }
+  .row .n { font-size: 12px; }
+  .row .nm { font-size: 15px; line-height: 1.3; }
+  .row .badge { font-size: 8px; }
+  .row .sc { font-size: 14.5px; }
+
+  .covers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 13px; margin-top: 20px; }
+  .cover { border-radius: 3px; box-shadow: 0 24px 70px rgba(0,0,0,.6); }
+  .cover-body { padding: 11px 13px 12px; display: flex; flex-direction: column; gap: 4px; }
+  .cover-cat { font-size: 7.5px; }
+  .cover-name { font-size: 14px; }
+  .cover-price { font-size: 11px; }
+  .cover-price .free { color: var(--accent); font-size: 9.5px; letter-spacing: .1em; }
+
+  .lockup { margin-top: auto; padding-top: 30px; align-items: flex-end; border-top: none; }
+  .foot-rule { margin-top: auto; }
+  .url { font-size: 27px; }
+  .notes { text-align: right; display: flex; flex-direction: column; gap: 6px; }
+  .note { font-size: 10px; }
+  .note.jp { font-family: var(--mono); letter-spacing: .1em; text-transform: none; color: #656b75; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="plate" style="background-image:url('plates/flow-1080x1920.jpg')"></div>
+  <div class="grid-lines"></div>
+  <div class="glow glow-1"></div>
+  <div class="veil-top"></div>
+  <div class="veil-bottom"></div>
+  <div class="vignette"></div>
+  <div class="grain"></div>
+
+  <div class="layer">
+    <div class="top">
+      <img class="mark" src="../../img/logo.svg" alt="IDATSUKA">
+      <span class="tag on"><i class="dot"></i>Tokyo</span>
+    </div>
+
+    <p class="eyebrow">Design / Games / Art</p>
+    <h1 class="h-jp">遊べる。<br>競える。<br><em>作れる。</em></h1>
+    <p class="body-jp">ブラウザゲームも、ランキングも、テンプレートも。<br>ぜんぶ idatsuka.com の中に。</p>
+
+    <div class="blocks">
+
+      <div class="blk">
+        <span class="blk-n">01</span>
+        <div>
+          <p class="blk-h">簡単に遊べるブラウザゲーム。</p>
+          <p class="blk-s">6 titles — no install, no account</p>
+          <div class="tiles">
+            <div class="tile">
+              <img src="../../img/game-void-runner.svg" alt="Void Runner">
+              <div class="tile-body"><span class="tile-cat">Endless Runner</span><span class="tile-title">Void Runner</span></div>
+            </div>
+            <div class="tile">
+              <img src="../../img/game-orbit.svg" alt="Orbit">
+              <div class="tile-body"><span class="tile-cat">One-Button</span><span class="tile-title">Orbit</span></div>
+            </div>
+            <div class="tile">
+              <img src="../../img/game-stack.svg" alt="Stack">
+              <div class="tile-body"><span class="tile-cat">Precision</span><span class="tile-title">Stack</span></div>
+            </div>
+            <div class="tile">
+              <img src="../../img/game-signal.svg" alt="Signal">
+              <div class="tile-body"><span class="tile-cat">Memory</span><span class="tile-title">Signal</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="blk">
+        <span class="blk-n">02</span>
+        <div>
+          <p class="blk-h">ランキングで競える。</p>
+          <p class="blk-s">Name · OS · Country · Friends</p>
+          <div class="board">
+            <div class="board-head">
+              <span class="t">Orbit</span>
+              <span class="g">Ranking</span>
+            </div>
+            <div class="chips">
+              <span class="chip on">All</span>
+              <span class="chip">OS</span>
+              <span class="chip">Country</span>
+              <span class="chip">Region</span>
+              <span class="chip">Friends</span>
+            </div>
+            <div class="row">
+              <span class="n t1">1</span>
+              <span class="nm">NOVA_K<span class="badges"><span class="badge">🇯🇵 JP</span><span class="badge">iOS</span></span></span>
+              <span class="sc">9,840</span>
+            </div>
+            <div class="row">
+              <span class="n t2">2</span>
+              <span class="nm">hoshi.dev<span class="badges"><span class="badge">🇰🇷 KR</span><span class="badge">Android</span></span></span>
+              <span class="sc">9,102</span>
+            </div>
+            <div class="row">
+              <span class="n t3">3</span>
+              <span class="nm">MIYU<span class="badges"><span class="badge">🇺🇸 US</span><span class="badge">macOS</span></span></span>
+              <span class="sc">8,655</span>
+            </div>
+            <div class="row me">
+              <span class="n">4</span>
+              <span class="nm">YOU<span class="badges"><span class="badge">🇯🇵 JP</span><span class="badge">Windows</span></span></span>
+              <span class="sc">8,210</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="blk">
+        <span class="blk-n">03</span>
+        <div>
+          <p class="blk-h">テンプレートが充実。</p>
+          <p class="blk-s">¥2,980 each — free version available</p>
+          <div class="covers">
+            <div class="cover">
+              <img src="../../img/store-zen.svg" alt="ZEN">
+              <div class="cover-body">
+                <span class="cover-cat">Portfolio · v1.1</span>
+                <span class="cover-name">ZEN</span>
+                <span class="cover-price">¥2,980 <span class="free">/ 無料版あり</span></span>
+              </div>
+            </div>
+            <div class="cover">
+              <img src="../../img/store-ray.svg" alt="RAY">
+              <div class="cover-body">
+                <span class="cover-cat">Landing · v1.1</span>
+                <span class="cover-name">RAY</span>
+                <span class="cover-price">¥2,980 <span class="free">/ 無料版あり</span></span>
+              </div>
+            </div>
+            <div class="cover">
+              <img src="../../img/store-pulse.svg" alt="PULSE">
+              <div class="cover-body">
+                <span class="cover-cat">Motion LP · v1.2</span>
+                <span class="cover-name">PULSE</span>
+                <span class="cover-price">¥2,980 <span class="free">/ 無料版あり</span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="rule foot-rule"></div>
+    <div class="lockup">
+      <div class="left">
+        <span class="url">idatsuka.com</span>
+      </div>
+      <div class="notes">
+        <span class="note">Designer &amp; Creator — Tokyo</span>
+        <span class="note jp">※ ランキング表示はサンプル（架空の名前・スコア）です</span>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
