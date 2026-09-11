@@ -121,7 +121,7 @@ function paintApron(c, W, H) {
   c.restore();
   c.textBaseline = 'middle';
   c.fillStyle = '#D4AA50'; c.font = 'bold 13px "Helvetica Neue"'; c.textAlign = 'left';
-  c.fillText('AURORA INDUSTRIES', 22, 28);
+  c.fillText('AURORA INDUSTRIES · SPEC TABLE', 22, 28);
   c.fillStyle = 'rgba(170,152,102,0.9)'; c.font = 'bold 11px "Helvetica Neue"'; c.textAlign = 'right';
   c.fillText('MINIMAL SYSTEMS.', W - 22, 22);
   c.fillText('MAXIMUM IMPACT.', W - 22, 38);

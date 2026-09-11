@@ -8,6 +8,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="AURORA PINBALL">
 <meta name="theme-color" content="#050505">
+<meta name="description" content="AURORA INDUSTRIES · SPEC TABLE — a self-contained physics pinball prototype built with Matter.js. Fictional brand, playable prototype.">
+<meta property="og:title" content="AURORA INDUSTRIES — PINBALL (SPEC)">
 <link rel="apple-touch-icon" href="icon.png">
 <link rel="manifest" href="manifest.json">
 <title>AURORA INDUSTRIES — PINBALL</title>
@@ -21,6 +23,7 @@ canvas{display:block;touch-action:none}
 </style>
 </head>
 <body>
+<a href="../games.html" style="font-family:'Space Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(159,214,236,.75);text-decoration:none;position:fixed;top:14px;left:16px;z-index:9999;padding:6px 10px;border:1px solid rgba(159,214,236,.25);border-radius:999px;background:rgba(6,6,7,.55);backdrop-filter:blur(8px);transition:color .2s,border-color .2s" onmouseover="this.style.color='rgba(159,214,236,1)';this.style.borderColor='rgba(159,214,236,.5)'" onmouseout="this.style.color='rgba(159,214,236,.75)';this.style.borderColor='rgba(159,214,236,.25)'">&larr; IDATSUKA</a>
 <canvas id="c"></canvas>
 <script src="matter.min.js"></script>
 <script src="table.js"></script>
@@ -664,7 +667,7 @@ function buildBG(){
   b.beginPath(); b.moveTo(0,-33); b.lineTo(31,21); b.lineTo(-31,21); b.closePath(); b.stroke();
   b.beginPath(); b.moveTo(-13,5); b.lineTo(13,5); b.stroke(); b.shadowBlur = 0; b.restore();
   b.fillStyle = C.gLt; b.font = 'bold 9px "Helvetica Neue"'; b.textAlign = 'left'; b.textBaseline = 'middle';
-  b.fillText('AURORA INDUSTRIES', PL+6, INFO_Y+14);
+  b.fillText('AURORA INDUSTRIES · SPEC TABLE', PL+6, INFO_Y+14);
   [['LIGHT CORE MODES','Progress up the ladder'],['COMPLETE BANKS','Build modes & earn value'],['ORBIT ×3','Lights MULTIBALL'],['3X SCORING','Starts at ELEVATE']].forEach(([r,s], i) => {
     b.shadowColor = C.gold; b.shadowBlur = 2; b.fillStyle = C.gold; b.font = '7px "Helvetica Neue"'; b.fillText('⊙', PL+4, INFO_Y+30+i*21); b.shadowBlur = 0;
     b.fillStyle = 'rgba(172,155,105,0.9)'; b.font = 'bold 7px "Helvetica Neue"'; b.fillText(r, PL+14, INFO_Y+30+i*21);
@@ -953,7 +956,7 @@ function drawTitle(tNow){
   g.fillText('AURORA', W/2, 300);
   g.font = '13px "Helvetica Neue"'; g.fillText('I N D U S T R I E S', W/2, 326); cs(g);
   g.fillStyle = 'rgba(170,152,102,0.95)'; g.font = 'bold 16px "Helvetica Neue"';
-  g.fillText('— PINBALL —', W/2, 362);
+  g.fillText('— PINBALL · SPEC —', W/2, 362);
   const lines = [
     ['左半分タップ', '左フリッパー'],
     ['右半分タップ', '右フリッパー'],

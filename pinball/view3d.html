@@ -21,6 +21,7 @@ canvas{display:block;position:absolute;inset:0;touch-action:none}
 </style>
 </head>
 <body>
+<a href="../games.html" style="font-family:'Space Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(159,214,236,.75);text-decoration:none;position:fixed;top:14px;left:16px;z-index:9999;padding:6px 10px;border:1px solid rgba(159,214,236,.25);border-radius:999px;background:rgba(6,6,7,.55);backdrop-filter:blur(8px);transition:color .2s,border-color .2s" onmouseover="this.style.color='rgba(159,214,236,1)';this.style.borderColor='rgba(159,214,236,.5)'" onmouseout="this.style.color='rgba(159,214,236,.75)';this.style.borderColor='rgba(159,214,236,.25)'">&larr; IDATSUKA</a>
 <canvas id="gl"></canvas>
 <canvas id="hud"></canvas>
 <script src="matter.min.js"></script>
@@ -595,7 +596,7 @@ function drawTitle(tNow){
   hg.font = `${13*k}px "Helvetica Neue"`; hg.fillText('I N D U S T R I E S', cx, Hv * 0.385);
   hg.shadowBlur = 0;
   hg.fillStyle = 'rgba(190,172,122,0.95)'; hg.font = `bold ${16*k}px "Helvetica Neue"`;
-  hg.fillText('— 3D PINBALL —', cx, Hv * 0.428);
+  hg.fillText('— 3D PINBALL · SPEC —', cx, Hv * 0.428);
   const lines = [
     ['左半分タップ', '左フリッパー'],
     ['右半分タップ', '右フリッパー'],
