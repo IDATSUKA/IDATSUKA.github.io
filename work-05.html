@@ -41,7 +41,7 @@
 <header class="project-hero">
   <span class="label">Spec · 05 — UI / UX Design</span>
   <h1>Mono</h1>
-  <p class="project-hero-desc">書くことに集中するためのジャーナリングアプリ。余計なものを削ぎ落とし、思考と言葉のあいだに何も挟まない——静寂のインターフェースを設計した。</p>
+  <p class="project-hero-desc">書くことに集中するためのジャーナリングアプリ。日付とテキストだけを残し、開いてから最初の一文字までの操作をゼロにした——紙と墨、2つのテーマで設計している。</p>
   <div class="project-meta-grid">
     <div>
       <p class="project-meta-label">Type</p>
@@ -62,42 +62,46 @@
   </div>
 </header>
 
+<div class="spec-note-wrap"><p class="spec-note">架空のプロジェクトです。実在のクライアント・実績ではありません。</p></div>
+
 <div class="project-visual">
-  <img src="img/work-05.svg" alt="Mono — ミニマルなジャーナリングアプリのキービジュアル">
+  <img src="img/work/05-hero.jpg" alt="Mono キービジュアル — 紙と墨、2つのテーマのエディタ画面を並べたジャーナリングアプリ">
 </div>
 
 <div class="project-section">
   <div class="project-two-col">
     <span class="label">Overview</span>
     <div class="project-body">
-      <p>市場のノートアプリは<strong>機能過多</strong>に陥っている。タグ、フォルダ、リンク、テンプレート——整理の道具が増えるほど、人は「書く前の準備」に時間を奪われ、肝心の言葉が出てこなくなる。Mono はその逆を行くと決めた。<strong>タグもフォルダもない、あるのはテキストと日付だけ</strong>。</p>
-      <p>設計の中心課題は<strong>「書き始めの壁」を解消するUI</strong>。アプリを開いてから最初の一文字を打つまでの距離を、物理的にも心理的にも限界まで縮める。書くこと以外のすべてを引き算した先に、毎日開きたくなる静かな場所が生まれた。</p>
+      <p>ノートアプリは<strong>整理の道具が増えるほど、書き始めが遠くなる</strong>。タグ、フォルダ、テンプレート——準備に時間を取られて、肝心の一行が出てこない。Mono は逆から設計した。<strong>あるのは日付とテキストだけ</strong>のiOSアプリのコンセプトである。</p>
+      <p>中心に置いた問いは<strong>「開いてから最初の一文字までに、いくつ操作が要るか」</strong>。答えはゼロ。起動した時点でカーソルは立っていて、新規作成ボタンもフォルダ選択も経由しない。空白が重い日のために、その日の問いを一行だけ薄く置いた。</p>
     </div>
   </div>
 </div>
 
 <div class="project-gallery">
-  <div class="project-gallery-item art-05 rv"></div>
-  <div class="project-gallery-item art-05 rv" style="filter:brightness(1.12);"></div>
-  <div class="project-gallery-item art-05 rv" style="filter:contrast(1.1);"></div>
-  <div class="project-gallery-item art-05 rv" style="filter:brightness(.88);"></div>
+  <div class="project-gallery-item art-05 rv"><img src="img/work/05-a.jpg" alt="Mono 画面詳細 — 一行の問いだけを置いた空の状態と、明朝で組んだエディタ画面" style="width:100%;height:100%;object-fit:cover;" loading="lazy"></div>
+  <div class="project-gallery-item art-05 rv"><img src="img/work/05-b.jpg" alt="Mono コンポーネントシート — 紙と墨のカラートークン、書体ピッカー、カレンダードット、本文の組版指定" style="width:100%;height:100%;object-fit:cover;" loading="lazy"></div>
 </div>
 
 <div class="project-section">
   <div class="project-two-col">
     <span class="label">Approach</span>
     <div class="project-body">
-      <p>インターフェースは<strong>モノクロームで視覚ノイズを徹底的に排除</strong>。色が伝える情報をゼロにすることで、画面に残るのは自分の言葉だけになる。そして<strong>起動から即入力までのワンステップ</strong>設計——アプリを開いた瞬間、すでにカーソルは点滅している。メニューも、新規作成ボタンすらも経由しない。</p>
-      <p>長文を書く道具として、<strong>和欧混植のタイポグラフィ</strong>を一字単位で調整し、日本語と英数字が混ざっても呼吸の乱れない行間を実現。習慣化の仕掛けはただひとつ、<strong>書いた日だけ静かに灯るカレンダードット</strong>。バッジも通知攻勢もなく、灯りが並んでいく景色そのものが続ける理由になる。</p>
+      <p>テーマは<strong>紙（温かみのあるオフホワイト）と墨（深いダーク）の2つ</strong>。同じ組版のままトークンだけを反転させ、昼と夜で読み味が変わらないようにした。本文は明朝15.5pt / 行間2.35、左右マージン28pt の一段組み。<strong>和文と英数字が混ざっても呼吸が乱れない設定</strong>を基準値として固定している。</p>
+      <p>アイコンは持たず、操作は<strong>「一覧」「設定」「書き出し」「完了」の4語だけ</strong>。習慣化の仕掛けも<strong>書いた日だけ静かに灯るカレンダードット</strong>ひとつに限り、連続日数のバッジも通知攻勢も置かない。モーションはフェードのみ、160ms。</p>
     </div>
   </div>
 </div>
 
+<div class="project-gallery-full">
+  <img src="img/work/05-full.jpg" alt="Mono ユーザーフロー — 起動、執筆、墨テーマ、読み返し、カレンダー、設定までの6画面" style="width:100%;height:100%;object-fit:cover;" loading="lazy">
+</div>
+
 <div class="project-section" style="padding:0;border-bottom:none;">
   <div class="project-stats">
-    <div class="stat-item rv"><div class="stat-number">Spec</div><div class="stat-label">構想デモ</div></div>
-    <div class="stat-item rv"><div class="stat-number">—</div><div class="stat-label">未検証の数値は非掲載</div></div>
-    <div class="stat-item rv"><div class="stat-number">Demo</div><div class="stat-label">実案件ではありません</div></div>
+    <div class="stat-item rv"><div class="stat-number">06</div><div class="stat-label">Screens designed — 設計した画面</div></div>
+    <div class="stat-item rv"><div class="stat-number">2 wks</div><div class="stat-label">Duration — 自主制作の期間</div></div>
+    <div class="stat-item rv"><div class="stat-number">iOS</div><div class="stat-label">Platform — iPhone / iOS 17</div></div>
   </div>
 </div>
 
@@ -105,9 +109,8 @@
   <div class="project-two-col">
     <span class="label">Intent (Spec)</span>
     <div class="project-body">
-      <p>ここにあった効果数値・受賞・メディア掲載などの表現は Spec（構想）上の想定であり、実測の実績ではありません。</p>
-      <p>デザイン意図と体験の方向性を示すためのデモケースです。</p>
-    
+      <p>設計したのは<strong>空の状態 / エディタ（紙・墨） / 一覧 / カレンダー / 設定の6画面</strong>。あわせて紙と墨のカラートークン、書体ピッカー、本文の組版指定、カレンダードットのコンポーネントシートと、ユーザーフローのボードを制作した。</p>
+      <p>本ページは構想（Spec）です。画面に掲載している日記の文章はこの案のために書き下ろしたもので、実在の人物や出来事とは関係ありません。効果・売上・利用者数などの実績値は一切掲載していません。</p>
     </div>
   </div>
 </div>

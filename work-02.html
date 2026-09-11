@@ -41,7 +41,7 @@
 <header class="project-hero">
   <span class="label">Spec · 02 — UI / UX Design</span>
   <h1>Neon District</h1>
-  <p class="project-hero-desc">東京のナイトライフ検索アプリ。点在するクラブ、バー、ライブハウスの情報を、一つのガラスのようなインターフェースに統合した。</p>
+  <p class="project-hero-desc">東京のナイトライフ検索アプリ。地図・店舗詳細・今夜のリストの3画面だけで「今夜どこへ行くか」を決めきるための、iOSアプリのコンセプト。</p>
   <div class="project-meta-grid">
     <div><p class="project-meta-label">Type</p><p class="project-meta-value">Spec / Concept — Neon District Inc.（実在クライアント案件ではない）</p></div>
     <div><p class="project-meta-label">Year</p><p class="project-meta-value">2024</p></div>
@@ -50,42 +50,46 @@
   </div>
 </header>
 
+<div class="spec-note-wrap"><p class="spec-note">架空のプロジェクトです。実在のクライアント・実績ではありません。</p></div>
+
 <div class="project-visual">
-  <img src="img/work-02.svg" alt="Neon District Key Visual">
+  <img src="img/work/02-hero.jpg" alt="Neon District キービジュアル — 地図・店舗詳細・今夜のリストの3画面を並べたダークUI">
 </div>
 
 <div class="project-section">
   <div class="project-two-col">
     <div><span class="label">Overview</span></div>
     <div class="project-body">
-      <p>東京の夜は世界有数の密度を持つ。しかしその情報は無数のSNSや口コミに散らばり、「今夜どこへ行くか」を決める体験は驚くほど不便なままだった。Neon Districtは、その断片化した夜を再定義するために生まれたアプリである。</p>
-      <p>設計の中心に据えたのは「偶然の出会い」。目的の店を最短で探すだけでなく、知らなかった場所、聴いたことのない音楽、予期しない一夜に出会えること。検索アプリでありながら、回遊そのものが楽しい体験となることを目指した。</p>
+      <p>「今夜どこへ行くか」を決める材料は、SNSと口コミに散らばったままだ。Neon District は、その判断を<strong>地図・店舗詳細・今夜のリストの3画面だけで完結させる</strong>ことを条件に組み立てた iOS アプリのコンセプトである。</p>
+      <p>起点に置いたのは検索ではなく<strong>「いまの状態」</strong>。開いた瞬間に現在地と営業中の店が描画され、絞り込む前にすでに選択肢が見えている。フィルタはジャンルと距離の2軸だけに削り、迷う前に一軒目が決まる導線を優先した。</p>
     </div>
   </div>
 </div>
 
 <div class="project-gallery">
-  <div class="project-gallery-item art-02 rv"></div>
-  <div class="project-gallery-item art-02 rv" style="filter:brightness(1.2);"></div>
-  <div class="project-gallery-item art-02 rv" style="transform:scaleX(-1);"></div>
-  <div class="project-gallery-item art-02 rv" style="filter:brightness(0.8) saturate(1.3);"></div>
+  <div class="project-gallery-item art-02 rv"><img src="img/work/02-a.jpg" alt="Neon District 画面詳細 — 発光ピンを置いた地図ビューと店舗詳細画面、設計意図の注釈" style="width:100%;height:100%;object-fit:cover;" loading="lazy"></div>
+  <div class="project-gallery-item art-02 rv"><img src="img/work/02-b.jpg" alt="Neon District コンポーネントシート — カラートークン、タイポグラフィスケール、ボタン、チップ、マップピン" style="width:100%;height:100%;object-fit:cover;" loading="lazy"></div>
 </div>
 
 <div class="project-section">
   <div class="project-two-col">
     <div><span class="label">Approach</span></div>
     <div class="project-body">
-      <p>ビジュアルの基調はダークガラスのUIにシアンの光。夜の街でスマートフォンを開いたとき、画面が周囲のネオンと地続きに感じられるよう、透過レイヤーと発光のバランスを徹底的に調整した。情報の階層は光の強弱だけで表現している。</p>
-      <p>導線は「地図から探索する」と「ムードからレコメンドされる」の2本立て。さらにProgressive Disclosureの原則に基づき、最初の画面では最小限の選択肢だけを提示し、ユーザーの行動に応じて段階的に情報を開示。夜の高揚感を削がない、軽いインタラクションを貫いた。</p>
+      <p>真っ黒の地にマゼンタとシアンを最小限だけ置く。<strong>ジャンルは色相、混雑は光量</strong>で表し、地図の上に文字を足さずに階層をつくった。掲載写真のない店でも見劣りしないよう、詳細画面のカバーは写真ではなく<strong>発光レイヤーで生成する</strong>方式にしている。</p>
+      <p>混雑度は数値ではなく<strong>5段階の光と一行のテキスト</strong>。断定を避けた表現に統一した。ボトムシートは画面の1/4で止まり、2枚目のカードが覗く高さを既定値に。地図を隠さないこと、タップを増やさないことを最後まで優先している。</p>
     </div>
   </div>
 </div>
 
+<div class="project-gallery-full">
+  <img src="img/work/02-full.jpg" alt="Neon District ユーザーフロー — 導入から気分選択、地図、店舗詳細、今夜のリスト、予定化までの6画面" style="width:100%;height:100%;object-fit:cover;" loading="lazy">
+</div>
+
 <div class="project-section" style="padding:0;border-bottom:none;">
   <div class="project-stats">
-    <div class="stat-item rv"><div class="stat-number">Spec</div><div class="stat-label">構想デモ</div></div>
-    <div class="stat-item rv"><div class="stat-number">—</div><div class="stat-label">未検証の数値は非掲載</div></div>
-    <div class="stat-item rv"><div class="stat-number">Demo</div><div class="stat-label">実案件ではありません</div></div>
+    <div class="stat-item rv"><div class="stat-number">06</div><div class="stat-label">Screens designed — 設計した画面</div></div>
+    <div class="stat-item rv"><div class="stat-number">3 wks</div><div class="stat-label">Duration — 自主制作の期間</div></div>
+    <div class="stat-item rv"><div class="stat-number">iOS</div><div class="stat-label">Platform — iPhone / iOS 17</div></div>
   </div>
 </div>
 
@@ -93,9 +97,8 @@
   <div class="project-two-col">
     <div><span class="label">Intent (Spec)</span></div>
     <div class="project-body">
-      <p>ここにあった効果数値・受賞・メディア掲載などの表現は Spec（構想）上の想定であり、実測の実績ではありません。</p>
-      <p>デザイン意図と体験の方向性を示すためのデモケースです。</p>
-    
+      <p>設計したのは<strong>導入 / 気分選択 / 地図 / 店舗詳細 / 今夜のリスト / 予定（保存）の6画面</strong>。あわせてカラートークン、タイポグラフィスケール、ボタン・チップ・マップピン・カードのコンポーネントシートと、ユーザーフローのボードを制作した。</p>
+      <p>本ページは構想（Spec）です。画面に登場する店名・出演者名・地図はすべてこの案のために作った架空のもので、実在の店舗や人物とは関係ありません。効果・売上・利用者数などの実績値は一切掲載していません。</p>
     </div>
   </div>
 </div>
