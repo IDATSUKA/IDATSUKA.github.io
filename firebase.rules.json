@@ -1,0 +1,58 @@
+{
+  "rules": {
+    "scores": {
+      "$game": {
+        ".read": true,
+        ".indexOn": ["score", "name"],
+        "$entryId": {
+          ".write": true,
+          ".validate": "newData.hasChildren(['name', 'score', 'deviceId', 'code', 'os', 'country', 'region', 'date'])",
+          "name": {
+            ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 16"
+          },
+          "score": {
+            ".validate": "newData.isNumber() && newData.val() >= 0"
+          },
+          "deviceId": {
+            ".validate": "newData.isString() && newData.val().length > 0"
+          },
+          "code": {
+            ".validate": "newData.isString()"
+          },
+          "os": {
+            ".validate": "newData.isString()"
+          },
+          "country": {
+            ".validate": "newData.isString()"
+          },
+          "region": {
+            ".validate": "newData.isString()"
+          },
+          "date": {
+            ".validate": "newData.isString()"
+          },
+          "$other": {
+            ".validate": false
+          }
+        }
+      }
+    },
+    "names": {
+      "$name": {
+        ".read": true,
+        ".write": "!data.exists() || !newData.exists() || data.child('deviceId').val() === newData.child('deviceId').val()",
+        ".validate": "newData.hasChildren(['deviceId', 'createdAt'])",
+        "deviceId": {
+          ".validate": "newData.isString() && newData.val().length > 0"
+        },
+        "createdAt": {
+          ".validate": "newData.isNumber()"
+        }
+      }
+    },
+    "$other": {
+      ".read": false,
+      ".write": false
+    }
+  }
+}

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>IDATSUKA</title>
-  <meta name="description" content="Idatsuka — Designer, Creator, Tokyo. デザインとクリエイティブの交差点。">
+  <meta name="description" content="IDATSUKA — Designer, Creator, Tokyo. デザインとクリエイティブの交差点。">
   <link rel="canonical" href="https://idatsuka.com/">
   <meta property="og:title" content="IDATSUKA">
   <meta property="og:description" content="Designer, Creator, Tokyo.">
@@ -77,12 +77,47 @@
     .hero-hint {
       position: absolute; left: 3rem; bottom: 2.6rem; z-index: 2;
       font-family: var(--mono); font-size: .5rem; letter-spacing: .3em;
-      text-transform: uppercase; color: var(--dim); pointer-events: none;
+      text-transform: uppercase; color: var(--muted); pointer-events: none;
+      text-shadow: 0 0 14px rgba(6,6,7,.95), 0 0 4px rgba(6,6,7,.95);
       opacity: 0; animation: fadeUp 1s ease forwards 2.4s;
       transition: opacity .6s;
     }
     #hero.touched .hero-hint { opacity: 0 !important; animation: none; }
-    @media (max-width: 600px) { .hero-hint { left: 1.5rem; } }
+    /* the label is the scene readout — show it again briefly after a switch */
+    #hero.touched .hero-hint.reveal { opacity: 1 !important; }
+    .hero-switch {
+      position: absolute; right: 3rem; bottom: 2.35rem; z-index: 3;
+      display: inline-flex; align-items: center; gap: .5em;
+      padding: .55rem 1.05rem;
+      background: rgba(8,9,11,.62);
+      border: 1px solid var(--border-strong); border-radius: 999px;
+      font-family: var(--mono); font-size: .5rem; font-weight: 400;
+      letter-spacing: .28em; margin-right: -.28em;
+      text-transform: uppercase; color: var(--muted);
+      cursor: pointer; -webkit-appearance: none; appearance: none;
+      backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+      opacity: 0; animation: fadeUp 1s ease forwards 2.4s;
+      transition: color .35s, border-color .35s, background .35s,
+                  box-shadow .45s var(--ease-out), transform .45s var(--ease-out);
+    }
+    .hero-switch:hover, .hero-switch:focus-visible {
+      color: var(--accent); border-color: var(--accent-soft);
+      background: rgba(159,214,236,.06);
+      box-shadow: 0 0 26px rgba(159,214,236,.14);
+      transform: translateY(-2px);
+    }
+    .hero-switch:active { transform: translateY(0); }
+    @media (max-width: 600px) {
+      .hero-hint { left: 1.5rem; bottom: 2.1rem; font-size: .44rem; letter-spacing: .2em; }
+      .hero-switch {
+        right: 1.5rem; bottom: 1.7rem;
+        min-height: 44px; padding: 0 1rem;
+        font-size: .44rem; letter-spacing: .2em; margin-right: -.2em;
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .hero-switch, .hero-hint { animation: none; opacity: 1; transition: none; }
+    }
     .landing-door-bg {
       position: absolute; inset: 0; width: 100%; height: 100%;
       object-fit: cover; opacity: .08; pointer-events: none;
@@ -234,7 +269,7 @@
 <body>
 
 <nav>
-  <a href="/" class="logo"><img src="img/logo.svg" alt="Idatsuka"></a>
+  <a href="/" class="logo"><img src="img/logo.svg" alt="IDATSUKA"></a>
   <ul class="nav-links">
     <li><a href="about.html">Profile</a></li>
     <li><a href="play.html">Play</a></li>
@@ -268,7 +303,8 @@
     <span><span>S</span><span>c</span><span>r</span><span>o</span><span>l</span><span>l</span></span>
     <div class="scroll-line"></div>
   </div>
-  <p class="hero-hint" aria-hidden="true">Drag to spin &middot; Click to pulse</p>
+  <p class="hero-hint" aria-hidden="true">Scene &mdash; Drag &middot; Click</p>
+  <button type="button" class="hero-switch" aria-label="背景シーンを次に切り替える">Next scene &rarr;</button>
 </section>
 
 <div class="marquee" aria-hidden="true">
@@ -398,7 +434,7 @@
 </div>
 
 <footer>
-  <p>&copy; 2025 Idatsuka</p>
+  <p>&copy; 2025 IDATSUKA</p>
   <ul class="footer-links">
     <li><a href="about.html">Profile</a></li>
     <li><a href="play.html">Play</a></li>
@@ -441,232 +477,8 @@ document.querySelectorAll('.landing-stat-num').forEach(el => {
   statIO.observe(el);
 });
 
-// ── Hero particle orb ──
-(function() {
-  const canvas = document.getElementById('heroCanvas');
-  const ctx = canvas.getContext('2d');
-  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  let W = 0, H = 0, dpr = 1;
-  function resize() {
-    const r = canvas.parentElement.getBoundingClientRect();
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
-    W = r.width; H = r.height;
-    canvas.width = W * dpr; canvas.height = H * dpr;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  }
-  resize();
-  window.addEventListener('resize', resize);
-
-  // Pre-rendered glow sprite
-  const sprite = document.createElement('canvas');
-  sprite.width = sprite.height = 32;
-  const sctx = sprite.getContext('2d');
-  const grad = sctx.createRadialGradient(16, 16, 0, 16, 16, 16);
-  grad.addColorStop(0, 'rgba(255,255,255,1)');
-  grad.addColorStop(.25, 'rgba(199,231,244,.85)');
-  grad.addColorStop(.6, 'rgba(159,214,236,.25)');
-  grad.addColorStop(1, 'rgba(159,214,236,0)');
-  sctx.fillStyle = grad;
-  sctx.fillRect(0, 0, 32, 32);
-
-  function gauss() {
-    return (Math.random() + Math.random() + Math.random() - 1.5) / 1.5;
-  }
-
-  // Ring particles — one continuous thick band
-  const isNarrow = window.matchMedia('(max-width: 600px)').matches;
-  const N = isNarrow ? 700 : 1300;
-  const ring = [];
-  for (let i = 0; i < N; i++) {
-    ring.push({
-      theta: (i / N) * Math.PI * 2 + Math.random() * .02,
-      rOff: gauss() * .12,
-      yOff: gauss() * .045,
-      speed: .00018 + Math.random() * .0002,
-      size: .6 + Math.random() * 1.3,
-      tw: Math.random() * Math.PI * 2,
-      twSpeed: .0004 + Math.random() * .001,
-      bright: Math.random() < .08 ? 1.5 : 1,
-      ox: 0, oy: 0, ovx: 0, ovy: 0, glow: 0
-    });
-  }
-  // Ambient dust
-  const dust = [];
-  for (let i = 0; i < (isNarrow ? 40 : 70); i++) {
-    dust.push({
-      x: Math.random(), y: Math.random(),
-      vy: .00001 + Math.random() * .00004,
-      size: .4 + Math.random() * 1.1,
-      a: .04 + Math.random() * .12,
-      tw: Math.random() * Math.PI * 2
-    });
-  }
-
-  // ── Pointer state ──
-  let mouseX = 0, mouseY = 0, curX = 0, curY = 0;   // parallax, -.5..+.5
-  let px = -9999, py = -9999, pIn = false;          // pointer in hero-local px
-  let dragging = false, dragX = 0, dragT = 0, moved = 0;
-  let spin = 0, spinVel = 0;                        // drag-driven rotation + momentum
-  const waves = [];                                 // click shockwaves
-  const hero = canvas.parentElement;
-  const FORCE_R = isNarrow ? 90 : 150;
-
-  function localPos(e) {
-    const r = hero.getBoundingClientRect();
-    return { x: e.clientX - r.left, y: e.clientY - r.top };
-  }
-  window.addEventListener('pointermove', e => {
-    mouseX = (e.clientX / window.innerWidth - .5);
-    mouseY = (e.clientY / window.innerHeight - .5);
-    const l = localPos(e);
-    px = l.x; py = l.y;
-    pIn = px >= 0 && py >= 0 && px <= W && py <= H;
-    if (dragging) {
-      const dx = e.clientX - dragX;
-      dragX = e.clientX;
-      spinVel += dx * .00032;
-      moved += Math.abs(dx) + Math.abs(e.movementY || 0);
-    }
-  }, { passive: true });
-  hero.addEventListener('pointerdown', e => {
-    if (e.pointerType === 'mouse' && e.button !== 0) return;
-    if (e.target.closest('a, button')) return;
-    dragging = true; dragX = e.clientX; dragT = performance.now(); moved = 0;
-    hero.classList.add('is-dragging', 'touched');
-  });
-  function endDrag(e, allowClick) {
-    if (!dragging) return;
-    dragging = false;
-    hero.classList.remove('is-dragging');
-    if (allowClick && moved < 8 && performance.now() - dragT < 400) {
-      const l = localPos(e);
-      waves.push({ x: l.x, y: l.y, t0: performance.now() });
-      if (waves.length > 4) waves.shift();
-    }
-  }
-  window.addEventListener('pointerup', e => endDrag(e, true));
-  window.addEventListener('pointercancel', e => endDrag(e, false));
-  hero.addEventListener('pointerleave', () => { pIn = false; });
-
-  // Shallow pitch: the ring reads as a perspective ellipse, not a circle
-  const baseTilt = 0.68;
-
-  function draw(t) {
-    ctx.clearRect(0, 0, W, H);
-    curX += (mouseX - curX) * .03;
-    curY += (mouseY - curY) * .03;
-    spin += spinVel * 16;
-    spinVel *= .955;
-    for (let i = waves.length - 1; i >= 0; i--) if (t - waves[i].t0 > 1400) waves.splice(i, 1);
-
-    // Ring centre sits above the text block so the far rim clears the
-    // eyebrow label and the bright near rim lands just under the tagline
-    const cx = W / 2, cy = H * .40;
-    const R = Math.min(W * .27, H * .34);
-    const fov = R * 1.7;
-    const tilt = baseTilt + curY * .12;
-    const cosT = Math.cos(tilt), sinT = Math.sin(tilt);
-    const yaw = curX * .22;
-    const cosY = Math.cos(yaw), sinY = Math.sin(yaw);
-
-    ctx.globalCompositeOperation = 'lighter';
-
-    // cursor bloom
-    if (pIn) {
-      const g = ctx.createRadialGradient(px, py, 0, px, py, FORCE_R * 1.4);
-      g.addColorStop(0, 'rgba(159,214,236,.09)');
-      g.addColorStop(1, 'rgba(159,214,236,0)');
-      ctx.fillStyle = g;
-      ctx.fillRect(px - FORCE_R * 1.4, py - FORCE_R * 1.4, FORCE_R * 2.8, FORCE_R * 2.8);
-    }
-
-    // shockwave rings
-    for (const w of waves) {
-      const age = Math.max(0, t - w.t0);
-      const wr = age * .75;
-      ctx.globalAlpha = Math.max(0, 1 - age / 1200) * .35;
-      ctx.strokeStyle = 'rgba(159,214,236,1)';
-      ctx.lineWidth = 1;
-      ctx.beginPath(); ctx.arc(w.x, w.y, wr, 0, Math.PI * 2); ctx.stroke();
-    }
-
-    // dust
-    for (const p of dust) {
-      p.y -= p.vy * 16;
-      if (p.y < -.02) { p.y = 1.02; p.x = Math.random(); }
-      const a = p.a * (.7 + .3 * Math.sin(t * .001 + p.tw));
-      ctx.globalAlpha = a;
-      const s = p.size * 4;
-      ctx.drawImage(sprite, p.x * W - s / 2, p.y * H - s / 2, s, s);
-    }
-
-    // ring
-    for (const p of ring) {
-      if (!reduced) p.theta += p.speed * 16;
-      const th = p.theta + spin;
-      const r = R * (1 + p.rOff);
-      let x = Math.cos(th) * r;
-      let z = Math.sin(th) * r;
-      let y = p.yOff * R;
-      // yaw (mouse x)
-      const x2 = x * cosY - z * sinY;
-      const z2 = x * sinY + z * cosY;
-      // tilt (pitch)
-      const y2 = y * cosT - z2 * sinT;
-      const z3 = y * sinT + z2 * cosT;
-      const scale = fov / (fov + z3);
-      const sx = cx + x2 * scale;
-      const sy = cy + y2 * scale;
-
-      // interaction forces act on a screen-space offset that springs back
-      const ex = sx + p.ox, ey = sy + p.oy;
-      if (pIn) {
-        const dx = ex - px, dy = ey - py;
-        const d2 = dx * dx + dy * dy;
-        if (d2 < FORCE_R * FORCE_R) {
-          const d = Math.sqrt(d2) || 1;
-          const f = 1 - d / FORCE_R;
-          p.ovx += (dx / d) * f * 2.2;
-          p.ovy += (dy / d) * f * 2.2;
-          if (f > p.glow) p.glow = f;
-        }
-      }
-      for (const w of waves) {
-        const age = Math.max(0, t - w.t0);
-        const wr = age * .75;
-        const dx = ex - w.x, dy = ey - w.y;
-        const d = Math.sqrt(dx * dx + dy * dy) || 1;
-        const band = Math.abs(d - wr);
-        if (band < 70) {
-          const f = (1 - band / 70) * Math.max(0, 1 - age / 1200);
-          p.ovx += (dx / d) * f * 7;
-          p.ovy += (dy / d) * f * 7;
-          if (f > p.glow) p.glow = f;
-        }
-      }
-      p.ovx += -p.ox * .04; p.ovy += -p.oy * .04;
-      p.ovx *= .88; p.ovy *= .88;
-      p.ox += p.ovx; p.oy += p.ovy;
-      p.glow *= .93;
-
-      // 0 = far (top/back), 1 = near (bottom/front)
-      const near = Math.max(0, Math.min(1, (scale - .62) / 1.8));
-      const twinkle = .85 + .15 * Math.sin(t * p.twSpeed + p.tw);
-      const a = (.14 + .72 * near) * twinkle * p.bright + p.glow * .8;
-      ctx.globalAlpha = Math.min(a, 1);
-      const s = p.size * (1.2 + 5.5 * near + p.glow * 3) * 2;
-      ctx.drawImage(sprite, sx + p.ox - s / 2, sy + p.oy - s / 2, s, s);
-    }
-
-    ctx.globalAlpha = 1;
-    ctx.globalCompositeOperation = 'source-over';
-
-    if (!reduced) requestAnimationFrame(draw);
-  }
-  requestAnimationFrame(draw);
-})();
 </script>
 <script src="js/motion.js" defer></script>
+<script src="js/hero-scenes.js" defer></script>
 </body>
 </html>
