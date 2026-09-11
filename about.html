@@ -3,33 +3,114 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>About — IDATSUKA</title>
-  <meta name="description" content="東京を拠点に活動するデザイナー Idatsuka のプロフィール。">
-  <meta property="og:title" content="About — IDATSUKA">
-  <meta property="og:description" content="東京を拠点に活動するデザイナー Idatsuka のプロフィール。">
+  <title>Profile — IDATSUKA | デザインと制作姿勢</title>
+  <meta name="description" content="東京を拠点に活動するデザイナー、Idatsuka。UI/UX・ブランディング・Webを軸に、構造とタイポグラフィで伝わる体験をつくります。">
+  <meta property="og:title" content="Profile — IDATSUKA | デザインと制作姿勢">
+  <meta property="og:description" content="東京を拠点に活動するデザイナー、Idatsuka。UI/UX・ブランディング・Webを軸に、構造とタイポグラフィで伝わる体験をつくります。">
   <link rel="canonical" href="https://idatsuka.com/about.html">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%2308090c'/><text x='16' y='22' text-anchor='middle' font-size='16' font-family='sans-serif' font-weight='300' fill='%23f2f4f7'>I</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Zen+Kaku+Gothic+New:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+<meta property="og:type" content="profile">
+  <meta property="og:url" content="https://idatsuka.com/about.html">
+<style>
+.profile-page { --muted: #a0a7b1; }
+.profile-page::after { display: none; }
+.profile-page nav { z-index: 400; }
+.profile-page .mobile-menu { visibility: hidden; }
+.profile-page .mobile-menu.open { visibility: visible; }
+.profile-page .menu-toggle { width: 44px; height: 44px; }
+.profile-page .menu-toggle span { width: 24px; left: 10px; }
+.profile-page .menu-toggle span:nth-child(1) { top: 14px; }
+.profile-page .menu-toggle span:nth-child(2) { top: 22px; }
+.profile-page .menu-toggle span:nth-child(3) { top: 30px; }
+.profile-page .menu-toggle.open span { top: 22px; }
+.skip-link { position: fixed; top: 8px; left: 12px; padding: 12px 20px; background: var(--fg); color: var(--bg); z-index: 500; transform: translateY(-150%); }
+.skip-link:focus { transform: translateY(0); }
+.profile-page .label { font-size: .68rem; letter-spacing: .2em; }
+.profile-hero { padding: 10rem 0 6rem; }
+.profile-hero-grid { display: grid; grid-template-columns: 1.35fr 1fr; gap: 5rem; align-items: center; }
+.profile-hero h1 { font-size: clamp(3.6rem, 7.7vw, 6.4rem); line-height: 1.1; letter-spacing: -.055em; font-weight: 500; }
+.profile-hero h1 span { color: var(--accent); }
+.profile-role { color: var(--muted); font-family: var(--mono); font-size: .73rem; margin-top: 1rem; }
+.profile-lead { font-size: clamp(1.7rem, 3vw, 2.6rem); font-weight: 500; line-height: 1.6; letter-spacing: .04em; margin-top: 2.5rem; }
+.profile-intro { color: var(--fg-dim); font-size: .95rem; line-height: 2; margin-top: 1.2rem; }
+.profile-actions { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 2rem; }
+.profile-page .btn, .profile-page .btn-filled { font-family: inherit; font-size: .8rem; letter-spacing: .04em; min-height: 48px; padding: .8rem 1.25rem; gap: 1rem; }
+.profile-identity { position: relative; aspect-ratio: 4/5; border: 1px solid var(--border-strong); background: radial-gradient(ellipse at 65% 35%, #20303c 0, #10161c 45%, #0b0c0e 80%); overflow: hidden; padding: 1.6rem; display: flex; flex-direction: column; justify-content: space-between; }
+.identity-grid { position: absolute; inset: 0; background-image: linear-gradient(#ffffff06 1px, transparent 1px),linear-gradient(90deg,#ffffff06 1px,transparent 1px); background-size: 38px 38px; }
+.identity-top, .identity-bottom { position: relative; font-family: var(--mono); font-size: .65rem; letter-spacing: .1em; color: var(--accent); }
+.identity-bottom span { color: var(--muted); font-size: .6rem; }
+.identity-letter { position: absolute; inset: 0; display: flex; justify-content: center; align-items: center; font-size: clamp(10rem, 25vw, 22rem); line-height: 1; font-weight: 300; letter-spacing: -.1em; padding-right: .1em; color: #dae5eb; }
+.identity-letter span { color: var(--accent); }
+.profile-section { border-top: 1px solid var(--border-strong); padding: 5.5rem 0; }
+.profile-section-grid { display: grid; grid-template-columns: 1fr 1.6fr; gap: 5rem; }
+.profile-page h2 { font-size: clamp(1.65rem, 2.6vw, 2.25rem); font-weight: 500; line-height: 1.65; letter-spacing: .025em; }
+.profile-copy p { color: var(--fg-dim); line-height: 2.1; margin-bottom: 1.2rem; font-size: .95rem; }
+.profile-copy p:last-child { margin-bottom: 0; }
+.profile-section-heading { display: flex; justify-content: space-between; align-items: end; gap: 2rem; margin-bottom: 2.5rem; }
+.profile-section-heading p { color: var(--muted); font-size: .9rem; }
+.profile-focus-grid { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--border-strong); }
+.profile-focus { padding: 2rem; background: var(--bg2); }
+.profile-focus + .profile-focus { border-left: 1px solid var(--border-strong); }
+.focus-number { font-family: var(--mono); font-size: .6rem; color: var(--accent); letter-spacing: .1em; }
+.profile-focus h3 { font-size: 1.25rem; font-weight: 500; margin: 2rem 0 1rem; }
+.profile-focus p { font-size: .88rem; line-height: 1.95; color: var(--fg-dim); }
+.profile-focus ul { list-style: none; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border-strong); color: var(--muted); font-size: .75rem; line-height: 2; }
+.profile-support { color: var(--muted); font-size: .78rem; margin-top: 1.3rem; }
+.profile-links a { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 1.5rem 0; border-bottom: 1px solid var(--border-strong); }
+.profile-links a:first-child { padding-top: 0; }
+.profile-links h3 { font-size: 1.6rem; font-weight: 400; }
+.profile-links p { color: var(--muted); font-size: .85rem; }
+.profile-links a > span { color: var(--accent); font-size: 1.5rem; transition: transform .2s; }
+.profile-links a:hover > span { transform: translate(3px, -3px); }
+.profile-contact { padding: 5rem 0; border-top: 1px solid var(--border-strong); text-align: center; background: radial-gradient(ellipse at bottom, #101c24, var(--bg) 75%); }
+.profile-contact h2 { font-size: clamp(2rem, 4vw, 3.3rem); }
+.profile-contact p:not(.label) { margin: 1.5rem 0 2rem; color: var(--fg-dim); font-size: .9rem; }
+.profile-page footer p, .profile-page .footer-links a { color: var(--muted); }
+.profile-page .nav-links a, .profile-page .footer-links a { font-size: .65rem; }
+@media (max-width: 900px) {
+  .profile-hero { padding: 8rem 0 4rem; }
+  .profile-hero-grid { grid-template-columns: 1.2fr 1fr; gap: 2rem; }
+  .profile-section-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .profile-focus { padding: 1.4rem; }
+}
+@media (max-width: 600px) {
+  .profile-hero-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  .profile-identity { aspect-ratio: 1.5; }
+  .identity-letter { font-size: 12rem; }
+  .profile-section { padding: 3.5rem 0; }
+  .profile-section-heading { display: block; }
+  .profile-section-heading p { margin-top: 1rem; }
+  .profile-focus-grid { grid-template-columns: 1fr; }
+  .profile-focus + .profile-focus { border-left: 0; border-top: 1px solid var(--border-strong); }
+  .profile-focus h3 { margin-top: 1rem; }
+  .desktop-break { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .profile-page, .profile-page * { animation: none !important; transition: none !important; }
+}
+</style>
 </head>
-<body>
+<body class="profile-page">
+<a class="skip-link" href="#main">本文へスキップ</a>
 
-<nav>
+<nav aria-label="メインナビゲーション">
   <a href="/" class="logo"><img src="img/logo.svg" alt="Idatsuka"></a>
       <ul class="nav-links">
-    <li><a href="about.html" class="active">Profile</a></li>
+    <li><a href="about.html" class="active" aria-current="page">Profile</a></li>
     <li><a href="play.html">Play</a></li>
     <li><a href="biz.html">Business</a></li>
     <li><a href="store.html">Store</a></li>
     <li><a href="blog.html">Blog</a></li>
     <li><a href="contact.html">Contact</a></li>
   </ul>
-  <button class="menu-toggle" id="menuToggle" aria-label="メニュー"><span></span><span></span><span></span></button>
+  <button class="menu-toggle" id="menuToggle" aria-label="メニューを開く" aria-expanded="false" aria-controls="mobileMenu"><span></span><span></span><span></span></button>
 </nav>
-<div class="mobile-menu" id="mobileMenu">
-  <a href="about.html" class="active">Profile</a>
+<div class="mobile-menu" id="mobileMenu" inert>
+  <a href="about.html" class="active" aria-current="page">Profile</a>
   <a href="play.html">Play</a>
   <a href="biz.html">Business</a>
   <a href="store.html">Store</a>
@@ -37,100 +118,74 @@
   <a href="contact.html">Contact</a>
 </div>
 
-<header class="page-header">
-  <h1>About.</h1>
-  <p class="page-header-desc">東京を拠点に活動するデザイナー。<br>削ぎ落とした先に残るものを、デザインと呼んでいます。</p>
+<main id="main">
+<header class="profile-hero">
+  <div class="container profile-hero-grid">
+    <div>
+      <p class="label">Profile / Tokyo, Japan</p>
+      <h1>Idatsuka<span>.</span></h1>
+      <p class="profile-role">UI/UX · Branding · Web Design</p>
+      <p class="profile-role">会社名：IDATSUKA</p>
+      <p class="profile-lead">本質を見つめ、<br>伝わるかたちへ。</p>
+      <p class="profile-intro">東京を拠点に活動するデザイナー。<br>情報を整理し、構造とタイポグラフィで<br class="desktop-break">使いやすく、心に残るデジタル体験をつくります。</p>
+      <div class="profile-actions">
+        <a class="btn-filled" href="works.html">制作実績を見る <span aria-hidden="true">↗</span></a>
+        <a class="btn" href="contact.html">制作を相談する <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+    <div class="profile-identity" aria-hidden="true">
+      <div class="identity-grid"></div>
+      <span class="identity-top">IDATSUKA / DESIGN</span>
+      <span class="identity-letter">i<span>.</span></span>
+      <span class="identity-bottom">Less, with intention.<br><span>Structure. Type. Space.</span></span>
+    </div>
+  </div>
 </header>
 
-<main>
-
-  <section style="border-bottom:1px solid var(--border);">
-    <div class="container">
-      <span class="label rv">01 — Biography</span>
-      <div class="bio-grid">
-        <div class="bio-photo rv">
-          <img src="img/profile.svg" alt="Idatsuka プロフィール画像">
-        </div>
-        <div class="bio-text rv">
-          <p>東京を拠点に活動する<strong>デザイナー、Idatsuka</strong>です。UI/UXデザイン、ブランディング、Webデザインを専門としています。</p>
-          <p>私のデザインの哲学は「<strong>引き算</strong>」。語りすぎないこと。飾らないこと。情報と感情の本質だけを残して、あとは余白に委ねること。</p>
-          <p>白と黒の間にある無数のグレーに、ほとんどのデザインの答えがあると考えています。色に頼らず、構造とタイポグラフィで語るデザインを続けています。</p>
-          <p>音楽、建築、写真からインスピレーションを受け、それを静かなデジタル体験に翻訳することが私の仕事です。</p>
-        </div>
-      </div>
+<section class="profile-section" aria-labelledby="approach-title">
+  <div class="container profile-section-grid">
+    <div><p class="label">01 — Approach</p><h2 id="approach-title">削ぎ落とす。<br>本質を残す。</h2></div>
+    <div class="profile-copy">
+      <p>私が大切にしているのは、デザインの「引き算」です。何を伝え、どこへ導くのか。その目的を見つめ、必要な情報に自然と目が向く構造を考えます。</p>
+      <p>余白、文字の大きさ、要素の並び。一つひとつの関係を整えることで、見た目の美しさと使いやすさをつなぎます。</p>
+      <p>音楽、建築、写真から受け取ったリズムや空気感も、制作の原点です。静けさの中に、確かな個性がある表現を目指しています。</p>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section style="border-bottom:1px solid var(--border);">
-    <div class="container">
-      <span class="label rv">02 — Skills</span>
-      <div class="skills-grid rv">
-        <div class="skill-item">
-          <div class="skill-item-name">UI / UX Design</div>
-          <div class="skill-item-tools">Figma · Prototyping<br>User Research · IA</div>
-        </div>
-        <div class="skill-item">
-          <div class="skill-item-name">Branding</div>
-          <div class="skill-item-tools">Logo · Identity<br>Brand Guidelines</div>
-        </div>
-        <div class="skill-item">
-          <div class="skill-item-name">Web Design</div>
-          <div class="skill-item-tools">HTML · CSS · JS<br>Responsive</div>
-        </div>
-        <div class="skill-item">
-          <div class="skill-item-name">Motion Design</div>
-          <div class="skill-item-tools">After Effects · Lottie<br>CSS Animation</div>
-        </div>
-        <div class="skill-item">
-          <div class="skill-item-name">Illustration</div>
-          <div class="skill-item-tools">Procreate · Illustrator</div>
-        </div>
-        <div class="skill-item">
-          <div class="skill-item-name">Photography</div>
-          <div class="skill-item-tools">Art Direction<br>Lightroom</div>
-        </div>
-      </div>
+<section class="profile-section" aria-labelledby="focus-title">
+  <div class="container">
+    <p class="label">02 — Focus</p>
+    <div class="profile-section-heading"><h2 id="focus-title">考えることから、<br>かたちにすることまで。</h2><p>体験・印象・実装をつなぐ、<br>3つのデザイン領域。</p></div>
+    <div class="profile-focus-grid">
+      <article class="profile-focus"><span class="focus-number">01 / EXPERIENCE</span><h3>UI / UX Design</h3><p>情報の優先順位とユーザーの動線を整理し、迷わず使える画面を設計します。</p><ul><li>情報設計・ユーザーリサーチ</li><li>UIデザイン・プロトタイピング</li></ul></article>
+      <article class="profile-focus"><span class="focus-number">02 / IDENTITY</span><h3>Branding</h3><p>ブランドらしさを言葉と視覚で整理し、一貫した印象をつくります。</p><ul><li>ロゴ・ビジュアルアイデンティティ</li><li>ブランドガイドライン</li></ul></article>
+      <article class="profile-focus"><span class="focus-number">03 / DIGITAL</span><h3>Web Design</h3><p>画面の大きさや操作のしやすさまで考え、Web上の体験をかたちにします。</p><ul><li>レスポンシブデザイン</li><li>HTML・CSS・JavaScript</li></ul></article>
     </div>
-  </section>
+    <p class="profile-support">表現の幅を広げる領域：モーションデザイン / イラストレーション / 写真</p>
+  </div>
+</section>
 
-  <section>
-    <div class="container">
-      <span class="label rv">03 — Career</span>
-      <div class="about-timeline">
-        <div class="tl-item rv">
-          <div class="tl-year">2022 —</div>
-          <div>
-            <h2 class="tl-role">Senior UI/UX Designer</h2>
-            <p class="tl-company">Company Name · Tokyo</p>
-            <p class="tl-desc">デジタルプロダクトのデザイン全般を担当。デザインシステムの構築、チームのデザイン品質向上をリード。</p>
-          </div>
-        </div>
-        <div class="tl-item rv">
-          <div class="tl-year">2019 — 22</div>
-          <div>
-            <h2 class="tl-role">UI Designer</h2>
-            <p class="tl-company">Previous Company · Tokyo</p>
-            <p class="tl-desc">スタートアップのプロダクトデザインを担当。ゼロからビジュアルを設計し、PMFに貢献。</p>
-          </div>
-        </div>
-        <div class="tl-item rv">
-          <div class="tl-year">2015 — 19</div>
-          <div>
-            <h2 class="tl-role">Graphic Designer</h2>
-            <p class="tl-company">Design Studio · Tokyo</p>
-            <p class="tl-desc">ブランディング、印刷物、Webデザインなど幅広いプロジェクトを経験。デザインの基礎を培った。</p>
-          </div>
-        </div>
-      </div>
+<section class="profile-section" aria-labelledby="explore-title">
+  <div class="container profile-section-grid">
+    <div><p class="label">03 — Explore</p><h2 id="explore-title">制作と、<br>その周辺。</h2></div>
+    <div class="profile-links">
+      <a href="works.html"><div><h3>Works</h3><p>デザインの制作実績を見る</p></div><span aria-hidden="true">↗</span></a>
+      <a href="play.html"><div><h3>Play</h3><p>ゲームやアートを通じて、表現に触れる</p></div><span aria-hidden="true">↗</span></a>
+      <a href="blog.html"><div><h3>Journal</h3><p>デザインや日々の着想を読む</p></div><span aria-hidden="true">↗</span></a>
     </div>
-  </section>
+  </div>
+</section>
 
+<section class="profile-contact" aria-labelledby="contact-title">
+  <div class="container">
+    <p class="label">Let’s create together</p>
+    <h2 id="contact-title">次のアイデアを、<br>一緒にかたちに。</h2>
+    <p>Webサイト、UI/UX、ブランディングのご相談は<br>お問い合わせページからお聞かせください。</p>
+    <a href="contact.html" class="btn-filled">お問い合わせ <span aria-hidden="true">↗</span></a>
+  </div>
+</section>
 </main>
-
-<div class="about-cta rv">
-  <h2 class="about-cta-title">一緒に<em>つくろう。</em></h2>
-  <a href="contact.html" class="btn">Get in Touch</a>
-</div>
 
 <footer>
   <p>&copy; 2025 Idatsuka</p>
@@ -145,15 +200,31 @@
 </footer>
 
 <script>
-document.getElementById('menuToggle').addEventListener('click', function() {
-  this.classList.toggle('open');
-  document.getElementById('mobileMenu').classList.toggle('open');
+const toggle = document.getElementById('menuToggle');
+const menu = document.getElementById('mobileMenu');
+function setMenu(open) {
+  toggle.classList.toggle('open', open);
+  menu.classList.toggle('open', open);
+  toggle.setAttribute('aria-expanded', String(open));
+  toggle.setAttribute('aria-label', open ? 'メニューを閉じる' : 'メニューを開く');
+  menu.inert = !open;
+  document.body.style.overflow = open ? 'hidden' : '';
+}
+toggle.addEventListener('click', () => setMenu(toggle.getAttribute('aria-expanded') !== 'true'));
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+    setMenu(false);
+    toggle.focus();
+  }
+  if (event.key === 'Tab' && toggle.getAttribute('aria-expanded') === 'true') {
+    const last = menu.querySelector('a:last-child');
+    if (event.shiftKey && document.activeElement === toggle) { event.preventDefault(); last.focus(); }
+    else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); toggle.focus(); }
+  }
 });
-const io = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
-}, { threshold: 0.1 });
-document.querySelectorAll('.rv').forEach(el => io.observe(el));
+menu.addEventListener('click', event => { if (event.target.closest('a')) setMenu(false); });
+window.matchMedia('(min-width: 901px)').addEventListener('change', event => { if (event.matches) setMenu(false); });
 </script>
-<script src="js/motion.js" defer></script>
 </body>
 </html>
+
