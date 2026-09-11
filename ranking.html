@@ -63,6 +63,14 @@
       font-family: var(--mono); font-size: .5rem; color: var(--dim);
       margin-top: .15rem;
     }
+    .rank-badges { display: flex; gap: .4rem; margin-top: .4rem; flex-wrap: wrap; }
+    .rank-badge {
+      display: inline-flex; align-items: center; gap: .25rem;
+      font-family: var(--mono); font-size: .48rem; letter-spacing: .08em;
+      color: var(--muted); border: 1px solid var(--border-strong);
+      padding: .1rem .4rem; text-transform: uppercase;
+    }
+    .rank-badge .rank-flag { font-size: .68rem; }
     .ranking-empty {
       padding: 4rem 2rem; text-align: center;
       font-family: var(--mono); font-size: .7rem; color: var(--dim);
@@ -74,9 +82,93 @@
       font-family: var(--mono); font-size: .52rem; color: var(--dim);
       margin-left: auto; letter-spacing: .08em;
     }
+
+    /* ── Filters ── */
+    .ranking-filters {
+      display: flex; flex-wrap: wrap; gap: .6rem; align-items: center;
+      padding: 1.2rem 3rem; border-bottom: 1px solid var(--border);
+    }
+    .filter-chip {
+      display: inline-flex; align-items: center; gap: .35rem;
+      background: none; border: 1px solid var(--dim); cursor: pointer;
+      font-family: var(--mono); font-size: .54rem; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--muted); padding: .32rem .7rem;
+      transition: color .3s, border-color .3s, background .3s;
+    }
+    .filter-chip:hover { color: var(--fg); border-color: var(--accent-soft); }
+    .filter-chip.active {
+      color: var(--accent); border-color: var(--accent-soft);
+      background: rgba(159,214,236,.08);
+    }
+    .filter-chip-label { cursor: pointer; }
+    .filter-chip select {
+      background: transparent; border: none; color: inherit;
+      font-family: var(--mono); font-size: .54rem; text-transform: uppercase;
+      letter-spacing: .08em; cursor: pointer; outline: none; max-width: 8rem;
+    }
+    .filter-chip select option { background: #10131a; color: var(--fg); }
+    .friends-toggle-btn { margin-left: auto; }
+    .friends-scope-note {
+      width: 100%; font-family: var(--mono); font-size: .5rem; color: var(--dim);
+      letter-spacing: .06em; padding-top: .2rem; display: none;
+    }
+    .friends-scope-note.show { display: block; }
+
+    /* ── Friends panel ── */
+    .friends-panel {
+      border-bottom: 1px solid var(--border);
+      max-height: 0; overflow: hidden;
+      transition: max-height .4s var(--ease-out);
+    }
+    .friends-panel.open { max-height: 700px; }
+    .friends-panel-inner { padding: 1.8rem 3rem 2.4rem; }
+    .friends-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+    .friend-block-label {
+      font-family: var(--mono); font-size: .5rem; letter-spacing: .22em;
+      text-transform: uppercase; color: var(--dim); margin-bottom: .8rem;
+    }
+    .friend-code-box { display: flex; align-items: center; gap: 1.2rem; flex-wrap: wrap; }
+    .friend-code {
+      font-family: var(--mono); font-size: 1.5rem; letter-spacing: .14em;
+      color: var(--accent);
+    }
+    .friend-add-row { display: flex; gap: .6rem; margin-top: 1.4rem; }
+    .friend-add-row input {
+      flex: 1; min-width: 0; background: var(--bg2); border: 1px solid var(--border-strong);
+      color: var(--fg); font-family: var(--mono); font-size: .68rem; letter-spacing: .1em;
+      padding: .6rem .8rem; text-transform: uppercase;
+    }
+    .friend-add-row input:focus { outline: 1px solid var(--accent); outline-offset: 2px; }
+    .friend-msg { font-family: var(--mono); font-size: .5rem; color: var(--dim); margin-top: .6rem; min-height: 1.2em; }
+    .friend-msg.error { color: #e87272; }
+    .friend-list { list-style: none; margin-top: .8rem; }
+    .friend-item {
+      display: flex; align-items: center; justify-content: space-between;
+      font-family: var(--mono); font-size: .68rem; color: var(--fg-dim);
+      padding: .55rem 0; border-bottom: 1px solid var(--border);
+    }
+    .friend-remove {
+      background: none; border: 1px solid var(--dim); color: var(--muted);
+      font-family: var(--mono); font-size: .48rem; padding: .2rem .55rem; cursor: pointer;
+      text-transform: uppercase; letter-spacing: .1em; transition: color .25s, border-color .25s;
+    }
+    .friend-remove:hover { color: #e87272; border-color: #e87272; }
+    .friends-empty { font-family: var(--mono); font-size: .58rem; color: var(--dim); padding: .6rem 0; }
+
+    /* ── Your rank ── */
+    .your-rank {
+      padding: 1.1rem 3rem 0; font-family: var(--mono); font-size: .62rem;
+      color: var(--fg-dim); letter-spacing: .05em;
+    }
+    .your-rank strong { color: var(--accent); }
+
     @media (max-width: 900px) {
       .ranking-list { padding: 0 1.5rem 3rem; }
       .ranking-actions { padding: 1.5rem; }
+      .ranking-filters { padding: 1rem 1.5rem; }
+      .friends-panel-inner { padding: 1.6rem 1.5rem 2rem; }
+      .friends-grid { grid-template-columns: 1fr; gap: 1.6rem; }
+      .your-rank { padding-left: 1.5rem; padding-right: 1.5rem; }
       .ranking-header, .ranking-row {
         grid-template-columns: 2.5rem 1fr auto; gap: 1rem;
       }
@@ -109,7 +201,7 @@
 <header class="page-header">
   <span class="label">Leaderboard</span>
   <h1>Ranking.</h1>
-  <p class="page-header-desc">ゲームのハイスコアランキング。<br>名前を登録してスコアを競おう。</p>
+  <p class="page-header-desc">ゲームのハイスコアランキング。<br>名前を登録してスコアを競おう。OS・国・地域・友達で絞り込みできます。</p>
 </header>
 
 <div class="ranking-tabs">
@@ -119,6 +211,48 @@
   <button class="ranking-tab" data-game="stack">Stack</button>
 </div>
 
+<div class="ranking-filters" id="filterRow">
+  <button class="filter-chip" data-scope="all">All</button>
+  <div class="filter-chip" data-scope="os">
+    <span class="filter-chip-label" data-scope="os">OS</span>
+    <select id="osSelect"></select>
+  </div>
+  <div class="filter-chip" data-scope="country">
+    <span class="filter-chip-label" data-scope="country">Country</span>
+    <select id="countrySelect"></select>
+  </div>
+  <div class="filter-chip" data-scope="region">
+    <span class="filter-chip-label" data-scope="region">Region</span>
+    <select id="regionSelect"></select>
+  </div>
+  <button class="filter-chip" data-scope="friends">Friends</button>
+  <button class="btn friends-toggle-btn" id="friendsToggleBtn">Friend Code &darr;</button>
+  <span class="friends-scope-note" id="friendsScopeNote">ローカルランキングでは、この端末に保存されたスコアの中からのみ友達のコードと一致するものが表示されます。</span>
+</div>
+
+<div class="friends-panel" id="friendsPanel">
+  <div class="friends-panel-inner">
+    <div class="friends-grid">
+      <div>
+        <div class="friend-block-label">Your Friend Code</div>
+        <div class="friend-code-box">
+          <span class="friend-code" id="friendCodeDisplay">----&#8209;----</span>
+          <button class="btn" id="copyCodeBtn">Copy</button>
+        </div>
+      </div>
+      <div>
+        <div class="friend-block-label">Add Friend</div>
+        <div class="friend-add-row">
+          <input type="text" id="friendCodeInput" placeholder="XXXX-XXXX" maxlength="9" autocomplete="off" spellcheck="false">
+          <button class="btn" id="addFriendBtn">Add</button>
+        </div>
+        <div class="friend-msg" id="friendMsg"></div>
+        <ul class="friend-list" id="friendsList"></ul>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="ranking-actions">
   <a href="games.html" class="btn">Games &larr;</a>
   <button class="btn" id="refreshBtn">Refresh</button>
@@ -126,6 +260,7 @@
 </div>
 
 <div id="panel-void-runner" class="ranking-panel active">
+  <div class="your-rank" id="rank-void-runner"></div>
   <div class="ranking-list">
     <div class="ranking-header">
       <span>Rank</span><span>Player</span><span style="text-align:right">Score</span>
@@ -135,6 +270,7 @@
 </div>
 
 <div id="panel-signal" class="ranking-panel">
+  <div class="your-rank" id="rank-signal"></div>
   <div class="ranking-list">
     <div class="ranking-header">
       <span>Rank</span><span>Player</span><span style="text-align:right">Score</span>
@@ -144,6 +280,7 @@
 </div>
 
 <div id="panel-orbit" class="ranking-panel">
+  <div class="your-rank" id="rank-orbit"></div>
   <div class="ranking-list">
     <div class="ranking-header">
       <span>Rank</span><span>Player</span><span style="text-align:right">Score</span>
@@ -153,6 +290,7 @@
 </div>
 
 <div id="panel-stack" class="ranking-panel">
+  <div class="your-rank" id="rank-stack"></div>
   <div class="ranking-list">
     <div class="ranking-header">
       <span>Rank</span><span>Player</span><span style="text-align:right">Score</span>
@@ -173,6 +311,7 @@
   </ul>
 </footer>
 
+<script src="js/firebase-config.js"></script>
 <script src="js/leaderboard.js"></script>
 <script>
 document.getElementById('menuToggle').addEventListener('click', function() {
@@ -184,11 +323,14 @@ document.getElementById('menuToggle').addEventListener('click', function() {
   await Leaderboard.init();
 
   const myName = Leaderboard.getName();
+  const ctx = Leaderboard.getContext();
+  const online = Leaderboard.isFirebaseActive();
   const modeNote = document.getElementById('modeNote');
-  modeNote.textContent = Leaderboard.isFirebaseActive() ? 'Online Ranking' : 'Local Ranking';
+  modeNote.textContent = online ? 'Online Ranking' : 'Local Ranking — この端末のみ';
 
-  const tabs = document.querySelectorAll('.ranking-tab');
-  const panels = document.querySelectorAll('.ranking-panel');
+  var games = ['void-runner', 'signal', 'orbit', 'stack'];
+  var tabs = document.querySelectorAll('.ranking-tab');
+  var panels = document.querySelectorAll('.ranking-panel');
 
   tabs.forEach(function(tab) {
     tab.addEventListener('click', function() {
@@ -199,54 +341,277 @@ document.getElementById('menuToggle').addEventListener('click', function() {
     });
   });
 
-  async function loadRankings() {
-    var games = ['void-runner', 'signal', 'orbit', 'stack'];
-    for (var g = 0; g < games.length; g++) {
-      var game = games[g];
-      var rankings = await Leaderboard.getRankings(game, 50);
-      var container = document.getElementById('list-' + game);
+  // ── Filter / scope state ──────────────────────────────────
+  var SCOPE_KEY = 'lb_ranking_scope';
+  function loadScopeState() {
+    try {
+      var saved = JSON.parse(localStorage.getItem(SCOPE_KEY) || 'null');
+      if (saved && saved.scope) return saved;
+    } catch (e) { /* ignore */ }
+    return { scope: 'all' };
+  }
+  function saveScopeState() {
+    localStorage.setItem(SCOPE_KEY, JSON.stringify(filterState));
+  }
 
-      if (rankings.length === 0) {
-        container.innerHTML = '<div class="ranking-empty">まだスコアがありません。<br>ゲームをプレイしてスコアを登録しよう。</div>';
-        continue;
-      }
+  var filterState = loadScopeState();
+  if (!filterState.os) filterState.os = ctx.os;
+  if (!filterState.region) filterState.region = ctx.region;
+  if (!filterState.country) filterState.country = ctx.country !== 'ZZ' ? ctx.country : null;
 
-      var html = '';
-      for (var i = 0; i < rankings.length; i++) {
-        var r = rankings[i];
-        var rankClass = 'rank-num';
-        if (i === 0) rankClass += ' top1';
-        else if (i === 1) rankClass += ' top2';
-        else if (i === 2) rankClass += ' top3';
+  var osSelect = document.getElementById('osSelect');
+  var countrySelect = document.getElementById('countrySelect');
+  var regionSelect = document.getElementById('regionSelect');
+  var chips = document.querySelectorAll('.filter-chip[data-scope]');
+  var friendsScopeNote = document.getElementById('friendsScopeNote');
 
-        var isMe = myName && r.name === myName;
-        var rowClass = 'ranking-row' + (isMe ? ' is-me' : '');
-        var badge = isMe ? '<span class="you-badge">You</span>' : '';
+  function currentFilter() {
+    var f = { scope: filterState.scope };
+    if (filterState.scope === 'os') f.os = osSelect.value;
+    if (filterState.scope === 'region') f.region = regionSelect.value;
+    if (filterState.scope === 'country') f.country = countrySelect.value;
+    return f;
+  }
 
-        var dateStr = '';
-        if (r.date) {
-          var d = new Date(r.date);
-          dateStr = d.getFullYear() + '/' + String(d.getMonth() + 1).padStart(2, '0') + '/' + String(d.getDate()).padStart(2, '0');
-        }
+  function updateChipsActive() {
+    chips.forEach(function(c) {
+      c.classList.toggle('active', c.dataset.scope === filterState.scope);
+    });
+    friendsScopeNote.classList.toggle('show', filterState.scope === 'friends' && !online);
+  }
 
-        html += '<div class="' + rowClass + '">';
-        html += '<span class="' + rankClass + '">' + (i + 1) + '</span>';
-        html += '<div><span class="rank-name">' + escapeHtml(r.name) + badge + '</span>';
-        if (dateStr) html += '<div class="rank-date">' + dateStr + '</div>';
-        html += '</div>';
-        html += '<span class="rank-score">' + r.score.toLocaleString() + '</span>';
-        html += '</div>';
-      }
-      container.innerHTML = html;
+  function setScope(scope) {
+    filterState.scope = scope;
+    saveScopeState();
+    updateChipsActive();
+    loadRankings();
+  }
+
+  // "All" / "Friends" are plain buttons — clicking anywhere on them activates the scope.
+  document.querySelectorAll('button.filter-chip[data-scope]').forEach(function(chip) {
+    chip.addEventListener('click', function() {
+      setScope(chip.dataset.scope);
+    });
+  });
+
+  // OS / Country / Region chips contain a <select>; clicking the label text
+  // (re-)activates the scope using the currently chosen value, while picking
+  // a new value in the dropdown activates the scope with that new value.
+  document.querySelectorAll('.filter-chip-label[data-scope]').forEach(function(label) {
+    label.addEventListener('click', function() {
+      setScope(label.dataset.scope);
+    });
+  });
+
+  [[osSelect, 'os'], [countrySelect, 'country'], [regionSelect, 'region']].forEach(function(pair) {
+    var el = pair[0], key = pair[1];
+    el.addEventListener('change', function() {
+      filterState[key] = el.value;
+      setScope(key);
+    });
+  });
+
+  function uniqueSorted(arr) {
+    var seen = {};
+    var out = [];
+    arr.forEach(function(v) {
+      if (v && !seen[v]) { seen[v] = true; out.push(v); }
+    });
+    out.sort();
+    return out;
+  }
+
+  function buildSelectOptions(select, values, detected, selectedValue) {
+    var opts = uniqueSorted(values);
+    if (detected && opts.indexOf(detected) === -1) opts.push(detected);
+    opts.sort();
+    var prev = select.value;
+    select.innerHTML = '';
+    opts.forEach(function(v) {
+      var o = document.createElement('option');
+      o.value = v; o.textContent = v;
+      select.appendChild(o);
+    });
+    var want = selectedValue || prev || detected;
+    if (want && opts.indexOf(want) !== -1) select.value = want;
+    else if (opts.length) select.value = opts[0];
+  }
+
+  // ── Friend code / friends panel ───────────────────────────
+  document.getElementById('friendCodeDisplay').textContent = ctx.code;
+
+  var friendsToggleBtn = document.getElementById('friendsToggleBtn');
+  var friendsPanel = document.getElementById('friendsPanel');
+  friendsToggleBtn.addEventListener('click', function() {
+    friendsPanel.classList.toggle('open');
+  });
+
+  var copyCodeBtn = document.getElementById('copyCodeBtn');
+  copyCodeBtn.addEventListener('click', async function() {
+    var code = Leaderboard.getFriendCode();
+    try {
+      await navigator.clipboard.writeText(code);
+    } catch (e) {
+      try {
+        var ta = document.createElement('textarea');
+        ta.value = code;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+      } catch (e2) { /* clipboard unavailable */ }
     }
+    var original = copyCodeBtn.textContent;
+    copyCodeBtn.textContent = 'Copied';
+    setTimeout(function() { copyCodeBtn.textContent = original; }, 1500);
+  });
+
+  function renderFriendsList() {
+    var friends = Leaderboard.getFriends();
+    var listEl = document.getElementById('friendsList');
+    if (friends.length === 0) {
+      listEl.innerHTML = '<li class="friends-empty">まだ友達が登録されていません。</li>';
+      return;
+    }
+    listEl.innerHTML = friends.map(function(code) {
+      return '<li class="friend-item"><span>' + escapeHtml(code) + '</span>' +
+        '<button class="friend-remove" data-code="' + escapeHtml(code) + '">Remove</button></li>';
+    }).join('');
+    listEl.querySelectorAll('.friend-remove').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        Leaderboard.removeFriend(btn.dataset.code);
+        renderFriendsList();
+        if (filterState.scope === 'friends') loadRankings();
+      });
+    });
+  }
+
+  document.getElementById('addFriendBtn').addEventListener('click', function() {
+    var input = document.getElementById('friendCodeInput');
+    var msg = document.getElementById('friendMsg');
+    var res = Leaderboard.addFriend(input.value);
+    if (res.ok) {
+      input.value = '';
+      msg.textContent = '';
+      msg.classList.remove('error');
+      renderFriendsList();
+      if (filterState.scope === 'friends') loadRankings();
+    } else {
+      msg.textContent = res.msg;
+      msg.classList.add('error');
+    }
+  });
+  document.getElementById('friendCodeInput').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') document.getElementById('addFriendBtn').click();
+  });
+
+  // ── Rankings render ────────────────────────────────────────
+  function countryFlag(code) {
+    if (!code || code === 'ZZ' || !/^[A-Za-z]{2}$/.test(code)) return '';
+    var upper = code.toUpperCase();
+    var base = 127397;
+    return String.fromCodePoint(upper.charCodeAt(0) + base, upper.charCodeAt(1) + base);
   }
 
   function escapeHtml(s) {
     var div = document.createElement('div');
-    div.textContent = s;
+    div.textContent = s == null ? '' : s;
     return div.innerHTML;
   }
 
+  function renderRankLine(game, info) {
+    var el = document.getElementById('rank-' + game);
+    if (!el) return;
+    if (!myName) { el.textContent = ''; return; }
+    if (!info || info.rank === null) {
+      el.innerHTML = 'あなたの順位: <strong>—</strong> / ' + (info ? info.total : 0);
+    } else {
+      el.innerHTML = 'あなたの順位: <strong>' + info.rank + '</strong> / ' + info.total;
+    }
+  }
+
+  function renderList(game, rankings) {
+    var container = document.getElementById('list-' + game);
+
+    if (rankings.length === 0) {
+      container.innerHTML = '<div class="ranking-empty">このスコープにはまだスコアがありません。<br>ゲームをプレイしてスコアを登録しよう。</div>';
+      return;
+    }
+
+    var html = '';
+    for (var i = 0; i < rankings.length; i++) {
+      var r = rankings[i];
+      var rankClass = 'rank-num';
+      if (i === 0) rankClass += ' top1';
+      else if (i === 1) rankClass += ' top2';
+      else if (i === 2) rankClass += ' top3';
+
+      var isMe = myName && r.name === myName;
+      var rowClass = 'ranking-row' + (isMe ? ' is-me' : '');
+      var badge = isMe ? '<span class="you-badge">You</span>' : '';
+
+      var dateStr = '';
+      if (r.date) {
+        var d = new Date(r.date);
+        dateStr = d.getFullYear() + '/' + String(d.getMonth() + 1).padStart(2, '0') + '/' + String(d.getDate()).padStart(2, '0');
+      }
+
+      var flag = countryFlag(r.country);
+      var countryLabel = r.country && r.country !== 'ZZ' ? (flag ? flag + ' ' : '') + r.country : '—';
+      var osLabel = r.os || '—';
+
+      html += '<div class="' + rowClass + '">';
+      html += '<span class="' + rankClass + '">' + (i + 1) + '</span>';
+      html += '<div><span class="rank-name">' + escapeHtml(r.name) + badge + '</span>';
+      if (dateStr) html += '<div class="rank-date">' + dateStr + '</div>';
+      html += '<div class="rank-badges">';
+      html += '<span class="rank-badge">' + escapeHtml(osLabel) + '</span>';
+      html += '<span class="rank-badge">' + countryLabel + '</span>';
+      html += '</div>';
+      html += '</div>';
+      html += '<span class="rank-score">' + r.score.toLocaleString() + '</span>';
+      html += '</div>';
+    }
+    container.innerHTML = html;
+  }
+
+  async function loadRankings() {
+    // Phase 1: fetch full (unfiltered) sets to populate select options.
+    var allByGame = {};
+    var osSet = [], countrySet = [], regionSet = [];
+    for (var g = 0; g < games.length; g++) {
+      var full = await Leaderboard.getRankings(games[g], 300, { scope: 'all' });
+      allByGame[games[g]] = full;
+      full.forEach(function(r) {
+        if (r.os) osSet.push(r.os);
+        if (r.country && r.country !== 'ZZ') countrySet.push(r.country);
+        if (r.region) regionSet.push(r.region);
+      });
+    }
+
+    buildSelectOptions(osSelect, osSet, ctx.os, filterState.os);
+    buildSelectOptions(countrySelect, countrySet, ctx.country !== 'ZZ' ? ctx.country : null, filterState.country);
+    buildSelectOptions(regionSelect, regionSet, ctx.region, filterState.region);
+    filterState.os = osSelect.value || ctx.os;
+    filterState.country = countrySelect.value || ctx.country;
+    filterState.region = regionSelect.value || ctx.region;
+    saveScopeState();
+
+    var filter = currentFilter();
+
+    for (var i = 0; i < games.length; i++) {
+      var game = games[i];
+      var rankings = await Leaderboard.getRankings(game, 50, filter);
+      renderList(game, rankings);
+      var rankInfo = await Leaderboard.getRank(game, filter);
+      renderRankLine(game, rankInfo);
+    }
+  }
+
+  updateChipsActive();
+  renderFriendsList();
   document.getElementById('refreshBtn').addEventListener('click', loadRankings);
 
   loadRankings();
