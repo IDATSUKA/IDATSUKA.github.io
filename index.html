@@ -257,43 +257,22 @@ document.querySelectorAll('.landing-stat-num').forEach(el => statIO.observe(el))
     return (Math.random() + Math.random() + Math.random() - 1.5) / 1.5;
   }
 
-  // Multi-ring vortex (stacked depths → perspective tunnel)
-  // Near rings: larger / brighter / faster; far rings: smaller / dimmer / slower (or reverse spin).
+  // Ring particles — one continuous thick band
   const isNarrow = window.matchMedia('(max-width: 600px)').matches;
-  const ringDefs = [
-    // zMul: depth along view (+ = farther into screen), in units of base R
-    // rMul: world radius before perspective; ellipseY: foreshortening compress on ring plane
-    { zMul: -0.62, rMul: 1.08, count: isNarrow ? 140 : 200, speed: 1.20, alpha: 1.00, size: 1.30, spin:  1, ellipseY: 0.52 },
-    { zMul: -0.22, rMul: 1.00, count: isNarrow ? 120 : 180, speed: 1.00, alpha: 0.88, size: 1.10, spin:  1, ellipseY: 0.48 },
-    { zMul:  0.18, rMul: 0.92, count: isNarrow ? 100 : 150, speed: 0.72, alpha: 0.62, size: 0.90, spin: -1, ellipseY: 0.44 },
-    { zMul:  0.58, rMul: 0.84, count: isNarrow ?  80 : 120, speed: 0.48, alpha: 0.40, size: 0.72, spin: -1, ellipseY: 0.40 },
-    { zMul:  0.98, rMul: 0.76, count: isNarrow ?  60 :  90, speed: 0.32, alpha: 0.24, size: 0.55, spin:  1, ellipseY: 0.36 }
-  ];
-
-  const particles = [];
-  for (let ri = 0; ri < ringDefs.length; ri++) {
-    const def = ringDefs[ri];
-    for (let i = 0; i < def.count; i++) {
-      particles.push({
-        ri,
-        theta: Math.random() * Math.PI * 2,
-        rOff: gauss() * .07,
-        tube: gauss() * .045, // thickness along ring normal (depth jitter)
-        speed: (.00014 + Math.random() * .00026) * def.speed * def.spin,
-        size: (.45 + Math.random() * 1.55) * def.size,
-        tw: Math.random() * Math.PI * 2,
-        twSpeed: .00035 + Math.random() * .0012,
-        bright: Math.random() < .1 ? 1.55 : 1,
-        alphaMul: def.alpha,
-        zMul: def.zMul,
-        rMul: def.rMul,
-        ellipseY: def.ellipseY
-      });
-    }
+  const N = isNarrow ? 700 : 1300;
+  const ring = [];
+  for (let i = 0; i < N; i++) {
+    ring.push({
+      theta: (i / N) * Math.PI * 2 + Math.random() * .02,
+      rOff: gauss() * .12,
+      yOff: gauss() * .045,
+      speed: .00018 + Math.random() * .0002,
+      size: .6 + Math.random() * 1.3,
+      tw: Math.random() * Math.PI * 2,
+      twSpeed: .0004 + Math.random() * .001,
+      bright: Math.random() < .08 ? 1.5 : 1
+    });
   }
-  // Draw far → near so nearer particles composite on top
-  particles.sort((a, b) => b.zMul - a.zMul);
-
   // Ambient dust
   const dust = [];
   for (let i = 0; i < (isNarrow ? 40 : 70); i++) {
@@ -312,20 +291,19 @@ document.querySelectorAll('.landing-stat-num').forEach(el => statIO.observe(el))
     mouseY = (e.clientY / window.innerHeight - .5);
   }, { passive: true });
 
-  // Mild pitch so stacked rings read as a tunnel (not face-on discs)
-  const baseTilt = 0.38;
+  const baseTilt = 1.12;
 
   function draw(t) {
     ctx.clearRect(0, 0, W, H);
     curX += (mouseX - curX) * .03;
     curY += (mouseY - curY) * .03;
 
-    const cx = W / 2, cy = H * .52;
-    const R = Math.min(W, H) * .34;
-    const fov = R * 3.4;
-    const tilt = baseTilt + curY * .16;
+    const cx = W / 2, cy = H * .5;
+    const R = Math.min(W, H) * .30;
+    const fov = R * 1.7;
+    const tilt = baseTilt + curY * .14;
     const cosT = Math.cos(tilt), sinT = Math.sin(tilt);
-    const yaw = curX * .24;
+    const yaw = curX * .22;
     const cosY = Math.cos(yaw), sinY = Math.sin(yaw);
 
     ctx.globalCompositeOperation = 'lighter';
@@ -340,14 +318,13 @@ document.querySelectorAll('.landing-stat-num').forEach(el => statIO.observe(el))
       ctx.drawImage(sprite, p.x * W - s / 2, p.y * H - s / 2, s, s);
     }
 
-    // multi-depth rings (xy circles stacked on z, mild ellipse + pitch foreshortening)
-    for (const p of particles) {
+    // ring
+    for (const p of ring) {
       if (!reduced) p.theta += p.speed * 16;
-      const r = R * p.rMul * (1 + p.rOff);
-      // Ring in a plane ≈ facing camera: x–y ellipse, z = depth stack + tube jitter
+      const r = R * (1 + p.rOff);
       let x = Math.cos(p.theta) * r;
-      let y = Math.sin(p.theta) * r * p.ellipseY;
-      let z = R * (p.zMul + p.tube);
+      let z = Math.sin(p.theta) * r;
+      let y = p.yOff * R;
       // yaw (mouse x)
       const x2 = x * cosY - z * sinY;
       const z2 = x * sinY + z * cosY;
@@ -355,16 +332,14 @@ document.querySelectorAll('.landing-stat-num').forEach(el => statIO.observe(el))
       const y2 = y * cosT - z2 * sinT;
       const z3 = y * sinT + z2 * cosT;
       const scale = fov / (fov + z3);
-      if (scale <= 0) continue;
       const sx = cx + x2 * scale;
       const sy = cy + y2 * scale;
-      // Soft depth falloff: nearer (larger scale) → brighter
-      const depth = Math.max(0, Math.min(1, (scale - 0.62) / 0.55));
-      const twinkle = .75 + .25 * Math.sin(t * p.twSpeed + p.tw);
-      const a = depth * .55 * twinkle * p.bright * p.alphaMul;
-      if (a <= .01) continue;
+      // 0 = far (top/back), 1 = near (bottom/front)
+      const near = Math.max(0, Math.min(1, (scale - .62) / 1.8));
+      const twinkle = .85 + .15 * Math.sin(t * p.twSpeed + p.tw);
+      const a = (.14 + .72 * near) * twinkle * p.bright;
       ctx.globalAlpha = Math.min(a, 1);
-      const s = p.size * scale * 4.4;
+      const s = p.size * (1.2 + 5.5 * near) * 2;
       ctx.drawImage(sprite, sx - s / 2, sy - s / 2, s, s);
     }
 
