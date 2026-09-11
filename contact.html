@@ -61,7 +61,7 @@
       <div class="contact-info-item">
         <p class="contact-info-label">Email</p>
         <p class="contact-info-value">
-          <a href="mailto:www.dai.07@gmail.com">www.dai.07@gmail.com</a>
+          <a href="mailto:info@idatsuka.com">info@idatsuka.com</a>
         </p>
       </div>
 
@@ -115,8 +115,16 @@
           <textarea class="form-textarea" id="message" name="message" placeholder="プロジェクトの内容、ご予算、スケジュールなどをご記入ください。" required></textarea>
         </div>
 
-        <button type="submit" class="btn-filled">Send Message</button>
+        <input type="text" name="_honey" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;opacity:0;" aria-hidden="true">
+        <button type="submit" class="btn-filled" id="sendBtn">Send Message</button>
+        <p class="form-msg" id="formError">送信できませんでした。メールアプリで送る場合は <a href="mailto:info@idatsuka.com" style="color:var(--accent);">info@idatsuka.com</a> へ。</p>
       </form>
+
+      <div class="form-success" id="successMsg">
+        <div class="form-success-icon">&check;</div>
+        <h3>メッセージを送信しました</h3>
+        <p>2〜3営業日以内に info@idatsuka.com からご連絡いたします。</p>
+      </div>
     </div>
 
   </div>
@@ -166,15 +174,37 @@ document.getElementById('menuToggle').addEventListener('click', function() {
   this.classList.toggle('open');
   document.getElementById('mobileMenu').classList.toggle('open');
 });
-document.getElementById('contactForm').addEventListener('submit', function(e) {
+// Sends via FormSubmit (delivers to info@idatsuka.com). On failure the
+// visitor is offered the plain mailto link instead.
+document.getElementById('contactForm').addEventListener('submit', async function(e) {
   e.preventDefault();
-  var name = document.getElementById('name').value;
-  var email = document.getElementById('email').value;
+  var form = this;
+  var btn = document.getElementById('sendBtn');
+  var err = document.getElementById('formError');
+  if (form.elements._honey && form.elements._honey.value) return;
+  var name = document.getElementById('name').value.trim();
+  var email = document.getElementById('email').value.trim();
   var category = document.getElementById('category').value || 'General';
-  var message = document.getElementById('message').value;
-  var subject = encodeURIComponent('[IDATSUKA] ' + category + ' — ' + name);
-  var body = encodeURIComponent('Name: ' + name + '\nEmail: ' + email + '\nCategory: ' + category + '\n\n' + message);
-  window.location.href = 'mailto:www.dai.07@gmail.com?subject=' + subject + '&body=' + body;
+  var message = document.getElementById('message').value.trim();
+  btn.disabled = true; btn.textContent = 'Sending…'; err.style.display = 'none';
+  try {
+    var res = await fetch('https://formsubmit.co/ajax/info@idatsuka.com', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        name: name, email: email, category: category, message: message,
+        _subject: '[IDATSUKA] ' + category + ' — ' + name,
+        _replyto: email, _template: 'table', _captcha: 'false'
+      })
+    });
+    var data = await res.json().catch(function() { return {}; });
+    if (!res.ok || !(data.success === 'true' || data.success === true)) throw new Error('send failed');
+    form.style.display = 'none';
+    document.getElementById('successMsg').style.display = 'block';
+  } catch (_) {
+    err.style.display = 'block';
+    btn.disabled = false; btn.textContent = 'Send Message';
+  }
 });
 const io = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });

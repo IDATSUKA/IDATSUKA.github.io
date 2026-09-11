@@ -65,7 +65,7 @@ const PAY_LINKS = {
 
 - `business.html` に料金プラン（¥300,000〜）は掲載済み
 - 集客チャネル: ココナラ / ランサーズにプロフィールを作り、ポートフォリオとして idatsuka.com へリンク
-- 問い合わせは現在 mailto（www.dai.07@gmail.com）。取りこぼし防止に
+- 問い合わせは現在 mailto（info@idatsuka.com）。取りこぼし防止に
   Formspree（無料枠 月50件）や Google フォームへの切り替えも検討
 
 > ⚠️ **重要**: `biz.html` の「150+ Projects / 50+ Clients」やクライアント名
