@@ -761,6 +761,21 @@ nav.nav-hidden { transform: translateY(-100%); }
   to { transform: translate(14%, 10%) scale(1.15); }
 }
 
+/* ── Spec notice (fictional work disclosure) ── */
+.spec-note {
+  display: inline-flex; align-items: center; gap: .6rem;
+  font-family: var(--mono); font-size: .52rem; letter-spacing: .12em;
+  color: var(--muted); border: 1px solid var(--border-strong);
+  padding: .45rem .8rem; line-height: 1.5;
+}
+.spec-note::before {
+  content: 'SPEC'; font-size: .48rem; letter-spacing: .22em;
+  color: var(--accent); border-right: 1px solid var(--border-strong);
+  padding-right: .6rem;
+}
+.spec-note-wrap { padding: 1.1rem 3rem; border-bottom: 1px solid var(--border); }
+@media (max-width: 900px) { .spec-note-wrap { padding: .9rem 1.5rem; } }
+
 /* ── Motion preferences ── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
