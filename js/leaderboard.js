@@ -121,7 +121,7 @@ const Leaderboard = (() => {
   }
 
   async function getAllGamesRankings(limit = 10) {
-    const games = ['void-runner', 'signal', 'lattice'];
+    const games = ['void-runner', 'signal', 'orbit', 'stack'];
     const result = {};
     for (const g of games) {
       result[g] = await getRankings(g, limit);

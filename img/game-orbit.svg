@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <defs>
+    <radialGradient id="og" cx="50%" cy="50%" r="40%">
+      <stop offset="0%" stop-color="#9fd6ec" stop-opacity=".14"/>
+      <stop offset="100%" stop-color="#060607" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="odot" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="35%" stop-color="#c7e7f4" stop-opacity=".9"/>
+      <stop offset="100%" stop-color="#9fd6ec" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="ogrid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <circle cx="1" cy="1" r="1" fill="rgba(255,255,255,.05)"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="450" fill="#060607"/>
+  <rect width="800" height="450" fill="url(#ogrid)"/>
+  <rect width="800" height="450" fill="url(#og)"/>
+  <!-- lanes -->
+  <circle cx="400" cy="225" r="150" fill="none" stroke="rgba(159,214,236,.22)" stroke-width="1"/>
+  <circle cx="400" cy="225" r="105" fill="none" stroke="rgba(159,214,236,.16)" stroke-width="1"/>
+  <!-- core -->
+  <circle cx="400" cy="225" r="22" fill="url(#odot)" opacity=".8"/>
+  <circle cx="400" cy="225" r="30" fill="none" stroke="rgba(159,214,236,.3)"/>
+  <!-- trail -->
+  <path d="M 520 140 A 150 150 0 0 1 550 225" fill="none" stroke="#9fd6ec" stroke-opacity=".35" stroke-width="3" stroke-linecap="round"/>
+  <path d="M 545 195 A 150 150 0 0 1 550 225" fill="none" stroke="#9fd6ec" stroke-opacity=".7" stroke-width="4" stroke-linecap="round"/>
+  <!-- player -->
+  <circle cx="550" cy="225" r="16" fill="url(#odot)"/>
+  <!-- sparks -->
+  <g fill="#9fd6ec">
+    <circle cx="400" cy="75" r="5" opacity=".9"/><circle cx="400" cy="75" r="11" opacity=".18"/>
+    <circle cx="295" cy="225" r="5" opacity=".9"/><circle cx="295" cy="225" r="11" opacity=".18"/>
+    <circle cx="474" cy="153" r="4" opacity=".8"/>
+  </g>
+  <!-- hazards -->
+  <g fill="#ea6464" opacity=".85">
+    <polygon points="400,375 411,364 400,353 389,364"/>
+    <polygon points="326,150 335,141 326,132 317,141"/>
+  </g>
+  <circle cx="400" cy="364" r="20" fill="none" stroke="#ea6464" stroke-opacity=".25"/>
+  <!-- HUD -->
+  <text x="760" y="40" fill="#70767f" font-family="'Space Mono',monospace" font-size="14" text-anchor="end" font-weight="700">128</text>
+  <text x="760" y="58" fill="#9fd6ec" font-family="'Space Mono',monospace" font-size="9" text-anchor="end" letter-spacing="2">×4 COMBO</text>
+  <text x="40" y="40" fill="#3a3f47" font-family="'Space Mono',monospace" font-size="9" letter-spacing="3">ORBIT</text>
+</svg>

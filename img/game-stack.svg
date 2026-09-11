@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <defs>
+    <linearGradient id="sbg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#060607"/><stop offset="100%" stop-color="#0b0f14"/>
+    </linearGradient>
+    <radialGradient id="sglow" cx="50%" cy="38%" r="40%">
+      <stop offset="0%" stop-color="#9fd6ec" stop-opacity=".12"/>
+      <stop offset="100%" stop-color="#060607" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="sgrid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <circle cx="1" cy="1" r="1" fill="rgba(255,255,255,.05)"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="450" fill="url(#sbg)"/>
+  <rect width="800" height="450" fill="url(#sgrid)"/>
+  <rect width="800" height="450" fill="url(#sglow)"/>
+  <!-- tower (bottom → top, colour rises toward ice-blue) -->
+  <g stroke-width="1">
+    <rect x="300" y="420" width="200" height="30" fill="#1a1d23" stroke="#2a2f37"/>
+    <rect x="300" y="390" width="200" height="30" fill="#1f232a" stroke="#31373f"/>
+    <rect x="308" y="360" width="192" height="30" fill="#252a32" stroke="#3a3f47"/>
+    <rect x="308" y="330" width="184" height="30" fill="#2c3540" stroke="#46525c"/>
+    <rect x="316" y="300" width="176" height="30" fill="#34434f" stroke="#53687a"/>
+    <rect x="316" y="270" width="170" height="30" fill="#3f5568" stroke="#5f7d94"/>
+    <rect x="322" y="240" width="164" height="30" fill="#4d6e86" stroke="#7aa4be"/>
+    <rect x="322" y="210" width="164" height="30" fill="#5f8aa6" stroke="#9fd6ec"/>
+  </g>
+  <!-- top edges -->
+  <g stroke="rgba(255,255,255,.18)">
+    <line x1="322" y1="210" x2="486" y2="210"/><line x1="322" y1="240" x2="486" y2="240"/>
+  </g>
+  <!-- perfect ring pulse -->
+  <rect x="316" y="204" width="176" height="42" fill="none" stroke="#9fd6ec" stroke-opacity=".35" rx="2"/>
+  <!-- sliding slab -->
+  <rect x="404" y="160" width="164" height="30" fill="#8fc7e0" stroke="#d6eef7"/>
+  <line x1="404" y1="160" x2="568" y2="160" stroke="rgba(255,255,255,.5)"/>
+  <path d="M 380 175 h -60" stroke="#9fd6ec" stroke-opacity=".5" stroke-dasharray="4 6"/>
+  <!-- falling offcut -->
+  <rect x="488" y="262" width="12" height="30" fill="#4d6e86" opacity=".5" transform="rotate(12 494 277)"/>
+  <!-- HUD -->
+  <text x="400" y="90" fill="#f4f5f7" font-family="'Space Mono',monospace" font-size="44" text-anchor="middle" font-weight="700">8</text>
+  <text x="400" y="112" fill="#9fd6ec" font-family="'Space Mono',monospace" font-size="9" text-anchor="middle" letter-spacing="4">PERFECT ×3</text>
+  <text x="40" y="40" fill="#3a3f47" font-family="'Space Mono',monospace" font-size="9" letter-spacing="3">STACK</text>
+</svg>
