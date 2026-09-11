@@ -41,7 +41,7 @@
 <header class="project-hero">
   <span class="label">Spec · 04 — Motion Design</span>
   <h1>Pulse</h1>
-  <p class="project-hero-desc">音楽ストリーミングサービスのブランドモーション。音は見えない、しかし感じられる。その波動を透明な光の運動に変換し、ブランドのあらゆる接点に脈動を与えた。</p>
+  <p class="project-hero-desc">音楽ストリーミングサービスのブランドモーション。中心から外へ広がる同心円をひとつの運動言語に定め、ワードマーク・アイコン・ソーシャルまで同じ拍で脈打たせた。</p>
   <div class="project-meta-grid">
     <div>
       <p class="project-meta-label">Type</p>
@@ -49,7 +49,7 @@
     </div>
     <div>
       <p class="project-meta-label">Year</p>
-      <p class="project-meta-value">2023</p>
+      <p class="project-meta-value">2025</p>
     </div>
     <div>
       <p class="project-meta-label">Role</p>
@@ -57,47 +57,71 @@
     </div>
     <div>
       <p class="project-meta-label">Tools</p>
-      <p class="project-meta-value">After Effects, Cinema 4D, Lottie</p>
+      <p class="project-meta-value">Canvas 2D, HTML/CSS, SVG, ffmpeg</p>
     </div>
   </div>
 </header>
 
+<div class="spec-note-wrap"><p class="spec-note">架空のプロジェクトです。実在のクライアント・実績ではありません。</p></div>
+
 <div class="project-visual">
-  <img src="img/work-04.svg" alt="Pulse — 音の波動を可視化したブランドモーションのキービジュアル">
+  <video id="pulseLoop" autoplay muted loop playsinline preload="metadata"
+         poster="img/work/04-poster.jpg"
+         aria-label="Pulse のブランドモーション — ワードマークを波形が貫き、同心円が外へ広がる6秒ループ"
+         style="width:100%;height:100%;object-fit:cover;display:block;">
+    <source src="img/work/04-loop.webm" type="video/webm">
+    <source src="img/work/04-loop.mp4" type="video/mp4">
+  </video>
 </div>
+<script>
+(function () {
+  var v = document.getElementById('pulseLoop');
+  if (!v || !window.matchMedia) return;
+  var mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+  function apply() {
+    if (mq.matches) { v.removeAttribute('autoplay'); v.pause(); v.currentTime = 0; }
+  }
+  apply();
+  if (mq.addEventListener) mq.addEventListener('change', apply);
+  v.addEventListener('loadeddata', apply);
+})();
+</script>
 
 <div class="project-section">
   <div class="project-two-col">
     <span class="label">Overview</span>
     <div class="project-body">
-      <p>数多のストリーミングサービスがひしめく市場で、Pulse が選んだ差別化の軸は<strong>「音の可視化」をブランドの柱に据える</strong>ことだった。再生ボタンを押した瞬間、画面の奥から光の波紋が静かに広がる——その一瞬の体験こそが、Pulse を Pulse たらしめるアイデンティティになる。</p>
-      <p>プロジェクトでは、アプリ内アニメーション・SNSモーション・ブランドビデオの三領域を、<strong>統一された運動言語</strong>で設計。どこで出会っても「これは Pulse の動きだ」と認識できる、一貫したモーションアイデンティティを構築した。</p>
+      <p>ブランドの核に据えたのは<strong>同心円のモーションシステム</strong>。水面に落ちた一滴のように、すべての動きは画面中心の一点から外へ広がる。止まっている状態でも、次に何が起きるかが分かる形にした。</p>
+      <p>ワードマークは<strong>波形が文字を貫通する</strong>。字面の内側だけを波形が明るく走り、拍ごとに一文字ずつ膨らむ。「音が、見える。」という一文を、説明ではなくロゴの挙動そのもので示している。</p>
     </div>
   </div>
 </div>
 
 <div class="project-gallery">
-  <div class="project-gallery-item art-04 rv"></div>
-  <div class="project-gallery-item art-04 rv" style="filter:brightness(1.15);"></div>
-  <div class="project-gallery-item art-04 rv" style="filter:hue-rotate(-15deg);"></div>
-  <div class="project-gallery-item art-04 rv" style="filter:brightness(.85) saturate(1.2);"></div>
+  <div class="project-gallery-item art-04 rv"><img src="img/work/04-a.jpg" alt="モーション原則のボード — 3本のイージングカーブ、1拍750msのフレームストリップ、タイミングトークンと4つのルール" style="width:100%;height:100%;object-fit:cover;" loading="lazy"></div>
+  <div class="project-gallery-item art-04 rv"><img src="img/work/04-b.jpg" alt="アイデンティティ展開のボード — アプリアイコンのサイズ展開と単色版、ソーシャルタイル、通知バッジ" style="width:100%;height:100%;object-fit:cover;" loading="lazy"></div>
 </div>
 
 <div class="project-section">
   <div class="project-two-col">
     <span class="label">Approach</span>
     <div class="project-body">
-      <p>運動言語の核に置いたのは<strong>同心円モーションシステム</strong>。水面に落ちた一滴のように、すべての動きは中心から外へ広がる波紋として設計されている。波紋の周期は楽曲の<strong>BPMに連動して脈動</strong>し、聴いている音楽そのものがインターフェースの呼吸になる。</p>
-      <p>周波数帯域ごとの振る舞いも厳密に定義した。<strong>低音は大きくゆっくり、高音は小さく速く</strong>——物理的な音の性質をそのまま運動の文法に翻訳している。さらにジャンル別のカラーマッピングを重ね、エレクトロニカは冷たい青、ジャズは深い琥珀へと、聴く音楽によって光の色が移ろう仕組みとした。</p>
+      <p>ループ長は<strong>6.000秒・25fps・150フレーム</strong>ちょうど。テンポは<strong>80BPM</strong>で、1拍は750ms。波紋は1拍ごとに1本発生し、寿命3秒で消えるので常に4本が同時に走る。周期がぴったり割り切れるため、継ぎ目のない無限ループになる。</p>
+      <p>イージングは三本だけに限定した。波紋の拡張に <strong>cubic-bezier(.16, 1, .30, 1)</strong>、打点に <strong>cubic-bezier(.05, .85, .15, 1)</strong>、振幅のうねりに <strong>cubic-bezier(.42, 0, .58, 1)</strong>。減衰は必ず指数関数で、止まり際を急がない。</p>
+      <p>アイコンは同心円と波形をそのまま落とし込み、60px以下では外周リングを一本落とした<strong>小サイズ用の簡略版</strong>に切り替える。単色版・アクセント地・フラット地の3変種と、プロフィール／カバー／ストーリーのソーシャルタイル、通知バッジまでを同じ比率で展開した。</p>
     </div>
   </div>
 </div>
 
+<div class="project-gallery-full">
+  <img src="img/work/04-full.jpg" alt="6秒ループの絵コンテ — 0秒から5秒まで1秒刻みの6フレームと、各カットの役割" style="width:100%;height:100%;object-fit:cover;" loading="lazy">
+</div>
+
 <div class="project-section" style="padding:0;border-bottom:none;">
   <div class="project-stats">
-    <div class="stat-item rv"><div class="stat-number">Spec</div><div class="stat-label">構想デモ</div></div>
-    <div class="stat-item rv"><div class="stat-number">—</div><div class="stat-label">未検証の数値は非掲載</div></div>
-    <div class="stat-item rv"><div class="stat-number">Demo</div><div class="stat-label">実案件ではありません</div></div>
+    <div class="stat-item rv"><div class="stat-number">6.00 s</div><div class="stat-label">Loop — 25 fps / 150 frames</div></div>
+    <div class="stat-item rv"><div class="stat-number">80 BPM</div><div class="stat-label">Tempo — 1拍 750 ms</div></div>
+    <div class="stat-item rv"><div class="stat-number">03</div><div class="stat-label">Easing curves — イージング</div></div>
   </div>
 </div>
 
@@ -105,9 +129,8 @@
   <div class="project-two-col">
     <span class="label">Intent (Spec)</span>
     <div class="project-body">
-      <p>ここにあった効果数値・受賞・メディア掲載などの表現は Spec（構想）上の想定であり、実測の実績ではありません。</p>
-      <p>デザイン意図と体験の方向性を示すためのデモケースです。</p>
-    
+      <p>本ページは構想（Spec）です。実在するクライアントの業務ではなく、掲載している動画・画像はすべてこの案のために制作したものです。ループ動画は Canvas で描いた実物で、モックアップではありません。</p>
+      <p>効果・売上・受賞・メディア掲載といった実績の数値は一切掲載していません。示しているのはデザインの意図と、実際に作ったアウトプットの範囲だけです。</p>
     </div>
   </div>
 </div>

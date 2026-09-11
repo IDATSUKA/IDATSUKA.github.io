@@ -41,51 +41,56 @@
 <header class="project-hero">
   <span class="label">Spec · 03 — Web Design</span>
   <h1>SORA Architecture</h1>
-  <p class="project-hero-desc">建築設計事務所のWebサイトリデザイン。「空気まで設計する」と語る事務所の透明な空間性を、デジタルの上に再現した。</p>
+  <p class="project-hero-desc">建築設計事務所のWebサイトリデザイン。「空気まで、設計する。」という一文を、写真ではなく図面と余白だけで成立させた、白く静かなエディトリアルサイト。</p>
   <div class="project-meta-grid">
     <div><p class="project-meta-label">Type</p><p class="project-meta-value">Spec / Concept — 空建築設計事務所（実在クライアント案件ではない）</p></div>
-    <div><p class="project-meta-label">Year</p><p class="project-meta-value">2023</p></div>
-    <div><p class="project-meta-label">Role</p><p class="project-meta-value">Web Design, Direction</p></div>
-    <div><p class="project-meta-label">Tools</p><p class="project-meta-value">Figma, HTML/CSS/JS, Three.js</p></div>
+    <div><p class="project-meta-label">Year</p><p class="project-meta-value">2025</p></div>
+    <div><p class="project-meta-label">Role</p><p class="project-meta-value">Web Design, Art Direction</p></div>
+    <div><p class="project-meta-label">Tools</p><p class="project-meta-value">HTML/CSS, SVG, Figma</p></div>
   </div>
 </header>
 
+<div class="spec-note-wrap"><p class="spec-note">架空のプロジェクトです。実在のクライアント・実績ではありません。</p></div>
+
 <div class="project-visual">
-  <img src="img/work-03.svg" alt="SORA Architecture Key Visual">
+  <img src="img/work/03-hero.jpg" alt="SORA Architecture のホーム画面 — 「空気まで、設計する。」の大見出しとアクソメ図を、デスクトップとモバイルのモックアップで並べたキービジュアル">
 </div>
 
 <div class="project-section">
   <div class="project-two-col">
     <div><span class="label">Overview</span></div>
     <div class="project-body">
-      <p>空建築設計事務所は、光と風の通り道までを設計に織り込む独自のスタイルで知られる。しかしWebサイトは2015年制作のまま放置され、作品の持つ繊細な空間性がまったく伝わらず、問い合わせ件数も年々減少していた。</p>
-      <p>そこで掲げたのは「建築を見るWebではなく、建築を体験するWebへ」。写真を並べるカタログではなく、画面の中を訪れた人が実際の建物を歩いているかのように感じられるサイトを目指した。</p>
+      <p>建築写真を一枚も使わないWebサイトとして設計した。載せるのは<strong>平面図・断面図・立面図・アクソメトリック</strong>の四種類の線画だけ。竣工写真に頼らず、設計そのものの言語で空間を見せる構成にしている。</p>
+      <p>掲げた一文は<strong>「空気まで、設計する。」</strong>。目に見えないものを設計する事務所なのだから、画面の側も見えないもの——余白、罫線、行間——で語るべきだと考えた。紙のような暖色の白地に、紺一色だけをアクセントとして置いている。</p>
     </div>
   </div>
 </div>
 
 <div class="project-gallery">
-  <div class="project-gallery-item art-03 rv"></div>
-  <div class="project-gallery-item art-03 rv" style="filter:brightness(1.15);"></div>
-  <div class="project-gallery-item art-03 rv" style="transform:scaleX(-1);"></div>
-  <div class="project-gallery-item art-03 rv" style="filter:brightness(0.85) saturate(1.2);"></div>
+  <div class="project-gallery-item art-03 rv"><img src="img/work/03-a.jpg" alt="SORA Architecture の作品一覧ページ — 図面を作品画像として扱う、余白の大きい3カラムグリッド" style="width:100%;height:100%;object-fit:cover;" loading="lazy"></div>
+  <div class="project-gallery-item art-03 rv"><img src="img/work/03-b.jpg" alt="ページシステムのボード — 12カラムグリッド、タイプスケール、スペーシングトークン、パレット、罫線の仕様" style="width:100%;height:100%;object-fit:cover;" loading="lazy"></div>
 </div>
 
 <div class="project-section">
   <div class="project-two-col">
     <div><span class="label">Approach</span></div>
     <div class="project-body">
-      <p>主役はあくまで建築写真。デザインの仕事は、その写真が最も美しく見える「余白」を設計することだった。グリッドは画面の呼吸を意識して組み、スクロールに合わせた視差表現で写真の中に奥行きが生まれるよう調整した。</p>
-      <p>動線は「歩くように閲覧する」をコンセプトに、ページ遷移ではなく連続した一つの空間として構成。テキストは最小限に抑え、必要な情報だけが歩みに合わせて静かに現れる。建物の中を進むときの、あの透明な時間の流れをWebに翻訳した。</p>
+      <p>図面はすべて<strong>SVGで描き起こした</strong>。壁の塗り、建具の開き勝手、通り芯と寸法線、断面のハッチングとレベル記号、そして光と空気の流れを示す破線まで、実際の設計図の作法に沿って引いている。ラスター画像ではないので、どの画面でも線が痩せない。</p>
+      <p>骨格は<strong>12カラム／外余白64／溝32、最大幅1440</strong>。和文は Noto Sans JP 300、欧文は Space Grotesk 300/400、キャプションは Space Mono。アクセントは紺 <strong>#1B3A63</strong> の一色だけに絞り、下線・通り芯・ガラス面の表現だけに使っている。</p>
+      <p>作った画面は<strong>ホーム／作品一覧／作品詳細</strong>の3ページ。それぞれデスクトップ1440とモバイル390の二幅で組み、同じグリッドとタイプスケールの上に乗せた。</p>
     </div>
   </div>
 </div>
 
+<div class="project-gallery-full">
+  <img src="img/work/03-full.jpg" alt="作品詳細ページ — 1階平面図を全幅で見せるデスクトップ画面と、詳細・一覧のモバイル2画面" style="width:100%;height:100%;object-fit:cover;" loading="lazy">
+</div>
+
 <div class="project-section" style="padding:0;border-bottom:none;">
   <div class="project-stats">
-    <div class="stat-item rv"><div class="stat-number">Spec</div><div class="stat-label">構想デモ</div></div>
-    <div class="stat-item rv"><div class="stat-number">—</div><div class="stat-label">未検証の数値は非掲載</div></div>
-    <div class="stat-item rv"><div class="stat-number">Demo</div><div class="stat-label">実案件ではありません</div></div>
+    <div class="stat-item rv"><div class="stat-number">06</div><div class="stat-label">Screens — 画面数（PC 3 / SP 3）</div></div>
+    <div class="stat-item rv"><div class="stat-number">04</div><div class="stat-label">Drawings — 図面（平面・断面・立面・アクソメ）</div></div>
+    <div class="stat-item rv"><div class="stat-number">12 col</div><div class="stat-label">Grid — 余白 64 / 溝 32 / 最大 1440</div></div>
   </div>
 </div>
 
@@ -93,9 +98,8 @@
   <div class="project-two-col">
     <div><span class="label">Intent (Spec)</span></div>
     <div class="project-body">
-      <p>ここにあった効果数値・受賞・メディア掲載などの表現は Spec（構想）上の想定であり、実測の実績ではありません。</p>
-      <p>デザイン意図と体験の方向性を示すためのデモケースです。</p>
-    
+      <p>本ページは構想（Spec）です。実在するクライアントの業務ではなく、掲載している画像はすべてこの案のために制作したデザインボードです。図面に記した所在地・面積・竣工年も、すべて架空の設定です。</p>
+      <p>効果・売上・受賞・メディア掲載といった実績の数値は一切掲載していません。示しているのはデザインの意図と、実際に作ったアウトプットの範囲だけです。</p>
     </div>
   </div>
 </div>
