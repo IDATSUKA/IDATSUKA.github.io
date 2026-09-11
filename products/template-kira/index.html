@@ -1,0 +1,1604 @@
+<!DOCTYPE html>
+<html lang="ja" data-theme="pop">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- ============================================================
+  KIRA（キラ）— キャラクター＆クリエイター向けテンプレート v1.0
+  by IDATSUKA (https://idatsuka.com)
+
+  VTuber・イラストレーター・同人サークル・キャラクターIP・
+  マスコットのいるインディーゲーム のための、
+  1ファイル完結のアニメ／萌え系 HTML テンプレートです。
+
+  ■ カスタマイズ手順
+  1. 下の <title> / meta description / OGP / canonical / favicon を差し替え
+  2. <style> 冒頭の :root で配色を調整（夜テーマは [data-theme="night"]）
+  3. 「EDIT:」コメントの付いた箇所のテキストを自分の内容に差し替え
+  4. キャラクターは <symbol id="chara"> のSVG（仮のイラスト）です。
+     自分のイラストに差し替える場合は、HERO の
+     <svg class="hero-art"><use href="#chara"></use></svg> を
+     <img class="hero-art" src="chara.png" alt=""> に置き換えるだけ。
+     CSS 側でどんな縦横比の画像でも収まるようにしてあります
+  5. 1ファイル完結。サーバーにアップロードするだけで公開できます
+
+  ■ 収録しているもの
+  ・ポップ（pop）／ナイト（night）の2テーマ切替（選択はブラウザに保存）
+  ・キャラクターのゆれ／視差チルト／クリックで「ぽよん」＋ハート弾け
+  ・ふわふわ舞うキラキラ（Canvas・最大40粒・タブ非表示で停止）
+  ・PC のみカーソルのキラキラ軌跡
+  ・お知らせの流れるティッカー、波形のセクション区切り、ステッカー風カード
+  ・プロフィール表／パラメータバー／ギャラリー／配信スケジュール
+  ・ボイス／グッズ（SOLD OUT リボン付き）／ファン向け情報／Q&A／リンク
+  ・prefers-reduced-motion 対応、外部ライブラリ・外部画像ゼロ
+
+  ■ 掲載内容について（景品表示法）
+  名前・数字・価格・日付はすべて「◯◯」「¥◯,◯◯◯」等のプレースホルダーです。
+  登録者数・再生数・販売実績・受賞歴・ファンの声などは、
+  実際に確認できる事実だけをご記載ください。
+  根拠のない「No.1」「日本一」「大人気」などの表現はお避けください。
+
+  ■ イラスト・キャラクターの権利について（重要）
+  収録している <symbol id="chara"> のイラストは、このテンプレート用に
+  描き起こした仮のキャラクターです。差し替える場合は、
+  ご自身が権利を持つ（または利用許諾を得た）イラストをお使いください。
+  権利を持っていない他者のキャラクター・アニメ・ゲームの画像を
+  掲載することはできません。
+
+  ライセンス: 個人・商用利用可 / テンプレートとしての再販・再配布は不可
+============================================================ -->
+
+<!-- EDIT: ページタイトルと説明文（名前・肩書き・活動内容を入れると検索で見つかりやすくなります） -->
+<title>星宮 きら — ◯◯所属 VTuber 公式サイト</title>
+<meta name="description" content="◯◯所属のVTuber「星宮 きら」の公式サイト。プロフィール・配信スケジュール・イラストギャラリー・グッズ・リンクをまとめています。">
+
+<!-- EDIT: OGP（SNS でシェアされたときの表示）。og:url と og:image は公開URLに合わせて差し替えてください
+     例: <meta property="og:image" content="https://example.com/ogp.png"> -->
+<meta property="og:title" content="星宮 きら — ◯◯所属 VTuber 公式サイト">
+<meta property="og:description" content="◯◯所属のVTuber「星宮 きら」の公式サイト。プロフィール・配信スケジュール・ギャラリー・グッズ。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://example.com/">
+<meta property="og:site_name" content="星宮 きら">
+
+<!-- EDIT: 正規URL（canonical）。公開するURLに書き換えてください -->
+<link rel="canonical" href="https://example.com/">
+
+<!-- EDIT: ブラウザのUI色（スマホのアドレスバー等）。テーマ切替時に自動更新されます -->
+<meta name="theme-color" content="#fff7fb" id="themeColor">
+
+<!-- EDIT: ファビコン（SVG内蔵・ピンクの星）。画像を使う場合は
+     <link rel="icon" href="favicon.png"> に置き換えてください -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23fff7fb'/%3E%3Cpath d='M32 12l6 13 14 2-10 10 2 14-12-7-12 7 2-14-10-10 14-2z' fill='%23ff85b3' stroke='%232a2240' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E">
+
+<!-- 保存済みテーマを描画前に適用（ちらつき防止）。触らなくてOK -->
+<script>(function(){try{var t=localStorage.getItem('kira-theme');if(t==='pop'||t==='night'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=M+PLUS+Rounded+1c:wght@400;700&family=Mochiy+Pop+One&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   THEME — ポップ（pop / 昼）。ここを変えるだけで全体の印象が変わります
+============================================================ */
+:root, [data-theme="pop"] {
+  color-scheme: light;
+  --bg:   #fff7fb;        /* ベースの背景（クリーム） */
+  --bg2:  #ffffff;        /* 一段明るい面（カード・白セクション） */
+  --bg3:  #ffeef6;        /* 淡いピンクの面（差し色セクション） */
+  --fg:   #2a2240;        /* 本文の文字色（必ず濃い色に） */
+  --fg-dim: #4a4066;      /* 補助文字 */
+  --muted:  #5d5280;      /* ラベル・注釈（4.5:1 を確保） */
+
+  --pink:   #ff85b3;      /* メイン（さくらピンク） */
+  --pink-d: #ef6ba2;      /* 濃いピンク */
+  --sky:    #6fcbff;      /* サブ（スカイ） */
+  --lemon:  #ffe066;      /* アクセント（レモン） */
+  --mint:   #8fe3c4;      /* アクセント（ミント） */
+  --lav:    #c9b8ff;      /* アクセント（ラベンダー） */
+
+  --line: #2a2240;              /* 枠線の色（インク） */
+  --line-w: 2.5px;              /* 枠線の太さ */
+  --sticker: 4px 4px 0 #2a2240;         /* ステッカー風の影 */
+  --sticker-hover: 6px 6px 0 #2a2240;   /* ホバー時 */
+  --glow: none;                 /* 夜テーマだけ光ります */
+  --dot: rgba(255,133,179,.22); /* 水玉模様の色 */
+  --stripe: rgba(255,224,102,.26); /* 斜めストライプの色 */
+  --ray: rgba(255,133,179,.16); /* 集中線の色 */
+  --name-fill: #ffffff;         /* HERO の名前の塗り */
+
+  --jp:   'M PLUS Rounded 1c', 'Hiragino Maru Gothic ProN', 'Yu Gothic', sans-serif;
+  --disp: 'Mochiy Pop One', 'M PLUS Rounded 1c', 'Hiragino Maru Gothic ProN', sans-serif;
+  --en:   'Fredoka', 'M PLUS Rounded 1c', sans-serif;
+
+  --maxw: 1160px;
+  --r: 26px;                              /* 角丸の基本サイズ */
+  --pop: cubic-bezier(.34, 1.56, .64, 1); /* 少し行き過ぎて戻るイージング */
+  --ease: cubic-bezier(.16, 1, .3, 1);
+}
+
+/* EDIT: ナイトテーマ（night / 夜）。ナビの「☀／☾」で切り替わります。
+   最初から夜で表示したい場合は <html lang="ja" data-theme="pop"> を
+   <html lang="ja" data-theme="night"> に変更してください */
+[data-theme="night"] {
+  color-scheme: dark;
+  --bg:   #15122b;
+  --bg2:  #1d1839;
+  --bg3:  #241d45;
+  --fg:   #f4f0ff;
+  --fg-dim: #ded6f5;
+  --muted:  #b7ace0;
+
+  --pink:   #ff7fb6;
+  --pink-d: #ff5ea3;
+  --sky:    #6fe3ff;
+  --lemon:  #ffe066;
+  --mint:   #7ff0d0;
+  --lav:    #b9a6ff;
+
+  --line: rgba(244,240,255,.62);
+  --sticker: 4px 4px 0 rgba(111,227,255,.20), 0 0 18px rgba(255,127,182,.18);
+  --sticker-hover: 6px 6px 0 rgba(111,227,255,.26), 0 0 26px rgba(255,127,182,.26);
+  --glow: 0 0 14px rgba(111,227,255,.28);
+  --dot: rgba(255,127,182,.16);
+  --stripe: rgba(111,227,255,.14);
+  --ray: rgba(255,127,182,.13);
+  --name-fill: #15122b;
+}
+
+/* ============================================================
+   BASE
+============================================================ */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: var(--jp); font-weight: 400;
+  line-height: 1.9; letter-spacing: .02em;
+  -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  transition: background-color .5s var(--ease), color .5s var(--ease);
+}
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+::selection { background: var(--pink); color: #2a2240; }
+:focus-visible { outline: 3px solid var(--sky); outline-offset: 3px; border-radius: 6px; }
+
+.container { max-width: var(--maxw); margin: 0 auto; padding: 0 1.25rem; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+h1, h2, h3, .disp { font-family: var(--disp); font-weight: 400; line-height: 1.35; letter-spacing: .01em; }
+.en { font-family: var(--en); font-weight: 600; letter-spacing: .06em; }
+
+/* ふわふわ舞うキラキラ（Canvas）。body の一番奥に敷いています */
+#sparkles { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+.page { position: relative; z-index: 1; }
+
+/* ============================================================
+   セクション共通 — 面の色・波形の区切り・見出し
+============================================================ */
+.sec { position: relative; padding: 5rem 0 6rem; }
+.s-cream { background: var(--bg); }
+.s-white { background: var(--bg2); }
+.s-tint  { background: var(--bg3); }
+
+/* 水玉模様 / 斜めストライプ（CSS グラデーションのみ） */
+.p-dot::before, .p-stripe::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+}
+.p-dot::before {
+  background-image: radial-gradient(var(--dot) 2.5px, transparent 2.6px);
+  background-size: 22px 22px;
+}
+.p-stripe::before {
+  background-image: repeating-linear-gradient(-45deg, var(--stripe) 0 11px, transparent 11px 34px);
+}
+.sec > .container { position: relative; z-index: 1; }
+
+/* 波形のセクション区切り。fill を w-* クラスで「次のセクションの色」に合わせます */
+.wave { position: absolute; left: 0; right: 0; bottom: -1px; line-height: 0; pointer-events: none; z-index: 2; }
+.wave svg { width: 100%; height: 46px; display: block; }
+.w-cream svg { fill: var(--bg); }
+.w-white svg { fill: var(--bg2); }
+.w-tint  svg { fill: var(--bg3); }
+
+/* セクション見出し */
+.sec-head { text-align: center; margin-bottom: 2.8rem; }
+.sec-en {
+  display: inline-block; font-family: var(--en); font-weight: 700;
+  font-size: .82rem; letter-spacing: .22em; color: var(--fg);
+  background: var(--lemon); border: var(--line-w) solid var(--line);
+  border-radius: 999px; padding: .15rem 1.1rem; transform: rotate(-2deg);
+  box-shadow: var(--sticker);
+}
+[data-theme="night"] .sec-en { color: #2a2240; }
+.sec-title { font-size: clamp(1.7rem, 4.4vw, 2.5rem); margin-top: 1rem; }
+.sec-title .hl {
+  background: linear-gradient(transparent 62%, var(--pink) 62%, var(--pink) 88%, transparent 88%);
+}
+.sec-lead { color: var(--muted); margin-top: .6rem; font-size: .95rem; }
+
+/* キラキラの飾り文字 */
+.spk { color: #c9366f; font-family: var(--en); }
+[data-theme="night"] .spk { color: var(--pink); }
+
+/* ============================================================
+   共通パーツ — ボタン・ピル・ステッカーカード・リボン・吹き出し
+============================================================ */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+  font-family: var(--jp); font-weight: 700; font-size: 1rem;
+  min-height: 52px; padding: .55rem 1.6rem;
+  border: var(--line-w) solid var(--line); border-radius: 999px;
+  color: var(--fg); background: var(--bg2);
+  box-shadow: var(--sticker);
+  transition: transform .3s var(--pop), box-shadow .3s var(--pop);
+}
+.btn:hover, .btn:focus-visible { transform: translate(-2px, -2px); box-shadow: var(--sticker-hover); }
+.btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--line); }
+.btn-pink { background: var(--pink); }
+.btn-sky  { background: var(--sky); }
+.btn-lemon{ background: var(--lemon); }
+.btn-mint { background: var(--mint); }
+.btn-lav  { background: var(--lav); }
+/* 色付きボタンの上は、明るい地なので必ず濃いインク文字にします */
+.btn-pink, .btn-sky, .btn-lemon, .btn-mint, .btn-lav { color: #2a2240; }
+
+/* 小さなピル型ラベル */
+.pill {
+  display: inline-flex; align-items: center; gap: .4rem;
+  font-family: var(--en); font-weight: 600; font-size: .78rem; letter-spacing: .08em;
+  padding: .1rem .85rem; border-radius: 999px;
+  border: 2px solid var(--line); color: #2a2240; background: var(--mint);
+}
+
+/* ステッカー風カード（2.5px の枠 ＋ ずらした影） */
+.card {
+  background: var(--bg2); border: var(--line-w) solid var(--line);
+  border-radius: var(--r); box-shadow: var(--sticker);
+  padding: 1.5rem; position: relative;
+  transition: transform .35s var(--pop), box-shadow .35s var(--pop);
+}
+.card:hover { transform: translate(-2px, -2px); box-shadow: var(--sticker-hover); }
+
+/* 斜めのリボンラベル */
+.ribbon {
+  position: absolute; top: -14px; left: -10px; z-index: 3;
+  font-family: var(--en); font-weight: 700; font-size: .8rem; letter-spacing: .1em;
+  color: #2a2240; background: var(--lemon);
+  border: 2px solid var(--line); border-radius: 999px;
+  padding: .1rem .9rem; transform: rotate(-3deg); box-shadow: 2px 2px 0 var(--line);
+}
+.ribbon-sold { background: #ffd0e0; left: auto; right: -10px; transform: rotate(3deg); }
+
+/* 吹き出し（しっぽ付き・CSSのみ） */
+.bubble {
+  position: relative; display: inline-block;
+  background: var(--bg2); border: var(--line-w) solid var(--line);
+  border-radius: 22px; padding: .7rem 1.4rem; box-shadow: var(--sticker);
+  font-family: var(--disp); font-size: clamp(1rem, 2.4vw, 1.3rem);
+}
+.bubble::before, .bubble::after {
+  content: ''; position: absolute; left: 34px; width: 0; height: 0;
+  border-style: solid;
+}
+.bubble::before { bottom: -18px; border-width: 18px 14px 0 0; border-color: var(--line) transparent transparent transparent; }
+.bubble::after  { bottom: -13px; border-width: 14px 10px 0 0; border-color: var(--bg2) transparent transparent transparent; }
+
+/* ============================================================
+   NAV — 上部固定。スクロールで細くなります
+============================================================ */
+#nav {
+  position: sticky; top: 0; z-index: 50;
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  padding: .85rem 1.25rem; background: color-mix(in srgb, var(--bg) 86%, transparent);
+  backdrop-filter: blur(10px); border-bottom: 2px solid transparent;
+  transition: padding .35s var(--ease), background-color .35s var(--ease), border-color .35s var(--ease);
+}
+#nav.scrolled { padding: .35rem 1.25rem; border-bottom-color: var(--line); }
+.brand { display: flex; align-items: center; gap: .55rem; min-height: 44px; font-family: var(--disp); font-size: 1.05rem; }
+.brand svg { width: 30px; height: 30px; flex: none; }
+.nav-right { display: flex; align-items: center; gap: .5rem; }
+.nav-links { display: flex; list-style: none; gap: .2rem; }
+.nav-links a {
+  display: block; padding: .3rem .7rem; border-radius: 999px;
+  font-size: .86rem; font-weight: 700; color: var(--fg-dim);
+  transition: background-color .25s var(--ease), color .25s var(--ease);
+}
+.nav-links a:hover { background: var(--pink); color: #2a2240; }
+.icon-btn {
+  width: 42px; height: 42px; flex: none; display: grid; place-items: center;
+  border: 2px solid var(--line); border-radius: 50%; background: var(--bg2);
+  font-size: 1rem; box-shadow: 2px 2px 0 var(--line);
+  transition: transform .3s var(--pop);
+}
+.icon-btn:hover { transform: translate(-1px, -1px) rotate(-8deg); }
+.t-night { display: none; }
+[data-theme="night"] .t-day { display: none; }
+[data-theme="night"] .t-night { display: inline; }
+
+.menu-toggle { display: none; width: 42px; height: 42px; flex: none;
+  border: 2px solid var(--line); border-radius: 50%; background: var(--bg2); box-shadow: 2px 2px 0 var(--line); }
+.menu-toggle span { display: block; width: 17px; height: 2.5px; background: var(--fg); border-radius: 2px; margin: 3px auto; transition: transform .3s var(--pop), opacity .2s; }
+.menu-toggle.open span:nth-child(1) { transform: translateY(5.5px) rotate(45deg); }
+.menu-toggle.open span:nth-child(2) { opacity: 0; }
+.menu-toggle.open span:nth-child(3) { transform: translateY(-5.5px) rotate(-45deg); }
+
+.mobile-menu {
+  display: none; position: fixed; inset: 4.2rem .9rem auto .9rem; z-index: 49;
+  background: var(--bg2); border: var(--line-w) solid var(--line); border-radius: var(--r);
+  box-shadow: var(--sticker); padding: .8rem; max-height: 76vh; overflow-y: auto;
+}
+.mobile-menu.open { display: grid; gap: .1rem; }
+.mobile-menu a { padding: .65rem .9rem; border-radius: 16px; font-weight: 700; }
+.mobile-menu a:hover { background: var(--bg3); }
+
+/* ============================================================
+   HERO
+============================================================ */
+.hero { position: relative; overflow: hidden; padding: 2.5rem 0 5.5rem; }
+.hero-grid {
+  display: grid; grid-template-columns: 1.05fr 1fr; gap: 1.5rem; align-items: center;
+}
+.hero-copy { position: relative; z-index: 2; }
+.hero-tag { margin-bottom: 1.1rem; }
+.hero-name {
+  font-size: clamp(2.9rem, 9vw, 5.2rem); line-height: 1.06; margin-bottom: .35rem;
+  color: var(--name-fill);
+  -webkit-text-stroke: 7px var(--line);
+  paint-order: stroke fill;
+  text-shadow: 6px 6px 0 var(--pink);
+}
+.hero-romaji {
+  font-family: var(--en); font-weight: 700; font-size: clamp(.95rem, 2.3vw, 1.25rem);
+  letter-spacing: .24em; color: var(--muted); margin-bottom: 1.5rem;
+}
+.hero-bubble { margin-bottom: 2.2rem; }
+.hero-cta { display: flex; flex-wrap: wrap; gap: .75rem; }
+
+/* キャラクターの舞台（集中線・キャラ・キラキラ） */
+.hero-stage { position: relative; display: grid; place-items: center; min-height: 420px; }
+/* 各レイヤーはクリックを通します（キャラクターのボタンだけが受け取ります） */
+.layer { position: absolute; inset: 0; display: grid; place-items: center; will-change: transform; pointer-events: none; }
+/* キャラクターだけは通常の流れに置き、舞台の高さを決めさせます
+   （絶対配置のままだと、幅の狭い画面で文字に重なってしまうため） */
+.layer-flow { position: relative; inset: auto; z-index: 2; width: 100%; }
+.burst {
+  width: min(112%, 620px); aspect-ratio: 1; border-radius: 50%;
+  background:
+    repeating-conic-gradient(from 0deg, var(--ray) 0deg 3.2deg, transparent 3.2deg 11deg);
+  -webkit-mask-image: radial-gradient(circle, transparent 28%, #000 46%, #000 74%, transparent 86%);
+  mask-image: radial-gradient(circle, transparent 28%, #000 46%, #000 74%, transparent 86%);
+  animation: spin 64s linear infinite;
+}
+.glowball {
+  width: min(78%, 430px); aspect-ratio: 1; border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--pink) 40%, transparent), transparent 68%);
+  filter: blur(14px);
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.chara-hold { position: relative; z-index: 2; width: 100%; display: grid; place-items: center; pointer-events: none; }
+.chara-btn {
+  pointer-events: auto;
+  display: block; width: min(100%, 400px); padding: 0; border: 0; background: none; cursor: pointer;
+  animation: bob 4.6s ease-in-out infinite;
+}
+/* どんな縦横比の画像を入れても崩れないようにしています（<img> に差し替えOK） */
+.hero-art { width: 100%; height: auto; max-height: 68vh; object-fit: contain; display: block;
+  filter: drop-shadow(0 14px 24px rgba(42,34,64,.16)); }
+[data-theme="night"] .hero-art { filter: drop-shadow(0 0 26px rgba(255,127,182,.30)); }
+[data-theme="night"] .hero-name {
+  -webkit-text-stroke-color: #f4f0ff;
+  text-shadow: 5px 5px 0 var(--pink), 0 0 26px rgba(255,127,182,.55);
+}
+@keyframes bob { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-14px) } }
+/* クリックしたときの「ぽよん」 */
+.chara-btn.poyon { animation: poyon .62s var(--pop); }
+@keyframes poyon {
+  0%   { transform: scale(1, 1) }
+  25%  { transform: scale(1.10, .88) }
+  50%  { transform: scale(.93, 1.09) }
+  75%  { transform: scale(1.04, .97) }
+  100% { transform: scale(1, 1) }
+}
+
+/* HERO に散らすキラキラ文字 */
+.hero-spark { position: absolute; font-family: var(--en); font-weight: 700; color: var(--pink);
+  pointer-events: none; animation: twinkle 3.4s ease-in-out infinite; }
+.hero-spark:nth-child(2n) { color: var(--sky); animation-duration: 4.2s; }
+.hero-spark:nth-child(3n) { color: var(--lemon); animation-duration: 5s; }
+@keyframes twinkle { 0%,100% { opacity: .25; transform: scale(.75) } 50% { opacity: 1; transform: scale(1.15) } }
+
+/* クリック時に飛び散るハート・星（JSが生成） */
+.pop-bit { position: absolute; z-index: 5; pointer-events: none; font-size: 20px;
+  will-change: transform, opacity; animation: popbit .95s var(--ease) forwards; }
+@keyframes popbit {
+  0%   { opacity: 1; transform: translate(0,0) scale(.4) rotate(0deg) }
+  100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(1.25) rotate(var(--rot)) }
+}
+
+/* カーソルのキラキラ（PCのみ・JSが生成） */
+.trail { position: fixed; z-index: 60; pointer-events: none; font-family: var(--en);
+  color: var(--pink); font-size: 13px; animation: trail .7s var(--ease) forwards; }
+@keyframes trail { 0% { opacity: .9; transform: translate(-50%,-50%) scale(1) } 100% { opacity: 0; transform: translate(-50%,-160%) scale(.3) } }
+
+/* ============================================================
+   NEWS — 流れるティッカー ＋ 3件のお知らせ
+============================================================ */
+.ticker {
+  display: flex; align-items: center; gap: 0;
+  border-top: var(--line-w) solid var(--line); border-bottom: var(--line-w) solid var(--line);
+  background: var(--pink); overflow: hidden;
+}
+.ticker-label {
+  flex: none; font-family: var(--en); font-weight: 700; font-size: .9rem; letter-spacing: .12em;
+  color: #2a2240; background: var(--lemon); padding: .55rem 1.1rem;
+  border-right: var(--line-w) solid var(--line);
+}
+.ticker-view { flex: 1 1 auto; overflow: hidden; }
+.ticker-track { display: flex; gap: 3rem; white-space: nowrap; width: max-content; animation: slide 34s linear infinite; padding-left: 1.6rem; }
+.ticker-track span { color: #2a2240; font-weight: 700; font-size: .92rem; padding: .55rem 0; }
+@keyframes slide { from { transform: translateX(0) } to { transform: translateX(-50%) } }
+.ticker:hover .ticker-track { animation-play-state: paused; }
+@keyframes slide2 { from { transform: translateX(0) } to { transform: translateX(-50%) } }
+
+.news-list { display: grid; gap: 1rem; }
+.news-item { display: grid; grid-template-columns: auto auto 1fr; gap: .9rem; align-items: center; padding: 1rem 1.3rem; }
+.news-date { font-family: var(--en); font-weight: 600; color: var(--muted); font-size: .9rem; }
+.news-cat { font-size: .74rem; font-weight: 700; padding: .05rem .7rem; border-radius: 999px;
+  border: 2px solid var(--line); background: var(--sky); color: #2a2240; }
+.news-cat.c-goods { background: var(--lemon); }
+.news-cat.c-live  { background: var(--mint); }
+.news-title { font-weight: 700; }
+
+/* ============================================================
+   PROFILE — プロフィール表 ＋ パラメータバー
+============================================================ */
+.profile-grid { display: grid; grid-template-columns: 1.15fr 1fr; gap: 1.6rem; align-items: start; }
+.prof-table { width: 100%; border-collapse: separate; border-spacing: 0 .45rem; }
+.prof-table th, .prof-table td { text-align: left; padding: .5rem .9rem; font-size: .96rem; vertical-align: top; }
+.prof-table th {
+  width: 8.5rem; white-space: nowrap; font-weight: 700; color: #2a2240;
+  background: var(--bg3); border: 2px solid var(--line); border-radius: 14px;
+}
+[data-theme="night"] .prof-table th { color: var(--fg); }
+.prof-table td { border-bottom: 2px dotted var(--line); }
+
+.params { display: grid; gap: 1.1rem; }
+.param-row { display: grid; gap: .3rem; }
+.param-top { display: flex; justify-content: space-between; align-items: baseline; font-weight: 700; font-size: .92rem; }
+.param-top .num { font-family: var(--en); color: var(--muted); }
+.param-bar { height: 18px; border: 2px solid var(--line); border-radius: 999px; background: var(--bg); overflow: hidden; }
+.param-fill {
+  height: 100%; width: 0; border-radius: 999px;
+  background: linear-gradient(90deg, var(--pink), var(--lemon));
+  transition: width 1.2s var(--pop);
+}
+.param-row:nth-child(2) .param-fill { background: linear-gradient(90deg, var(--sky), var(--mint)); }
+.param-row:nth-child(3) .param-fill { background: linear-gradient(90deg, var(--lav), var(--pink)); }
+.param-row:nth-child(4) .param-fill { background: linear-gradient(90deg, var(--mint), var(--sky)); }
+
+/* ============================================================
+   GALLERY — イラスト枠 6 つ
+============================================================ */
+.gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.3rem; }
+.tile {
+  border: var(--line-w) solid var(--line); border-radius: var(--r); box-shadow: var(--sticker);
+  overflow: hidden; background: var(--bg2);
+  transition: transform .4s var(--pop), box-shadow .4s var(--pop);
+}
+.tile:hover { transform: rotate(-1.5deg) translate(-2px,-3px); box-shadow: var(--sticker-hover); }
+.tile:nth-child(even):hover { transform: rotate(1.5deg) translate(-2px,-3px); }
+/* EDIT: ここが「イラストを入れる枠」です。<img src="..." alt=""> に置き換えてください */
+.tile-img {
+  aspect-ratio: 4 / 3; display: grid; place-items: center; gap: .4rem;
+  border-bottom: var(--line-w) solid var(--line);
+  background:
+    radial-gradient(circle at 30% 28%, color-mix(in srgb, var(--lemon) 60%, transparent), transparent 52%),
+    repeating-linear-gradient(-45deg, var(--bg3) 0 14px, var(--bg2) 14px 28px);
+  color: var(--muted); font-weight: 700; font-size: .9rem; text-align: center;
+}
+.tile:nth-child(3n+2) .tile-img { background:
+  radial-gradient(circle at 70% 30%, color-mix(in srgb, var(--sky) 55%, transparent), transparent 52%),
+  repeating-linear-gradient(45deg, var(--bg3) 0 14px, var(--bg2) 14px 28px); }
+.tile:nth-child(3n) .tile-img { background:
+  radial-gradient(circle at 45% 70%, color-mix(in srgb, var(--lav) 55%, transparent), transparent 55%),
+  repeating-linear-gradient(-45deg, var(--bg3) 0 14px, var(--bg2) 14px 28px); }
+.tile-cap { padding: .8rem 1rem; display: flex; justify-content: space-between; gap: .6rem; align-items: center; font-size: .88rem; }
+.tile-cap .en { color: var(--muted); font-size: .78rem; }
+
+/* ============================================================
+   SCHEDULE — 週間スケジュール
+============================================================ */
+.week { display: grid; grid-template-columns: repeat(7, 1fr); gap: .7rem; }
+.day {
+  background: var(--bg2); border: var(--line-w) solid var(--line); border-radius: 20px;
+  box-shadow: var(--sticker); padding: .9rem .6rem; text-align: center; min-height: 158px;
+  transition: transform .35s var(--pop);
+}
+.day:hover { transform: translateY(-4px); }
+.day-name { font-family: var(--en); font-weight: 700; font-size: .95rem; letter-spacing: .08em; }
+.day-jp { font-size: .74rem; color: var(--muted); display: block; margin-bottom: .55rem; }
+.day.sat .day-name { color: #1f6ab8; }
+.day.sun .day-name { color: #c9366f; }
+[data-theme="night"] .day.sat .day-name { color: var(--sky); }
+[data-theme="night"] .day.sun .day-name { color: var(--pink); }
+.chip {
+  display: block; font-family: var(--en); font-weight: 600; font-size: .82rem;
+  border: 2px solid var(--line); border-radius: 999px; padding: .18rem .3rem;
+  background: var(--lemon); color: #2a2240; margin-bottom: .35rem;
+}
+.chip.c-sky { background: var(--sky); }
+.chip.c-mint { background: var(--mint); }
+.chip.c-lav { background: var(--lav); }
+.chip-note { font-size: .74rem; color: var(--muted); display: block; }
+.day-off { color: var(--muted); font-size: .84rem; padding-top: .8rem; }
+.day-off b { display: block; font-size: 1.4rem; color: var(--fg); }
+
+/* ============================================================
+   VOICE — 試聴カード（見た目のみ。音声は <audio> を足してください）
+============================================================ */
+.voice-grid, .goods-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.3rem; }
+.voice-card { display: grid; gap: .9rem; }
+.voice-top { display: flex; align-items: center; gap: .9rem; }
+.play {
+  width: 54px; height: 54px; flex: none; border-radius: 50%;
+  border: var(--line-w) solid var(--line); background: var(--pink);
+  display: grid; place-items: center; box-shadow: 3px 3px 0 var(--line);
+  transition: transform .3s var(--pop);
+}
+.play:hover { transform: scale(1.08); }
+.play svg { width: 20px; height: 20px; margin-left: 3px; fill: #2a2240; }
+.voice-name { font-weight: 700; }
+.voice-time { font-family: var(--en); font-size: .82rem; color: var(--muted); }
+.wave-bars { display: flex; align-items: flex-end; gap: 3px; height: 34px; }
+.wave-bars i { flex: 1; background: var(--sky); border: 1.5px solid var(--line); border-radius: 3px; display: block; }
+
+/* ============================================================
+   GOODS
+============================================================ */
+.goods-card { padding: 0; overflow: visible; }
+.goods-img {
+  aspect-ratio: 1 / 1; border-bottom: var(--line-w) solid var(--line);
+  border-radius: calc(var(--r) - 3px) calc(var(--r) - 3px) 0 0;
+  display: grid; place-items: center; color: var(--muted); font-weight: 700; font-size: .88rem;
+  background: repeating-linear-gradient(-45deg, var(--bg3) 0 16px, var(--bg2) 16px 32px);
+}
+.goods-body { padding: 1.1rem 1.3rem 1.4rem; display: grid; gap: .35rem; }
+.goods-name { font-weight: 700; }
+.goods-price { font-family: var(--en); font-weight: 700; font-size: 1.25rem; }
+.goods-note { font-size: .82rem; color: var(--muted); }
+.is-sold .goods-img { filter: grayscale(.65) opacity(.7); }
+
+/* ============================================================
+   FAN
+============================================================ */
+.fan-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.3rem; }
+.fan-card { text-align: center; display: grid; gap: .4rem; align-content: start; }
+.fan-mark { font-size: 2.4rem; line-height: 1.2; color: var(--pink); }
+.fan-card:nth-child(2) .fan-mark { color: var(--sky); }
+.fan-card:nth-child(3) .fan-mark { color: var(--lemon); -webkit-text-stroke: 1.5px var(--line); }
+.fan-label { font-family: var(--en); font-size: .76rem; letter-spacing: .16em; color: var(--muted); }
+.fan-value { font-family: var(--disp); font-size: 1.3rem; }
+.rules { grid-column: 1 / -1; text-align: left; }
+.rules ul { list-style: none; display: grid; gap: .55rem; margin-top: .8rem; }
+.rules li { display: grid; grid-template-columns: auto 1fr; gap: .6rem; font-size: .94rem; }
+.rules li::before { content: '♥'; color: var(--pink); }
+
+/* ============================================================
+   Q&A
+============================================================ */
+.qa { display: grid; gap: .9rem; max-width: 820px; margin: 0 auto; }
+.qa-item {
+  background: var(--bg2); border: var(--line-w) solid var(--line);
+  border-radius: 20px; box-shadow: var(--sticker); overflow: hidden;
+}
+.qa-item summary {
+  list-style: none; cursor: pointer; padding: 1rem 3rem 1rem 1.3rem;
+  font-weight: 700; position: relative;
+}
+.qa-item summary::-webkit-details-marker { display: none; }
+.qa-item summary::before { content: 'Q.'; font-family: var(--en); color: var(--pink-d); margin-right: .5rem; }
+.qa-item summary::after {
+  content: '+'; position: absolute; right: 1.1rem; top: 50%; transform: translateY(-50%);
+  font-family: var(--en); font-weight: 700; font-size: 1.6rem; line-height: 1; color: var(--pink-d); transition: transform .3s var(--pop);
+}
+.qa-item[open] summary::after { transform: translateY(-50%) rotate(135deg); }
+.qa-body { padding: 0 1.3rem 1.2rem; color: var(--fg-dim); font-size: .95rem; }
+.qa-body::before { content: 'A.'; font-family: var(--en); color: var(--sky); margin-right: .5rem; font-weight: 700; }
+
+/* ============================================================
+   LINKS
+============================================================ */
+.link-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+.link-btn { justify-content: flex-start; padding: .6rem 1.4rem; min-height: 62px; font-size: 1rem; }
+.link-btn svg { width: 24px; height: 24px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.link-btn .sub { margin-left: auto; font-family: var(--en); font-size: .75rem; opacity: .7; }
+
+/* ============================================================
+   FOOTER
+============================================================ */
+.footer { position: relative; background: var(--bg3); border-top: var(--line-w) solid var(--line); padding: 3rem 0 2rem; text-align: center; }
+.footer-mark { font-size: 1.9rem; }
+.footer-name { font-family: var(--disp); font-size: 1.2rem; margin: .2rem 0 .5rem; }
+.footer-credit { font-size: .86rem; color: var(--muted); }
+.footer-credit a { display: inline-block; padding: .5rem .4rem; }
+.footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: .2rem 1rem; margin: 1.4rem 0; list-style: none; font-size: .88rem; }
+.footer-links a { color: var(--fg-dim); padding: .68rem .5rem; display: inline-block; line-height: 1.4; }
+.footer-links a:hover { color: var(--pink-d); }
+.footer-ver { display: block; margin-top: 1.2rem; font-size: .74rem; color: var(--muted); }
+.to-top {
+  position: fixed; right: 1rem; bottom: 1rem; z-index: 40;
+  width: 50px; height: 50px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--lemon); border: var(--line-w) solid var(--line); box-shadow: var(--sticker);
+  color: #2a2240; font-size: 1.1rem; opacity: 0; pointer-events: none;
+  transition: opacity .35s var(--ease), transform .35s var(--pop);
+}
+.to-top.show { opacity: 1; pointer-events: auto; }
+.to-top:hover { transform: translateY(-4px); }
+
+/* ============================================================
+   リビール（スクロールで少し行き過ぎて現れる）
+============================================================ */
+.rv { opacity: 0; transform: scale(.92) translateY(20px); transition: opacity .55s var(--ease), transform .7s var(--pop); }
+.rv.on { opacity: 1; transform: none; }
+
+/* ============================================================
+   レスポンシブ
+============================================================ */
+@media (max-width: 980px) {
+  .nav-links { display: none; }
+  .menu-toggle { display: block; }
+  .hero-grid { grid-template-columns: 1fr; text-align: center; gap: .5rem; }
+  .hero { padding-top: 1rem; }
+  .hero-stage { order: -1; min-height: 340px; }
+  .hero-cta { justify-content: center; }
+  .bubble::before, .bubble::after { left: 50%; margin-left: -7px; }
+  .hero-name { -webkit-text-stroke-width: 5px; text-shadow: 4px 4px 0 var(--pink); }
+  .profile-grid { grid-template-columns: 1fr; }
+  .gallery, .voice-grid, .goods-grid, .fan-grid, .link-grid { grid-template-columns: repeat(2, 1fr); }
+  .week { grid-template-columns: 1fr; }
+  .day { display: grid; grid-template-columns: 5.5rem 1fr; gap: .6rem; align-items: center;
+    text-align: left; min-height: 0; padding: .8rem 1rem; }
+  .day-jp { margin-bottom: 0; }
+  .chip { display: inline-block; margin: 0 .35rem .2rem 0; padding: .18rem .9rem; }
+  .day-off { padding-top: 0; }
+  .day-off b { display: inline; font-size: 1rem; margin-right: .6rem; }
+  .chip-note { display: inline; }
+  .footer { padding-bottom: 5.5rem; }
+}
+@media (max-width: 640px) {
+  .sec { padding: 3.5rem 0 4.2rem; }
+  .voice-grid, .goods-grid, .fan-grid, .link-grid { grid-template-columns: 1fr; }
+  .gallery { grid-template-columns: repeat(2, 1fr); gap: .8rem; }
+  .goods-img { aspect-ratio: 4 / 3; }
+  .hero-art { max-height: 46vh; }
+  .chara-btn { width: min(78%, 300px); }
+  .hero-stage { min-height: 300px; }
+  .news-item { grid-template-columns: auto auto; row-gap: .3rem; }
+  .news-title { grid-column: 1 / -1; }
+  .prof-table th { width: 6.6rem; font-size: .86rem; padding: .45rem .6rem; }
+  .prof-table td { font-size: .9rem; padding: .45rem .6rem; }
+  .wave svg { height: 28px; }
+}
+
+/* ============================================================
+   動きを減らす設定（prefers-reduced-motion）
+   キラキラ・カーソル軌跡・ゆれはすべて止まり、内容は最初から表示されます
+============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important; animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important; transition-delay: 0ms !important;
+  }
+  html { scroll-behavior: auto; }
+  .rv { opacity: 1; transform: none; }
+  .burst, .chara-btn, .hero-spark, .ticker-track { animation: none; }
+  .hero-spark { opacity: .8; }
+  .param-fill { transition: none; }
+  #sparkles { display: none; }
+}
+</style>
+
+<!-- JavaScript が無効なブラウザでも、内容がすべて表示されるようにしています -->
+<noscript><style>.rv { opacity: 1 !important; transform: none !important; } #sparkles { display: none; }</style></noscript>
+</head>
+<body>
+
+<!-- ふわふわ舞うキラキラ（Canvas・最大40粒） -->
+<canvas id="sparkles" aria-hidden="true"></canvas>
+
+<!-- ============================================================
+  EDIT: キャラクターイラスト（仮）
+  ここを自分のイラストに差し替えます。いちばん簡単なのは、下の HERO にある
+    <svg class="hero-art" viewBox="0 0 400 520"><use href="#chara"></use></svg>
+  を
+    <img class="hero-art" src="chara.png" alt="">
+  に置き換えるだけ。CSS がどんな縦横比の画像でも収まるようにしています。
+  ※ ご自身が権利を持つ（または利用許諾を得た）イラストをお使いください。
+============================================================ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs>
+  <linearGradient id="hairG" x1="0" y1="0" x2="0.3" y2="1">
+    <stop offset="0" stop-color="#ffcbe1"/><stop offset="0.5" stop-color="#ff93c2"/><stop offset="1" stop-color="#ef6ba2"/>
+  </linearGradient>
+  <linearGradient id="irisG" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#1c6fb4"/><stop offset="0.45" stop-color="#4fb4ef"/><stop offset="1" stop-color="#cdf2ff"/>
+  </linearGradient>
+  <clipPath id="eyeLc"><ellipse cx="150" cy="196" rx="33" ry="39"/></clipPath>
+  <clipPath id="eyeRc"><ellipse cx="250" cy="196" rx="33" ry="39"/></clipPath>
+</defs>
+<symbol id="chara" viewBox="0 0 400 520">
+  <g fill="none" stroke="#2a2240" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+    <!-- ツインテール（後ろ） -->
+    <path d="M104,150 C50,160 22,226 30,300 C36,360 58,398 88,412 C104,382 98,326 92,288 C84,240 88,188 104,150 Z" fill="url(#hairG)"/>
+    <path d="M296,150 C350,160 378,226 370,300 C364,360 342,398 312,412 C296,382 302,326 308,288 C316,240 312,188 296,150 Z" fill="url(#hairG)"/>
+    <!-- 後ろ髪 -->
+    <path d="M200,70 C130,70 84,122 86,200 C88,258 98,292 112,318 C152,300 248,300 288,318 C302,292 312,258 314,200 C316,122 270,70 200,70 Z" fill="url(#hairG)"/>
+    <!-- 首 -->
+    <path d="M182,266 h36 v40 h-36 z" fill="#ffe9de"/>
+    <!-- 脚・くつ -->
+    <path d="M166,386 v60 h28 v-60 z" fill="#ffe9de"/>
+    <path d="M206,386 v60 h28 v-60 z" fill="#ffe9de"/>
+    <path d="M156,440 h40 a12,12 0 0 1 0,24 h-40 a12,12 0 0 1 0,-24 z" fill="#ff6fa8"/>
+    <path d="M204,440 h40 a12,12 0 0 1 0,24 h-40 a12,12 0 0 1 0,-24 z" fill="#ff6fa8"/>
+    <!-- スカート -->
+    <path d="M154,350 C154,350 130,384 126,400 C160,416 240,416 274,400 C270,384 246,350 246,350 Z" fill="#8fb8ff"/>
+    <!-- 上衣 -->
+    <path d="M152,314 C152,296 172,286 200,286 C228,286 248,296 248,314 L254,364 C254,374 230,380 200,380 C170,380 146,374 146,364 Z" fill="#fffdff"/>
+    <!-- 腕・手 -->
+    <path d="M154,300 C128,310 112,344 110,370 C109,384 127,392 135,380 C144,360 156,318 160,302 Z" fill="#fffdff"/>
+    <circle cx="120" cy="382" r="17" fill="#ffe9de"/>
+    <path d="M246,300 C272,310 288,344 290,370 C291,384 273,392 265,380 C256,360 244,318 240,302 Z" fill="#fffdff"/>
+    <circle cx="280" cy="382" r="17" fill="#ffe9de"/>
+    <!-- セーラー襟 -->
+    <path d="M156,296 C176,286 224,286 244,296 L252,320 L228,352 L200,364 L172,352 L148,320 Z" fill="#8fb8ff"/>
+    <path d="M168,300 L180,336" stroke="#fffdff" stroke-width="4"/>
+    <path d="M232,300 L220,336" stroke="#fffdff" stroke-width="4"/>
+    <!-- 胸リボン -->
+    <path d="M200,340 l-24,-10 -5,22 25,5 Z M200,340 l24,-10 5,22 -25,5 Z" fill="#ff85b3"/>
+    <circle cx="200" cy="345" r="8" fill="#ff85b3"/>
+    <!-- 顔 -->
+    <ellipse cx="200" cy="178" rx="112" ry="106" fill="#ffefe7"/>
+    <!-- 前髪・サイド髪 -->
+    <path d="M84,192 C78,102 128,52 200,52 C272,52 322,102 316,192 C312,164 303,146 291,146 C278,146 268,160 259,176 C250,158 236,142 218,144 C210,146 204,152 200,158 C196,152 190,146 182,144 C164,142 150,158 141,176 C132,160 122,146 109,146 C97,146 88,164 84,192 Z" fill="url(#hairG)"/>
+    <path d="M86,176 C76,214 76,254 86,282 C99,266 100,224 97,190 Z" fill="url(#hairG)"/>
+    <path d="M314,176 C324,214 324,254 314,282 C301,266 300,224 303,190 Z" fill="url(#hairG)"/>
+    <!-- 髪のツヤ -->
+    <path d="M132,116 C152,92 190,80 224,86 C214,98 196,104 180,112 C164,120 146,124 132,116 Z" fill="#fff" opacity=".42" stroke="none"/>
+    <path d="M246,92 C258,92 268,98 274,106 C264,110 252,108 244,102 Z" fill="#fff" opacity=".38" stroke="none"/>
+    <!-- 目（左） -->
+    <ellipse cx="150" cy="196" rx="33" ry="39" fill="#fff"/>
+    <g clip-path="url(#eyeLc)" stroke="none">
+      <circle cx="150" cy="202" r="30" fill="url(#irisG)"/>
+      <ellipse cx="150" cy="206" rx="13" ry="17" fill="#241f3d"/>
+      <circle cx="140" cy="185" r="11" fill="#fff"/>
+      <circle cx="160" cy="216" r="6.5" fill="#fff" opacity=".9"/>
+    </g>
+    <ellipse cx="150" cy="196" rx="33" ry="39" fill="none"/>
+    <path d="M117,180 C123,159 137,150 156,152" stroke-width="9"/>
+    <!-- 目（右） -->
+    <ellipse cx="250" cy="196" rx="33" ry="39" fill="#fff"/>
+    <g clip-path="url(#eyeRc)" stroke="none">
+      <circle cx="250" cy="202" r="30" fill="url(#irisG)"/>
+      <ellipse cx="250" cy="206" rx="13" ry="17" fill="#241f3d"/>
+      <circle cx="240" cy="185" r="11" fill="#fff"/>
+      <circle cx="260" cy="216" r="6.5" fill="#fff" opacity=".9"/>
+    </g>
+    <ellipse cx="250" cy="196" rx="33" ry="39" fill="none"/>
+    <path d="M283,180 C277,159 263,150 244,152" stroke-width="9"/>
+    <!-- ほお・くち -->
+    <ellipse cx="120" cy="234" rx="21" ry="12" fill="#ffb0cd" stroke="none"/>
+    <ellipse cx="280" cy="234" rx="21" ry="12" fill="#ffb0cd" stroke="none"/>
+    <path d="M189,250 C194,245 206,245 211,250 C208,266 192,266 189,250 Z" fill="#e2537f" stroke-width="4"/>
+    <!-- 星のヘアピン・リボン -->
+    <path d="M128,104 l10,19 21,3 -15,15 3,21 -19,-10 -19,10 4,-21 -16,-15 21,-3 Z" fill="#ffe066" stroke-width="4"/>
+    <path d="M104,152 l-22,-12 -7,24 24,6 Z M104,152 l22,-12 7,24 -24,6 Z" fill="#ff6fa8" stroke-width="4"/>
+    <circle cx="104" cy="156" r="8" fill="#ff6fa8" stroke-width="4"/>
+    <path d="M296,152 l-22,-12 -7,24 24,6 Z M296,152 l22,-12 7,24 -24,6 Z" fill="#ff6fa8" stroke-width="4"/>
+    <circle cx="296" cy="156" r="8" fill="#ff6fa8" stroke-width="4"/>
+  </g>
+</symbol>
+
+<!-- ロゴ用の星（ナビ・フッター共通） -->
+<symbol id="star" viewBox="0 0 64 64">
+  <path d="M32 8l7.4 15.6L56 26l-12 11.8L47 56 32 47.4 17 56l3-18.2L8 26l16.6-2.4z"
+        fill="#ff85b3" stroke="#2a2240" stroke-width="4" stroke-linejoin="round"/>
+</symbol>
+</svg>
+
+<div class="page">
+
+<!-- ============================================================
+  NAV
+============================================================ -->
+<nav id="nav">
+  <!-- EDIT: 名前とロゴ -->
+  <a href="#hero" class="brand">
+    <svg viewBox="0 0 64 64" aria-hidden="true"><use href="#star"></use></svg>
+    <span>星宮 きら</span>
+  </a>
+  <div class="nav-right">
+    <!-- EDIT: ナビのリンク。不要な項目は削除してください -->
+    <ul class="nav-links">
+      <li><a href="#news">NEWS</a></li>
+      <li><a href="#profile">PROFILE</a></li>
+      <li><a href="#gallery">GALLERY</a></li>
+      <li><a href="#schedule">SCHEDULE</a></li>
+      <li><a href="#voice">VOICE</a></li>
+      <li><a href="#goods">GOODS</a></li>
+      <li><a href="#fan">FAN</a></li>
+      <li><a href="#qa">Q&amp;A</a></li>
+      <li><a href="#links">LINKS</a></li>
+    </ul>
+    <button type="button" class="icon-btn" id="themeToggle" aria-label="ナイトテーマに切り替え">
+      <span class="t-day">☀</span><span class="t-night">☾</span>
+    </button>
+    <button type="button" class="menu-toggle" id="menuToggle" aria-label="メニュー" aria-expanded="false" aria-controls="mobileMenu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#news">NEWS ｜ お知らせ</a>
+  <a href="#profile">PROFILE ｜ プロフィール</a>
+  <a href="#gallery">GALLERY ｜ イラスト</a>
+  <a href="#schedule">SCHEDULE ｜ 配信予定</a>
+  <a href="#voice">VOICE ｜ ボイス・うた</a>
+  <a href="#goods">GOODS ｜ グッズ</a>
+  <a href="#fan">FAN ｜ ファンのみなさまへ</a>
+  <a href="#qa">Q&amp;A ｜ よくある質問</a>
+  <a href="#links">LINKS ｜ リンク</a>
+</div>
+
+<!-- ============================================================
+  HERO
+============================================================ -->
+<header class="hero p-dot" id="hero">
+  <div class="container hero-grid">
+    <div class="hero-copy">
+      <!-- EDIT: 所属・肩書きのピル -->
+      <p class="hero-tag"><span class="pill">★ ◯◯所属 / VTuber</span></p>
+
+      <!-- EDIT: キャラクター名（日本語）とローマ字表記 -->
+      <h1 class="hero-name">星宮 きら</h1>
+      <p class="hero-romaji">HOSHIMIYA KIRA</p>
+
+      <!-- EDIT: キャッチコピー（吹き出し） -->
+      <div class="hero-bubble"><span class="bubble">きらっと、届け！</span></div>
+
+      <!-- EDIT: メインのリンク2つ。href を自分のURLに差し替えてください -->
+      <div class="hero-cta">
+        <a class="btn btn-pink" href="#links">▶ ◯◯（YouTube）</a>
+        <a class="btn btn-sky" href="#links">◯◯（X）</a>
+      </div>
+    </div>
+
+    <!-- キャラクターの舞台。集中線・キャラ・キラキラが別々の深さで動きます -->
+    <div class="hero-stage" id="heroStage">
+      <div class="layer" data-depth="0.35"><div class="burst"></div></div>
+      <div class="layer" data-depth="0.6"><div class="glowball"></div></div>
+      <div class="layer layer-flow" data-depth="1.5" id="charaLayer">
+        <div class="chara-hold">
+          <button type="button" class="chara-btn" id="charaBtn" aria-label="キャラクターをタップして反応を見る">
+            <!-- EDIT: ここを <img class="hero-art" src="chara.png" alt=""> に置き換えるだけで自分のイラストになります -->
+            <svg class="hero-art" viewBox="0 0 400 520" aria-hidden="true"><use href="#chara"></use></svg>
+          </button>
+        </div>
+      </div>
+      <div class="layer" data-depth="2.6" aria-hidden="true">
+        <span class="hero-spark" style="top:8%;left:10%;font-size:26px">✦</span>
+        <span class="hero-spark" style="top:20%;right:8%;font-size:20px">★</span>
+        <span class="hero-spark" style="top:52%;left:2%;font-size:18px">♥</span>
+        <span class="hero-spark" style="bottom:16%;right:12%;font-size:24px">✦</span>
+        <span class="hero-spark" style="bottom:6%;left:22%;font-size:16px">★</span>
+        <span class="hero-spark" style="top:38%;right:2%;font-size:15px">♥</span>
+      </div>
+    </div>
+  </div>
+  <div class="wave w-white" aria-hidden="true"><svg viewBox="0 0 1440 46" preserveAspectRatio="none"><path d="M0,22 C170,44 320,6 510,14 C700,22 820,44 1000,36 C1180,28 1310,6 1440,22 L1440,46 L0,46 Z"/></svg></div>
+</header>
+
+<!-- ============================================================
+  NEWS
+============================================================ -->
+<section class="sec s-white" id="news" style="padding-top:2.2rem">
+  <!-- EDIT: 流れるティッカー。同じ内容を2回書くと途切れずにループします -->
+  <div class="ticker" aria-label="新着のお知らせ">
+    <span class="ticker-label">NEW!</span>
+    <div class="ticker-view">
+    <div class="ticker-track">
+      <span>◯月◯日 ◯◯時より「◯◯◯◯」配信します！</span>
+      <span>新グッズ「◯◯◯◯」受注受付中 ✦</span>
+      <span>ボイス「◯◯◯◯」公開しました ★</span>
+      <span aria-hidden="true">◯月◯日 ◯◯時より「◯◯◯◯」配信します！</span>
+      <span aria-hidden="true">新グッズ「◯◯◯◯」受注受付中 ✦</span>
+      <span aria-hidden="true">ボイス「◯◯◯◯」公開しました ★</span>
+    </div>
+    </div>
+  </div>
+
+  <div class="container" style="margin-top:3rem">
+    <div class="sec-head">
+      <span class="sec-en">NEWS</span>
+      <h2 class="sec-title"><span class="hl">お知らせ</span></h2>
+      <p class="sec-lead">配信・グッズ・イベントの最新情報</p>
+    </div>
+
+    <!-- EDIT: お知らせ3件。日付・分類・見出しを差し替えてください -->
+    <div class="news-list">
+      <article class="card news-item rv">
+        <time class="news-date" datetime="2026-01-01">◯◯◯◯.◯◯.◯◯</time>
+        <span class="news-cat c-live">配信</span>
+        <p class="news-title">「◯◯◯◯」を◯月◯日 ◯◯:◯◯ から配信します</p>
+      </article>
+      <article class="card news-item rv">
+        <time class="news-date" datetime="2026-01-01">◯◯◯◯.◯◯.◯◯</time>
+        <span class="news-cat c-goods">グッズ</span>
+        <p class="news-title">新グッズ「◯◯◯◯」の受注受付をはじめました</p>
+      </article>
+      <article class="card news-item rv">
+        <time class="news-date" datetime="2026-01-01">◯◯◯◯.◯◯.◯◯</time>
+        <span class="news-cat">おしらせ</span>
+        <p class="news-title">公式サイトをリニューアルしました</p>
+      </article>
+    </div>
+  </div>
+  <div class="wave w-cream" aria-hidden="true"><svg viewBox="0 0 1440 46" preserveAspectRatio="none"><path d="M0,24 C180,48 300,0 480,10 C660,20 780,46 960,38 C1140,30 1290,4 1440,16 L1440,46 L0,46 Z"/></svg></div>
+</section>
+
+<!-- ============================================================
+  PROFILE
+============================================================ -->
+<section class="sec s-cream" id="profile">
+  <div class="container">
+    <div class="sec-head">
+      <span class="sec-en">PROFILE</span>
+      <h2 class="sec-title"><span class="hl">プロフィール</span></h2>
+      <p class="sec-lead">わたしのことを、すこしだけ</p>
+    </div>
+
+    <div class="profile-grid">
+      <!-- EDIT: プロフィール表。項目の増減は <tr> ごとコピー／削除でOK -->
+      <div class="card rv">
+        <table class="prof-table">
+          <tbody>
+            <tr><th>名前</th><td>星宮 きら（ほしみや きら）</td></tr>
+            <tr><th>誕生日</th><td>◯月◯日</td></tr>
+            <tr><th>身長</th><td>◯◯◯cm</td></tr>
+            <tr><th>イメージカラー</th><td>◯◯（#ff85b3）</td></tr>
+            <tr><th>好きなもの</th><td>◯◯◯◯・◯◯◯◯・◯◯◯◯</td></tr>
+            <tr><th>苦手なもの</th><td>◯◯◯◯・◯◯◯◯</td></tr>
+            <tr><th>ファンネーム</th><td>◯◯◯◯</td></tr>
+            <tr><th>ハッシュタグ</th><td>#◯◯◯◯　#◯◯イラスト　#◯◯配信</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- EDIT: パラメータバー。data-val は 0〜100 の目安の数値（自己申告の演出用）です。
+           実績や能力を数値で断定する表現にはしないでください -->
+      <div class="card rv">
+        <p style="font-family:var(--en);font-size:.78rem;letter-spacing:.16em;color:var(--muted);margin-bottom:1rem">STATUS</p>
+        <div class="params" id="params">
+          <div class="param-row">
+            <div class="param-top"><span>うた</span><span class="num">◯◯</span></div>
+            <div class="param-bar"><div class="param-fill" data-val="82"></div></div>
+          </div>
+          <div class="param-row">
+            <div class="param-top"><span>ゲーム</span><span class="num">◯◯</span></div>
+            <div class="param-bar"><div class="param-fill" data-val="68"></div></div>
+          </div>
+          <div class="param-row">
+            <div class="param-top"><span>トーク</span><span class="num">◯◯</span></div>
+            <div class="param-bar"><div class="param-fill" data-val="90"></div></div>
+          </div>
+          <div class="param-row">
+            <div class="param-top"><span>えがく</span><span class="num">◯◯</span></div>
+            <div class="param-bar"><div class="param-fill" data-val="55"></div></div>
+          </div>
+        </div>
+        <p style="font-size:.8rem;color:var(--muted);margin-top:1rem">※ 数値はキャラクター設定上の目安です</p>
+      </div>
+    </div>
+  </div>
+  <div class="wave w-white" aria-hidden="true"><svg viewBox="0 0 1440 46" preserveAspectRatio="none"><path d="M0,18 C160,0 320,42 520,34 C720,26 840,0 1020,12 C1200,24 1320,44 1440,30 L1440,46 L0,46 Z"/></svg></div>
+</section>
+
+<!-- ============================================================
+  GALLERY
+============================================================ -->
+<section class="sec s-white" id="gallery">
+  <div class="container">
+    <div class="sec-head">
+      <span class="sec-en">GALLERY</span>
+      <h2 class="sec-title"><span class="hl">ギャラリー</span></h2>
+      <p class="sec-lead">イラスト・ファンアート・配信サムネイル</p>
+    </div>
+
+    <!-- EDIT: 各 .tile-img の中身を <img src="art1.jpg" alt="◯◯"> に置き換えてください。
+         枠の比率（4:3）は .tile-img の aspect-ratio で変えられます -->
+    <div class="gallery">
+      <figure class="tile rv"><div class="tile-img">ここにイラスト<br>1200 × 900 px</div>
+        <figcaption class="tile-cap"><span>◯◯◯◯</span><span class="en">ILLUST 01</span></figcaption></figure>
+      <figure class="tile rv"><div class="tile-img">ここにイラスト<br>1200 × 900 px</div>
+        <figcaption class="tile-cap"><span>◯◯◯◯</span><span class="en">ILLUST 02</span></figcaption></figure>
+      <figure class="tile rv"><div class="tile-img">ここにイラスト<br>1200 × 900 px</div>
+        <figcaption class="tile-cap"><span>◯◯◯◯</span><span class="en">ILLUST 03</span></figcaption></figure>
+      <figure class="tile rv"><div class="tile-img">ここにイラスト<br>1200 × 900 px</div>
+        <figcaption class="tile-cap"><span>◯◯◯◯</span><span class="en">ILLUST 04</span></figcaption></figure>
+      <figure class="tile rv"><div class="tile-img">ここにイラスト<br>1200 × 900 px</div>
+        <figcaption class="tile-cap"><span>◯◯◯◯</span><span class="en">ILLUST 05</span></figcaption></figure>
+      <figure class="tile rv"><div class="tile-img">ここにイラスト<br>1200 × 900 px</div>
+        <figcaption class="tile-cap"><span>◯◯◯◯</span><span class="en">ILLUST 06</span></figcaption></figure>
+    </div>
+  </div>
+  <div class="wave w-tint" aria-hidden="true"><svg viewBox="0 0 1440 46" preserveAspectRatio="none"><path d="M0,30 C150,10 280,40 460,36 C640,32 760,6 940,14 C1120,22 1280,46 1440,22 L1440,46 L0,46 Z"/></svg></div>
+</section>
+
+<!-- ============================================================
+  SCHEDULE
+============================================================ -->
+<section class="sec s-tint p-stripe" id="schedule">
+  <div class="container">
+    <div class="sec-head">
+      <span class="sec-en">SCHEDULE</span>
+      <h2 class="sec-title"><span class="hl">配信スケジュール</span></h2>
+      <p class="sec-lead">今週の予定（変更になる場合があります）</p>
+    </div>
+
+    <!-- EDIT: 曜日ごとの予定。時間チップ（.chip）は増減できます。
+         お休みの日は .day-off に差し替えてください -->
+    <div class="week">
+      <div class="day rv">
+        <p class="day-name">MON<span class="day-jp">月</span></p>
+        <div><span class="chip">◯◯:◯◯</span><span class="chip-note">◯◯◯◯配信</span></div>
+      </div>
+      <div class="day rv">
+        <p class="day-name">TUE<span class="day-jp">火</span></p>
+        <div class="day-off"><b>お休み</b>ゆっくり充電</div>
+      </div>
+      <div class="day rv">
+        <p class="day-name">WED<span class="day-jp">水</span></p>
+        <div><span class="chip c-sky">◯◯:◯◯</span><span class="chip-note">ゲーム配信</span></div>
+      </div>
+      <div class="day rv">
+        <p class="day-name">THU<span class="day-jp">木</span></p>
+        <div><span class="chip c-mint">◯◯:◯◯</span><span class="chip-note">雑談・お便り</span></div>
+      </div>
+      <div class="day rv">
+        <p class="day-name">FRI<span class="day-jp">金</span></p>
+        <div><span class="chip c-lav">◯◯:◯◯</span><span class="chip-note">うた枠</span></div>
+      </div>
+      <div class="day sat rv">
+        <p class="day-name">SAT<span class="day-jp">土</span></p>
+        <div><span class="chip">◯◯:◯◯</span><span class="chip c-sky">◯◯:◯◯</span><span class="chip-note">コラボ／ゲリラ</span></div>
+      </div>
+      <div class="day sun rv">
+        <p class="day-name">SUN<span class="day-jp">日</span></p>
+        <div class="day-off"><b>お休み</b>おやすみの日</div>
+      </div>
+    </div>
+  </div>
+  <div class="wave w-white" aria-hidden="true"><svg viewBox="0 0 1440 46" preserveAspectRatio="none"><path d="M0,16 C180,40 340,6 520,14 C700,22 820,44 1000,36 C1180,28 1300,4 1440,20 L1440,46 L0,46 Z"/></svg></div>
+</section>
+
+<!-- ============================================================
+  VOICE
+============================================================ -->
+<section class="sec s-white" id="voice">
+  <div class="container">
+    <div class="sec-head">
+      <span class="sec-en">VOICE</span>
+      <h2 class="sec-title"><span class="hl">ボイス・うた</span></h2>
+      <p class="sec-lead">聴いてみてね <span class="spk">♪</span></p>
+    </div>
+
+    <!-- EDIT: 実際に音を鳴らすには、各カードの中に
+           <audio controls preload="none" src="voice1.mp3"></audio>
+         を置いて、下の .play ボタン（見た目のみ）と差し替えるのがいちばん簡単です -->
+    <div class="voice-grid">
+      <article class="card voice-card rv">
+        <div class="voice-top">
+          <span class="play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4l13 8-13 8z"/></svg></span>
+          <div><p class="voice-name">◯◯◯◯（あいさつ）</p><p class="voice-time">◯:◯◯</p></div>
+        </div>
+        <div class="wave-bars" aria-hidden="true"><i style="height:30%"></i><i style="height:70%"></i><i style="height:45%"></i><i style="height:95%"></i><i style="height:55%"></i><i style="height:80%"></i><i style="height:35%"></i><i style="height:65%"></i><i style="height:50%"></i><i style="height:85%"></i><i style="height:40%"></i><i style="height:60%"></i></div>
+        <p class="goods-note">◯◯◯◯についてのひとこと。</p>
+      </article>
+      <article class="card voice-card rv">
+        <div class="voice-top">
+          <span class="play" style="background:var(--sky)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4l13 8-13 8z"/></svg></span>
+          <div><p class="voice-name">◯◯◯◯（めざまし）</p><p class="voice-time">◯:◯◯</p></div>
+        </div>
+        <div class="wave-bars" aria-hidden="true"><i style="height:60%"></i><i style="height:35%"></i><i style="height:85%"></i><i style="height:50%"></i><i style="height:70%"></i><i style="height:40%"></i><i style="height:90%"></i><i style="height:55%"></i><i style="height:75%"></i><i style="height:30%"></i><i style="height:65%"></i><i style="height:45%"></i></div>
+        <p class="goods-note">◯◯◯◯についてのひとこと。</p>
+      </article>
+      <article class="card voice-card rv">
+        <div class="voice-top">
+          <span class="play" style="background:var(--lav)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4l13 8-13 8z"/></svg></span>
+          <div><p class="voice-name">◯◯◯◯（オリジナル曲）</p><p class="voice-time">◯:◯◯</p></div>
+        </div>
+        <div class="wave-bars" aria-hidden="true"><i style="height:45%"></i><i style="height:90%"></i><i style="height:35%"></i><i style="height:75%"></i><i style="height:60%"></i><i style="height:95%"></i><i style="height:40%"></i><i style="height:70%"></i><i style="height:30%"></i><i style="height:80%"></i><i style="height:50%"></i><i style="height:65%"></i></div>
+        <p class="goods-note">◯◯◯◯についてのひとこと。</p>
+      </article>
+    </div>
+  </div>
+  <div class="wave w-cream" aria-hidden="true"><svg viewBox="0 0 1440 46" preserveAspectRatio="none"><path d="M0,26 C160,44 320,8 500,16 C680,24 800,46 980,34 C1160,22 1300,0 1440,18 L1440,46 L0,46 Z"/></svg></div>
+</section>
+
+<!-- ============================================================
+  GOODS
+============================================================ -->
+<section class="sec s-cream p-dot" id="goods">
+  <div class="container">
+    <div class="sec-head">
+      <span class="sec-en">GOODS</span>
+      <h2 class="sec-title"><span class="hl">グッズ</span></h2>
+      <p class="sec-lead">通販・イベント頒布のご案内</p>
+    </div>
+
+    <!-- EDIT: 商品3点。価格は必ず実際の税込価格に差し替えてください。
+         画像は .goods-img を <img src="goods1.jpg" alt=""> に置き換えるだけ -->
+    <div class="goods-grid">
+      <article class="card goods-card rv">
+        <span class="ribbon">NEW</span>
+        <div class="goods-img">ここに商品画像<br>1000 × 1000 px</div>
+        <div class="goods-body">
+          <p class="goods-name">◯◯◯◯ アクリルスタンド</p>
+          <p class="goods-price">¥◯,◯◯◯<span class="goods-note" style="font-family:var(--jp);margin-left:.4rem">税込</span></p>
+          <p class="goods-note">◯◯◯◯ / 約◯◯cm / ◯◯製</p>
+        </div>
+      </article>
+      <article class="card goods-card rv">
+        <div class="goods-img">ここに商品画像<br>1000 × 1000 px</div>
+        <div class="goods-body">
+          <p class="goods-name">◯◯◯◯ 缶バッジセット</p>
+          <p class="goods-price">¥◯,◯◯◯<span class="goods-note" style="font-family:var(--jp);margin-left:.4rem">税込</span></p>
+          <p class="goods-note">◯◯◯◯ / ◯◯mm / 全◯種</p>
+        </div>
+      </article>
+      <article class="card goods-card is-sold rv">
+        <span class="ribbon ribbon-sold">SOLD OUT</span>
+        <div class="goods-img">ここに商品画像<br>1000 × 1000 px</div>
+        <div class="goods-body">
+          <p class="goods-name">◯◯◯◯ Tシャツ</p>
+          <p class="goods-price">¥◯,◯◯◯<span class="goods-note" style="font-family:var(--jp);margin-left:.4rem">税込</span></p>
+          <p class="goods-note">◯◯◯◯ / S・M・L・XL</p>
+        </div>
+      </article>
+    </div>
+    <p class="sec-lead" style="text-align:center;margin-top:1.6rem">
+      ※ 通信販売を行う場合は「特定商取引法に基づく表記」のページを別途ご用意ください
+    </p>
+  </div>
+  <div class="wave w-tint" aria-hidden="true"><svg viewBox="0 0 1440 46" preserveAspectRatio="none"><path d="M0,20 C170,2 330,38 520,32 C710,26 830,2 1010,12 C1190,22 1310,44 1440,26 L1440,46 L0,46 Z"/></svg></div>
+</section>
+
+<!-- ============================================================
+  FAN
+============================================================ -->
+<section class="sec s-tint" id="fan">
+  <div class="container">
+    <div class="sec-head">
+      <span class="sec-en">FAN</span>
+      <h2 class="sec-title"><span class="hl">ファンのみなさまへ</span></h2>
+      <p class="sec-lead">呼び名・推しマーク・二次創作について</p>
+    </div>
+
+    <!-- EDIT: ファンネーム・推しマーク・ハッシュタグ -->
+    <div class="fan-grid">
+      <article class="card fan-card rv">
+        <p class="fan-mark">♥</p>
+        <p class="fan-label">FAN NAME</p>
+        <p class="fan-value">◯◯◯◯</p>
+      </article>
+      <article class="card fan-card rv">
+        <p class="fan-mark">✦</p>
+        <p class="fan-label">MARK</p>
+        <p class="fan-value">◯◯◯◯</p>
+      </article>
+      <article class="card fan-card rv">
+        <p class="fan-mark">★</p>
+        <p class="fan-label">HASHTAG</p>
+        <p class="fan-value">#◯◯◯◯</p>
+      </article>
+
+      <!-- EDIT: 二次創作ガイドライン。実際の方針に書き換えてください -->
+      <article class="card rules rv">
+        <span class="ribbon">GUIDELINE</span>
+        <h3 style="font-size:1.15rem">二次創作ガイドライン</h3>
+        <ul>
+          <li><span>◯◯◯◯についてのルールをここに書きます（例：個人の非営利の範囲でお楽しみください）</span></li>
+          <li><span>◯◯◯◯についてのルールをここに書きます（例：公式との誤認を招く使い方はご遠慮ください）</span></li>
+          <li><span>◯◯◯◯についてのルールをここに書きます（例：センシティブな表現には必ず注意書きを添えてください）</span></li>
+          <li><span>◯◯◯◯についてのルールをここに書きます（例：公開時は #◯◯◯◯ を付けていただけると嬉しいです）</span></li>
+          <li><span>判断に迷う場合は ◯◯◯◯ までお問い合わせください</span></li>
+        </ul>
+      </article>
+    </div>
+  </div>
+  <div class="wave w-white" aria-hidden="true"><svg viewBox="0 0 1440 46" preserveAspectRatio="none"><path d="M0,28 C190,46 340,4 530,12 C720,20 840,44 1020,38 C1200,32 1320,8 1440,24 L1440,46 L0,46 Z"/></svg></div>
+</section>
+
+<!-- ============================================================
+  Q&A
+============================================================ -->
+<section class="sec s-white" id="qa">
+  <div class="container">
+    <div class="sec-head">
+      <span class="sec-en">Q &amp; A</span>
+      <h2 class="sec-title"><span class="hl">よくある質問</span></h2>
+    </div>
+
+    <!-- EDIT: 質問と答え。<details> なので JavaScript が無くても開閉します -->
+    <div class="qa">
+      <details class="qa-item rv">
+        <summary>◯◯◯◯について教えてください</summary>
+        <div class="qa-body">◯◯◯◯についての答えをここに書きます。２〜３行くらいがちょうど読みやすい長さです。</div>
+      </details>
+      <details class="qa-item rv">
+        <summary>配信のアーカイブは残りますか？</summary>
+        <div class="qa-body">◯◯◯◯についての答えをここに書きます。２〜３行くらいがちょうど読みやすい長さです。</div>
+      </details>
+      <details class="qa-item rv">
+        <summary>イラストやファンアートを描いてもいいですか？</summary>
+        <div class="qa-body">◯◯◯◯についての答えをここに書きます。二次創作ガイドラインもあわせてご確認ください。</div>
+      </details>
+      <details class="qa-item rv">
+        <summary>お仕事のご依頼はどちらへ？</summary>
+        <div class="qa-body">◯◯◯◯までご連絡ください。お返事までに◯◯日ほどいただく場合があります。</div>
+      </details>
+    </div>
+  </div>
+  <div class="wave w-cream" aria-hidden="true"><svg viewBox="0 0 1440 46" preserveAspectRatio="none"><path d="M0,22 C150,2 300,40 490,34 C680,28 800,4 990,14 C1180,24 1300,42 1440,28 L1440,46 L0,46 Z"/></svg></div>
+</section>
+
+<!-- ============================================================
+  LINKS
+============================================================ -->
+<section class="sec s-cream" id="links">
+  <div class="container">
+    <div class="sec-head">
+      <span class="sec-en">LINKS</span>
+      <h2 class="sec-title"><span class="hl">リンク</span></h2>
+      <p class="sec-lead">各SNS・ショップはこちらから</p>
+    </div>
+
+    <!-- EDIT: href を自分のURLに。アイコンは汎用の線画です（各社のロゴではありません）。
+         不要な項目は <a> ごと削除してください -->
+    <div class="link-grid">
+      <a class="btn link-btn btn-pink rv" href="#" aria-label="YouTube（リンク先を差し替えてください）">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="4"/><path d="M10 9l5 3-5 3z"/></svg>
+        <span>YouTube</span><span class="sub">@◯◯◯◯</span></a>
+      <a class="btn link-btn btn-sky rv" href="#" aria-label="X（リンク先を差し替えてください）">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4l16 16M20 4L4 20"/></svg>
+        <span>X</span><span class="sub">@◯◯◯◯</span></a>
+      <a class="btn link-btn btn-lemon rv" href="#" aria-label="Instagram（リンク先を差し替えてください）">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".9" fill="currentColor" stroke="none"/></svg>
+        <span>Instagram</span><span class="sub">@◯◯◯◯</span></a>
+      <a class="btn link-btn btn-mint rv" href="#" aria-label="BOOTH（リンク先を差し替えてください）">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8h18l-1.5 12h-15z"/><path d="M8 8V6a4 4 0 018 0v2"/></svg>
+        <span>BOOTH</span><span class="sub">@◯◯◯◯</span></a>
+      <a class="btn link-btn btn-lav rv" href="#" aria-label="FANBOX（リンク先を差し替えてください）">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9h18v11H3z"/><path d="M3 9l2-5h14l2 5M12 9v11"/></svg>
+        <span>FANBOX</span><span class="sub">@◯◯◯◯</span></a>
+      <a class="btn link-btn rv" href="#" aria-label="Discord（リンク先を差し替えてください）">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19l1-11a3 3 0 013-3h8a3 3 0 013 3l1 11-4-2H8z"/><circle cx="9.5" cy="12" r="1.2" fill="currentColor" stroke="none"/><circle cx="14.5" cy="12" r="1.2" fill="currentColor" stroke="none"/></svg>
+        <span>Discord</span><span class="sub">@◯◯◯◯</span></a>
+    </div>
+  </div>
+  <div class="wave w-tint" aria-hidden="true"><svg viewBox="0 0 1440 46" preserveAspectRatio="none"><path d="M0,30 C160,8 300,40 500,34 C700,28 820,4 1010,14 C1200,24 1320,44 1440,24 L1440,46 L0,46 Z"/></svg></div>
+</section>
+
+<!-- ============================================================
+  FOOTER
+============================================================ -->
+<footer class="footer">
+  <div class="container">
+    <p class="footer-mark"><svg viewBox="0 0 64 64" width="40" height="40" aria-hidden="true" style="margin:0 auto"><use href="#star"></use></svg></p>
+    <!-- EDIT: 名前・イラストレーター名・著作権表記 -->
+    <p class="footer-name">星宮 きら</p>
+    <p class="footer-credit">Illustration: ◯◯◯◯</p>
+    <ul class="footer-links">
+      <li><a href="#news">NEWS</a></li>
+      <li><a href="#profile">PROFILE</a></li>
+      <li><a href="#gallery">GALLERY</a></li>
+      <li><a href="#schedule">SCHEDULE</a></li>
+      <li><a href="#goods">GOODS</a></li>
+      <li><a href="#fan">FAN</a></li>
+      <li><a href="#links">LINKS</a></li>
+    </ul>
+    <p class="footer-credit">&copy; <span id="year">2026</span> ◯◯◯◯ All Rights Reserved.</p>
+    <p class="footer-credit" style="margin-top:.6rem"><a href="https://idatsuka.com/store.html">← Store に戻る</a></p>
+    <span class="footer-ver">KIRA Template v1.0 — 個人・商用利用可／再販不可</span>
+  </div>
+</footer>
+
+<a href="#hero" class="to-top" id="toTop" aria-label="ページの先頭へ戻る">▲</a>
+
+</div><!-- /.page -->
+
+<script>
+/* ============================================================
+   共通の設定
+============================================================ */
+var REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+var FINE   = window.matchMedia('(pointer: fine)').matches;
+
+/* ---- ポップ／ナイトのテーマ切替（localStorage に保存・theme-color も同期） ---- */
+(function () {
+  var root = document.documentElement;
+  var key = 'kira-theme';
+  var meta = document.getElementById('themeColor');
+  var btn = document.getElementById('themeToggle');
+  function sync() {
+    var t = root.getAttribute('data-theme') === 'night' ? 'night' : 'pop';
+    if (meta) meta.setAttribute('content', getComputedStyle(root).getPropertyValue('--bg').trim() || '#fff7fb');
+    if (btn) btn.setAttribute('aria-label', t === 'night' ? 'ポップテーマに切り替え' : 'ナイトテーマに切り替え');
+  }
+  sync();
+  if (btn) btn.addEventListener('click', function () {
+    var next = root.getAttribute('data-theme') === 'night' ? 'pop' : 'night';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem(key, next); } catch (e) {}
+    sync();
+  });
+})();
+
+/* ---- モバイルメニュー ---- */
+(function () {
+  var toggle = document.getElementById('menuToggle');
+  var menu = document.getElementById('mobileMenu');
+  if (!toggle || !menu) return;
+  function close() {
+    toggle.classList.remove('open'); menu.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+  }
+  toggle.addEventListener('click', function () {
+    var open = menu.classList.toggle('open');
+    toggle.classList.toggle('open', open);
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  menu.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', close); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+})();
+
+/* ---- スクロールでナビを細く／「先頭へ戻る」ボタンの表示 ---- */
+(function () {
+  var nav = document.getElementById('nav');
+  var top = document.getElementById('toTop');
+  var ticking = false;
+  function update() {
+    var y = window.scrollY;
+    if (nav) nav.classList.toggle('scrolled', y > 20);
+    if (top) top.classList.toggle('show', y > 560);
+    ticking = false;
+  }
+  window.addEventListener('scroll', function () {
+    if (!ticking) { ticking = true; requestAnimationFrame(update); }
+  }, { passive: true });
+  update();
+})();
+
+/* ---- リビール（.rv を、兄弟ごとに少しずつ遅らせてポンと表示） ---- */
+(function () {
+  var all = document.querySelectorAll('.rv');
+  /* 古いブラウザで IntersectionObserver が無い場合は、最初からすべて表示します */
+  if (!('IntersectionObserver' in window)) {
+    all.forEach(function (el) { el.classList.add('on'); });
+    return;
+  }
+  var counts = new Map();
+  all.forEach(function (el) {
+    var p = el.parentElement;
+    var n = counts.get(p) || 0;
+    counts.set(p, n + 1);
+    el.style.transitionDelay = Math.min(n * 60, 320) + 'ms';
+  });
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      e.target.classList.add('on');
+      io.unobserve(e.target);
+      setTimeout(function () { e.target.style.transitionDelay = ''; }, 1400);
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -5% 0px' });
+  all.forEach(function (el) { io.observe(el); });
+})();
+
+/* ---- パラメータバー（画面に入ったら data-val の値まで伸びます） ---- */
+(function () {
+  var wrap = document.getElementById('params');
+  if (!wrap) return;
+  var fills = wrap.querySelectorAll('.param-fill');
+  function fill() { fills.forEach(function (f, i) {
+    var v = Math.max(0, Math.min(100, parseInt(f.getAttribute('data-val'), 10) || 0));
+    setTimeout(function () { f.style.width = v + '%'; }, REDUCE ? 0 : i * 130);
+  }); }
+  var io = new IntersectionObserver(function (es) {
+    es.forEach(function (e) { if (e.isIntersecting) { fill(); io.disconnect(); } });
+  }, { threshold: 0.3 });
+  io.observe(wrap);
+})();
+
+/* ---- Q&A（<details> の開閉。JS が無くても動きます） ---- */
+(function () {
+  if (REDUCE) return;
+  document.querySelectorAll('.qa-item').forEach(function (d) {
+    d.addEventListener('toggle', function () {
+      if (!d.open) return;
+      d.style.transition = 'none';
+    });
+  });
+})();
+
+/* ============================================================
+   HERO — 視差チルト／クリックの「ぽよん」＋ハート弾け
+============================================================ */
+(function () {
+  var stage = document.getElementById('heroStage');
+  if (!stage) return;
+  var layers = Array.prototype.slice.call(stage.querySelectorAll('.layer'));
+
+  /* マウスを動かすと、深さ（data-depth）ごとに違う量だけずれます */
+  if (!REDUCE && FINE) {
+    var raf = null, tx = 0, ty = 0;
+    stage.addEventListener('mousemove', function (e) {
+      var r = stage.getBoundingClientRect();
+      tx = ((e.clientX - r.left) / r.width - 0.5) * 2;   /* -1 〜 1 */
+      ty = ((e.clientY - r.top) / r.height - 0.5) * 2;
+      if (!raf) raf = requestAnimationFrame(apply);
+    });
+    stage.addEventListener('mouseleave', function () {
+      tx = 0; ty = 0; if (!raf) raf = requestAnimationFrame(apply);
+    });
+    function apply() {
+      raf = null;
+      layers.forEach(function (l) {
+        var d = parseFloat(l.getAttribute('data-depth')) || 1;
+        l.style.transform = 'translate3d(' + (tx * d * 9) + 'px,' + (ty * d * 7) + 'px,0) rotate(' + (tx * d * 0.5) + 'deg)';
+      });
+    }
+  }
+
+  /* クリック／タップで「ぽよん」＋ハートと星が弾けます */
+  var btn = document.getElementById('charaBtn');
+  var BITS = ['♥', '★', '✦', '♪', '♥', '★'];
+  if (btn) btn.addEventListener('click', function () {
+    if (!REDUCE) {
+      btn.classList.remove('poyon');
+      void btn.offsetWidth;               /* アニメーションを巻き戻す */
+      btn.classList.add('poyon');
+    }
+    var r = btn.getBoundingClientRect();
+    var sr = stage.getBoundingClientRect();
+    var cx = r.left - sr.left + r.width / 2;
+    var cy = r.top - sr.top + r.height * 0.32;
+    var n = REDUCE ? 0 : 10;
+    for (var i = 0; i < n; i++) {
+      var s = document.createElement('span');
+      s.className = 'pop-bit';
+      s.textContent = BITS[i % BITS.length];
+      var a = (Math.PI * 2 * i) / n + Math.random() * 0.4;
+      var dist = 80 + Math.random() * 70;
+      s.style.left = cx + 'px';
+      s.style.top = cy + 'px';
+      s.style.setProperty('--dx', Math.cos(a) * dist + 'px');
+      s.style.setProperty('--dy', (Math.sin(a) * dist - 40) + 'px');
+      s.style.setProperty('--rot', (Math.random() * 240 - 120) + 'deg');
+      s.style.color = ['#ff85b3', '#6fcbff', '#ffe066', '#c9b8ff'][i % 4];
+      stage.appendChild(s);
+      (function (el) { setTimeout(function () { el.remove(); }, 1000); })(s);
+    }
+  });
+})();
+
+/* ============================================================
+   ふわふわ舞うキラキラ（Canvas）
+   ・粒はあらかじめ小さな画像に描いておき、毎フレームは貼るだけ（影を使わない）
+   ・最大40粒／タブが非表示のあいだは止まります
+============================================================ */
+(function () {
+  if (REDUCE) return;
+  var cv = document.getElementById('sparkles');
+  if (!cv || !cv.getContext) return;
+  var ctx = cv.getContext('2d');
+  var dpr = Math.min(window.devicePixelRatio || 1, 2);
+  var W = 0, H = 0, parts = [], raf = null, sprites = {};
+  var COLORS = ['#ff85b3', '#6fcbff', '#ffe066', '#c9b8ff'];
+
+  /* 4方向にのびる小さな星のスプライトを1回だけ描いておきます */
+  function sprite(color) {
+    if (sprites[color]) return sprites[color];
+    var s = 48, c = document.createElement('canvas');
+    c.width = c.height = s;
+    var g = c.getContext('2d');
+    var grd = g.createRadialGradient(s / 2, s / 2, 0, s / 2, s / 2, s / 2);
+    grd.addColorStop(0, color); grd.addColorStop(1, 'rgba(255,255,255,0)');
+    g.globalAlpha = .55; g.fillStyle = grd; g.beginPath(); g.arc(s / 2, s / 2, s / 2, 0, 6.2832); g.fill();
+    g.globalAlpha = 1; g.fillStyle = color;
+    g.beginPath();
+    g.moveTo(s / 2, 3); g.quadraticCurveTo(s / 2 + 3, s / 2 - 3, s - 3, s / 2);
+    g.quadraticCurveTo(s / 2 + 3, s / 2 + 3, s / 2, s - 3);
+    g.quadraticCurveTo(s / 2 - 3, s / 2 + 3, 3, s / 2);
+    g.quadraticCurveTo(s / 2 - 3, s / 2 - 3, s / 2, 3);
+    g.fill();
+    sprites[color] = c;
+    return c;
+  }
+
+  function resize() {
+    W = window.innerWidth; H = window.innerHeight;
+    cv.width = Math.floor(W * dpr); cv.height = Math.floor(H * dpr);
+    cv.style.width = W + 'px'; cv.style.height = H + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    /* 画面の広さに合わせて 18〜40 粒 */
+    var n = Math.max(18, Math.min(40, Math.round(W / 44)));
+    parts = [];
+    for (var i = 0; i < n; i++) parts.push(make(true));
+  }
+  function make(anywhere) {
+    return {
+      x: Math.random() * W,
+      y: anywhere ? Math.random() * H : H + 20,
+      s: 6 + Math.random() * 14,
+      vy: -(0.12 + Math.random() * 0.34),
+      vx: (Math.random() - 0.5) * 0.22,
+      ph: Math.random() * 6.28,
+      sp: 0.8 + Math.random() * 1.6,
+      c: COLORS[(Math.random() * COLORS.length) | 0]
+    };
+  }
+  function frame(t) {
+    ctx.clearRect(0, 0, W, H);
+    for (var i = 0; i < parts.length; i++) {
+      var p = parts[i];
+      p.y += p.vy; p.x += p.vx + Math.sin(t / 1400 + p.ph) * 0.16;
+      if (p.y < -30) { parts[i] = make(false); continue; }
+      var a = 0.30 + 0.30 * (1 + Math.sin(t / 520 * p.sp + p.ph)) / 2;
+      ctx.globalAlpha = a;
+      ctx.drawImage(sprite(p.c), p.x - p.s / 2, p.y - p.s / 2, p.s, p.s);
+    }
+    ctx.globalAlpha = 1;
+    raf = requestAnimationFrame(frame);
+  }
+  function start() { if (!raf) raf = requestAnimationFrame(frame); }
+  function stop() { if (raf) { cancelAnimationFrame(raf); raf = null; } }
+
+  resize();
+  window.addEventListener('resize', function () { resize(); }, { passive: true });
+  document.addEventListener('visibilitychange', function () { document.hidden ? stop() : start(); });
+  start();
+})();
+
+/* ---- カーソルのキラキラ軌跡（マウスのある端末だけ・約60msごと） ---- */
+(function () {
+  if (REDUCE || !FINE) return;
+  var last = 0;
+  var MARKS = ['✦', '★', '♥'];
+  var COLORS = ['#ff85b3', '#6fcbff', '#ffe066', '#c9b8ff'];
+  document.addEventListener('mousemove', function (e) {
+    var now = Date.now();
+    if (now - last < 60) return;
+    last = now;
+    var s = document.createElement('span');
+    s.className = 'trail';
+    s.textContent = MARKS[(Math.random() * MARKS.length) | 0];
+    s.style.left = e.clientX + (Math.random() * 16 - 8) + 'px';
+    s.style.top = e.clientY + (Math.random() * 16 - 8) + 'px';
+    s.style.color = COLORS[(Math.random() * COLORS.length) | 0];
+    s.style.fontSize = (9 + Math.random() * 7) + 'px';
+    document.body.appendChild(s);
+    setTimeout(function () { s.remove(); }, 720);
+  }, { passive: true });
+})();
+
+/* ---- フッターの年を自動更新 ---- */
+(function () {
+  var y = document.getElementById('year');
+  if (y) y.textContent = new Date().getFullYear();
+})();
+</script>
+</body>
+</html>
