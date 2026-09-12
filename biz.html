@@ -14,8 +14,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Zen+Kaku+Gothic+New:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <style>
-    .tmpl-row { display: grid; grid-template-columns: repeat(6,1fr); gap: 1.1rem; margin: 2rem 0 1.6rem; }
-    @media (max-width: 1100px) { .tmpl-row { grid-template-columns: repeat(3,1fr); } }
+    .tmpl-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem; margin: 2rem 0 1.6rem; }
     .tmpl-cover { position: relative; display: block; aspect-ratio: 16/9; overflow: hidden; border: 1px solid var(--border); }
     .tmpl-cover img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--ease-out), filter .4s; }
     .tmpl-cover:hover img { transform: scale(1.05); filter: brightness(1.1); }
@@ -180,7 +179,7 @@
   <div class="container">
     <span class="label rv">Digital Products</span>
     <p class="rv" style="font-size:.92rem;line-height:1.9;color:var(--fg-dim);max-width:600px;margin-bottom:1.5rem;">
-      オーダーメイドの前に、まずは手軽に試せる制作現場発のテンプレートを Store で公開しています。
+      オーダーメイドの前に、まずは手軽に試せる制作現場発のテンプレートを Store で公開しています。全11種、それぞれ違う業種と課題のために作っています。
     </p>
     <div class="tmpl-row rv">
       <a href="store.html" class="tmpl-cover"><img src="img/store-zen.svg" alt="ZEN template"></a>
@@ -189,6 +188,11 @@
       <a href="store.html" class="tmpl-cover"><img src="img/store-noren.svg" alt="NOREN template"></a>
       <a href="store.html" class="tmpl-cover"><img src="img/store-kira.jpg" alt="KIRA template"></a>
       <a href="store.html" class="tmpl-cover"><img src="img/store-veil.jpg" alt="VEIL template"></a>
+      <a href="store.html" class="tmpl-cover"><img src="img/store-saji.jpg" alt="SAJI template"></a>
+      <a href="store.html" class="tmpl-cover"><img src="img/store-karte.jpg" alt="KARTE template"></a>
+      <a href="store.html" class="tmpl-cover"><img src="img/store-yui.jpg" alt="YUI template"></a>
+      <a href="store.html" class="tmpl-cover"><img src="img/store-koma.jpg" alt="KOMA template"></a>
+      <a href="store.html" class="tmpl-cover"><img src="img/store-utage.jpg" alt="UTAGE template"></a>
     </div>
     <a href="store.html" class="btn rv">Visit Store &rarr;</a>
   </div>

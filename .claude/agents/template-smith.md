@@ -12,6 +12,16 @@ Open `products/template-noren/index.html` (first ~130 lines) and its README. The
 
 ## The contract
 
+**Start with the footer.** Write these two lines before you write anything else — five templates in a row shipped without them because they sit at the end of a checklist:
+
+```html
+<p>NAME Template vX.Y — 個人・商用利用可／再販不可</p>
+<!-- EDIT: 配布元へのリンク。公開時に不要であれば、この1行を削除してください -->
+<p><a href="https://idatsuka.com/store.html">← Store に戻る</a></p>
+```
+
+Style the link in the template's own palette, full opacity, at least 11px. A visitor on a live demo must be able to get back to where it is sold. Grep your finished file for `idatsuka.com/store.html` before you report.
+
 1. **One file.** HTML, CSS and JS together. No build step, no libraries, no external images. Only heavy media (video, key visuals) goes in `assets/`.
 2. **Japanese header comment** with `■ カスタマイズ手順` / `■ 収録しているもの` / `■ 掲載内容について（景品表示法）`, and the licence line verbatim: `個人・商用利用可 / テンプレートとしての再販・再配布は不可`.
 3. **`EDIT:` comments** at every editable spot, and a "最初に差し替える5〜6か所" table in the README.
@@ -21,13 +31,6 @@ Open `products/template-noren/index.html` (first ~130 lines) and its README. The
 7. **README in the fixed order**: 使い方 → 最初に差し替える◯か所 → テーマ → 特徴 → セクション構成 → 掲載内容についてのお願い → ライセンス → サポート → 変更履歴.
 8. Ship as `products/idatsuka-template-<name>-v<x.y>.zip`, and never delete an older version's zip.
 9. ¥2,980. Add the card to `store.html` (copy the markup of an existing card), the cover to `img/store-<name>.svg|jpg`, and a thumbnail to the `.tmpl-row` in `biz.html`.
-10. **The footer carries two fixed lines**, in this order and wording, because all six existing templates do:
-    ```html
-    <p>NAME Template vX.Y — 個人・商用利用可／再販不可</p>
-    <!-- EDIT: 配布元へのリンク。公開時に不要であれば、この1行を削除してください -->
-    <p><a href="https://idatsuka.com/store.html">← Store に戻る</a></p>
-    ```
-    Style the link in the template's own palette, but keep it at full opacity and at least 11px — a demo visitor must be able to get back to where it is sold.
 
 ## Its own world
 
