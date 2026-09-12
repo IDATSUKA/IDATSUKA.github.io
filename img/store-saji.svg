@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <defs>
+    <linearGradient id="sphoto" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f0cb92"/>
+      <stop offset="52%" stop-color="#c98f52"/>
+      <stop offset="100%" stop-color="#5e3b26"/>
+    </linearGradient>
+    <radialGradient id="swarm" cx="18%" cy="12%" r="58%">
+      <stop offset="0%" stop-color="#b08d57" stop-opacity=".18"/>
+      <stop offset="100%" stop-color="#faf6f0" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="sgrain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="3" seed="4"/>
+      <feColorMatrix values="0 0 0 0 .17  0 0 0 0 .14  0 0 0 0 .12  0 0 0 .05 0"/>
+    </filter>
+  </defs>
+
+  <rect width="800" height="450" fill="#faf6f0"/>
+  <rect width="800" height="450" fill="url(#swarm)"/>
+
+  <!-- 右：料理写真の枠（皿の輪郭つき） -->
+  <rect x="452" y="36" width="304" height="190" rx="3" fill="url(#sphoto)"/>
+  <circle cx="604" cy="131" r="58" fill="none" stroke="#faf6f0" stroke-opacity=".26"/>
+  <ellipse cx="604" cy="118" rx="10" ry="14" fill="none" stroke="#faf6f0" stroke-opacity=".34" stroke-width="2.4"/>
+  <path d="M604 133v22" stroke="#faf6f0" stroke-opacity=".34" stroke-width="2.4" stroke-linecap="round"/>
+
+  <!-- 右：リーダー罫つきの品書き -->
+  <g font-family="'Zen Old Mincho','Noto Serif JP','Hiragino Mincho ProN',serif" font-size="15" fill="#2b2320">
+    <text x="452" y="278">季節の前菜</text>
+    <text x="452" y="320">本日の魚料理</text>
+    <text x="452" y="362">◯◯の定食</text>
+  </g>
+  <g stroke="#2b2320" stroke-opacity=".34" stroke-dasharray="1 4" stroke-linecap="round">
+    <line x1="540" y1="274" x2="690" y2="274"/>
+    <line x1="562" y1="316" x2="690" y2="316"/>
+    <line x1="540" y1="358" x2="690" y2="358"/>
+  </g>
+  <g font-family="Jost,'Helvetica Neue',Arial,sans-serif" font-size="15" fill="#8a6a3c" text-anchor="end">
+    <text x="756" y="278">¥◯,◯◯◯</text>
+    <text x="756" y="320">¥◯,◯◯◯</text>
+    <text x="756" y="362">¥◯,◯◯◯</text>
+  </g>
+  <line x1="452" y1="386" x2="756" y2="386" stroke="#2b2320" stroke-opacity=".1"/>
+  <text x="452" y="406" font-family="'M PLUS 1','Hiragino Sans',sans-serif" font-size="11" fill="#57493f">※ 表示は税込価格です</text>
+
+  <!-- 左：営業中バッジ -->
+  <rect x="56" y="52" width="184" height="34" rx="17" fill="none" stroke="#2b2320" stroke-opacity=".14"/>
+  <circle cx="77" cy="69" r="4" fill="#3f6b52"/>
+  <text x="90" y="74" font-family="'Zen Old Mincho','Noto Serif JP',serif" font-size="15" fill="#3f6b52">営業中</text>
+  <line x1="152" y1="60" x2="152" y2="79" stroke="#2b2320" stroke-opacity=".14"/>
+  <text x="162" y="74" font-family="Jost,'Helvetica Neue',Arial,sans-serif" font-size="12" fill="#57493f">21:00 まで</text>
+
+  <!-- 左：製品名 -->
+  <text x="54" y="210" font-family="'Zen Old Mincho','Noto Serif JP','Hiragino Mincho ProN',serif" font-size="104" font-weight="500" fill="#2b2320">匙</text>
+  <text x="58" y="252" font-family="Jost,'Helvetica Neue',Arial,sans-serif" font-size="20" letter-spacing="10" fill="#3f6b52">SAJI</text>
+  <g font-family="'M PLUS 1','Hiragino Sans',sans-serif" font-size="13" fill="#57493f">
+    <text x="58" y="292">飲食店のための</text>
+    <text x="58" y="314">Web サイトテンプレート</text>
+  </g>
+  <g font-family="'M PLUS 1','Hiragino Sans',sans-serif" font-size="11.5" fill="#8a7a6c">
+    <text x="58" y="348">営業中バッジ・品書きのリーダー罫</text>
+    <text x="58" y="368">営業時間は data-hours の1か所だけ</text>
+  </g>
+
+  <line x1="58" y1="392" x2="400" y2="392" stroke="#b08d57"/>
+  <text x="58" y="414" font-family="Jost,'Helvetica Neue',Arial,sans-serif" font-size="10" letter-spacing="3" fill="#8a7a6c">SAJI — RESTAURANT TEMPLATE · v1.0</text>
+
+  <rect width="800" height="450" filter="url(#sgrain)"/>
+</svg>

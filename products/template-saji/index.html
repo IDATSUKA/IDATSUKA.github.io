@@ -1,0 +1,1381 @@
+<!DOCTYPE html>
+<html lang="ja" data-theme="day">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- ============================================================
+  SAJI（匙）— 飲食店のための Web サイトテンプレート v1.0
+  by IDATSUKA (https://idatsuka.com)
+
+  食堂・ビストロ・カフェ・パン屋・定食屋 ——
+  店主がひとりで更新できる、1ファイル完結のレストラン用テンプレートです。
+  写真がまだ1枚も無くても、置いたその日から成立する見た目にしてあります。
+
+  ■ カスタマイズ手順
+  1. 下の <title> / meta description / OGP / canonical / favicon を差し替え
+  2. 営業時間は HERO の data-hours（JSON）1か所だけ書き換えます。
+     営業中バッジ・次の開店時刻・店舗案内の営業時間表・定休日が、すべてそこから自動で入ります
+     （書式は下の「営業時間（data-hours）」のコメントと README を見てください）
+  3. 「EDIT:」コメントの付いた箇所のテキストを、自分の店の内容に差し替え
+  4. 写真は assets/ に置くだけです（hero.jpg / dish-1.jpg / dish-2.jpg / dish-3.jpg）。
+     ファイルが無い場合は暖色のグラデーションが出ます（画像切れのアイコンは出ません）
+  5. <style> 冒頭の :root で配色を調整（夜テーマは [data-theme="night"]）
+  6. 1ファイル完結。index.html と assets/ をサーバーにアップロードするだけで公開できます
+
+  ■ 収録しているもの
+  ・昼（day）／夜（night）の2テーマ切替（選択はブラウザに保存されます）
+  ・営業中／準備中／本日定休の自動バッジ。次の開店（本日 17:30 から／明日 11:30 から）も表示
+    中休みのある二部営業・深夜営業（翌1:00まで）・定休日に対応
+  ・リーダー罫つきの品書き。長い品名は折り返し、価格は右端に貼りついたまま折り返しません
+  ・おすすめ3品／店舗案内（営業時間表・地図プレースホルダー）／お知らせ／ご予約（電話・オンライン予約枠）
+  ・prefers-reduced-motion 対応、外部ライブラリ・外部画像ゼロ（写真は assets/ のみ）
+
+  ■ 掲載内容について（景品表示法）
+  店名・住所・電話番号・価格・お知らせは、すべて「◯◯」「△△」「¥◯,◯◯◯」などの
+  プレースホルダーです。公開前に必ず実際の内容へ差し替えてください。
+  ・実在しない受賞歴・ランキング・口コミ・グルメサイトの点数を書かないでください
+    （根拠のない「地域一番」「日本一」などの表現は優良誤認にあたるおそれがあります）
+  ・価格は税込の総額表示が必要です（総額表示義務）。品書きの「※ 表示は税込価格です」も併せて確認を
+  ・アレルゲン・原産地・消費期限などの食品表示は、店舗の責任でご確認・ご表示ください
+  ・写真・イラスト・フォントは、ご自身が権利を持つ（または利用許諾を得た）ものだけをお使いください
+
+  ライセンス: 個人・商用利用可 / テンプレートとしての再販・再配布は不可
+============================================================ -->
+
+<!-- EDIT: ページタイトルと説明文（店名・業種・地域を入れると検索で見つかりやすくなります） -->
+<title>◯◯ — △△町の小さな料理店</title>
+<meta name="description" content="△△町の小さな料理店◯◯。昼は定食、夜は一皿ずつ。本日の営業時間・品書き・ご予約のご案内。">
+
+<!-- EDIT: OGP（SNS でシェアされたときの表示）。og:url と og:image は公開URLに合わせて差し替えてください -->
+<meta property="og:title" content="◯◯ — △△町の小さな料理店">
+<meta property="og:description" content="昼は定食、夜は一皿ずつ。△△町の小さな料理店◯◯の公式サイトです。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://example.com/">
+<meta property="og:image" content="https://example.com/assets/hero.jpg">
+<meta property="og:site_name" content="◯◯">
+
+<!-- EDIT: 正規URL（canonical）。公開するURLに書き換えてください -->
+<link rel="canonical" href="https://example.com/">
+
+<!-- EDIT: ブラウザのUI色（スマホのアドレスバー等）。テーマ切替時に自動更新されます -->
+<meta name="theme-color" content="#faf6f0" id="themeColor">
+
+<!-- EDIT: ファビコン（SVG内蔵・匙のかたち）。画像を使う場合は <link rel="icon" href="favicon.png"> に -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%233f6b52'/%3E%3Cellipse cx='32' cy='24' rx='11' ry='14' fill='none' stroke='%23faf6f0' stroke-width='3.4'/%3E%3Cpath d='M32 38v14' stroke='%23faf6f0' stroke-width='3.4' stroke-linecap='round'/%3E%3C/svg%3E">
+
+<!-- 保存済みテーマを描画前に適用（ちらつき防止）。触らなくてOK -->
+<script>(function(){try{var t=localStorage.getItem('saji-theme');if(t==='day'||t==='night'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;500;700&family=Jost:wght@300;400;500&family=M+PLUS+1:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   THEME — 昼（day）。ここを変えるだけで全体の印象が変わります
+============================================================ */
+:root, [data-theme="day"] {
+  color-scheme: light;
+  --bg: #faf6f0;           /* 地（背景） */
+  --bg2: #f2ece2;          /* 一段沈めた面（カード・表の帯） */
+  --fg: #2b2320;           /* 本文 */
+  --fg-dim: #57493f;       /* 補助文字（説明文・表の中身） */
+  --muted: #8a7a6c;        /* ラベル・飾りの小さな文字 */
+  --accent: #3f6b52;       /* 深緑 — 罫・見出しの印・営業中バッジ */
+  --brass: #b08d57;        /* 真鍮 — 価格・小さな装飾 */
+  --line: rgba(43,35,32,.12);      /* 罫線 */
+
+  --brass-ink: #8a6a3c;            /* 価格など小さな文字に使う、少し濃い真鍮（明るい地でも読めるように） */
+  --on-accent: #faf6f0;            /* 深緑のボタンの上に乗る文字色 */
+  --line-soft: rgba(43,35,32,.07); /* さらに薄い罫 */
+  --leader: rgba(43,35,32,.34);    /* 品書きのリーダー罫（点線）の色 */
+  --shadow: rgba(43,35,32,.10);
+  --photo-warm: #f0cb92;           /* 写真枠のグラデーション（明るい方・焼き色） */
+  --photo-mid: #c98f52;            /* 写真枠のグラデーション（中間） */
+  --photo-deep: #5e3b26;           /* 写真枠のグラデーション（暗い方） */
+  --grain: .05;                    /* 紙の粒状感の強さ（0 で無し） */
+
+  --display: 'Zen Old Mincho', 'Hiragino Mincho ProN', 'Yu Mincho', 'Noto Serif JP', serif;
+  --latin: 'Jost', 'Helvetica Neue', Arial, 'Hiragino Sans', sans-serif;
+  --body: 'M PLUS 1', 'Hiragino Sans', 'Noto Sans JP', system-ui, sans-serif;
+  --maxw: 1160px;
+  --ease: cubic-bezier(.16,1,.3,1);
+}
+
+/* EDIT: 夜テーマ（night）。ナビの「昼／夜」で切り替わります。
+   最初から夜で表示したい場合は <html lang="ja" data-theme="day"> を data-theme="night" に */
+[data-theme="night"] {
+  color-scheme: dark;
+  --bg: #141210;
+  --bg2: #1e1a17;
+  --fg: #f2ebe0;
+  --fg-dim: #cfc3b4;
+  --muted: #8d8175;
+  --accent: #7fa98c;
+  --brass: #c9a465;
+  --line: rgba(242,235,224,.14);
+
+  --brass-ink: #c9a465;            /* 夜は真鍮そのままで十分読めます */
+  --on-accent: #141210;            /* 夜の緑は明るいので、ボタンの文字は黒に近い色にします */
+  --line-soft: rgba(242,235,224,.08);
+  --leader: rgba(242,235,224,.32);
+  --shadow: rgba(0,0,0,.5);
+  --photo-warm: #d9a463;
+  --photo-mid: #9c6835;
+  --photo-deep: #241710;
+  --grain: .06;
+}
+
+/* ============================================================
+   BASE
+============================================================ */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: var(--body); font-weight: 400;
+  font-size: 15.5px; line-height: 1.95; letter-spacing: .03em;
+  -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  transition: background-color .5s var(--ease), color .5s var(--ease);
+}
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+::selection { background: var(--accent); color: var(--bg); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+/* 紙の粒状感（静止・SVG生成）。--grain で強さを調整、不要なら削除 */
+body::after {
+  content: ''; position: fixed; inset: 0; z-index: 9999; pointer-events: none;
+  opacity: var(--grain);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+}
+
+.container { max-width: var(--maxw); margin: 0 auto; padding: 0 1.6rem; }
+section { padding: 5.2rem 0; border-top: 1px solid var(--line-soft); }
+.hero, .reserve { border-top: 0; }
+h1, h2, h3, .display { font-family: var(--display); font-weight: 500; font-feature-settings: 'palt' 1; }
+
+/* セクション見出し（緑の短い罫 ＋ 欧文ラベル ＋ 見出し） */
+.sec-head { margin-bottom: 2.8rem; }
+.sec-label {
+  display: flex; align-items: center; gap: .8rem;
+  font-family: var(--latin); font-size: .68rem; font-weight: 400;
+  letter-spacing: .28em; text-transform: uppercase; color: var(--muted);
+}
+.sec-label::before {
+  content: ''; width: 1.8rem; height: 1px; background: var(--accent); flex: none;
+}
+.sec-title {
+  margin-top: .9rem; font-size: clamp(1.5rem, 3.2vw, 2.1rem);
+  letter-spacing: .12em; line-height: 1.6;
+}
+.sec-note { margin-top: .9rem; font-size: .88rem; color: var(--fg-dim); max-width: 40rem; }
+
+/* ============================================================
+   NAV — 追従。下スクロールで隠れ、上スクロールで戻ります
+============================================================ */
+.progress {
+  position: fixed; top: 0; left: 0; z-index: 200; width: 100%; height: 2px;
+  background: var(--accent); transform: scaleX(0); transform-origin: left;
+  pointer-events: none;
+}
+nav {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  padding: .8rem 1.6rem; border-bottom: 1px solid transparent;
+  background: color-mix(in srgb, var(--bg) 90%, transparent);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  transition: transform .45s var(--ease), background-color .5s var(--ease), border-color .5s var(--ease);
+}
+nav.nav-hide { transform: translateY(-102%); }
+nav.scrolled { border-bottom-color: var(--line); }
+.brand { display: inline-flex; align-items: center; gap: .65rem; }
+.brand svg { width: 20px; height: 20px; flex: none; color: var(--accent); }
+.brand-name { font-family: var(--display); font-size: 1.05rem; letter-spacing: .24em; }
+.nav-right { display: flex; align-items: center; gap: 1.3rem; }
+.nav-links { display: flex; gap: 1.25rem; list-style: none; }
+.nav-links a {
+  position: relative; font-size: .78rem; letter-spacing: .1em; color: var(--fg-dim);
+  padding-bottom: .25rem; transition: color .35s var(--ease);
+}
+.nav-links a::after {
+  content: ''; position: absolute; left: 0; bottom: 0; width: 100%; height: 1px;
+  background: var(--accent); transform: scaleX(0); transform-origin: right;
+  transition: transform .45s var(--ease);
+}
+.nav-links a:hover { color: var(--fg); }
+.nav-links a:hover::after { transform: scaleX(1); transform-origin: left; }
+
+/* 昼／夜 切替 */
+.theme-btn {
+  display: inline-flex; align-items: center; gap: .3rem;
+  font-family: var(--display); font-size: .82rem; letter-spacing: .08em;
+  border: 1px solid var(--line); border-radius: 999px; padding: .26rem .72rem;
+  color: var(--muted); transition: border-color .35s var(--ease);
+}
+.theme-btn:hover { border-color: var(--accent); }
+.theme-btn .t-sep { color: var(--line); }
+[data-theme="day"] .theme-btn .t-day { color: var(--accent); }
+[data-theme="night"] .theme-btn .t-night { color: var(--accent); }
+
+/* ハンバーガー（900px 以下で表示） */
+.menu-toggle { display: none; flex-direction: column; gap: 5px; width: 30px; height: 30px; align-items: center; justify-content: center; }
+.menu-toggle span { display: block; width: 20px; height: 1px; background: var(--fg); transition: transform .3s var(--ease), opacity .25s; }
+.menu-toggle.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.menu-toggle.open span:nth-child(2) { opacity: 0; }
+.menu-toggle.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+.mobile-menu {
+  display: none; position: fixed; inset: 3.5rem 0 auto 0; z-index: 99;
+  flex-direction: column; padding: .4rem 1.6rem 1.3rem;
+  background: color-mix(in srgb, var(--bg) 97%, transparent);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+.mobile-menu.open { display: flex; animation: fadeUp .3s var(--ease); }
+.mobile-menu a {
+  font-family: var(--display); font-size: 1rem; letter-spacing: .14em;
+  padding: .8rem 0; border-bottom: 1px solid var(--line-soft);
+}
+.mobile-menu a:last-child { border-bottom: 0; }
+
+/* ============================================================
+   HERO — 店名・一行の紹介・営業中バッジ・CTA・写真
+============================================================ */
+.hero { padding: 3.4rem 0 4rem; position: relative; overflow: hidden; }
+.hero::before {   /* 背後のあたたかい滲み */
+  content: ''; position: absolute; z-index: 0; pointer-events: none;
+  width: 60vmax; height: 60vmax; left: -18vmax; top: -22vmax; border-radius: 50%;
+  background: radial-gradient(circle at center, color-mix(in srgb, var(--brass) 16%, transparent), transparent 66%);
+}
+.hero .container { position: relative; z-index: 1; }
+.hero-grid { display: grid; grid-template-columns: 1.02fr .98fr; gap: 3.4rem; align-items: center; }
+.hero-name {
+  font-size: clamp(3rem, 7.6vw, 5.4rem); font-weight: 700;
+  letter-spacing: .1em; line-height: 1.12; margin: 1.3rem 0 0;
+}
+.hero-latin {
+  display: block; margin-top: .9rem;
+  font-family: var(--latin); font-size: .74rem; font-weight: 300;
+  letter-spacing: .42em; text-transform: uppercase; color: var(--muted);
+}
+.hero-lead {
+  margin-top: 1.8rem; font-size: 1rem; color: var(--fg-dim);
+  max-width: 25rem; line-height: 2.1;
+}
+.hero-actions { display: flex; flex-wrap: wrap; gap: .9rem; margin-top: 2.4rem; }
+
+/* --- 営業中バッジ（data-hours から自動計算） --- */
+.badge {
+  display: inline-flex; align-items: center; gap: .6rem; flex-wrap: wrap;
+  padding: .42rem .95rem .42rem .8rem; border-radius: 999px;
+  border: 1px solid var(--line); background: color-mix(in srgb, var(--bg2) 70%, transparent);
+}
+.badge[hidden] { display: none; }
+.badge-dot {
+  width: 7px; height: 7px; border-radius: 50%; flex: none;
+  background: var(--muted); position: relative;
+}
+.badge[data-state="open"] .badge-dot { background: var(--accent); }
+.badge[data-state="open"] .badge-dot::after {
+  content: ''; position: absolute; inset: -4px; border-radius: 50%;
+  border: 1px solid var(--accent); opacity: .6; animation: pulse 2.6s var(--ease) infinite;
+}
+.badge[data-state="prep"] .badge-dot { background: var(--brass); }
+@keyframes pulse { 0% { transform: scale(.7); opacity: .7; } 70%, 100% { transform: scale(1.5); opacity: 0; } }
+.badge-state {
+  font-family: var(--display); font-size: .92rem; letter-spacing: .12em; color: var(--fg);
+}
+.badge[data-state="open"] .badge-state { color: var(--accent); }
+.badge-next {
+  font-family: var(--latin); font-size: .74rem; letter-spacing: .1em; color: var(--fg-dim);
+  padding-left: .6rem; border-left: 1px solid var(--line);
+}
+.badge-next:empty { display: none; }
+
+/* --- ボタン --- */
+.btn {
+  position: relative; isolation: isolate; overflow: hidden; display: inline-flex;
+  align-items: center; gap: .55rem; padding: .92rem 1.9rem;
+  border: 1px solid var(--fg); border-radius: 2px;
+  font-family: var(--display); font-size: .92rem; letter-spacing: .16em;
+  transition: color .4s var(--ease), border-color .4s var(--ease);
+}
+.btn::before {
+  content: ''; position: absolute; inset: 0; z-index: -1; background: var(--fg);
+  transform: translateY(101%); transition: transform .5s var(--ease);
+}
+.btn:hover { color: var(--bg); }
+.btn:hover::before { transform: none; }
+.btn-fill {
+  background: var(--accent); border-color: var(--accent);
+  color: var(--on-accent);   /* 緑地の上の文字色（昼は生成り／夜は黒に近い色） */
+}
+.btn-fill::before { background: color-mix(in srgb, var(--accent) 78%, var(--fg)); }
+.btn-fill:hover { color: var(--on-accent); }
+.btn svg { width: 15px; height: 15px; flex: none; }
+
+/* --- 写真枠（assets/hero.jpg が無ければ暖色のグラデーション） --- */
+.photo {
+  position: relative; overflow: hidden; border-radius: 3px;
+  background:
+    radial-gradient(64% 46% at 24% 16%, color-mix(in srgb, var(--photo-warm) 85%, transparent), transparent 72%),
+    radial-gradient(78% 62% at 92% 96%, color-mix(in srgb, var(--photo-deep) 88%, transparent), transparent 74%),
+    linear-gradient(156deg, var(--photo-mid) 0%, color-mix(in srgb, var(--photo-deep) 70%, var(--photo-mid)) 100%);
+  box-shadow: 0 18px 44px -26px var(--shadow);
+}
+/* 写真が入るまでの枠。縁をわずかに落として「皿の上」の空気をつくります
+   （写真を置くと JS が .has-photo を付けて、この効果は消えます） */
+.photo::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  box-shadow: inset 0 0 60px rgba(40,22,10,.28);
+}
+.photo.has-photo::after { display: none; }
+/* 皿の輪郭（写真が入るまでの目印）。写真を置くと消えます */
+.photo::before {
+  content: ''; position: absolute; left: 50%; top: 50%; translate: -50% -50%;
+  width: min(44%, 11rem); aspect-ratio: 1; border-radius: 50%;
+  border: 1px solid rgba(250,246,240,.26);
+}
+.photo.has-photo::before { display: none; }
+.photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.photo-hero { aspect-ratio: 4 / 5; width: min(100%, 26rem); margin-left: auto; }
+/* 写真が入るまでの目印。画像を置くと JS が自動で消します */
+.photo-hint {
+  position: absolute; left: 0; bottom: 0; padding: .5rem .8rem;
+  font-family: var(--latin); font-size: .58rem; letter-spacing: .18em; text-transform: uppercase;
+  color: rgba(250,246,240,.72); background: rgba(20,18,16,.34);
+  backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);
+}
+.photo-mark {
+  position: absolute; left: 50%; top: 50%; translate: -50% -50%;
+  width: 20%; max-width: 68px; opacity: .3; color: #faf6f0;
+}
+
+/* ============================================================
+   CONCEPT — 一文の大見出し ＋ 2段落 ＋ 縦の添え書き
+============================================================ */
+.concept-grid { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 3.2rem; align-items: start; }
+.concept-lead {
+  font-family: var(--display); font-size: clamp(1.7rem, 4vw, 2.7rem);
+  font-weight: 500; letter-spacing: .08em; line-height: 1.7; margin-bottom: 2.2rem;
+}
+.concept-lead em { font-style: normal; color: var(--accent); }
+.concept-body p { font-size: .92rem; color: var(--fg-dim); max-width: 40rem; }
+.concept-body p + p { margin-top: 1.3rem; }
+/* 縦の添え書き（900px 以下では自動で横書きになります） */
+.concept-aside {
+  writing-mode: vertical-rl; font-family: var(--display);
+  font-size: 1.12rem; letter-spacing: .24em; line-height: 2.3;
+  padding: .3rem 1.7rem .3rem 0; border-right: 1px solid var(--brass);
+  color: var(--fg); max-height: 24rem;
+}
+.concept-aside cite {
+  display: block; margin-right: 1.2rem; font-style: normal;
+  font-size: .72rem; letter-spacing: .18em; color: var(--muted);
+}
+
+/* ============================================================
+   品書き — このテンプレートの signature（リーダー罫）
+   ・.m-row は flex。::after が伸びて、品名と価格のあいだを点線で埋めます
+   ・品名が長いときは品名だけが折り返し、価格は右端に貼りついたまま折り返しません
+   ・align-items: last baseline で、点線は品名の「最後の行」のベースラインに揃います
+     （対応していないブラウザは flex-end にフォールバックします）
+============================================================ */
+.menu-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0 4.5rem; align-items: start; }
+.m-cat + .m-cat { margin-top: 2.9rem; }
+.m-cat-head {
+  display: flex; align-items: baseline; gap: .8rem;
+  padding-bottom: .7rem; border-bottom: 1px solid var(--accent);
+}
+.m-cat-no {
+  font-family: var(--display); font-size: .9rem; letter-spacing: .1em; color: var(--accent);
+  width: 1.4rem; flex: none;
+}
+.m-cat-name { font-family: var(--display); font-size: 1.18rem; letter-spacing: .2em; }
+.m-cat-en {
+  margin-left: auto; font-family: var(--latin); font-size: .6rem;
+  letter-spacing: .24em; text-transform: uppercase; color: var(--muted);
+}
+.m-list { list-style: none; }
+.m-item { padding: 1.15rem 0; border-bottom: 1px solid var(--line-soft); }
+.m-row {
+  display: flex; gap: .6rem;
+  align-items: flex-end;          /* 古いブラウザ用のフォールバック */
+  align-items: last baseline;
+}
+.m-row::after {                   /* 伸びるリーダー罫（点線） */
+  content: ''; order: 1; flex: 1 1 1.4rem; min-width: 1.1rem;
+  height: 0; margin-bottom: .34em;
+  border-bottom: 1px dotted var(--leader);
+}
+.m-name {
+  min-width: 0; font-family: var(--display); font-size: 1.02rem;
+  letter-spacing: .06em; line-height: 1.7;
+}
+.m-name .m-tag {   /* 品名の後ろの小さな注記（昼のみ・辛口 など） */
+  font-family: var(--latin); font-size: .62rem; letter-spacing: .12em;
+  color: var(--brass-ink); margin-left: .5rem; white-space: nowrap;
+}
+.m-price {
+  order: 2; flex: none; white-space: nowrap;
+  font-family: var(--latin); font-size: .95rem; font-weight: 400; letter-spacing: .04em;
+  color: var(--brass-ink); font-feature-settings: 'tnum' 1;
+}
+.m-desc { margin-top: .25rem; font-size: .8rem; line-height: 1.85; color: var(--fg-dim); max-width: 30rem; }
+.m-foot { margin-top: 2.6rem; display: flex; flex-wrap: wrap; gap: .4rem 1.6rem; }
+.m-foot p { font-size: .78rem; color: var(--fg-dim); }
+
+/* ============================================================
+   おすすめ3品
+============================================================ */
+.pick-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.2rem; }
+.pick .photo { aspect-ratio: 4 / 3; }
+.pick h3 { margin-top: 1.1rem; font-size: 1.08rem; letter-spacing: .1em; }
+.pick p { margin-top: .45rem; font-size: .83rem; color: var(--fg-dim); }
+.pick-price {
+  display: inline-block; margin-top: .6rem;
+  font-family: var(--latin); font-size: .82rem; letter-spacing: .04em; color: var(--brass-ink);
+}
+
+/* ============================================================
+   店舗案内 — 営業時間表（data-hours から自動生成）＋ 基本情報 ＋ 地図枠
+============================================================ */
+.shop-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+.shop-sub {
+  font-family: var(--latin); font-size: .64rem; letter-spacing: .24em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: .9rem;
+}
+.hours-table, .info-table { width: 100%; border-collapse: collapse; font-size: .86rem; }
+.hours-table th, .hours-table td, .info-table th, .info-table td {
+  text-align: left; padding: .72rem .3rem; border-bottom: 1px solid var(--line-soft); vertical-align: top;
+}
+.hours-table th {
+  width: 3.6rem; font-family: var(--display); font-weight: 500; letter-spacing: .16em; color: var(--fg);
+}
+.hours-table td { color: var(--fg-dim); font-family: var(--latin); letter-spacing: .04em; }
+.hours-table td.is-closed { font-family: var(--body); color: var(--fg-dim); letter-spacing: .08em; }
+/* 今日の行 */
+.hours-table tr.is-today th, .hours-table tr.is-today td { color: var(--fg); }
+.hours-table tr.is-today th { position: relative; }
+.hours-table tr.is-today th::before {
+  content: ''; position: absolute; left: -.7rem; top: 1.25rem; width: 4px; height: 4px;
+  border-radius: 50%; background: var(--accent);
+}
+.hours-table .today-tag {
+  font-family: var(--latin); font-size: .58rem; letter-spacing: .16em;
+  color: var(--accent); margin-left: .5rem;
+}
+.info-table { margin-top: 2.4rem; }
+.info-table th {
+  width: 5.4rem; font-family: var(--display); font-weight: 500; letter-spacing: .14em;
+  color: var(--fg); white-space: nowrap;
+}
+.info-table td { color: var(--fg-dim); }
+.info-table a { border-bottom: 1px solid var(--line); }
+.info-table a:hover { border-bottom-color: var(--accent); }
+/* 地図プレースホルダー */
+.map {
+  position: relative; aspect-ratio: 4 / 3; border: 1px solid var(--line); border-radius: 3px;
+  background:
+    linear-gradient(90deg, var(--line-soft) 1px, transparent 1px) 0 0 / 32px 32px,
+    linear-gradient(180deg, var(--line-soft) 1px, transparent 1px) 0 0 / 32px 32px,
+    linear-gradient(150deg, var(--bg2), var(--bg));
+  display: grid; place-items: center; text-align: center; padding: 1.4rem;
+}
+.map::before {
+  content: ''; position: absolute; left: 50%; top: 44%; width: 12px; height: 12px;
+  translate: -50% -50%; border-radius: 50% 50% 50% 0; rotate: -45deg;
+  border: 2px solid var(--accent);
+}
+.map p {
+  margin-top: 3.2rem; font-family: var(--latin); font-size: .6rem;
+  letter-spacing: .2em; text-transform: uppercase; color: var(--muted);
+}
+
+/* ============================================================
+   お知らせ
+============================================================ */
+.news-list { list-style: none; }
+.news-item { border-bottom: 1px solid var(--line-soft); }
+.news-item:first-child { border-top: 1px solid var(--line-soft); }
+.news-item a {
+  display: grid; grid-template-columns: 7rem 5.5rem 1fr; gap: 1rem; align-items: baseline;
+  padding: 1.25rem .2rem; transition: background-color .4s var(--ease);
+}
+.news-item a:hover { background: var(--bg2); }
+.news-date { font-family: var(--latin); font-size: .74rem; letter-spacing: .08em; color: var(--fg-dim); }
+.news-cat {
+  font-size: .64rem; letter-spacing: .14em; color: var(--accent);
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  padding: .08rem .55rem; justify-self: start; white-space: nowrap; border-radius: 2px;
+}
+.news-ttl { font-size: .88rem; transition: transform .4s var(--ease); }
+.news-item a:hover .news-ttl { transform: translateX(.3rem); }
+
+/* ============================================================
+   ご予約
+============================================================ */
+.reserve { background: var(--bg2); border-top: 1px solid var(--line-soft); border-bottom: 1px solid var(--line-soft); }
+.reserve-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
+.tel-block { text-align: left; }
+.tel-label { font-family: var(--latin); font-size: .64rem; letter-spacing: .24em; text-transform: uppercase; color: var(--muted); }
+.tel-link {
+  display: inline-flex; align-items: center; gap: .8rem; margin-top: .7rem;
+  font-family: var(--latin); font-weight: 400; font-size: clamp(1.7rem, 4.4vw, 2.5rem);
+  letter-spacing: .06em; color: var(--fg); border-bottom: 1px solid var(--line);
+  transition: color .4s var(--ease), border-color .4s var(--ease);
+}
+.tel-link:hover { color: var(--accent); border-bottom-color: var(--accent); }
+.tel-link svg { width: 22px; height: 22px; flex: none; color: var(--accent); }
+.tel-note { margin-top: .9rem; font-size: .8rem; color: var(--fg-dim); }
+/* オンライン予約サービスへのリンク枠 */
+.online-box { border: 1px solid var(--line); border-radius: 3px; padding: 1.7rem 1.6rem; background: var(--bg); }
+.online-box h3 { font-size: 1.02rem; letter-spacing: .12em; }
+.online-box p { margin-top: .6rem; font-size: .82rem; color: var(--fg-dim); }
+.online-box .btn { margin-top: 1.3rem; width: 100%; justify-content: center; }
+
+/* ============================================================
+   FOOTER
+============================================================ */
+footer { border-top: 1px solid var(--line); padding: 3.2rem 0 2.4rem; font-size: .76rem; color: var(--fg-dim); }
+.footer-grid { display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: end; }
+.footer-brand { display: flex; align-items: center; gap: .6rem; margin-bottom: .6rem; }
+.footer-brand svg { width: 24px; height: 24px; color: var(--accent); }
+.footer-name { font-family: var(--display); font-size: 1.05rem; letter-spacing: .2em; color: var(--fg); }
+.footer-addr { line-height: 2; color: var(--fg-dim); }
+.footer-links { display: flex; flex-wrap: wrap; gap: 1rem; list-style: none; margin-bottom: .8rem; justify-content: flex-end; }
+.footer-links a, .footer-meta a { color: var(--fg-dim); transition: color .35s var(--ease); }
+.footer-links a:hover, .footer-meta a:hover { color: var(--accent); }
+.footer-meta { text-align: right; }
+.footer-ver { display: block; font-family: var(--latin); font-size: .72rem; letter-spacing: .12em; margin-top: .5rem; color: var(--fg-dim); }
+.footer-ver a { color: var(--fg-dim); transition: color .3s; }
+.footer-ver a:hover { color: var(--accent); }
+
+/* ============================================================
+   MOTION — スクロールで静かに立ち上がる（.rv が付いた要素）
+============================================================ */
+.rv { opacity: 0; transform: translateY(14px); transition: opacity .9s var(--ease), transform .9s var(--ease); }
+.rv.on { opacity: 1; transform: none; }
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+@media (max-width: 980px) {
+  .hero-grid { grid-template-columns: 1fr; gap: 2.4rem; }
+  .photo-hero { aspect-ratio: 5 / 4; width: 100%; max-height: 22rem; margin-left: 0; }
+  .pick-grid { grid-template-columns: 1fr; gap: 1.8rem; }
+  .pick .photo { aspect-ratio: 16 / 9; }
+  .shop-grid, .reserve-grid { grid-template-columns: 1fr; gap: 2.2rem; }
+}
+
+@media (max-width: 900px) {
+  section { padding: 3.6rem 0; }
+  .nav-links { display: none; }
+  .menu-toggle { display: flex; }
+  .nav-right { gap: .7rem; }
+  .sec-head { margin-bottom: 2rem; }
+
+  /* CONCEPT：縦の添え書きを横書きへ */
+  .concept-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .concept-aside {
+    writing-mode: horizontal-tb; max-height: none; font-size: .95rem; letter-spacing: .12em;
+    line-height: 2.1; border-right: 0; border-left: 1px solid var(--brass);
+    padding: .2rem 0 .2rem 1.1rem;
+  }
+  .concept-aside cite { margin-right: 0; margin-top: .8rem; }
+
+  /* 品書きを1列に */
+  .menu-cols { grid-template-columns: 1fr; gap: 0; }
+  .menu-cols > div + div .m-cat:first-child { margin-top: 2.9rem; }
+
+  .news-item a { grid-template-columns: 1fr; gap: .3rem; padding: 1.05rem .2rem; }
+  .footer-grid { grid-template-columns: 1fr; align-items: start; }
+  .footer-links { justify-content: flex-start; }
+  .footer-meta { text-align: left; }
+}
+
+@media (max-width: 560px) {
+  body { font-size: 15px; }
+  .hero { padding: 2.4rem 0 3.4rem; }
+  .hero-lead { margin-top: 1.4rem; }
+  .hero-actions { margin-top: 1.9rem; gap: .7rem; }
+  .btn { padding: .85rem 1.4rem; font-size: .86rem; letter-spacing: .12em; }
+  .badge { padding: .38rem .8rem .38rem .7rem; }
+  .badge-next { padding-left: .5rem; }
+  .m-cat-en { display: none; }
+  .online-box { padding: 1.4rem 1.2rem; }
+}
+
+@media (max-width: 420px) {
+  .container { padding: 0 1.2rem; }
+  nav { padding: .7rem 1.2rem; }
+  .mobile-menu { padding-left: 1.2rem; padding-right: 1.2rem; }
+  .info-table th { width: 4.8rem; letter-spacing: .08em; }
+  .hours-table th { width: 3.2rem; }
+  .tel-link { gap: .5rem; }
+}
+
+/* ============================================================
+   動きを抑える設定のユーザーには、静かなまま表示します
+============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important; animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important; transition-delay: 0ms !important;
+  }
+  html { scroll-behavior: auto; }
+  .rv { opacity: 1; transform: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- スクロール進捗（深緑の細線） -->
+<div class="progress" id="progress" aria-hidden="true"></div>
+
+<!-- ============================================================
+  EDIT: 匙（さじ）のマーク。ここ1か所でナビ・フッターの両方が変わります。
+  お店のロゴ画像を使う場合は <svg><use href="#saji"></svg> を <img src="logo.svg" alt=""> に
+============================================================ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="saji" viewBox="0 0 64 64">
+    <ellipse cx="32" cy="19" rx="10" ry="14.5" fill="none" stroke="currentColor" stroke-width="3"/>
+    <path d="M32 33.5V57" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+  </symbol>
+</svg>
+
+<nav id="nav">
+  <!-- EDIT: 店名（ナビ） -->
+  <a href="#top" class="brand">
+    <svg viewBox="0 0 64 64" aria-hidden="true"><use href="#saji"></use></svg>
+    <span class="brand-name">◯◯</span>
+  </a>
+  <div class="nav-right">
+    <!-- EDIT: ナビのリンク。不要な項目は削除してください -->
+    <ul class="nav-links">
+      <li><a href="#concept">コンセプト</a></li>
+      <li><a href="#menu">品書き</a></li>
+      <li><a href="#pick">おすすめ</a></li>
+      <li><a href="#shop">店舗案内</a></li>
+      <li><a href="#news">お知らせ</a></li>
+      <li><a href="#reserve">ご予約</a></li>
+    </ul>
+    <button type="button" class="theme-btn" id="themeToggle" aria-label="夜のテーマに切り替え">
+      <span class="t-day">昼</span><span class="t-sep">／</span><span class="t-night">夜</span>
+    </button>
+    <button type="button" class="menu-toggle" id="menuToggle" aria-label="メニュー" aria-expanded="false" aria-controls="mobileMenu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#concept">コンセプト</a>
+  <a href="#menu">品書き</a>
+  <a href="#pick">おすすめ</a>
+  <a href="#shop">店舗案内</a>
+  <a href="#news">お知らせ</a>
+  <a href="#reserve">ご予約</a>
+</div>
+
+<main>
+
+<!-- ============================================================
+  HERO
+============================================================ -->
+<section class="hero" id="top">
+  <div class="container">
+    <div class="hero-grid">
+      <div>
+
+        <!-- ============================================================
+          EDIT: 営業時間（data-hours）— このテンプレートの心臓部です。
+          ここ1か所を書き換えるだけで、下の3つがすべて自動で変わります。
+            ・この上の「営業中／準備中／本日定休」バッジと、次の開店時刻
+            ・店舗案内の「営業時間」の表（今日の行に印が付きます）
+            ・店舗案内の「定休日」
+
+          書式：曜日をキー（mon tue wed thu fri sat sun）にした JSON です。
+            ・営業する日  … [["開始","終了"], ...]（"HH:MM" の24時間表記）
+            ・中休みあり  … [["11:30","14:00"],["17:30","21:00"]] のように2つ並べます
+            ・定休日      … null
+            ・深夜まで    … [["18:00","01:00"]] のように「終了 < 開始」と書けば翌日扱いになります
+          ※ シングルクォート ' で囲んだ中に、JSON のダブルクォート " を書きます（順番を逆にしないでください）
+          ※ 書式を間違えた場合は、バッジが出ないだけで、ページは壊れません
+        ============================================================ -->
+        <div class="hours" id="hours"
+             data-hours='{"mon":[["11:30","14:00"],["17:30","21:00"]],
+                          "tue":null,
+                          "wed":[["11:30","14:00"],["17:30","21:00"]],
+                          "thu":[["11:30","14:00"],["17:30","21:00"]],
+                          "fri":[["11:30","14:00"],["17:30","22:00"]],
+                          "sat":[["11:30","15:00"],["17:30","22:00"]],
+                          "sun":[["11:30","15:00"]]}'>
+          <p class="badge" id="openBadge" hidden>
+            <span class="badge-dot" aria-hidden="true"></span>
+            <span class="badge-state" id="badgeState"></span>
+            <span class="badge-next" id="badgeNext"></span>
+          </p>
+        </div>
+
+        <!-- EDIT: 店名と、その下の小さな欧文（不要なら <span class="hero-latin"> ごと削除） -->
+        <h1 class="hero-name">◯◯<span class="hero-latin">since ◯◯◯◯ · △△町</span></h1>
+
+        <!-- EDIT: 一行の紹介 -->
+        <p class="hero-lead">昼は定食、夜は一皿ずつ。<br>△△町の路地で、その日にいいものだけを。</p>
+
+        <!-- EDIT: 2つのボタン。電話番号は tel: の数字（ハイフンなし）も一緒に直してください -->
+        <div class="hero-actions">
+          <a class="btn btn-fill" href="#reserve">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6.5 3h3l1.5 4.5-2 1.5a12 12 0 0 0 6 6l1.5-2L21 14.5v3a2 2 0 0 1-2.2 2A17 17 0 0 1 4 5.2 2 2 0 0 1 6.5 3z"/></svg>
+            ご予約
+          </a>
+          <a class="btn" href="#menu">品書きを見る</a>
+        </div>
+
+      </div>
+
+      <!-- EDIT: 主役の写真。assets/hero.jpg（1600×2000 程度・縦長）に差し替えてください。
+           ファイルが無い場合は暖色のグラデーションが表示されます（画像切れは出ません） -->
+      <div class="photo photo-hero">
+        <img src="assets/hero.jpg" alt="" fetchpriority="high">
+        <svg class="photo-mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#saji"></use></svg>
+        <span class="photo-hint">assets/hero.jpg</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+  CONCEPT
+============================================================ -->
+<section id="concept">
+  <div class="container">
+    <div class="sec-head rv">
+      <p class="sec-label">Concept</p>
+    </div>
+    <div class="concept-grid">
+      <div class="concept-body rv">
+        <!-- EDIT: 一文の大見出し（<em> で囲んだところが深緑になります） -->
+        <h2 class="concept-lead">その日にいいものを、<br><em>ちょうどいい量</em>で。</h2>
+        <!-- EDIT: 2段落の本文 -->
+        <p>朝、△△市場で選んだものだけを使います。仕入れで決まるので、品書きは週ごとに少しずつ変わります。決まったものが必ずある店ではありませんが、その日にいちばんいいものは必ずあります。</p>
+        <p>席はカウンター◯席とテーブル◯席だけの小さな店です。ひとりでも、◯人でも、気負わずに寄っていただけるように。昼は定食を、夜は一皿ずつお出ししています。</p>
+      </div>
+      <!-- EDIT: 縦の添え書き（900px 以下では横書きになります） -->
+      <p class="concept-aside rv">火と塩と、<br>すこしの油だけで。
+        <cite>店主　◯◯ △△</cite>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+  品書き — リーダー罫つきのメニュー
+  ・1品 ＝ <li class="m-item"> ひとつ。増やすときは <li> ごとコピーしてください
+  ・点線は CSS が自動で引きます（.m-row::after）。品名と価格の間に何も書かなくて大丈夫です
+  ・左右2列は下の2つの <div> です。PC で列の高さを揃えたいときは、
+    分類（.m-cat）をこの2つの <div> のあいだで移動させてください（スマホでは1列に並びます）
+============================================================ -->
+<section id="menu">
+  <div class="container">
+    <div class="sec-head rv">
+      <p class="sec-label">Menu</p>
+      <h2 class="sec-title">品書き</h2>
+      <p class="sec-note">仕入れによって内容が変わります。季節のおすすめは黒板でもご案内しています。</p>
+    </div>
+
+    <div class="menu-cols">
+      <!-- ---------- 左の列 ---------- -->
+      <div>
+        <!-- EDIT: 分類（前菜）。漢数字は手入力です -->
+        <div class="m-cat rv">
+          <div class="m-cat-head">
+            <span class="m-cat-no">一</span>
+            <h3 class="m-cat-name">前菜</h3>
+            <span class="m-cat-en">Zensai</span>
+          </div>
+          <ul class="m-list">
+            <li class="m-item">
+              <p class="m-row"><span class="m-name">季節の前菜 盛り合わせ</span><b class="m-price">¥◯,◯◯◯</b></p>
+              <p class="m-desc">その日の小さな三種を、少しずつ。</p>
+            </li>
+            <li class="m-item">
+              <p class="m-row"><span class="m-name">◯◯のテリーヌ</span><b class="m-price">¥◯,◯◯◯</b></p>
+              <p class="m-desc">△△を重ねて、ゆっくり火を入れました。</p>
+            </li>
+            <li class="m-item">
+              <p class="m-row"><span class="m-name">焼き野菜と□□</span><b class="m-price">¥◯◯◯</b></p>
+              <p class="m-desc">朝どれの△△を、炭で。</p>
+            </li>
+            <li class="m-item">
+              <p class="m-row"><span class="m-name">自家製パン</span><b class="m-price">¥◯◯◯</b></p>
+            </li>
+          </ul>
+        </div>
+
+        <!-- EDIT: 分類（主菜） -->
+        <div class="m-cat rv">
+          <div class="m-cat-head">
+            <span class="m-cat-no">二</span>
+            <h3 class="m-cat-name">主菜</h3>
+            <span class="m-cat-en">Shusai</span>
+          </div>
+          <ul class="m-list">
+            <li class="m-item">
+              <!-- 長い品名の例：品名だけが折り返し、価格は右端に残ります -->
+              <p class="m-row"><span class="m-name">◯◯と△△のブレゼ、□□のソースを添えて</span><b class="m-price">¥◯,◯◯◯</b></p>
+              <p class="m-desc">二人で分けられる量でお出ししています。</p>
+            </li>
+            <li class="m-item">
+              <p class="m-row"><span class="m-name">本日の魚料理</span><b class="m-price">¥◯,◯◯◯</b></p>
+              <p class="m-desc">△△市場で選んだものを一尾ずつ。</p>
+            </li>
+            <li class="m-item">
+              <p class="m-row"><span class="m-name">◯◯のグリル<span class="m-tag">2人前〜</span></span><b class="m-price">¥◯,◯◯◯</b></p>
+              <p class="m-desc">付け合わせは日替わりです。</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ---------- 右の列 ---------- -->
+      <div>
+        <!-- EDIT: 分類（ごはん） -->
+        <div class="m-cat rv">
+          <div class="m-cat-head">
+            <span class="m-cat-no">三</span>
+            <h3 class="m-cat-name">ごはん</h3>
+            <span class="m-cat-en">Gohan</span>
+          </div>
+          <ul class="m-list">
+            <li class="m-item">
+              <p class="m-row"><span class="m-name">◯◯の定食<span class="m-tag">昼のみ</span></span><b class="m-price">¥◯,◯◯◯</b></p>
+              <p class="m-desc">ごはん・汁・小鉢がつきます。</p>
+            </li>
+            <li class="m-item">
+              <p class="m-row"><span class="m-name">△△のリゾット</span><b class="m-price">¥◯,◯◯◯</b></p>
+            </li>
+            <li class="m-item">
+              <p class="m-row"><span class="m-name">◯◯のサンドイッチ</span><b class="m-price">¥◯◯◯</b></p>
+              <p class="m-desc">お持ち帰りもできます。</p>
+            </li>
+          </ul>
+        </div>
+
+        <!-- EDIT: 分類（甘味） -->
+        <div class="m-cat rv">
+          <div class="m-cat-head">
+            <span class="m-cat-no">四</span>
+            <h3 class="m-cat-name">甘味</h3>
+            <span class="m-cat-en">Kanmi</span>
+          </div>
+          <ul class="m-list">
+            <li class="m-item">
+              <p class="m-row"><span class="m-name">本日の焼き菓子</span><b class="m-price">¥◯◯◯</b></p>
+            </li>
+            <li class="m-item">
+              <p class="m-row"><span class="m-name">◯◯のプリン</span><b class="m-price">¥◯◯◯</b></p>
+            </li>
+          </ul>
+        </div>
+
+        <!-- EDIT: 分類（飲みもの） -->
+        <div class="m-cat rv">
+          <div class="m-cat-head">
+            <span class="m-cat-no">五</span>
+            <h3 class="m-cat-name">飲みもの</h3>
+            <span class="m-cat-en">Nomimono</span>
+          </div>
+          <ul class="m-list">
+            <li class="m-item">
+              <p class="m-row"><span class="m-name">コーヒー（◯◯焙煎）</span><b class="m-price">¥◯◯◯</b></p>
+            </li>
+            <li class="m-item">
+              <p class="m-row"><span class="m-name">自家製△△のソーダ</span><b class="m-price">¥◯◯◯</b></p>
+            </li>
+            <li class="m-item">
+              <p class="m-row"><span class="m-name">グラスワイン 赤・白</span><b class="m-price">¥◯◯◯〜</b></p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- EDIT: 価格の注記。日本では税込の総額表示が必要です（総額表示義務）。
+         この行は消さずに、実際の運用（サービス料・チャージの有無）に合わせて書き換えてください。
+         アレルゲン・原産地の表示が必要な場合も、この付近に追記すると分かりやすくなります -->
+    <div class="m-foot rv">
+      <p>※ 表示は税込価格です。</p>
+      <p>※ アレルギーのある方は、ご注文の際にお申しつけください。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+  おすすめ3品
+============================================================ -->
+<section id="pick">
+  <div class="container">
+    <div class="sec-head rv">
+      <p class="sec-label">Today's pick</p>
+      <h2 class="sec-title">おすすめの3品</h2>
+    </div>
+    <div class="pick-grid">
+      <!-- EDIT: 写真は assets/dish-1.jpg（1200×900 程度）。無ければグラデーションが出ます -->
+      <article class="pick rv">
+        <div class="photo">
+          <img src="assets/dish-1.jpg" alt="◯◯のテリーヌ">
+          <span class="photo-hint">assets/dish-1.jpg</span>
+        </div>
+        <h3>◯◯のテリーヌ</h3>
+        <p>△△を重ねて、ゆっくり火を入れました。はじめの一皿に。</p>
+        <span class="pick-price">¥◯,◯◯◯</span>
+      </article>
+      <article class="pick rv">
+        <div class="photo">
+          <img src="assets/dish-2.jpg" alt="本日の魚料理">
+          <span class="photo-hint">assets/dish-2.jpg</span>
+        </div>
+        <h3>本日の魚料理</h3>
+        <p>朝、△△市場で選んだものを一尾ずつ。内容は日によって変わります。</p>
+        <span class="pick-price">¥◯,◯◯◯</span>
+      </article>
+      <article class="pick rv">
+        <div class="photo">
+          <img src="assets/dish-3.jpg" alt="◯◯の定食">
+          <span class="photo-hint">assets/dish-3.jpg</span>
+        </div>
+        <h3>◯◯の定食</h3>
+        <p>昼のあいだだけ。ごはんと汁、小鉢がつきます。</p>
+        <span class="pick-price">¥◯,◯◯◯</span>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+  店舗案内
+============================================================ -->
+<section id="shop">
+  <div class="container">
+    <div class="sec-head rv">
+      <p class="sec-label">Information</p>
+      <h2 class="sec-title">店舗案内</h2>
+    </div>
+    <div class="shop-grid">
+      <div class="rv">
+        <p class="shop-sub">Opening hours</p>
+        <!-- 営業時間の表は data-hours から自動で作られます。
+             ここを直接書き換えても、読み込み時に上書きされます -->
+        <table class="hours-table">
+          <tbody id="hoursRows">
+            <tr><th>—</th><td>営業時間はお電話でお問い合わせください</td></tr>
+          </tbody>
+        </table>
+
+        <!-- EDIT: 基本情報。「定休日」の中身だけは data-hours から自動で入ります -->
+        <table class="info-table">
+          <tbody>
+            <tr><th>定休日</th><td id="closedDays">お問い合わせください</td></tr>
+            <tr><th>住所</th><td>〒◯◯◯-◯◯◯◯<br>△△県△△市◯◯町 1-2-3 ◯◯ビル 1F</td></tr>
+            <tr><th>電話</th><td><a href="tel:0000000000">00-0000-0000</a></td></tr>
+            <tr><th>席数</th><td>カウンター◯席／テーブル◯席（計◯席）</td></tr>
+            <tr><th>支払い</th><td>現金・各種クレジットカード・◯◯ペイ</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="rv">
+        <p class="shop-sub">Access</p>
+        <!-- EDIT: 地図。Googleマップ →「共有」→「地図を埋め込む」で得た <iframe> で
+             この <div class="map"> ごと置き換えてください -->
+        <div class="map">
+          <p>Map placeholder</p>
+        </div>
+        <p class="sec-note">△△線「◯◯」駅 △番出口から徒歩◯分。専用の駐車場はありません。近隣のコインパーキングをご利用ください。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+  お知らせ
+============================================================ -->
+<section id="news">
+  <div class="container">
+    <div class="sec-head rv">
+      <p class="sec-label">News</p>
+      <h2 class="sec-title">お知らせ</h2>
+    </div>
+    <!-- EDIT: お知らせ3件。日付・分類・見出しを差し替えてください（リンク先は # のままでもOK） -->
+    <ul class="news-list rv">
+      <li class="news-item">
+        <a href="#news">
+          <time class="news-date" datetime="2026-09-01">2026.09.01</time>
+          <span class="news-cat">営業</span>
+          <span class="news-ttl">◯月◯日（△）は貸切のため、終日お休みをいただきます</span>
+        </a>
+      </li>
+      <li class="news-item">
+        <a href="#news">
+          <time class="news-date" datetime="2026-08-20">2026.08.20</time>
+          <span class="news-cat">品書き</span>
+          <span class="news-ttl">秋の品書きに入れ替えました</span>
+        </a>
+      </li>
+      <li class="news-item">
+        <a href="#news">
+          <time class="news-date" datetime="2026-07-15">2026.07.15</time>
+          <span class="news-cat">お知らせ</span>
+          <span class="news-ttl">△曜日の夜は、しばらくご予約のみの営業とさせていただきます</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================================================
+  ご予約
+============================================================ -->
+<section id="reserve" class="reserve">
+  <div class="container">
+    <div class="sec-head rv">
+      <p class="sec-label">Reservation</p>
+      <h2 class="sec-title">ご予約</h2>
+      <p class="sec-note">◯名以上でお越しの場合は、お電話でご相談ください。当日のご予約も、空きがあればお受けしています。</p>
+    </div>
+    <div class="reserve-grid">
+      <!-- EDIT: 電話番号。表示用（00-0000-0000）と tel: の数字の両方を直してください -->
+      <div class="tel-block rv">
+        <p class="tel-label">Tel</p>
+        <a class="tel-link" href="tel:0000000000">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6.5 3h3l1.5 4.5-2 1.5a12 12 0 0 0 6 6l1.5-2L21 14.5v3a2 2 0 0 1-2.2 2A17 17 0 0 1 4 5.2 2 2 0 0 1 6.5 3z"/></svg>
+          00-0000-0000
+        </a>
+        <p class="tel-note">受付時間 ◯◯:◯◯ 〜 ◯◯:◯◯（営業日のみ）<br>仕込み中は出られないことがあります。少し時間をおいて、もう一度おかけください。</p>
+      </div>
+
+      <!-- EDIT: オンライン予約。予約サービスのURLを href に貼ってください。
+           使わない場合は、この <div class="online-box"> ごと削除して構いません -->
+      <div class="online-box rv">
+        <h3>オンラインでのご予約</h3>
+        <p>◯◯（予約サービス名）から、24時間ご予約いただけます。席のご希望やアレルギーは、備考欄にご記入ください。</p>
+        <a class="btn" href="#" target="_blank" rel="noopener">◯◯で予約する</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <!-- EDIT: 店名・住所・電話 -->
+        <div class="footer-brand">
+          <svg viewBox="0 0 64 64" aria-hidden="true"><use href="#saji"></use></svg>
+          <span class="footer-name">◯◯</span>
+        </div>
+        <p class="footer-addr">
+          〒◯◯◯-◯◯◯◯ △△県△△市◯◯町 1-2-3 ◯◯ビル 1F<br>
+          Tel <a href="tel:0000000000">00-0000-0000</a>
+        </p>
+      </div>
+      <div class="footer-meta">
+        <ul class="footer-links">
+          <li><a href="#concept">コンセプト</a></li>
+          <li><a href="#menu">品書き</a></li>
+          <li><a href="#pick">おすすめ</a></li>
+          <li><a href="#shop">店舗案内</a></li>
+          <li><a href="#news">お知らせ</a></li>
+          <li><a href="#reserve">ご予約</a></li>
+        </ul>
+        <p>© <span id="year">2026</span> ◯◯</p>
+        <!-- クレジット表記は不要です（残していただけたら嬉しいです） -->
+        <span class="footer-ver">SAJI Template v1.0 — 個人・商用利用可／再販不可</span>
+        <!-- EDIT: 配布元へのリンク。公開時に不要であれば、この1行を削除してください -->
+        <span class="footer-ver"><a href="https://idatsuka.com/store.html">← Store に戻る</a></span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ---- テーマ切替（昼 day ／ 夜 night）。選択は localStorage に保存されます ---- */
+(function () {
+  var key = 'saji-theme';
+  var root = document.documentElement;
+  var btn = document.getElementById('themeToggle');
+  var meta = document.getElementById('themeColor');
+  function sync() {
+    var t = root.getAttribute('data-theme') === 'night' ? 'night' : 'day';
+    if (meta) meta.setAttribute('content', t === 'night' ? '#141210' : '#faf6f0');
+    if (btn) btn.setAttribute('aria-label', t === 'night' ? '昼のテーマに切り替え' : '夜のテーマに切り替え');
+  }
+  sync();
+  if (btn) btn.addEventListener('click', function () {
+    var next = root.getAttribute('data-theme') === 'night' ? 'day' : 'night';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem(key, next); } catch (e) {}
+    sync();
+  });
+})();
+
+/* ============================================================
+   営業時間（data-hours）— 営業中バッジ・営業時間表・定休日
+   #hours の data-hours（JSON）を読み、
+     ・営業中／準備中／本日定休 と、次の開店時刻（本日◯◯から／明日◯◯から）
+     ・店舗案内の営業時間の表（今日の行に印）
+     ・定休日の行
+   をつくります。属性が無い・壊れている場合は、バッジを出さずに静かに終わります。
+============================================================ */
+(function () {
+  var KEYS = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];   /* getDay() の順 */
+  var JP = { sun: '日', mon: '月', tue: '火', wed: '水', thu: '木', fri: '金', sat: '土' };
+  var ORDER = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];  /* 表に並べる順（月曜始まり） */
+
+  var host = document.getElementById('hours');
+  var badge = document.getElementById('openBadge');
+  var stateEl = document.getElementById('badgeState');
+  var nextEl = document.getElementById('badgeNext');
+  var rowsEl = document.getElementById('hoursRows');
+  var closedEl = document.getElementById('closedDays');
+  if (!host) return;
+
+  /* "HH:MM" → 0時からの分数。おかしな値は null */
+  function toMin(s) {
+    if (typeof s !== 'string') return null;
+    var m = /^(\d{1,2}):(\d{2})$/.exec(s.trim());
+    if (!m) return null;
+    var h = parseInt(m[1], 10), mi = parseInt(m[2], 10);
+    if (!isFinite(h) || !isFinite(mi) || h > 30 || mi > 59) return null;
+    return h * 60 + mi;
+  }
+  function fmt(min) {
+    var v = ((min % 1440) + 1440) % 1440;
+    return String(Math.floor(v / 60)) + ':' + ('0' + (v % 60)).slice(-2);
+  }
+
+  /* JSON を読み、曜日ごとに [開始, 終了]（分）の配列へ。定休日は null */
+  function parseHours() {
+    var raw = host.getAttribute('data-hours');
+    if (!raw) return null;
+    var data;
+    try { data = JSON.parse(raw); } catch (e) { return null; }
+    if (!data || typeof data !== 'object' || Array.isArray(data)) return null;
+    var out = {}, found = 0;
+    for (var i = 0; i < KEYS.length; i++) {
+      var k = KEYS[i], v = data[k];
+      if (v === null || typeof v === 'undefined') { out[k] = null; if (v === null) found++; continue; }
+      if (!Array.isArray(v)) { out[k] = null; continue; }
+      var win = [];
+      for (var j = 0; j < v.length; j++) {
+        var p = v[j];
+        if (!Array.isArray(p) || p.length < 2) continue;
+        var a = toMin(p[0]), b = toMin(p[1]);
+        if (a === null || b === null) continue;
+        if (b <= a) b += 1440;              /* 終了が開始以前 ＝ 日をまたぐ営業 */
+        win.push([a, b]);
+      }
+      win.sort(function (x, y) { return x[0] - y[0]; });
+      out[k] = win.length ? win : null;
+      found++;
+    }
+    return found ? out : null;
+  }
+
+  /* いまの状態を求める。戻り値 { state, until, at, offset } */
+  function statusAt(data, now) {
+    var d = now.getDay();
+    var mins = now.getHours() * 60 + now.getMinutes();
+    var today = data[KEYS[d]];
+    var i, w;
+
+    /* 1) いま営業中か（今日の枠） */
+    if (today) {
+      for (i = 0; i < today.length; i++) {
+        w = today[i];
+        /* 終了が 24:00 を超える枠（深夜営業）は「翌◯:◯◯ まで」と出します */
+        if (mins >= w[0] && mins < w[1]) return { state: 'open', until: w[1], over: w[1] > 1440 };
+      }
+    }
+    /* 2) 昨日から日をまたいで営業中か */
+    var yest = data[KEYS[(d + 6) % 7]];
+    if (yest) {
+      for (i = 0; i < yest.length; i++) {
+        w = yest[i];
+        if (w[1] > 1440 && mins < w[1] - 1440) return { state: 'open', until: w[1] - 1440 };
+      }
+    }
+    /* 3) 今日これから開く枠があるか */
+    if (today) {
+      for (i = 0; i < today.length; i++) {
+        if (mins < today[i][0]) return { state: 'prep', at: today[i][0], offset: 0 };
+      }
+    }
+    /* 4) 次に開く日を7日先まで探す */
+    for (var n = 1; n <= 7; n++) {
+      var day = data[KEYS[(d + n) % 7]];
+      if (day && day.length) {
+        return { state: today ? 'prep' : 'closed', at: day[0][0], offset: n, day: (d + n) % 7 };
+      }
+    }
+    return { state: today ? 'prep' : 'closed' };
+  }
+
+  function stateLabel(s) {
+    return s.state === 'open' ? '営業中' : (s.state === 'closed' ? '本日定休' : '準備中');
+  }
+  function nextLabel(s) {
+    if (s.state === 'open') return typeof s.until === 'number' ? (s.over ? '翌' : '') + fmt(s.until) + ' まで' : '';
+    if (typeof s.at !== 'number') return '';
+    var when = s.offset === 0 ? '本日' : (s.offset === 1 ? '明日' : JP[KEYS[s.day]] + '曜');
+    return when + ' ' + fmt(s.at) + ' から';
+  }
+
+  /* 1日ぶんの表示（「11:30 – 14:00 / 17:30 – 21:00」） */
+  function dayText(win) {
+    return win.map(function (w) {
+      return fmt(w[0]) + ' – ' + (w[1] > 1440 ? '翌' : '') + fmt(w[1]);
+    }).join(' / ');
+  }
+
+  function renderTable(data, now) {
+    if (!rowsEl) return;
+    var todayKey = KEYS[now.getDay()];
+    var html = '';
+    for (var i = 0; i < ORDER.length; i++) {
+      var k = ORDER[i], win = data[k], isToday = k === todayKey;
+      html += '<tr' + (isToday ? ' class="is-today"' : '') + '>' +
+        '<th scope="row">' + JP[k] + '曜' + '</th>' +
+        (win ? '<td>' + dayText(win) + (isToday ? '<span class="today-tag">TODAY</span>' : '') + '</td>'
+             : '<td class="is-closed">定休日' + (isToday ? '<span class="today-tag">TODAY</span>' : '') + '</td>') +
+        '</tr>';
+    }
+    rowsEl.innerHTML = html;
+
+    if (closedEl) {
+      var closed = ORDER.filter(function (k) { return !data[k]; }).map(function (k) { return JP[k] + '曜'; });
+      closedEl.textContent = closed.length ? closed.join('・') + '（祝日は営業することがあります）' : '無休';
+    }
+  }
+
+  function update(data) {
+    var now = new Date();
+    var s = statusAt(data, now);
+    if (badge) {
+      badge.setAttribute('data-state', s.state);
+      badge.hidden = false;
+    }
+    if (stateEl) stateEl.textContent = stateLabel(s);
+    if (nextEl) nextEl.textContent = nextLabel(s);
+    renderTable(data, now);
+  }
+
+  var data = parseHours();
+  if (!data) return;            /* 属性が無い／壊れている場合は何も出しません */
+  update(data);
+  /* 1分ごとに見直します（開店・閉店の時刻をまたいだときのため） */
+  setInterval(function () { update(data); }, 60000);
+  document.addEventListener('visibilitychange', function () { if (!document.hidden) update(data); });
+})();
+
+/* ---- 写真が無いときはグラデーションだけを残します（画像切れのアイコンを出さないため） ---- */
+(function () {
+  document.querySelectorAll('.photo img').forEach(function (img) {
+    var box = img.parentNode;
+    function drop() { if (img.parentNode) img.parentNode.removeChild(img); }
+    function ok() {
+      box.classList.add('has-photo');
+      var hint = box.querySelector('.photo-hint');
+      if (hint) hint.parentNode.removeChild(hint);
+      var mark = box.querySelector('.photo-mark');
+      if (mark) mark.parentNode.removeChild(mark);
+    }
+    img.addEventListener('error', drop);
+    img.addEventListener('load', ok);
+    if (img.complete) { if (img.naturalWidth === 0) drop(); else ok(); }
+  });
+})();
+
+/* ---- モバイルメニュー ---- */
+(function () {
+  var toggle = document.getElementById('menuToggle');
+  var menu = document.getElementById('mobileMenu');
+  var nav = document.getElementById('nav');
+  if (!toggle || !menu) return;
+  function close() {
+    toggle.classList.remove('open'); menu.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+  }
+  toggle.addEventListener('click', function () {
+    var open = menu.classList.toggle('open');
+    toggle.classList.toggle('open', open);
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if (open && nav) nav.classList.remove('nav-hide');
+  });
+  menu.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', close); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+})();
+
+/* ---- スクロール進捗の細線／ナビの自動非表示 ---- */
+(function () {
+  var nav = document.getElementById('nav');
+  var bar = document.getElementById('progress');
+  var menu = document.getElementById('mobileMenu');
+  var last = window.scrollY, ticking = false;
+  function update() {
+    var y = window.scrollY;
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    if (bar) bar.style.transform = 'scaleX(' + (max > 0 ? Math.min(1, y / max) : 0) + ')';
+    if (nav) {
+      nav.classList.toggle('scrolled', y > 16);
+      if (!(menu && menu.classList.contains('open'))) {
+        if (y > last + 6 && y > 160) nav.classList.add('nav-hide');
+        else if (y < last - 6 || y <= 160) nav.classList.remove('nav-hide');
+      }
+    }
+    last = y; ticking = false;
+  }
+  window.addEventListener('scroll', function () {
+    if (!ticking) { ticking = true; requestAnimationFrame(update); }
+  }, { passive: true });
+  update();
+})();
+
+/* ---- リビール（.rv が付いた要素を、兄弟ごとに少しずつ遅らせて表示） ---- */
+(function () {
+  var counts = new Map();
+  document.querySelectorAll('.rv').forEach(function (el) {
+    var p = el.parentElement;
+    var n = counts.get(p) || 0;
+    counts.set(p, n + 1);
+    el.style.transitionDelay = Math.min(n * 80, 320) + 'ms';
+  });
+  if (!('IntersectionObserver' in window)) {
+    document.querySelectorAll('.rv').forEach(function (el) { el.classList.add('on'); });
+    return;
+  }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      e.target.classList.add('on');
+      io.unobserve(e.target);
+      setTimeout(function () { e.target.style.transitionDelay = ''; }, 1400);
+    });
+  }, { threshold: 0.06, rootMargin: '0px 0px -5% 0px' });
+  document.querySelectorAll('.rv').forEach(function (el) { io.observe(el); });
+})();
+
+/* ---- フッターの年（自動） ---- */
+(function () {
+  var y = document.getElementById('year');
+  if (y) y.textContent = new Date().getFullYear();
+})();
+</script>
+</body>
+</html>
