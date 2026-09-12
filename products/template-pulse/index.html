@@ -640,10 +640,8 @@ footer {
 footer a { color: var(--fg-dim); transition: color .25s; }
 footer a:hover { color: var(--gold); }
 .store-back {
-  font-family: var(--mono); font-size: .58rem; letter-spacing: .12em;
-  opacity: .75;
+  font-family: var(--mono); font-size: .7rem; letter-spacing: .12em;
 }
-.store-back:hover { opacity: 1; }
 
 @media (max-width: 820px) {
   .float-grid { grid-template-columns: 1fr; gap: .75rem; }
@@ -794,7 +792,8 @@ footer a:hover { color: var(--gold); }
 <footer>
   <!-- EDIT: コピーライト -->
   <p>&copy; 2026 YOUR NAME · PULSE v1.2 by IDATSUKA</p>
-  <p><a class="store-back" href="https://idatsuka.com/store.html">← Store</a></p>
+  <!-- EDIT: 配布元へのリンク。公開時に不要であれば、この1行を削除してください -->
+  <p><a class="store-back" href="https://idatsuka.com/store.html">← Store に戻る</a></p>
 </footer>
 
 <script>
