@@ -626,6 +626,8 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   display: flex; flex-wrap: wrap; gap: .5rem 1.6rem; justify-content: space-between;
   font-family: var(--mono); font-size: .7rem; letter-spacing: .1em; color: var(--muted);
 }
+.foot-store { color: var(--muted); transition: color .35s var(--ease); }
+.foot-store:hover { color: var(--fg); }
 
 /* ============================================================
    モバイルの全画面メニュー
@@ -1071,6 +1073,8 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
       <!-- EDIT: 著作権表記 -->
       <p>&copy; <span id="year">2026</span> ◯◯◯◯</p>
       <p>VEIL Template v1.0 — 個人・商用利用可／再販不可</p>
+      <!-- EDIT: 配布元へのリンク。公開時に不要であれば、この1行を削除してください -->
+      <p><a class="foot-store" href="https://idatsuka.com/store.html">← Store に戻る</a></p>
     </div>
   </div>
 </footer>
