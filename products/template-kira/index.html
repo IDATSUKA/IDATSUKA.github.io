@@ -827,15 +827,19 @@ footer { border-top: 1px solid var(--rule); padding: clamp(3rem, 6vw, 4.5rem) 0 
     <!-- EDIT: 空。assets/ に kv-sky.mp4 / kv-sky.webm（1920×1080 ループ）と
          kv-sky.jpg（2400×1350・静止画フォールバック）を置くと動画になります。
          置かない場合は CSS の夕暮れグラデーション（--sky1〜--sky4）が表示されます -->
-    <div class="kv-layer kv-sky" data-depth="0">
+    <div class="kv-layer kv-sky">
+      <img class="kv-video" src="assets/kv-sky.jpg" alt="" fetchpriority="high">
+      <!-- 動画にする場合は、上の <img> を次に置き換えてください
       <video class="kv-video" autoplay muted loop playsinline poster="assets/kv-sky.jpg">
         <source src="assets/kv-sky.webm" type="video/webm"><source src="assets/kv-sky.mp4" type="video/mp4">
-      </video>
+      </video> -->
     </div>
     <!-- EDIT: 街のシルエット（<symbol id="city"> の中身を差し替え） -->
     <div class="kv-layer kv-city" data-depth=".25"><svg viewBox="0 0 2400 600" preserveAspectRatio="xMidYMax slice"><use href="#city"></use></svg></div>
-    <!-- EDIT: 人物のシルエット（<symbol id="chara-main"> の中身を差し替え） -->
-    <div class="kv-layer kv-chara" data-depth=".5"><svg viewBox="0 0 600 900" preserveAspectRatio="xMidYMax meet"><use href="#chara-main"></use></svg></div>
+    <!-- EDIT: 人物。立ち絵の PNG（背景透過）を置いています。
+         シルエットで使う場合は次に置き換えてください
+         <svg viewBox="0 0 600 900" preserveAspectRatio="xMidYMax meet"><use href="#chara-main"></use></svg> -->
+    <div class="kv-layer kv-chara" data-depth=".5"><img class="kv-chara-img" src="assets/chara.png" alt=""></div>
     <canvas class="kv-fx" id="kvfx"></canvas>
     <div class="kv-flare"></div>
   </div>
@@ -1538,7 +1542,7 @@ function kiraToast(msg) {
 
 /* ---- 動きを抑える設定のときは、空の動画も止めます ---- */
 (function () {
-  var v = document.querySelector('.kv-video'), m = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var v = document.querySelector('video.kv-video'), m = window.matchMedia('(prefers-reduced-motion: reduce)');
   if (!v) return;
   function apply() { if (m.matches) { v.removeAttribute('autoplay'); v.pause(); } else { var pr = v.play(); if (pr && pr.catch) pr.catch(function () {}); } }
   apply();

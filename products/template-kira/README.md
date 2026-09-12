@@ -26,8 +26,8 @@ by IDATSUKA — https://idatsuka.com
 | `<title>` / `description` / `og:` / `canonical` | 作品名・キャッチコピー・公開URL |
 | Hero の `<h1 class="kv-title">` | 作品タイトル（1文字ずつ `<span>` で囲む） |
 | Hero の `<p class="kv-release">` | 公開日（「2027.◯.◯ Roadshow」） |
-| `assets/kv-sky.jpg` / `.mp4` / `.webm` | キービジュアルの空（動画＋静止画） |
-| `<symbol id="city">` / `<symbol id="chara-main">` | 街と人物のシルエット |
+| `assets/kv-sky.jpg` / `assets/chara.png` | キービジュアルの空と立ち絵（同梱品は仮のものです） |
+| `<symbol id="city">` | 街のシルエット |
 | TRAILER の `data-youtube-id="◯◯◯◯◯◯"` | YouTube の動画ID（11文字） |
 
 ## キービジュアル（HERO）の差し替え
@@ -36,19 +36,29 @@ by IDATSUKA — https://idatsuka.com
 
 ### 1. 空（背景）
 
-`assets/` に次のファイルを置くと、そのまま背景動画になります。
+初期状態は `assets/kv-sky.jpg`（2400×1350）の静止画です。`<img class="kv-video">` を差し替えてください。
+ファイルが無い場合は CSS のグラデーション（`--sky1`〜`--sky4` の夕暮れの空）が表示されます。
+
+**動画にしたい場合**は、`assets/` に次を置き、HERO の `<img class="kv-video">` を
+すぐ下のコメント内にある `<video>` に置き換えてください。
 
 | ファイル | サイズ | 用途 |
 | --- | --- | --- |
-| `assets/kv-sky.jpg` | 2400×1350 | 静止画（動画の読み込み前・動画を置かない場合・予告編のポスター） |
+| `assets/kv-sky.jpg` | 2400×1350 | 静止画（動画の読み込み前・予告編のポスター） |
 | `assets/kv-sky.mp4` | 1920×1080 | 背景動画（ループ） |
 | `assets/kv-sky.webm` | 1920×1080 | 背景動画（ループ・軽量） |
 
-ファイルを置かない場合は、CSS のグラデーション（`--sky1`〜`--sky4` の夕暮れの空）が表示されます。
-**動画が無くてもページは成立します。**
-
 - 動画は `autoplay muted loop playsinline` で再生されます（スマホでも自動再生されます）
 - 容量は合計5MB以内が目安です。長さは10〜20秒のループを推奨します
+
+### 同梱しているキービジュアルについて（重要）
+
+`assets/kv-sky.jpg`（空）と `assets/chara.png`（立ち絵）は、**デモ用の仮ビジュアルです。**
+画像生成モデル FLUX.1 Krea [dev] で作成し、立ち絵は背景を抜いて収録しています。
+
+- **公開前に、ご自身の作品の絵に差し替えてください。**このまま公開すると、他の購入者と同じ絵になります
+- 生成物の利用条件はモデルの提供元のライセンスに従います。商用利用の可否はご自身でご確認ください
+- 差し替え用の絵が用意できるまでの「仮置き」としてお使いください。差し替え手順は下の「キービジュアルを画像生成ツールで作る場合」を参照
 
 ### 2. 街と人物（シルエット）
 
@@ -56,7 +66,7 @@ by IDATSUKA — https://idatsuka.com
 自分のイラストのパスに差し替えてください。キャラクター紹介の3人は `#chara-a` / `#chara-b` / `#chara-c` です。
 
 - `fill="currentColor"` のままにしておくと、CSS の `--silhouette` で色が変わります
-- 画像を使う場合は、`<svg>…</svg>` ごと `<img src="chara.png" alt="">` に置き換えてください
+- 画像を使う場合は、`<svg>…</svg>` ごと `<img class="kv-chara-img" src="assets/chara.png" alt="">` に置き換えてください
 - 街は画面下端いっぱいに、人物は右3分の1（スマホでは中央）に立つよう配置されます
 
 ### 3. 動き
@@ -76,15 +86,15 @@ by IDATSUKA — https://idatsuka.com
 
 ## キービジュアルを画像生成ツールで作る場合
 
-同梱の空とシルエットは、ブラウザで描画した「仕様書代わりの仮ビジュアル」です。
-劇場版クオリティの絵が必要な場合は、画像生成ツール（Midjourney / Nano Banana / Stable Diffusion など）で
-作った絵に差し替えることを想定しています。差し替え先は上の3層と同じです。
+同梱の空と立ち絵は、差し替えを前提とした仮のビジュアルです。
+自分の作品の絵に差し替える手順を、画像生成ツール（Midjourney / Nano Banana / Stable Diffusion など）を
+使う場合の例として書いておきます。差し替え先は上の3層と同じです。
 
 ### 手順
 
 1. 空（16:9、2400×1350 以上）を生成し、`assets/kv-sky.jpg` として保存する
 2. 動かしたい場合は、その静止画を image-to-video（Kling / Runway / Higgsfield など）に渡して 8〜12 秒のループを作り、下の ffmpeg で `mp4` と `webm` に変換する
-3. 人物は背景透過の PNG（立ち絵）を生成し、`<svg>…<use href="#chara-main">…</svg>` を `<img class="kv-chara-img" src="chara.png" alt="">` に置き換える。シルエットで使う場合は黒ベタで塗った PNG にする
+3. 人物は背景透過の PNG（立ち絵）を生成し、`assets/chara.png` を置き換える。シルエットに戻したい場合は、HERO の `<img class="kv-chara-img">` をコメント内の `<svg>` に戻す
 
 ### プロンプト例 — 空
 
