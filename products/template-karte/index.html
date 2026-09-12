@@ -1,0 +1,1410 @@
+<!DOCTYPE html>
+<html lang="ja" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- ============================================================
+  KARTE（カルテ）— クリニック・医院のための Web サイトテンプレート v1.0
+  by IDATSUKA (https://idatsuka.com)
+
+  内科・歯科・整形外科・皮膚科・耳鼻科・小児科・整骨院など、
+  小さな医院のための1ファイル完結テンプレートです。
+
+  このサイトの仕事は4つだけです。
+  「信頼できるか」「いつ開いているか」「どう行くか」「どう予約するか」。
+  派手さより、読みやすさと正確さを優先して作ってあります。
+
+  ■ カスタマイズ手順
+  1. 下の <title> / meta description / OGP / canonical / favicon を差し替え
+  2. <style> 冒頭の :root で配色を調整（夜間テーマは [data-theme="dark"]）
+  3. 「EDIT:」コメントの付いた箇所のテキストを自分の医院の内容に差し替え
+  4. 診療時間は <table class="hours"> の data-hours（○△ー）と
+     data-reception（実際の受付時間）の2つの属性を書き換えるだけです。
+     表・スマホ表示・「本日」の強調・受付状況の一行は、すべてここから作られます
+     ・data-hours     … {"mon":{"am":"○","pm":"○"}, ...}
+     ・data-reception … {"mon":{"am":"09:00-12:30","pm":"15:00-18:30"}, ...}
+     ・data-closed    … ["2026-09-21"] 臨時休診・学会休診の日（任意）
+  5. 電話番号は <a href="tel:0000000000"> の2か所（ヘッダー下のボタンと下部バー）と
+     アクセス欄。WEB予約は予約システムのURLに差し替えてください
+  6. 主役の写真は assets/hero.jpg（2000×1400 程度）に置くだけです。
+     置かない場合は CSS の落ち着いたグラデーションが表示されます（画像切れは出ません）
+
+  ■ 収録しているもの
+  ・標準（light）／夜間（dark）の2テーマ切替（選択はブラウザに保存）
+    夜間テーマは飾りではありません。夜間・休日に「今日は開いているか」を
+    暗い部屋で確認する患者さんのための、実用的なアクセシビリティ機能です
+  ・診療時間表：1つのデータから、PCは本物の <table>（見出しセルつき）、
+    スマホは曜日ごとのカードに組み替え。本日の列を自動で強調
+  ・受付状況の一行：「受付中」「午前の受付は終了しました」「本日は休診日です」を
+    受付時間から自動計算（データが無い・壊れている場合は、何も表示しません）
+  ・お知らせ（休診情報を最上位に置ける形）／診療案内／初診の流れ／院長紹介／
+    院内設備／アクセス／よくあるご質問（<details>）
+  ・スマホ下部の「電話する／WEB予約」固定バー
+  ・文字は BIZ UDPGothic（ユニバーサルデザイン書体）。高齢の患者さんにも読みやすい字形です
+  ・prefers-reduced-motion 対応、外部ライブラリ・外部画像ゼロ
+  ・OGP / canonical / theme-color / SVG ファビコン内蔵
+
+  ■ 掲載内容について（景品表示法）
+  医院名・医師名・経歴・所属学会・住所・電話番号・日付・料金は、すべて
+  「◯◯」「△△」「¥◯,◯◯◯」等のプレースホルダーです。
+  公開前に必ず実際の内容へ差し替えてください。
+  実在しない受賞歴・症例数・口コミ・推薦文を書かないでください。
+
+  ■ 医療広告ガイドラインについて（※ このテンプレートで最も重要な注意です）
+  医療機関のウェブサイトは「医療広告」として規制の対象です（医療法／
+  医業若しくは歯科医業又は病院若しくは診療所に関する広告等に関する指針）。
+  次の点にご注意ください。
+
+  ・治療効果に関する表現、体験談、患者さんの感想は掲載できません
+    ✕「必ず治る」「痛くない」「安心・安全」「日本一」「◯◯で評判」
+    ✕「◯◯さんの声：通って良かったです」
+  ・自由診療（保険適用外）を掲載する場合は、次の4つの明示が必要です
+    　1. 標準的な費用（総額）　2. 治療期間・回数　3. 主なリスク・副作用
+    　4. 保険診療ではないこと（未承認医薬品等を用いる場合は、その旨も）
+  ・ビフォーアフター写真の単独掲載は不可
+    （通常必要となる治療内容・費用・主なリスク・副作用の説明を必ず併記）
+  ・医師名・経歴・所属学会・症例数・専門医資格は、すべて確認できる事実のみ
+    （「日本◯◯学会専門医」等は、実際に認定を受けている資格のみ記載可）
+
+  このテンプレートのデモ文は、上のいずれにも当たらない書き方にしてあります。
+  文章を書き換えるときも、同じ線を越えないようにしてください。
+  最新の指針は厚生労働省のウェブサイトでご確認ください。
+
+  ライセンス: 個人・商用利用可 / テンプレートとしての再販・再配布は不可
+============================================================ -->
+
+<!-- EDIT: ページタイトルと説明文（医院名・診療科・地域を入れると検索で見つかりやすくなります） -->
+<title>◯◯クリニック — △△市の内科・◯◯科</title>
+<meta name="description" content="△△市◯◯町の◯◯クリニックです。診療時間・アクセス・WEB予約のご案内。内科／◯◯科／◯◯外来。">
+
+<!-- EDIT: OGP（SNS やメッセージアプリで共有されたときの表示）。
+     og:url と og:image は公開URLに合わせて差し替えてください -->
+<meta property="og:title" content="◯◯クリニック — △△市の内科・◯◯科">
+<meta property="og:description" content="△△市◯◯町の◯◯クリニックです。診療時間・アクセス・WEB予約のご案内。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://example.com/">
+<meta property="og:site_name" content="◯◯クリニック">
+<meta property="og:image" content="https://example.com/assets/hero.jpg">
+
+<!-- EDIT: 正規URL（canonical）。公開するURLに書き換えてください -->
+<link rel="canonical" href="https://example.com/">
+
+<!-- EDIT: ブラウザのUI色（スマホのアドレスバー等）。テーマ切替時に自動更新されます -->
+<meta name="theme-color" content="#f7f9fa" id="themeColor">
+
+<!-- EDIT: ファビコン（SVG内蔵）。カルテ（診療録）をかたどっています。
+     画像を使う場合は <link rel="icon" href="favicon.png"> に置き換えてください
+     ※ 白地に赤十字（赤新月・赤のクリスタル）は条約と法律で保護された標章です。
+        医院のロゴやファビコンには使えません。この配色のままお使いください -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%232b7a8c'/%3E%3Crect x='17' y='12' width='30' height='40' rx='5' fill='%23f7f9fa'/%3E%3Crect x='25' y='8' width='14' height='9' rx='3' fill='%23d7e8ec'/%3E%3Cpath d='M32 26v14M25 33h14' stroke='%232b7a8c' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E">
+
+<!-- 保存済みテーマを描画前に適用（ちらつき防止）。触らなくてOK -->
+<script>(function(){try{var t=localStorage.getItem('karte-theme');if(t==='light'||t==='dark'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   THEME — 標準（light）。ここを変えるだけで全体の印象が変わります
+============================================================ */
+:root, [data-theme="light"] {
+  color-scheme: light;
+  --bg: #f7f9fa;            /* 背景 */
+  --bg2: #eef3f5;           /* 一段沈めた面（カード・表の帯） */
+  --fg: #17242b;            /* 見出し・本文 */
+  --fg-dim: #3d515c;        /* 補助の本文（これも十分に読める濃さです） */
+  --muted: #6d818c;         /* 装飾・枠内のラベル（本文には使いません） */
+  --accent: #2b7a8c;        /* 青緑 — 見出しの印・ボタンの地 */
+  --accent-text: #226478;   /* 文字として使う青緑（薄い地の上でも読めるよう少し濃く） */
+  --accent-ink: #ffffff;    /* 青緑のボタンに載せる文字色 */
+  --accent-soft: #d7e8ec;   /* 本日の列・タグの地 */
+  --warn: #b4643c;          /* 休診・注意 */
+  --warn-soft: #f3e3da;
+  --line: rgba(23,36,43,.12);
+  --line-soft: rgba(23,36,43,.06);
+  --shadow: 0 1px 2px rgba(23,36,43,.04), 0 10px 30px rgba(23,36,43,.05);
+  --hero-fallback: linear-gradient(168deg, #dfecef 0%, #eef3f5 42%, #f3f7f8 100%);
+
+  --jp: 'BIZ UDPGothic', 'Hiragino Sans', 'Yu Gothic UI', 'Meiryo', sans-serif;
+  --sans: 'IBM Plex Sans', 'BIZ UDPGothic', -apple-system, 'Segoe UI', 'Hiragino Sans', sans-serif;
+  --mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+  --maxw: 1120px;
+  --ease: cubic-bezier(.2,.8,.3,1);
+}
+
+/* EDIT: 夜間テーマ（dark）。ヘッダーの「標準／夜間」で切り替わります。
+   最初から夜間で表示したい場合は <html lang="ja" data-theme="light"> を
+   <html lang="ja" data-theme="dark"> に変更してください */
+[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #101a1f;
+  --bg2: #17242b;
+  --fg: #e8eef1;
+  --fg-dim: #bfd0d8;
+  --muted: #8ba0aa;
+  --accent: #5fb3c4;
+  --accent-text: #7cc6d5;
+  --accent-ink: #0d171c;
+  --accent-soft: #1d3a44;
+  --warn: #d98a63;
+  --warn-soft: #3a2a22;
+  --line: rgba(232,238,241,.14);
+  --line-soft: rgba(232,238,241,.07);
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 30px rgba(0,0,0,.35);
+  --hero-fallback: linear-gradient(168deg, #16323c 0%, #17242b 48%, #101a1f 100%);
+}
+
+/* ============================================================
+   BASE
+============================================================ */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { scroll-behavior: smooth; scroll-padding-top: 5.5rem; -webkit-text-size-adjust: 100%; }
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: var(--sans);
+  font-size: clamp(16px, 1rem + .12vw, 17.5px);
+  line-height: 1.9; letter-spacing: .02em;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  transition: background-color .4s var(--ease), color .4s var(--ease);
+}
+h1, h2, h3, h4 { font-family: var(--jp); font-weight: 700; line-height: 1.5; letter-spacing: .01em; }
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+table { border-collapse: separate; border-spacing: 0; }
+::selection { background: var(--accent-soft); color: var(--fg); }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+
+.sr-only {
+  position: absolute !important; width: 1px; height: 1px;
+  margin: -1px; padding: 0; overflow: hidden;
+  clip-path: inset(50%); white-space: nowrap; border: 0;
+}
+/* スキップリンク（Tabキーを押したときだけ現れます） */
+.skip {
+  position: absolute; left: 1rem; top: -100px; z-index: 100;
+  padding: .7rem 1.2rem; border-radius: 0 0 10px 10px;
+  background: var(--accent); color: var(--accent-ink); font-family: var(--jp); font-weight: 700;
+  transition: top .2s var(--ease);
+}
+.skip:focus { top: 0; }
+.container { width: 100%; max-width: var(--maxw); margin-inline: auto; padding-inline: clamp(1rem, 4vw, 2rem); }
+section { padding-block: clamp(3.5rem, 8vw, 6rem); }
+section + section { border-top: 1px solid var(--line-soft); }
+.band { background: var(--bg2); }
+
+/* 見出しの印（青緑の短い罫）＋小見出し */
+.eyebrow {
+  display: flex; align-items: center; gap: .6rem;
+  font-family: var(--mono); font-size: .8rem; font-weight: 500;
+  letter-spacing: .16em; text-transform: uppercase;
+  color: var(--accent-text); margin-bottom: .5rem;
+}
+.eyebrow::before { content: ''; width: 22px; height: 3px; border-radius: 2px; background: var(--accent); }
+.sec-head { margin-bottom: clamp(1.75rem, 4vw, 2.75rem); max-width: 46rem; }
+.sec-head h2 { font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.1rem); }
+.sec-head p { color: var(--fg-dim); margin-top: .7rem; }
+.lead { color: var(--fg-dim); }
+.note { font-size: .88rem; color: var(--fg-dim); line-height: 1.8; }
+
+/* ボタン（指でも押しやすい大きさにしています） */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: .55rem;
+  min-height: 56px; padding: .7rem 1.5rem; border-radius: 12px;
+  font-family: var(--jp); font-weight: 700; font-size: 1.02rem; line-height: 1.3;
+  border: 2px solid transparent; transition: transform .18s var(--ease), background-color .18s var(--ease), border-color .18s var(--ease);
+}
+.btn svg { width: 1.25em; height: 1.25em; flex: none; }
+.btn-primary { background: var(--accent); color: var(--accent-ink); }
+.btn-primary:hover { transform: translateY(-2px); }
+.btn-outline { border-color: var(--accent); color: var(--accent-text); background: var(--bg); }
+.btn-outline:hover { background: var(--accent-soft); transform: translateY(-2px); }
+.btn-tel { flex-direction: column; gap: .1rem; align-items: flex-start; padding: .6rem 1.5rem; }
+.btn-tel .tel-label { font-family: var(--sans); font-size: .78rem; font-weight: 500; letter-spacing: .08em; opacity: .9; }
+.btn-tel .tel-num { font-family: var(--mono); font-size: 1.45rem; font-weight: 500; letter-spacing: .02em; }
+.btn-sm { min-height: 44px; padding: .4rem 1.1rem; font-size: .92rem; border-radius: 10px; }
+
+/* カード */
+.card {
+  background: var(--bg); border: 1px solid var(--line); border-radius: 16px;
+  padding: clamp(1.2rem, 3vw, 1.7rem); box-shadow: var(--shadow);
+}
+.band .card { background: var(--bg); }
+
+/* ============================================================
+   HEADER / NAV
+============================================================ */
+header.site {
+  position: sticky; top: 0; z-index: 50;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: saturate(1.4) blur(10px);
+  -webkit-backdrop-filter: saturate(1.4) blur(10px);
+  border-bottom: 1px solid var(--line-soft);
+}
+.site-inner { display: flex; align-items: center; gap: 1rem; min-height: 68px; }
+.brand { display: flex; align-items: center; gap: .6rem; margin-right: auto; }
+.brand svg { width: 34px; height: 34px; flex: none; color: var(--accent); }
+.brand b { font-family: var(--jp); font-size: 1.08rem; font-weight: 700; letter-spacing: .02em; white-space: nowrap; }
+.brand small { display: block; font-size: .72rem; color: var(--fg-dim); font-weight: 400; letter-spacing: .06em; line-height: 1.4; white-space: nowrap; }
+.nav-links { display: flex; gap: .2rem; list-style: none; }
+.nav-links a {
+  display: block; padding: .5rem .7rem; border-radius: 8px;
+  font-size: .93rem; color: var(--fg-dim);
+}
+.nav-links a:hover { color: var(--fg); background: var(--bg2); }
+.theme-btn {
+  display: inline-flex; align-items: center; gap: .35rem;
+  min-height: 44px; padding: .35rem .8rem; border-radius: 999px;
+  border: 1px solid var(--line); font-size: .85rem; color: var(--fg-dim);
+  font-family: var(--jp); white-space: nowrap; flex: none;
+}
+.theme-btn:hover { border-color: var(--accent); color: var(--accent-text); }
+.theme-btn .t-on { color: var(--fg); font-weight: 700; }
+[data-theme="dark"] .theme-btn .t-day { color: var(--fg-dim); font-weight: 400; }
+.menu-toggle { display: none; width: 46px; height: 46px; border-radius: 10px; border: 1px solid var(--line); }
+.menu-toggle span { display: block; width: 20px; height: 2px; margin: 4px auto; background: var(--fg); transition: transform .25s var(--ease), opacity .25s var(--ease); }
+.menu-toggle.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.menu-toggle.open span:nth-child(2) { opacity: 0; }
+.menu-toggle.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+.mobile-menu {
+  display: none; flex-direction: column; gap: .2rem;
+  padding: .5rem clamp(1rem, 4vw, 2rem) 1.2rem;
+  border-top: 1px solid var(--line-soft); background: var(--bg);
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a { padding: .8rem .4rem; border-bottom: 1px solid var(--line-soft); font-family: var(--jp); }
+
+/* ============================================================
+   HERO
+============================================================ */
+.hero { padding-block: clamp(2rem, 5vw, 3.5rem) clamp(3rem, 7vw, 4.5rem); border-top: 0; }
+.hero-grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: clamp(1.5rem, 4vw, 3rem); align-items: center; }
+.hero h1 { font-size: clamp(1.85rem, 1.2rem + 2.6vw, 3rem); letter-spacing: .02em; }
+.hero h1 .h1-sub { display: block; font-size: .42em; font-weight: 400; color: var(--fg-dim); letter-spacing: .1em; margin-top: .6rem; }
+.hero-depts { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: 1.1rem; }
+.chip {
+  display: inline-block; padding: .25rem .7rem; border-radius: 999px;
+  background: var(--accent-soft); color: var(--accent-text);
+  font-size: .82rem; font-weight: 500; letter-spacing: .04em;
+}
+.hero-lead { margin: 1.1rem 0 1.5rem; color: var(--fg-dim); max-width: 32rem; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: .75rem; }
+.hero-sub { margin-top: 1.1rem; font-size: .88rem; color: var(--fg-dim); }
+.hero-sub a { color: var(--accent-text); text-decoration: underline; text-underline-offset: 3px; }
+
+/* 主役の絵。assets/hero.jpg が無ければグラデーションが表示されます */
+.hero-art {
+  position: relative; aspect-ratio: 4 / 3; max-width: 100%;
+  border-radius: 20px; overflow: hidden;
+  background: var(--hero-fallback);
+  border: 1px solid var(--line);
+}
+.hero-art::after {
+  content: ''; position: absolute; inset: 0;
+  background:
+    radial-gradient(38% 30% at 72% 20%, color-mix(in srgb, var(--accent) 26%, transparent), transparent 74%),
+    radial-gradient(56% 44% at 14% 88%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 72%),
+    linear-gradient(180deg, transparent 58%, color-mix(in srgb, var(--accent) 8%, transparent) 100%);
+  pointer-events: none;
+}
+.hero-art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.hero-art .art-note {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
+  font-family: var(--mono); font-size: .78rem; letter-spacing: .1em; color: var(--fg-dim);
+  text-align: center; line-height: 1.9; z-index: 1;
+}
+.hero-art img + .art-note { display: none; }
+
+/* 受付状況の一行（データが無いときは JavaScript が丸ごと隠します） */
+.status {
+  display: inline-flex; align-items: center; gap: .6rem;
+  padding: .55rem 1rem; border-radius: 999px;
+  border: 1px solid var(--line); background: var(--bg2);
+  font-family: var(--jp); font-size: .95rem; font-weight: 700; color: var(--fg);
+  margin-bottom: 1rem;
+}
+.status .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--muted); flex: none; }
+.status .dot::after { content: ''; display: block; width: 100%; height: 100%; border-radius: 50%; }
+.status.is-open { border-color: color-mix(in srgb, var(--accent) 55%, transparent); background: var(--accent-soft); }
+.status.is-open .dot { background: var(--accent); }
+.status.is-closed { border-color: color-mix(in srgb, var(--warn) 45%, transparent); background: var(--warn-soft); }
+.status.is-closed .dot { background: var(--warn); }
+.status .status-sub { font-family: var(--mono); font-weight: 400; font-size: .85rem; color: var(--fg-dim); }
+.hours-status { margin-bottom: 1.25rem; }
+
+/* ============================================================
+   NEWS — お知らせ（休診情報を一番上に）
+============================================================ */
+.news-list { list-style: none; display: grid; gap: .75rem; }
+.news-item {
+  display: grid; grid-template-columns: 8.5rem 1fr; gap: .3rem 1.2rem; align-items: baseline;
+  padding: 1.1rem 1.2rem; border: 1px solid var(--line); border-radius: 14px; background: var(--bg);
+}
+.news-item.is-important { border-color: color-mix(in srgb, var(--warn) 50%, transparent); background: var(--warn-soft); }
+.news-meta { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; }
+.news-date { font-family: var(--mono); font-size: .88rem; color: var(--fg-dim); }
+.news-tag {
+  font-size: .74rem; font-family: var(--jp); font-weight: 700; letter-spacing: .06em;
+  padding: .1rem .5rem; border-radius: 6px; background: var(--accent-soft); color: var(--accent-text);
+}
+.news-item.is-important .news-tag { background: var(--warn); color: #fff; }
+[data-theme="dark"] .news-item.is-important .news-tag { color: #21140d; }
+.news-body h3 { font-size: 1.02rem; margin-bottom: .2rem; }
+.news-body p { font-size: .92rem; color: var(--fg-dim); }
+
+/* ============================================================
+   HOURS — 診療時間表（このテンプレートの中心）
+============================================================ */
+.hours-wrap { border: 1px solid var(--line); border-radius: 18px; background: var(--bg); padding: clamp(1rem, 3vw, 1.9rem); box-shadow: var(--shadow); }
+.hours { width: 100%; font-family: var(--jp); }
+.hours caption { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.hours th, .hours td { border-bottom: 1px solid var(--line); padding: .9rem .5rem; text-align: center; vertical-align: middle; }
+.hours thead th { font-size: 1rem; font-weight: 700; border-bottom: 2px solid var(--line); padding-top: 0; }
+.hours thead th.hours-corner { width: 11rem; }
+.hours .dow { display: block; }
+.hours .dow-sun { color: var(--warn); }
+.hours tbody tr:last-child th, .hours tbody tr:last-child td { border-bottom: 0; }
+.hours-rowlabel { text-align: left !important; font-size: 1rem; white-space: nowrap; }
+.hours-rowlabel .rl-time { display: block; font-family: var(--mono); font-size: .85rem; font-weight: 400; color: var(--fg-dim); letter-spacing: 0; }
+.hours .mark { font-size: 1.6rem; font-weight: 700; line-height: 1; color: var(--accent-text); }
+.hours .mark[data-mark="ー"] { color: var(--fg-dim); }
+.hours .mark[data-mark="△"] { color: var(--warn); }
+.today-flag {
+  display: inline-block; margin-top: .3rem; padding: .05rem .5rem; border-radius: 6px;
+  background: var(--accent); color: var(--accent-ink);
+  font-size: .7rem; font-weight: 700; letter-spacing: .08em; line-height: 1.7;
+}
+.hours .is-today { background: var(--accent-soft); }
+.hours thead th.is-today { border-bottom-color: var(--accent); }
+.hours thead th.is-today .dow { color: var(--accent-text); }
+.hours-legend { display: flex; flex-wrap: wrap; gap: .35rem 1.4rem; margin-top: 1.2rem; padding-top: 1.1rem; border-top: 1px solid var(--line-soft); font-size: .9rem; color: var(--fg-dim); }
+.hours-legend b { font-family: var(--jp); font-size: 1.25rem; line-height: 1; color: var(--fg); margin-right: .35rem; }
+.hours-remarks { margin-top: .9rem; display: grid; gap: .3rem; }
+
+/* ============================================================
+   CARE — 診療案内
+============================================================ */
+.care-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+.care-card h3 { font-size: 1.1rem; margin-bottom: .5rem; display: flex; align-items: center; gap: .55rem; }
+.care-card h3 .num { font-family: var(--mono); font-size: .8rem; font-weight: 500; color: var(--accent-text); }
+.care-card p { font-size: .93rem; color: var(--fg-dim); }
+
+/* ============================================================
+   STEPS — 初診の流れ
+============================================================ */
+.steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; counter-reset: step; list-style: none; }
+.step { position: relative; padding-top: 1.2rem; }
+.step::before {
+  counter-increment: step; content: counter(step);
+  display: flex; align-items: center; justify-content: center;
+  width: 44px; height: 44px; border-radius: 50%;
+  background: var(--accent); color: var(--accent-ink);
+  font-family: var(--mono); font-size: 1.15rem; font-weight: 500;
+  margin-bottom: .8rem;
+}
+.step::after {
+  content: ''; position: absolute; left: 56px; right: -1rem; top: calc(1.2rem + 22px); height: 1px;
+  background: var(--line);
+}
+.step:last-child::after { display: none; }
+.step h3 { font-size: 1.05rem; margin-bottom: .35rem; }
+.step p { font-size: .92rem; color: var(--fg-dim); }
+
+/* ============================================================
+   DOCTOR — 院長紹介
+============================================================ */
+.doctor { display: grid; grid-template-columns: 300px 1fr; gap: clamp(1.5rem, 4vw, 3rem); align-items: start; }
+.portrait {
+  aspect-ratio: 3 / 4; border-radius: 16px; overflow: hidden; position: relative;
+  background: linear-gradient(170deg, var(--accent-soft), var(--bg2));
+  border: 1px solid var(--line); display: grid; place-items: center;
+}
+.portrait img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.portrait .ph { font-family: var(--mono); font-size: .78rem; letter-spacing: .1em; color: var(--fg-dim); text-align: center; line-height: 1.9; }
+.doctor-name { font-size: clamp(1.3rem, 1.1rem + 1vw, 1.7rem); }
+.doctor-name span { font-family: var(--mono); font-size: .52em; font-weight: 400; color: var(--fg-dim); margin-left: .7rem; letter-spacing: .08em; }
+.doctor-role { font-family: var(--mono); font-size: .82rem; letter-spacing: .14em; color: var(--accent-text); text-transform: uppercase; }
+.doctor p.bio { margin: 1rem 0 1.5rem; color: var(--fg-dim); }
+.cv { display: grid; gap: .5rem; margin-bottom: 1.5rem; }
+.cv div { display: grid; grid-template-columns: 6rem 1fr; gap: 1rem; font-size: .93rem; }
+.cv dt, .cv .y { font-family: var(--mono); color: var(--fg-dim); }
+.tag-row { display: flex; flex-wrap: wrap; gap: .4rem; }
+.tag { padding: .3rem .8rem; border-radius: 8px; border: 1px solid var(--line); font-size: .86rem; color: var(--fg-dim); }
+.sub-head { font-family: var(--jp); font-size: .95rem; font-weight: 700; margin-bottom: .6rem; }
+
+/* ============================================================
+   FACILITY — 院内設備
+============================================================ */
+.facility { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; }
+.facility figure { margin: 0; }
+.frame {
+  aspect-ratio: 4 / 3; border-radius: 14px; overflow: hidden; position: relative;
+  background: linear-gradient(165deg, var(--bg2), color-mix(in srgb, var(--accent-soft) 70%, var(--bg2)));
+  border: 1px solid var(--line); display: grid; place-items: center; margin-bottom: .7rem;
+}
+.frame img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.frame .ph { font-family: var(--mono); font-size: .75rem; letter-spacing: .1em; color: var(--fg-dim); }
+.facility figcaption b { display: block; font-family: var(--jp); margin-bottom: .2rem; }
+.facility figcaption span { font-size: .9rem; color: var(--fg-dim); }
+
+/* ============================================================
+   ACCESS — アクセス
+============================================================ */
+.access { display: grid; grid-template-columns: 1fr 1.15fr; gap: clamp(1.5rem, 4vw, 2.5rem); align-items: start; }
+.info-table { width: 100%; }
+.info-table th, .info-table td { text-align: left; vertical-align: top; padding: .85rem .4rem; border-bottom: 1px solid var(--line); font-size: .96rem; }
+.info-table th { width: 7.5rem; font-family: var(--jp); font-weight: 700; color: var(--fg-dim); white-space: nowrap; }
+.info-table a { color: var(--accent-text); text-decoration: underline; text-underline-offset: 3px; }
+.map {
+  min-height: 340px; height: 100%; border-radius: 16px; border: 1px dashed var(--line);
+  background: repeating-linear-gradient(135deg, var(--bg2) 0 12px, transparent 12px 24px), var(--bg);
+  display: grid; place-items: center; padding: 2rem; text-align: center;
+}
+.map p { font-family: var(--mono); font-size: .8rem; letter-spacing: .06em; color: var(--fg-dim); line-height: 2; }
+.map iframe { width: 100%; height: 100%; min-height: 340px; border: 0; border-radius: 16px; display: block; }
+
+/* ============================================================
+   FAQ
+============================================================ */
+.faq { display: grid; gap: .7rem; max-width: 52rem; }
+.faq-item { border: 1px solid var(--line); border-radius: 14px; background: var(--bg); overflow: hidden; }
+.faq-item summary {
+  display: flex; align-items: flex-start; gap: .8rem; cursor: pointer;
+  padding: 1.1rem 1.2rem; font-family: var(--jp); font-weight: 700; list-style: none;
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary::before { content: 'Q'; font-family: var(--mono); font-weight: 500; color: var(--accent-text); flex: none; }
+.faq-item summary::after {
+  content: ''; margin-left: auto; flex: none; width: 11px; height: 11px; margin-top: .55rem;
+  border-right: 2px solid var(--muted); border-bottom: 2px solid var(--muted);
+  transform: rotate(45deg); transition: transform .25s var(--ease);
+}
+.faq-item[open] summary::after { transform: rotate(-135deg); }
+.faq-body { padding: 0 1.2rem 1.2rem 2.8rem; color: var(--fg-dim); font-size: .95rem; }
+
+/* ============================================================
+   FOOTER / 固定バー
+============================================================ */
+footer.site { background: var(--bg2); border-top: 1px solid var(--line); padding-block: clamp(2.5rem, 6vw, 3.5rem) 2rem; }
+.foot-grid { display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 2rem; }
+.foot-brand svg { width: 40px; height: 40px; color: var(--accent); margin-bottom: .6rem; }
+.foot-brand b { font-family: var(--jp); font-size: 1.1rem; display: block; }
+.foot-brand p { font-size: .9rem; color: var(--fg-dim); margin-top: .5rem; }
+.foot-col b { font-family: var(--jp); font-size: .95rem; display: block; margin-bottom: .7rem; }
+.foot-col ul { list-style: none; display: grid; gap: .4rem; }
+.foot-col a { font-size: .92rem; color: var(--fg-dim); }
+.foot-col a:hover { color: var(--accent-text); }
+.foot-bottom { margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: .6rem 1.5rem; justify-content: space-between; }
+.foot-bottom small { font-family: var(--mono); font-size: .78rem; color: var(--fg-dim); }
+.foot-meta { font-family: var(--mono); font-size: .74rem; color: var(--fg-dim); }
+.foot-meta a { color: var(--fg-dim); transition: color .3s; }
+.foot-meta a:hover { color: var(--accent-text); }
+.disclaimer { font-size: .82rem; color: var(--fg-dim); max-width: 44rem; line-height: 1.9; }
+
+.callbar {
+  display: none; position: fixed; left: 0; right: 0; bottom: 0; z-index: 60;
+  gap: .5rem; padding: .55rem .7rem calc(.55rem + env(safe-area-inset-bottom));
+  background: color-mix(in srgb, var(--bg) 94%, transparent);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border-top: 1px solid var(--line);
+}
+.callbar .btn { flex: 1; min-height: 52px; font-size: .98rem; padding-inline: .5rem; }
+.callbar .btn-tel { flex-direction: row; align-items: center; gap: .45rem; }
+
+/* ============================================================
+   REVEAL（控えめなフェードイン）
+============================================================ */
+.rv { opacity: 0; transform: translateY(14px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
+.rv.on { opacity: 1; transform: none; }
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+@media (max-width: 1000px) {
+  .nav-links { display: none; }
+  .menu-toggle { display: block; }
+  .care-grid { grid-template-columns: repeat(2, 1fr); }
+  .steps { grid-template-columns: repeat(2, 1fr); }
+  .step:nth-child(2)::after { display: none; }
+  .hero-grid { grid-template-columns: 1fr; }
+  .hero-art { aspect-ratio: 16 / 9; order: -1; }
+  .doctor { grid-template-columns: 220px 1fr; }
+  .access { grid-template-columns: 1fr; }
+  .foot-grid { grid-template-columns: 1fr 1fr; }
+  .foot-brand { grid-column: 1 / -1; }
+}
+
+@media (max-width: 720px) {
+  body { padding-bottom: 76px; }   /* 下部の固定バーの高さ分 */
+  .callbar { display: flex; }
+  /* スマホでは、医院名・受付状況・電話を先に。写真はその下に置きます */
+  .hero-art { order: 0; aspect-ratio: 3 / 2; }
+  .facility { grid-template-columns: 1fr; }
+  .doctor { grid-template-columns: 1fr; }
+  .portrait { max-width: 260px; }
+  .news-item { grid-template-columns: 1fr; }
+  .foot-grid { grid-template-columns: 1fr; }
+  .cv div { grid-template-columns: 5rem 1fr; gap: .6rem; }
+}
+
+/* ------------------------------------------------------------
+   診療時間表：スマホ（640px 以下）は「曜日ごとのカード」に組み替えます。
+   HTML は1つだけ。<table> を display:grid にし、行と列を入れ替えて配置します。
+   ・曜日の見出しセル（thead の th）＝カードの見出し
+   ・午前／午後のセル（td）＝カードの中身。ラベルは data-label、
+     時間は data-reception から JavaScript が入れた data-time を ::before / ::after で表示
+   ・表示は変わっても、role と <th scope> は残るので、読み上げでは表のままです
+------------------------------------------------------------ */
+@media (max-width: 640px) {
+  .hours-wrap { border: 0; padding: 0; box-shadow: none; background: transparent; }
+  .hours { display: grid; grid-template-columns: 1fr; }
+  .hours thead, .hours tbody, .hours tr { display: contents; }
+
+  /* 「診療時間」「午前」「午後」の見出しセルは、画面からは隠して読み上げには残します */
+  .hours .hours-corner, .hours .hours-rowlabel {
+    position: absolute; width: 1px; height: 1px; overflow: hidden;
+    clip-path: inset(50%); white-space: nowrap; padding: 0; border: 0;
+  }
+
+  .hours thead th[data-day] {
+    display: flex; align-items: center; justify-content: space-between; gap: .5rem;
+    padding: .7rem 1rem; margin-top: .7rem; text-align: left;
+    background: var(--bg2); border: 1px solid var(--line); border-bottom: 0;
+    border-radius: 12px 12px 0 0; font-size: 1rem;
+  }
+  .hours thead th:nth-child(2) { margin-top: 0; }
+  .hours thead th[data-day] .dow::after { content: '曜日'; }   /* スマホでは「月曜日」と表示します */
+  .hours thead th.is-today { background: var(--accent-soft); border-color: var(--accent); }
+  .hours .today-flag { margin-top: 0; }
+
+  .hours tbody td {
+    display: flex; align-items: center; gap: .6rem;
+    padding: .75rem 1rem; text-align: left;
+    background: var(--bg); border: 1px solid var(--line); border-bottom: 0;
+  }
+  .hours tbody td.is-today { border-color: var(--accent); background: color-mix(in srgb, var(--accent-soft) 45%, var(--bg)); }
+  .hours tbody td::before {
+    content: attr(data-label); order: 0; flex: none; width: 3.2rem;
+    font-size: .92rem; color: var(--fg-dim);
+  }
+  .hours tbody td::after {
+    content: attr(data-time); order: 1;
+    font-family: var(--mono); font-size: .88rem; color: var(--fg-dim);
+  }
+  .hours tbody td .mark { order: 2; margin-left: auto; }
+  /* 各カードの最後のセル（午後）に下の角丸と余白 */
+  .hours tbody tr:last-child td { border-bottom: 1px solid var(--line); border-radius: 0 0 12px 12px; }
+
+  /* 行と列の入れ替え：曜日1つ＝3行（見出し・午前・午後） */
+  .hours thead th:nth-child(2) { grid-row: 1; }
+  .hours tbody tr:nth-child(1) td:nth-child(2) { grid-row: 2; }
+  .hours tbody tr:nth-child(2) td:nth-child(2) { grid-row: 3; }
+  .hours thead th:nth-child(3) { grid-row: 4; }
+  .hours tbody tr:nth-child(1) td:nth-child(3) { grid-row: 5; }
+  .hours tbody tr:nth-child(2) td:nth-child(3) { grid-row: 6; }
+  .hours thead th:nth-child(4) { grid-row: 7; }
+  .hours tbody tr:nth-child(1) td:nth-child(4) { grid-row: 8; }
+  .hours tbody tr:nth-child(2) td:nth-child(4) { grid-row: 9; }
+  .hours thead th:nth-child(5) { grid-row: 10; }
+  .hours tbody tr:nth-child(1) td:nth-child(5) { grid-row: 11; }
+  .hours tbody tr:nth-child(2) td:nth-child(5) { grid-row: 12; }
+  .hours thead th:nth-child(6) { grid-row: 13; }
+  .hours tbody tr:nth-child(1) td:nth-child(6) { grid-row: 14; }
+  .hours tbody tr:nth-child(2) td:nth-child(6) { grid-row: 15; }
+  .hours thead th:nth-child(7) { grid-row: 16; }
+  .hours tbody tr:nth-child(1) td:nth-child(7) { grid-row: 17; }
+  .hours tbody tr:nth-child(2) td:nth-child(7) { grid-row: 18; }
+  .hours thead th:nth-child(8) { grid-row: 19; }
+  .hours tbody tr:nth-child(1) td:nth-child(8) { grid-row: 20; }
+  .hours tbody tr:nth-child(2) td:nth-child(8) { grid-row: 21; }
+}
+
+@media (max-width: 520px) {
+  .brand small { display: none; }   /* 狭い画面ではヘッダーを医院名だけにします */
+  .brand b { font-size: 1rem; }
+  .care-grid { grid-template-columns: 1fr; }
+  .steps { grid-template-columns: 1fr; }
+  .step::after { display: none; }
+  .btn-tel .tel-num { font-size: 1.3rem; }
+  .hero-actions .btn { width: 100%; }
+  .callbar .btn { width: auto; }
+}
+
+/* 動きを抑える設定のユーザーには、アニメーションを止めてすべて表示します */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
+  .rv { opacity: 1 !important; transform: none !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- EDIT: ロゴ（カルテのアイコン）。ここ1か所でヘッダーとフッターの両方が変わります -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="logo" viewBox="0 0 48 48">
+    <rect x="9" y="7" width="30" height="34" rx="5" fill="none" stroke="currentColor" stroke-width="2.6"/>
+    <rect x="18" y="3" width="12" height="8" rx="2.6" fill="currentColor"/>
+    <path d="M24 20v11M18.5 25.5h11" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/>
+  </symbol>
+</svg>
+
+<!-- キーボードで開いた人が、最初に診療時間へ飛べるようにするリンク（Tabキーで現れます） -->
+<a href="#hours" class="skip">診療時間へ移動</a>
+
+<header class="site">
+  <div class="container site-inner">
+    <!-- EDIT: 医院名と診療科 -->
+    <a href="#top" class="brand">
+      <svg aria-hidden="true"><use href="#logo"></use></svg>
+      <span><b>◯◯クリニック</b><small>内科／◯◯科／◯◯外来</small></span>
+    </a>
+    <!-- EDIT: ナビのリンク。不要な項目は削除してください -->
+    <ul class="nav-links">
+      <li><a href="#news">お知らせ</a></li>
+      <li><a href="#hours">診療時間</a></li>
+      <li><a href="#care">診療案内</a></li>
+      <li><a href="#first">初診の流れ</a></li>
+      <li><a href="#doctor">院長紹介</a></li>
+      <li><a href="#access">アクセス</a></li>
+    </ul>
+    <button type="button" class="theme-btn" id="themeToggle" aria-label="夜間のテーマに切り替え">
+      <span class="t-day t-on">標準</span><span aria-hidden="true">／</span><span class="t-night">夜間</span>
+    </button>
+    <button type="button" class="menu-toggle" id="menuToggle" aria-label="メニュー" aria-expanded="false" aria-controls="mobileMenu"><span></span><span></span><span></span></button>
+  </div>
+  <nav class="mobile-menu" id="mobileMenu" aria-label="メニュー">
+    <a href="#news">お知らせ</a>
+    <a href="#hours">診療時間</a>
+    <a href="#care">診療案内</a>
+    <a href="#first">初診の流れ</a>
+    <a href="#doctor">院長紹介</a>
+    <a href="#facility">院内設備</a>
+    <a href="#access">アクセス</a>
+    <a href="#faq">よくあるご質問</a>
+  </nav>
+</header>
+
+<main id="top">
+
+<!-- ============================================================
+  HERO — 医院名・診療科・電話・WEB予約・受付状況
+============================================================ -->
+<section class="hero">
+  <div class="container hero-grid">
+    <div>
+      <!-- 受付状況（診療時間表のデータから自動で入ります。データが無い場合は表示されません） -->
+      <p class="status" data-reception-status hidden><span class="dot" aria-hidden="true"></span><span class="status-text"></span></p>
+
+      <!-- EDIT: 診療科のタグ。増減自由です -->
+      <div class="hero-depts">
+        <span class="chip">内科</span>
+        <span class="chip">◯◯科</span>
+        <span class="chip">◯◯外来</span>
+        <span class="chip">予防接種</span>
+      </div>
+
+      <!-- EDIT: 医院名と、その下のひとこと -->
+      <h1>◯◯クリニック<span class="h1-sub">△△市◯◯町の内科・◯◯科</span></h1>
+      <p class="hero-lead">
+        △△駅から徒歩◯分。地域のかかりつけ医として、日常の体調の相談から
+        ◯◯の診療までお受けしています。はじめての方もお気軽にご来院ください。
+      </p>
+
+      <!-- EDIT: 電話番号（tel: の中はハイフンなしの数字）と WEB予約のURL -->
+      <div class="hero-actions">
+        <a class="btn btn-primary btn-tel" href="tel:0000000000">
+          <span class="tel-label">お電話でのご予約・お問い合わせ</span>
+          <span class="tel-num">000-000-0000</span>
+        </a>
+        <a class="btn btn-outline" href="#" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4.5" width="18" height="16" rx="3"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4M9 14l2 2 4-4" stroke-linecap="round"/></svg>
+          WEB予約はこちら
+        </a>
+      </div>
+      <p class="hero-sub">
+        <!-- EDIT: 受付時間の補足。初診の方への案内リンク -->
+        受付は診療終了の30分前までです。初めての方は<a href="#first">初診の流れ</a>をご覧ください。
+      </p>
+    </div>
+
+    <!-- EDIT: 主役の写真。assets/hero.jpg（2000×1400 程度）に差し替えてください。
+         ファイルが無い場合は、下のグラデーションがそのまま表示されます（画像切れは出ません）。
+         ※ 掲載する写真は、ご自身が権利を持つ（または許諾を得た）ものをお使いください -->
+    <div class="hero-art">
+      <img src="assets/hero.jpg" alt="" fetchpriority="high">
+      <p class="art-note">assets/hero.jpg<br>2000 × 1400 推奨</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+  NEWS — お知らせ
+  EDIT: 休診・診療時間の変更は、必ず一番上に置いてください。
+        クラス is-important を付けると、注意の色（--warn）で表示されます
+============================================================ -->
+<section id="news" class="band">
+  <div class="container">
+    <div class="sec-head rv">
+      <p class="eyebrow">News</p>
+      <h2>お知らせ</h2>
+    </div>
+    <ul class="news-list">
+      <li class="news-item is-important rv">
+        <div class="news-meta">
+          <time class="news-date" datetime="2026-09-18">2026.09.18</time>
+          <span class="news-tag">休診</span>
+        </div>
+        <div class="news-body">
+          <h3>◯月◯日（◯）は学会参加のため休診いたします</h3>
+          <p>ご迷惑をおかけいたします。お薬が必要な方は、お早めにご来院ください。</p>
+        </div>
+      </li>
+      <li class="news-item rv">
+        <div class="news-meta">
+          <time class="news-date" datetime="2026-09-01">2026.09.01</time>
+          <span class="news-tag">予防接種</span>
+        </div>
+        <div class="news-body">
+          <h3>◯◯の予防接種の受付を開始しました</h3>
+          <p>対象・費用・実施期間は受付までお問い合わせください。予約制です。</p>
+        </div>
+      </li>
+      <li class="news-item rv">
+        <div class="news-meta">
+          <time class="news-date" datetime="2026-08-20">2026.08.20</time>
+          <span class="news-tag">お知らせ</span>
+        </div>
+        <div class="news-body">
+          <h3>◯月より◯◯外来を開始します</h3>
+          <p>担当・曜日は診療時間の表をご確認ください。</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================================================
+  HOURS — 診療時間（このテンプレートの中心）
+
+  EDIT: 書き換えるのは、下の <table> の3つの属性だけです。
+  表も、スマホのカード表示も、「本日」の強調も、上下の受付状況の一行も、
+  すべてこの3つから作られます。
+
+  1) data-hours … 表に出る印。曜日 × 午前/午後
+       キー: mon tue wed thu fri sat sun ／ 値: "○"（診療） "△"（一部） "ー"（休診）
+       例: {"mon":{"am":"○","pm":"○"}, "wed":{"am":"○","pm":"ー"}}
+
+  2) data-reception … 実際の受付時間（受付状況の計算と、スマホ表示の時間に使います）
+       値: "09:00-12:30" の形式。休みの半日は "" （空文字）にしてください
+       例: {"mon":{"am":"09:00-12:30","pm":"15:00-18:30"}}
+
+  3) data-closed … 臨時休診・学会休診の日（任意）。この日は「本日は休診日です」になります
+       例: ["2026-09-21","2026-12-29"]
+       ※ 祝日は自動判定しません。祝日に休診する場合も、この配列に足すか、
+         下の「備考」とお知らせに明記してください
+
+  ※ 表の中に書いてある ○△ー は、JavaScript が使えない環境のための控えです。
+     data-hours を書き換えれば表示はそちらに合わせて変わります。
+     両方そろえておきたい場合は、HTML 側の印も同じに直しておいてください
+============================================================ -->
+<section id="hours">
+  <div class="container">
+    <div class="sec-head rv">
+      <p class="eyebrow">Hours</p>
+      <h2>診療時間</h2>
+      <p>受付は診療終了の30分前までです。ご予約の方を優先してご案内しております。</p>
+    </div>
+
+    <!-- 受付状況（データが無い・壊れている場合は、この行ごと表示されません） -->
+    <p class="status hours-status rv" data-reception-status hidden><span class="dot" aria-hidden="true"></span><span class="status-text"></span></p>
+
+    <div class="hours-wrap rv">
+      <table class="hours" role="table"
+        data-hours='{"mon":{"am":"○","pm":"○"},"tue":{"am":"○","pm":"○"},"wed":{"am":"○","pm":"ー"},"thu":{"am":"○","pm":"○"},"fri":{"am":"○","pm":"○"},"sat":{"am":"○","pm":"△"},"sun":{"am":"ー","pm":"ー"}}'
+        data-reception='{"mon":{"am":"09:00-12:30","pm":"15:00-18:30"},"tue":{"am":"09:00-12:30","pm":"15:00-18:30"},"wed":{"am":"09:00-12:30","pm":""},"thu":{"am":"09:00-12:30","pm":"15:00-18:30"},"fri":{"am":"09:00-12:30","pm":"15:00-18:30"},"sat":{"am":"09:00-12:30","pm":"14:00-16:00"},"sun":{"am":"","pm":""}}'
+        data-closed='[]'>
+        <caption>診療時間（曜日別・午前／午後）</caption>
+        <thead role="rowgroup">
+          <tr role="row">
+            <th scope="col" role="columnheader" class="hours-corner"><span class="sr-only">診療時間</span></th>
+            <th scope="col" role="columnheader" data-day="mon"><span class="dow">月</span><span class="today-flag" hidden>本日</span></th>
+            <th scope="col" role="columnheader" data-day="tue"><span class="dow">火</span><span class="today-flag" hidden>本日</span></th>
+            <th scope="col" role="columnheader" data-day="wed"><span class="dow">水</span><span class="today-flag" hidden>本日</span></th>
+            <th scope="col" role="columnheader" data-day="thu"><span class="dow">木</span><span class="today-flag" hidden>本日</span></th>
+            <th scope="col" role="columnheader" data-day="fri"><span class="dow">金</span><span class="today-flag" hidden>本日</span></th>
+            <th scope="col" role="columnheader" data-day="sat"><span class="dow">土</span><span class="today-flag" hidden>本日</span></th>
+            <th scope="col" role="columnheader" data-day="sun"><span class="dow dow-sun">日</span><span class="today-flag" hidden>本日</span></th>
+          </tr>
+        </thead>
+        <tbody role="rowgroup">
+          <tr role="row">
+            <!-- EDIT: 午前の受付時間（表示用の文字。計算には data-reception を使います） -->
+            <th scope="row" role="rowheader" class="hours-rowlabel">午前<span class="rl-time">9:00 — 12:30</span></th>
+            <td role="cell" data-day="mon" data-label="午前"><span class="mark" data-mark="○" aria-hidden="true">○</span><span class="sr-only">診療</span></td>
+            <td role="cell" data-day="tue" data-label="午前"><span class="mark" data-mark="○" aria-hidden="true">○</span><span class="sr-only">診療</span></td>
+            <td role="cell" data-day="wed" data-label="午前"><span class="mark" data-mark="○" aria-hidden="true">○</span><span class="sr-only">診療</span></td>
+            <td role="cell" data-day="thu" data-label="午前"><span class="mark" data-mark="○" aria-hidden="true">○</span><span class="sr-only">診療</span></td>
+            <td role="cell" data-day="fri" data-label="午前"><span class="mark" data-mark="○" aria-hidden="true">○</span><span class="sr-only">診療</span></td>
+            <td role="cell" data-day="sat" data-label="午前"><span class="mark" data-mark="○" aria-hidden="true">○</span><span class="sr-only">診療</span></td>
+            <td role="cell" data-day="sun" data-label="午前"><span class="mark" data-mark="ー" aria-hidden="true">ー</span><span class="sr-only">休診</span></td>
+          </tr>
+          <tr role="row">
+            <!-- EDIT: 午後の受付時間 -->
+            <th scope="row" role="rowheader" class="hours-rowlabel">午後<span class="rl-time">15:00 — 18:30</span></th>
+            <td role="cell" data-day="mon" data-label="午後"><span class="mark" data-mark="○" aria-hidden="true">○</span><span class="sr-only">診療</span></td>
+            <td role="cell" data-day="tue" data-label="午後"><span class="mark" data-mark="○" aria-hidden="true">○</span><span class="sr-only">診療</span></td>
+            <td role="cell" data-day="wed" data-label="午後"><span class="mark" data-mark="ー" aria-hidden="true">ー</span><span class="sr-only">休診</span></td>
+            <td role="cell" data-day="thu" data-label="午後"><span class="mark" data-mark="○" aria-hidden="true">○</span><span class="sr-only">診療</span></td>
+            <td role="cell" data-day="fri" data-label="午後"><span class="mark" data-mark="○" aria-hidden="true">○</span><span class="sr-only">診療</span></td>
+            <td role="cell" data-day="sat" data-label="午後"><span class="mark" data-mark="△" aria-hidden="true">△</span><span class="sr-only">一部診療</span></td>
+            <td role="cell" data-day="sun" data-label="午後"><span class="mark" data-mark="ー" aria-hidden="true">ー</span><span class="sr-only">休診</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- EDIT: 凡例。△ の意味は医院ごとに書き換えてください -->
+      <p class="hours-legend">
+        <span><b>○</b>診療</span>
+        <span><b>△</b>◯◯（受付時間が異なります・土曜の午後は16:00まで）</span>
+        <span><b>ー</b>休診</span>
+      </p>
+      <!-- EDIT: 備考（祝日・学会休診・年末年始など） -->
+      <div class="hours-remarks">
+        <p class="note">※ 休診日：日曜・祝日／水曜午後</p>
+        <p class="note">※ 学会参加等により臨時休診となる場合があります。日程は<a href="#news" style="color:var(--accent-text);text-decoration:underline;text-underline-offset:3px">お知らせ</a>でご確認ください。</p>
+        <p class="note">※ 年末年始（◯月◯日〜◯月◯日）は休診いたします。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+  CARE — 診療案内
+  EDIT: 4〜6項目。カード（<article class="card care-card rv">）ごと複製・削除できます。
+  ※ 効果や優位性をうたう表現は書けません（医療広告ガイドライン）。
+     「よく効く」「痛くない」「安心」「◯◯に強い」などは避け、
+     「何を診るか」「どう進めるか」を事実として書いてください
+============================================================ -->
+<section id="care" class="band">
+  <div class="container">
+    <div class="sec-head rv">
+      <p class="eyebrow">Medical care</p>
+      <h2>診療案内</h2>
+      <p>気になる症状がどの科にあたるか分からないときも、まずはご相談ください。</p>
+    </div>
+    <div class="care-grid">
+      <article class="card care-card rv">
+        <h3><span class="num">01</span>一般内科</h3>
+        <p>発熱・せき・のどの痛み・腹痛など、日常の体調の変化を診察します。必要に応じて検査や専門の医療機関のご紹介を行います。</p>
+      </article>
+      <article class="card care-card rv">
+        <h3><span class="num">02</span>生活習慣病のご相談</h3>
+        <p>◯◯・◯◯などについて、検査の結果をもとに、お薬や生活のことを一緒に考えていきます。定期的な通院でのフォローを行っています。</p>
+      </article>
+      <article class="card care-card rv">
+        <h3><span class="num">03</span>予防接種</h3>
+        <p>◯◯・◯◯の予防接種を実施しています（予約制）。対象年齢・費用・実施期間は受付までお問い合わせください。</p>
+      </article>
+      <article class="card care-card rv">
+        <h3><span class="num">04</span>健康診断</h3>
+        <p>△△市の◯◯健診、企業の定期健康診断に対応しています。項目と費用は事前にご確認ください。所要時間は約◯◯分です。</p>
+      </article>
+      <article class="card care-card rv">
+        <h3><span class="num">05</span>各種検査</h3>
+        <p>◯◯検査・◯◯検査を院内で行っています。結果のご説明は当日または後日の来院時に行います。</p>
+      </article>
+      <article class="card care-card rv">
+        <h3><span class="num">06</span>◯◯外来</h3>
+        <p>◯曜日の午後に◯◯外来を設けています。担当は◯◯医師です。予約が必要です。</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+  FIRST — 初診の流れ
+============================================================ -->
+<section id="first">
+  <div class="container">
+    <div class="sec-head rv">
+      <p class="eyebrow">First visit</p>
+      <h2>初診の流れ</h2>
+      <p>はじめてご来院いただく方に、受付から会計までの流れをご案内します。</p>
+    </div>
+    <ol class="steps">
+      <li class="step rv">
+        <h3>ご予約</h3>
+        <p>お電話または WEB 予約からお申し込みください。予約なしでの受診も可能ですが、お待ちいただく場合があります。</p>
+      </li>
+      <li class="step rv">
+        <h3>受付・問診票</h3>
+        <p>保険証（マイナ保険証）と、お持ちの方はお薬手帳・紹介状をご提出ください。問診票のご記入は約◯分です。</p>
+      </li>
+      <li class="step rv">
+        <h3>診察・検査</h3>
+        <p>お話をうかがい、診察を行います。必要に応じて検査を行い、結果と今後の進め方をご説明します。</p>
+      </li>
+      <li class="step rv">
+        <h3>お会計・次回のご案内</h3>
+        <p>お会計後、処方せんをお渡しします。次回のご予約が必要な場合は、受付でご案内いたします。</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============================================================
+  DOCTOR — 院長紹介
+  EDIT: 氏名・経歴・所属学会・資格は、すべて確認できる事実のみを書いてください。
+        「専門医」「指導医」は、実際に認定を受けている資格だけが記載できます。
+        症例数・実績・患者さんの声は、医療広告ガイドラインの対象です
+============================================================ -->
+<section id="doctor" class="band">
+  <div class="container">
+    <div class="sec-head rv">
+      <p class="eyebrow">Doctor</p>
+      <h2>院長紹介</h2>
+    </div>
+    <div class="doctor">
+      <!-- EDIT: 院長の写真。<img src="assets/doctor.jpg" alt="院長 ◯◯ ◯◯"> を
+           .portrait の中に入れると、下の枠に代わって表示されます -->
+      <div class="portrait rv">
+        <p class="ph">PHOTO<br>3 : 4</p>
+      </div>
+      <div class="rv">
+        <p class="doctor-role">院長</p>
+        <h3 class="doctor-name">◯◯ ◯◯<span>Maru Maru</span></h3>
+        <p class="bio">
+          △△市で生まれ育ちました。◯◯病院での勤務を経て、◯年に当院を開院しています。
+          お一人おひとりのお話をうかがう時間を大切にし、必要な場合には地域の医療機関と連携しながら診療にあたっています。
+        </p>
+
+        <p class="sub-head">経歴</p>
+        <dl class="cv">
+          <div><dt>◯◯◯◯年</dt><dd>◯◯大学医学部 卒業</dd></div>
+          <div><dt>◯◯◯◯年</dt><dd>◯◯病院 勤務</dd></div>
+          <div><dt>◯◯◯◯年</dt><dd>◯◯医療センター ◯◯科</dd></div>
+          <div><dt>◯◯◯◯年</dt><dd>◯◯クリニック 開院</dd></div>
+        </dl>
+
+        <p class="sub-head">所属学会・資格</p>
+        <div class="tag-row">
+          <span class="tag">日本◯◯学会</span>
+          <span class="tag">日本◯◯学会</span>
+          <span class="tag">◯◯認定医</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+  FACILITY — 院内設備
+  EDIT: 写真を入れる場合は <div class="frame"> の中に
+        <img src="assets/room-1.jpg" alt="待合室"> を追加してください。
+  ※ 治療前後の比較写真（ビフォーアフター）は、単独では掲載できません。
+     掲載する場合は、治療内容・標準的な費用・主なリスクと副作用を必ず併記してください
+============================================================ -->
+<section id="facility">
+  <div class="container">
+    <div class="sec-head rv">
+      <p class="eyebrow">Facility</p>
+      <h2>院内のご案内</h2>
+      <p>ベビーカーや車いすのままお入りいただけます。段差のない造りです。</p>
+    </div>
+    <div class="facility">
+      <figure class="rv">
+        <div class="frame"><p class="ph">PHOTO 4 : 3</p></div>
+        <figcaption><b>待合室</b><span>◯席ご用意しています。キッズスペースがあります。</span></figcaption>
+      </figure>
+      <figure class="rv">
+        <div class="frame"><p class="ph">PHOTO 4 : 3</p></div>
+        <figcaption><b>診察室</b><span>◯室。お話が外に漏れないよう配慮しています。</span></figcaption>
+      </figure>
+      <figure class="rv">
+        <div class="frame"><p class="ph">PHOTO 4 : 3</p></div>
+        <figcaption><b>◯◯室</b><span>◯◯検査を行う設備を備えています。</span></figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+  ACCESS — アクセス
+============================================================ -->
+<section id="access" class="band">
+  <div class="container">
+    <div class="sec-head rv">
+      <p class="eyebrow">Access</p>
+      <h2>アクセス</h2>
+    </div>
+    <div class="access">
+      <div class="rv">
+        <!-- EDIT: 住所・電話・最寄駅・駐車場。行の増減も自由です -->
+        <table class="info-table">
+          <tbody>
+            <tr><th scope="row">医院名</th><td>◯◯クリニック</td></tr>
+            <tr><th scope="row">住所</th><td>〒000-0000<br>◯◯県△△市◯◯町0-0-0 ◯◯ビル2F</td></tr>
+            <tr><th scope="row">電話</th><td><a href="tel:0000000000">000-000-0000</a></td></tr>
+            <tr><th scope="row">最寄駅</th><td>△△線「△△駅」◯口より徒歩◯分<br>バスをご利用の場合は「◯◯」下車すぐ</td></tr>
+            <tr><th scope="row">駐車場</th><td>専用駐車場 ◯台（建物◯側）。満車の場合は近隣のコインパーキングをご利用ください</td></tr>
+            <tr><th scope="row">受付時間</th><td>午前 9:00 — 12:30 ／ 午後 15:00 — 18:30<br>（診療終了の30分前まで）</td></tr>
+            <tr><th scope="row">休診日</th><td>日曜・祝日／水曜午後</td></tr>
+          </tbody>
+        </table>
+        <p class="note" style="margin-top:1rem">※ バリアフリー対応。エレベーターでお上がりください。</p>
+      </div>
+      <!-- EDIT: 地図。Googleマップ →「共有」→「地図を埋め込む」で得た <iframe> で、
+           下の <div class="map"> ごと置き換えてください -->
+      <div class="map rv">
+        <p>
+          MAP PLACEHOLDER<br>
+          Googleマップの「地図を埋め込む」で<br>得た &lt;iframe&gt; に置き換えてください
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+  FAQ — よくあるご質問
+  EDIT: <details open> を付けると、最初から開いた状態になります
+============================================================ -->
+<section id="faq">
+  <div class="container">
+    <div class="sec-head rv">
+      <p class="eyebrow">FAQ</p>
+      <h2>よくあるご質問</h2>
+    </div>
+    <div class="faq">
+      <details class="faq-item rv">
+        <summary>予約は必要ですか？</summary>
+        <div class="faq-body">予約なしでも受診いただけます。ただし、お待ちいただく時間が長くなることがありますので、お電話または WEB 予約のご利用をおすすめしています。</div>
+      </details>
+      <details class="faq-item rv">
+        <summary>初診のときに持っていくものは何ですか？</summary>
+        <div class="faq-body">保険証（またはマイナ保険証）、各種医療証、お薬手帳、紹介状・検査結果をお持ちの方はご持参ください。問診票は受付でお渡しします。</div>
+      </details>
+      <details class="faq-item rv">
+        <summary>子どもを連れて行っても大丈夫ですか？</summary>
+        <div class="faq-body">お連れいただけます。待合室にキッズスペースをご用意しています。ベビーカーのままお入りいただけます。</div>
+      </details>
+      <details class="faq-item rv">
+        <summary>駐車場はありますか？</summary>
+        <div class="faq-body">建物の◯側に専用駐車場を◯台分ご用意しています。満車の場合は、近隣のコインパーキングをご利用ください（料金の補助はございません）。</div>
+      </details>
+      <details class="faq-item rv">
+        <summary>クレジットカードは使えますか？</summary>
+        <div class="faq-body">◯◯・◯◯がご利用いただけます。◯◯円未満のお支払いは現金のみとなります。詳しくは受付にお尋ねください。</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============================================================
+  FOOTER
+============================================================ -->
+<footer class="site">
+  <div class="container">
+    <div class="foot-grid">
+      <!-- EDIT: 医院名・住所・電話 -->
+      <div class="foot-brand">
+        <svg aria-hidden="true"><use href="#logo"></use></svg>
+        <b>◯◯クリニック</b>
+        <p>
+          〒000-0000 ◯◯県△△市◯◯町0-0-0 ◯◯ビル2F<br>
+          TEL <a href="tel:0000000000" style="color:var(--accent-text);text-decoration:underline;text-underline-offset:3px">000-000-0000</a><br>
+          内科／◯◯科／◯◯外来
+        </p>
+      </div>
+      <div class="foot-col">
+        <b>診療のご案内</b>
+        <ul>
+          <li><a href="#hours">診療時間</a></li>
+          <li><a href="#care">診療案内</a></li>
+          <li><a href="#first">初診の流れ</a></li>
+          <li><a href="#faq">よくあるご質問</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <b>医院について</b>
+        <ul>
+          <li><a href="#doctor">院長紹介</a></li>
+          <li><a href="#facility">院内設備</a></li>
+          <li><a href="#access">アクセス</a></li>
+          <li><a href="#news">お知らせ</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <!-- EDIT: 注意書き。医療機関のサイトには、この一文を残しておくことをおすすめします -->
+      <p class="disclaimer">
+        当サイトに掲載している内容は、一般的な情報および当院の診療体制のご案内です。
+        個別の症状についての診断・治療方針は、診察のうえでご説明いたします。
+        記載内容は◯年◯月現在のものです。
+      </p>
+      <small>&copy; <span id="year">2026</span> ◯◯クリニック</small>
+      <p class="foot-meta">KARTE Template v1.0 — 個人・商用利用可／再販不可</p>
+      <!-- EDIT: 配布元へのリンク。公開時に不要であれば、この1行を削除してください -->
+      <p class="foot-meta"><a href="https://idatsuka.com/store.html">← Store に戻る</a></p>
+    </div>
+  </div>
+</footer>
+
+<!-- EDIT: スマホ下部の固定バー（電話・WEB予約）。不要な場合はこの <div> を削除し、
+     CSS の body { padding-bottom } も消してください -->
+<div class="callbar">
+  <a class="btn btn-outline btn-tel" href="tel:0000000000">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 3h3.5l1.8 4.5-2.2 1.6a12.5 12.5 0 006.8 6.8l1.6-2.2 4.5 1.8V19a2 2 0 01-2.2 2A16.5 16.5 0 013 5.2 2 2 0 015 3z" stroke-linejoin="round"/></svg>
+    電話する
+  </a>
+  <a class="btn btn-primary" href="#">WEB予約</a>
+</div>
+
+<script>
+/* ============================================================
+   1. テーマ切替（標準 / 夜間）
+   選択は localStorage の 'karte-theme' に保存され、theme-color も追従します
+============================================================ */
+(function () {
+  var KEY = 'karte-theme';
+  var COLORS = { light: '#f7f9fa', dark: '#101a1f' };   /* EDIT: アドレスバーの色 */
+  var root = document.documentElement;
+  var btn = document.getElementById('themeToggle');
+  var meta = document.getElementById('themeColor');
+
+  function sync() {
+    var t = root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+    if (meta) meta.setAttribute('content', COLORS[t]);
+    if (!btn) return;
+    btn.setAttribute('aria-label', t === 'dark' ? '標準のテーマに切り替え' : '夜間のテーマに切り替え');
+    var day = btn.querySelector('.t-day'), night = btn.querySelector('.t-night');
+    if (day) day.classList.toggle('t-on', t === 'light');
+    if (night) night.classList.toggle('t-on', t === 'dark');
+  }
+  sync();
+  if (btn) btn.addEventListener('click', function () {
+    var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem(KEY, next); } catch (e) {}
+    sync();
+  });
+})();
+
+/* ============================================================
+   2. 診療時間表 ＋ 受付状況
+   ・data-hours から表の印を入れる（HTML に書いてある印は、JSが無い環境用の控え）
+   ・data-reception から、スマホ表示の時間（data-time）と受付状況の一行を作る
+   ・本日の列に .is-today と「本日」の札を付ける
+   ・属性が無い／壊れている場合は、受付状況の行を隠すだけで、表はそのまま残ります
+============================================================ */
+(function () {
+  var DAYS = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
+  var LABEL = { '○': '診療', '△': '一部診療', 'ー': '休診', '×': '休診' };
+  var table = document.querySelector('.hours');
+  var slots = document.querySelectorAll('[data-reception-status]');
+
+  function hideStatus() {
+    for (var i = 0; i < slots.length; i++) slots[i].hidden = true;
+  }
+  if (!table) { hideStatus(); return; }
+
+  /* --- 属性を安全に読む（壊れていても例外を投げません） --- */
+  function readJSON(name) {
+    var raw = table.getAttribute(name);
+    if (!raw) return null;
+    try { var v = JSON.parse(raw); return (v && typeof v === 'object') ? v : null; }
+    catch (e) { return null; }
+  }
+  var hours = readJSON('data-hours');
+  var reception = readJSON('data-reception');
+  var closed = readJSON('data-closed');
+  if (!Array.isArray(closed)) closed = [];
+
+  /* --- 表の印を data-hours から入れる --- */
+  if (hours) {
+    var cells = table.querySelectorAll('tbody td[data-day]');
+    for (var i = 0; i < cells.length; i++) {
+      var td = cells[i];
+      var day = hours[td.getAttribute('data-day')];
+      var half = td.getAttribute('data-label') === '午後' ? 'pm' : 'am';
+      var mark = day && typeof day === 'object' ? day[half] : null;
+      if (typeof mark !== 'string' || !mark) continue;
+      var el = td.querySelector('.mark');
+      var sr = td.querySelector('.sr-only');
+      if (el) { el.textContent = mark; el.setAttribute('data-mark', mark); }
+      if (sr) sr.textContent = LABEL[mark] || mark;
+    }
+  }
+
+  /* --- "09:00-12:30" を分に直す。読めなければ null --- */
+  function range(str) {
+    if (typeof str !== 'string') return null;
+    var m = str.replace(/\s/g, '').match(/^(\d{1,2}):(\d{2})[-–—〜~](\d{1,2}):(\d{2})$/);
+    if (!m) return null;
+    var s = (+m[1]) * 60 + (+m[2]), e = (+m[3]) * 60 + (+m[4]);
+    if (s < 0 || e > 24 * 60 || e <= s) return null;
+    return { start: s, end: e, text: m[1] + ':' + m[2] + '–' + m[3] + ':' + m[4], from: m[1] + ':' + m[2], to: m[3] + ':' + m[4] };
+  }
+
+  /* --- スマホ表示用に、各セルへ時間（data-time）を入れる --- */
+  if (reception) {
+    var tds = table.querySelectorAll('tbody td[data-day]');
+    for (var j = 0; j < tds.length; j++) {
+      var cell = tds[j];
+      var d = reception[cell.getAttribute('data-day')];
+      var key = cell.getAttribute('data-label') === '午後' ? 'pm' : 'am';
+      var r = d && typeof d === 'object' ? range(d[key]) : null;
+      cell.setAttribute('data-time', r ? r.text : '');
+    }
+  }
+
+  /* --- 本日の列を強調する --- */
+  var now = new Date();
+  var todayKey = DAYS[now.getDay()];
+  var th = table.querySelector('thead th[data-day="' + todayKey + '"]');
+  if (th) {
+    th.classList.add('is-today');
+    th.setAttribute('aria-current', 'date');
+    var flag = th.querySelector('.today-flag');
+    if (flag) flag.hidden = false;
+    var col = table.querySelectorAll('tbody td[data-day="' + todayKey + '"]');
+    for (var k = 0; k < col.length; k++) col[k].classList.add('is-today');
+  }
+
+  /* --- 受付状況の一行 --- */
+  if (!reception) { hideStatus(); return; }
+  var today = reception[todayKey];
+  if (!today || typeof today !== 'object') { hideStatus(); return; }
+
+  function iso(dt) {
+    return dt.getFullYear() + '-' + ('0' + (dt.getMonth() + 1)).slice(-2) + '-' + ('0' + dt.getDate()).slice(-2);
+  }
+  var am = range(today.am), pm = range(today.pm);
+  var mins = now.getHours() * 60 + now.getMinutes();
+  var isClosedDay = closed.indexOf(iso(now)) !== -1;
+
+  var state = 'closed', text = '', sub = '';
+  if (isClosedDay) {
+    text = '本日は休診日です';
+    sub = '（臨時休診）';
+  } else if (!am && !pm) {
+    text = '本日は休診日です';
+  } else if (am && mins < am.start) {
+    text = '本日の受付は ' + am.from + ' からです';
+    state = 'soon';
+  } else if (am && mins < am.end) {
+    text = '受付中';
+    sub = '午前の受付は ' + am.to + ' まで';
+    state = 'open';
+  } else if (pm && mins < pm.start) {
+    text = am ? '午前の受付は終了しました' : '本日の受付は ' + pm.from + ' からです';
+    sub = '午後は ' + pm.from + ' から';
+    state = 'soon';
+  } else if (pm && mins < pm.end) {
+    text = '受付中';
+    sub = '本日の受付は ' + pm.to + ' まで';
+    state = 'open';
+  } else {
+    text = '本日の受付は終了しました';
+  }
+
+  for (var s = 0; s < slots.length; s++) {
+    var box = slots[s];
+    var t = box.querySelector('.status-text');
+    if (!t) { box.hidden = true; continue; }
+    t.textContent = text;
+    if (sub) {
+      var span = document.createElement('span');
+      span.className = 'status-sub';
+      span.textContent = sub;
+      box.appendChild(span);
+    }
+    box.classList.remove('is-open', 'is-closed');
+    if (state === 'open') box.classList.add('is-open');
+    else if (state === 'closed') box.classList.add('is-closed');
+    box.hidden = false;
+  }
+})();
+
+/* ============================================================
+   3. 画像が無いときは枠の代わりにグラデーションを残します
+      （画像切れのアイコンを出さないため）
+============================================================ */
+(function () {
+  var imgs = document.querySelectorAll('.hero-art img, .portrait img, .frame img');
+  for (var i = 0; i < imgs.length; i++) {
+    (function (img) {
+      function drop() { if (img.parentNode) img.parentNode.removeChild(img); }
+      img.addEventListener('error', drop);
+      if (img.complete && img.naturalWidth === 0) drop();
+    })(imgs[i]);
+  }
+})();
+
+/* ============================================================
+   4. モバイルメニュー
+============================================================ */
+(function () {
+  var toggle = document.getElementById('menuToggle');
+  var menu = document.getElementById('mobileMenu');
+  if (!toggle || !menu) return;
+  function close() {
+    toggle.classList.remove('open'); menu.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+  }
+  toggle.addEventListener('click', function () {
+    var open = menu.classList.toggle('open');
+    toggle.classList.toggle('open', open);
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  var links = menu.querySelectorAll('a');
+  for (var i = 0; i < links.length; i++) links[i].addEventListener('click', close);
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+})();
+
+/* ============================================================
+   5. リビール（ゆっくり現れる）。動きを抑える設定のときは何もしません
+============================================================ */
+(function () {
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var items = document.querySelectorAll('.rv');
+  if (reduce || !('IntersectionObserver' in window)) {
+    for (var i = 0; i < items.length; i++) items[i].classList.add('on');
+    return;
+  }
+  var counts = new Map();
+  for (var j = 0; j < items.length; j++) {
+    var p = items[j].parentElement;
+    var n = counts.get(p) || 0;
+    counts.set(p, n + 1);
+    items[j].style.transitionDelay = Math.min(n * 80, 320) + 'ms';
+  }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      e.target.classList.add('on');
+      io.unobserve(e.target);
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -5% 0px' });
+  for (var k = 0; k < items.length; k++) io.observe(items[k]);
+})();
+
+/* ============================================================
+   6. FAQ と 年号（フッターの著作権表示）
+============================================================ */
+(function () {
+  var y = document.getElementById('year');
+  if (y) y.textContent = new Date().getFullYear();
+})();
+</script>
+
+</body>
+</html>
