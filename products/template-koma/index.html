@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="ja" data-theme="gallery">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- ============================================================
+  KOMA（コマ）— 写真家のためのギャラリーテンプレート v1.0
+  by IDATSUKA (https://idatsuka.com)
+
+  白い壁と広い余白。文字は小さく、絵は大きく。
+  写真家・イラストレーター・作家・工芸家のための、
+  「作品を一枚ずつ見てもらう」ことだけを考えた1ファイル完結テンプレートです。
+
+  中心はライトボックス（拡大ビューア）です。
+  キーボード（← → Esc）・スワイプ・読み上げソフトのすべてに対応しています。
+
+  ■ カスタマイズ手順
+  1. 下の <title> / meta description / OGP / canonical / favicon を差し替え
+  2. <style> 冒頭の :root で配色を調整（黒いテーマは [data-theme="dark"]）
+  3. 「EDIT:」コメントの付いた箇所のテキストを自分の内容に差し替え
+  4. 作品を入れ替えます。触るのは WORKS の <figure> だけです
+       <figure class="work"
+               data-title="作品名"
+               data-year="2024"
+               data-meta="35mm · f/1.4 · 1/250s · ISO 400"
+               data-size="1600 × 2400">      ← 画像の縦横のピクセル数
+         <button …><span class="frame" data-n="01">
+           <img src="assets/work-01.jpg" alt="" loading="lazy">
+         </span></button>
+         <figcaption>…</figcaption>
+       </figure>
+     ・data-size を書き換えると、タイルの縦横比とプレースホルダーの表示が
+       いっしょに変わります（1600 × 2400 なら 2:3 の縦位置になります）
+     ・拡大時だけ大きいファイルを読み込みたいときは
+       <figure> に data-full="assets/work-01-large.jpg" を足してください
+     ・作品を増やすときは <figure> ごとコピーして data-n を連番にするだけです
+  5. 画像は assets/ に置くだけです（hero.jpg / work-01.jpg … / series-1.jpg /
+     portrait.jpg）。ファイルが無い間は、その枠の縦横比のままの
+     グレーのプレースホルダー（番号と推奨ピクセル数入り）が表示されます。
+     画像切れのアイコンは出ません
+  6. 1ファイル完結。index.html と assets/ をサーバーにアップロードするだけで公開できます
+
+  ■ 収録しているもの
+  ・白（gallery）／黒（dark）の2テーマ切替（選択はブラウザに保存）
+  ・ライトボックス（拡大ビューア）
+      ← → で移動 / Esc で閉じる / Tab はビューアの中だけを巡回
+      閉じると、開いたときのサムネイルにフォーカスが戻ります
+      横スワイプで移動、下スワイプで閉じる
+      role="dialog" aria-modal="true" / 「3 / 12」を読み上げ（aria-live）
+      背後のページはスクロールを止め、支援技術からも隠します
+      キャプション（作品名・制作年・撮影データ）は <figure> の data- 属性から
+      前後2枚だけを先読み
+  ・CSS columns のメーソンリー（3列 → 2列 → 1列、タイルは分割されません）
+  ・画像が無いときのプレースホルダー枠（番号＋推奨ピクセル数、縦横比そのまま）
+  ・HERO（一枚だけ大きく）／WORKS（12点）／SERIES（3シリーズ）／
+    ABOUT（略歴・展示歴）／CONTACT（依頼の種類・連絡先・SNS）／FOOTER
+  ・prefers-reduced-motion 対応、外部ライブラリ・外部画像ゼロ
+  ・OGP / canonical / theme-color / SVG ファビコン内蔵
+
+  ■ 掲載内容について（景品表示法）
+  作家名・作品名・年・撮影データ・価格・連絡先は、すべて「◯◯」「△△」
+  「¥◯,◯◯◯」等のプレースホルダーです。公開前に必ず実際の内容へ
+  差し替えてください。
+  **展示歴・受賞歴・掲載歴は、確認できる事実のみを書いてください。**
+  実際には無い個展・入選・受賞・雑誌掲載を書くことは、景品表示法（優良誤認）
+  に違反するおそれがあります。根拠のない「No.1」「日本初」などの表示も同様です。
+
+  ■ 写真の権利について（重要）
+  このテンプレートには写真・イラスト・フォントファイルは同梱していません。
+  assets/ に置く素材は、ご自身が権利を持つものをお使いください。
+  掲載する写真の著作権、および写っている方の肖像権（モデルリリースの取得）
+  は、このテンプレートを使う方の責任になります。人物・私有地・作品
+  （他者の絵画・建築・商品など）が写っている場合は特にご注意ください。
+
+  ライセンス: 個人・商用利用可 / テンプレートとしての再販・再配布は不可
+============================================================ -->
+
+<!-- EDIT: ページタイトルと説明文（作家名・ジャンル・地域を入れると検索で見つかりやすくなります） -->
+<title>◯◯ ◯◯ — 写真 / Photographs</title>
+<meta name="description" content="写真家 ◯◯ ◯◯ の作品集。◯◯を主題にした写真を◯◯年から撮り続けています。作品・シリーズ・展示歴・依頼のご相談。">
+
+<!-- EDIT: OGP（SNS でシェアされたときの表示）。og:url と og:image は公開URLに合わせて差し替えてください -->
+<meta property="og:title" content="◯◯ ◯◯ — 写真 / Photographs">
+<meta property="og:description" content="写真家 ◯◯ ◯◯ の作品集。◯◯を主題にした写真を◯◯年から撮り続けています。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://example.com/">
+<meta property="og:site_name" content="◯◯ ◯◯">
+<meta property="og:image" content="https://example.com/assets/hero.jpg">
+
+<!-- EDIT: 正規URL（canonical）。公開するURLに書き換えてください -->
+<link rel="canonical" href="https://example.com/">
+
+<!-- EDIT: ブラウザのUI色（スマホのアドレスバー等）。テーマ切替時に自動更新されます -->
+<meta name="theme-color" content="#fafafa" id="themeColor">
+
+<!-- EDIT: ファビコン（SVG内蔵）。白い壁に掛かった一枚の額。
+     画像を使う場合は <link rel="icon" href="favicon.png"> に置き換えてください -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23fafafa'/%3E%3Crect x='18' y='12' width='28' height='40' fill='none' stroke='%23111111' stroke-width='3'/%3E%3Crect x='25' y='19' width='14' height='26' fill='%23d7263d'/%3E%3C/svg%3E">
+
+<!-- 保存済みテーマを描画前に適用（ちらつき防止）。触らなくてOK -->
+<script>(function(){try{var t=localStorage.getItem('koma-theme');if(t==='gallery'||t==='dark'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Noto+Sans+JP:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   THEME — 白（gallery / 壁）。ここを変えるだけで全体の印象が変わります。
+   KOMA の考えかた: 画面の色は壁の色。色は「作品」だけが持ちます。
+   赤（--accent）は「今いる場所の印」と「フォーカスの枠」にしか使いません。
+============================================================ */
+:root, [data-theme="gallery"] {
+  color-scheme: light;
+  --bg: #fafafa;        /* 壁（背景） */
+  --bg2: #f0f0f0;       /* 一段沈めた面（額の中・帯） */
+  --fg: #111111;        /* 本文 */
+  --fg-dim: #3d3d3d;    /* 補助文字・キャプション */
+  /* 番号・推奨サイズ・小さなラベルの灰。指定値 #767676 では 10〜11px の文字が
+     白い地に対して 4.35:1 となり 4.5:1 に届かないため、2段だけ暗くしています */
+  --muted: #6b6b6b;
+  --accent: #d7263d;    /* 赤 — 現在位置の印とフォーカスリングのみ */
+  --line: rgba(17,17,17,.14);     /* 罫線 */
+  --line-soft: rgba(17,17,17,.07);
+  --lb-bg: #fafafa;     /* ライトボックスの地（背後は完全に隠します） */
+  --shadow: rgba(17,17,17,.10);
+
+  /* EDIT: フォント。3書体だけ使っています
+     Archivo … 名前・ラベル（欧文） / Noto Sans JP … 本文（和文）
+     JetBrains Mono … 番号・撮影データ */
+  --latin: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+  --sans: 'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic', sans-serif;
+  --mono: 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace;
+
+  --w-body: 300;        /* 本文の太さ。黒いテーマでは少し太くします（暗い地で細い字は読みにくいため） */
+  --maxw: 1240px;       /* コンテンツ最大幅 */
+  --gut: 2.2rem;        /* 左右の余白（壁の広さ） */
+  --ease: cubic-bezier(.22,1,.36,1);
+}
+
+/* EDIT: 黒いテーマ（暗い展示室）。ナビ右上の「白／黒」で切り替わります。
+   最初から黒で表示したい場合は <html lang="ja" data-theme="gallery"> を
+   <html lang="ja" data-theme="dark"> に変更してください */
+[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0c0c0c;
+  --bg2: #161616;
+  --fg: #ededed;
+  --fg-dim: #c2c2c2;
+  --muted: #8a8a8a;
+  --accent: #ff4d5e;
+  --line: rgba(237,237,237,.16);
+  --line-soft: rgba(237,237,237,.08);
+  --lb-bg: #0c0c0c;
+  --w-body: 400;
+  --shadow: rgba(0,0,0,.5);
+}
+
+/* ============================================================
+   BASE
+============================================================ */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 5rem; -webkit-text-size-adjust: 100%; }
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: var(--sans); font-weight: var(--w-body);
+  font-size: 15px; line-height: 1.95; letter-spacing: .02em;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  transition: background-color .35s var(--ease), color .35s var(--ease);
+}
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+ul { list-style: none; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+::selection { background: var(--fg); color: var(--bg); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+.wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--gut); }
+
+/* 読み上げソフト専用（画面には出ません） */
+.sr {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* ============================================================
+   NAV — 壁に貼られた小さな案内。線は一本だけ
+============================================================ */
+.nav {
+  position: fixed; inset: 0 0 auto; z-index: 60;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line-soft);
+}
+.nav-in {
+  max-width: var(--maxw); margin: 0 auto; padding: 0 var(--gut);
+  height: 4rem; display: flex; align-items: center; gap: 1.2rem;
+}
+/* EDIT: 左上の作家名（ロゴ代わり）。文字だけで十分です */
+.brand {
+  font-family: var(--latin); font-weight: 600; font-size: .95rem;
+  letter-spacing: .16em; text-transform: uppercase; white-space: nowrap;
+}
+.brand i { font-style: normal; color: var(--accent); }
+.nav-links { margin-left: auto; display: flex; gap: 1.5rem; }
+.nav-links a {
+  font-family: var(--mono); font-size: .66rem; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--fg-dim);
+  padding: .4rem 0; position: relative; transition: color .25s var(--ease);
+}
+.nav-links a:hover { color: var(--fg); }
+/* 現在位置の印。赤を使うのはここだけです */
+.nav-links a::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: .05rem; height: 1px;
+  background: var(--accent); transform: scaleX(0); transform-origin: left;
+  transition: transform .3s var(--ease);
+}
+.nav-links a.here { color: var(--fg); }
+.nav-links a.here::after { transform: scaleX(1); }
+
+.theme-btn {
+  margin-left: 1.4rem; display: inline-flex; align-items: center; gap: .35rem;
+  font-family: var(--mono); font-size: .68rem; letter-spacing: .1em;
+  color: var(--fg-dim); border: 1px solid var(--line); border-radius: 2px;
+  padding: .3rem .55rem; transition: border-color .25s var(--ease), color .25s var(--ease);
+}
+.theme-btn:hover { border-color: var(--fg); color: var(--fg); }
+.theme-btn span { transition: opacity .25s var(--ease); }
+.theme-btn .slash { color: var(--muted); opacity: 1 !important; }
+
+/* ============================================================
+   SECTION — 見出しは小さく。番号は mono
+============================================================ */
+/* 注意: .sec は .wrap と同じ要素に付きます。padding のショートハンドを使うと
+   .wrap の左右余白を打ち消してしまうので、必ず padding-top だけを指定してください */
+.sec { padding-top: 6.5rem; }
+.sec-head {
+  display: flex; align-items: baseline; gap: 1rem;
+  padding-bottom: 1.1rem; border-bottom: 1px solid var(--line);
+  margin-bottom: 3rem;
+}
+.sec-no { font-family: var(--mono); font-size: .7rem; color: var(--muted); letter-spacing: .1em; }
+.sec-title {
+  font-family: var(--latin); font-weight: 500; font-size: .82rem;
+  letter-spacing: .24em; text-transform: uppercase;
+}
+.sec-jp { margin-left: auto; font-size: .74rem; color: var(--fg-dim); letter-spacing: .1em; }
+
+.lead { max-width: 46ch; color: var(--fg-dim); font-size: .92rem; }
+
+/* ============================================================
+   FRAME — 画像の枠。assets/ に画像を置くまでは
+   「番号 + 推奨ピクセル数」のグレーの板が、その縦横比のまま出ます
+============================================================ */
+.frame {
+  position: relative; display: block; overflow: hidden;
+  background: var(--bg2); border: 1px solid var(--line);
+  aspect-ratio: var(--ar, 3/4);   /* JS が data-size から計算して上書きします */
+}
+.frame::before {
+  content: attr(data-n);
+  position: absolute; top: .7rem; left: .8rem;
+  font-family: var(--mono); font-weight: 500; font-size: .68rem;
+  letter-spacing: .12em; color: var(--muted);
+}
+.frame::after {
+  content: attr(data-size);
+  position: absolute; right: .8rem; bottom: .7rem;
+  font-family: var(--mono); font-size: .62rem;
+  letter-spacing: .06em; color: var(--muted);
+}
+.frame img { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; object-fit: cover; }
+
+/* ============================================================
+   HERO — 一枚だけ、大きく。名前はその下の「壁の札」
+============================================================ */
+.hero { padding-top: 8.5rem; }
+/* 額と、その下の「壁の札」の幅をそろえます */
+.hero-in { width: fit-content; max-width: 100%; margin-inline: auto; }
+/* 一枚だけ、大きく。ただし名前が画面に入るよう高さで頭打ちにしています
+   （EDIT: もっと大きく見せたいときは 58svh / 520px を上げてください） */
+.hero-frame {
+  --ar: 3/2;
+  height: min(58svh, 520px); width: auto; max-width: 100%; margin-inline: auto;
+  box-shadow: 0 24px 60px -40px var(--shadow);
+}
+.hero-label {
+  margin-top: 2.2rem;
+  display: grid; grid-template-columns: 1fr auto; gap: 1.4rem 2.5rem; align-items: end;
+}
+/* EDIT: 作家名 */
+.hero-name {
+  font-family: var(--latin); font-weight: 500;
+  font-size: clamp(2.4rem, 6.4vw, 4.6rem); line-height: 1;
+  letter-spacing: -.02em;
+}
+/* EDIT: 肩書き（写真家 / photographer など） */
+.hero-role {
+  margin-top: .9rem; color: var(--fg-dim);
+  font-size: .86rem; letter-spacing: .14em;
+}
+.hero-role b { font-weight: 400; font-family: var(--latin); text-transform: uppercase; letter-spacing: .2em; }
+.hero-meta {
+  font-family: var(--mono); font-size: .68rem; line-height: 2.1;
+  color: var(--fg-dim); text-align: right; letter-spacing: .04em;
+}
+.hero-meta span { color: var(--muted); }
+
+/* ============================================================
+   WORKS — CSS columns のメーソンリー（3列 → 2列 → 1列）
+   並びは「左の列を上から下へ、次の列へ」です
+============================================================ */
+.masonry { columns: 3; column-gap: 2.2rem; }
+.work { break-inside: avoid; margin: 0 0 2.2rem; }
+.tile {
+  display: block; width: 100%; padding: 0; cursor: zoom-in;
+  transition: opacity .3s var(--ease);
+}
+.tile:hover { opacity: .84; }
+.work figcaption {
+  display: flex; gap: .8rem; align-items: baseline;
+  margin-top: .7rem; min-height: 1.5rem;
+  opacity: 0; transition: opacity .3s var(--ease);
+}
+.work:hover figcaption, .work:focus-within figcaption { opacity: 1; }
+.cap-t { font-size: .78rem; color: var(--fg); letter-spacing: .06em; }
+.cap-y { margin-left: auto; font-family: var(--mono); font-size: .66rem; color: var(--fg-dim); }
+/* タップで操作する端末では、ホバーが無いので常に表示します */
+@media (hover: none) {
+  .work figcaption { opacity: 1; }
+  .tile { cursor: pointer; }
+}
+
+.works-note {
+  margin-top: .6rem; font-family: var(--mono); font-size: .64rem;
+  color: var(--muted); letter-spacing: .08em;
+}
+
+/* ============================================================
+   SERIES — 横長の帯を3つ
+============================================================ */
+.series { display: grid; gap: 4.5rem; }
+.serie-frame { --ar: 3/1; }   /* JS が data-size から上書きします（JS 無効時の保険） */
+.serie-body {
+  margin-top: 1.4rem; display: grid; grid-template-columns: 4rem minmax(0, 1fr) 13rem; gap: 2rem;
+  align-items: start;
+}
+.serie-no { font-family: var(--mono); font-size: .72rem; color: var(--muted); letter-spacing: .12em; padding-top: .25rem; }
+.serie-name { font-size: 1.12rem; font-weight: 400; letter-spacing: .06em; }
+.serie-en {
+  display: block; margin-top: .25rem;
+  font-family: var(--latin); font-size: .7rem; letter-spacing: .22em;
+  text-transform: uppercase; color: var(--fg-dim);
+}
+.serie-text { margin-top: .9rem; color: var(--fg-dim); font-size: .88rem; max-width: 60ch; }
+.serie-facts { font-family: var(--mono); font-size: .68rem; color: var(--fg-dim); line-height: 2.2; }
+.serie-facts dt { color: var(--muted); display: inline; }
+.serie-facts dd { display: inline; margin-left: .6rem; }
+.serie-facts div + div { margin-top: .1rem; }
+
+/* ============================================================
+   ABOUT
+============================================================ */
+.about { display: grid; grid-template-columns: 22rem 1fr; gap: 3.5rem; align-items: start; }
+.portrait-frame { --ar: 4/5; }
+.portrait-cap { margin-top: .7rem; font-family: var(--mono); font-size: .62rem; color: var(--muted); letter-spacing: .06em; }
+.bio p + p { margin-top: 1.2rem; }
+.bio p { color: var(--fg-dim); font-size: .92rem; max-width: 54ch; }
+.cv { margin-top: 3rem; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2.6rem 3rem; }
+.cv h3 {
+  font-family: var(--latin); font-weight: 500; font-size: .7rem;
+  letter-spacing: .22em; text-transform: uppercase; color: var(--fg);
+  padding-bottom: .6rem; border-bottom: 1px solid var(--line); margin-bottom: .9rem;
+}
+.cv li { display: grid; grid-template-columns: 3.2rem 1fr; gap: .7rem; font-size: .82rem; color: var(--fg-dim); line-height: 1.85; }
+.cv li + li { margin-top: .55rem; }
+.cv time { font-family: var(--mono); font-size: .7rem; color: var(--muted); }
+
+/* ============================================================
+   CONTACT
+============================================================ */
+.contact { display: grid; grid-template-columns: 1fr 20rem; gap: 3.5rem; align-items: start; }
+.jobs { display: grid; gap: 0; border-top: 1px solid var(--line); }
+.job { display: grid; grid-template-columns: 2.6rem 1fr 9rem; gap: 1.2rem; align-items: baseline;
+  padding: 1.3rem 0; border-bottom: 1px solid var(--line); }
+.job-no { font-family: var(--mono); font-size: .68rem; color: var(--muted); }
+.job-name { font-size: .95rem; letter-spacing: .04em; }
+.job-text { display: block; margin-top: .3rem; font-size: .8rem; color: var(--fg-dim); }
+.job-price { font-family: var(--mono); font-size: .72rem; color: var(--fg-dim); text-align: right; }
+.contact-side dl { border-top: 1px solid var(--line); }
+.contact-side div { padding: .95rem 0; border-bottom: 1px solid var(--line); }
+.contact-side dt { font-family: var(--latin); font-size: .62rem; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+.contact-side dd { margin-top: .3rem; font-family: var(--mono); font-size: .8rem; color: var(--fg); word-break: break-all; }
+.contact-side dd a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.sns { margin-top: 1.6rem; display: flex; flex-wrap: wrap; gap: .5rem; }
+.sns a {
+  font-family: var(--mono); font-size: .66rem; letter-spacing: .12em;
+  border: 1px solid var(--line); border-radius: 2px; padding: .4rem .7rem;
+  color: var(--fg-dim); transition: border-color .25s var(--ease), color .25s var(--ease);
+}
+.sns a:hover { border-color: var(--fg); color: var(--fg); }
+
+/* ============================================================
+   FOOTER
+============================================================ */
+.foot { margin-top: 7rem; border-top: 1px solid var(--line); padding: 2.6rem 0 3.4rem; }
+.foot-in { display: flex; flex-wrap: wrap; gap: 1.2rem 2rem; align-items: baseline; }
+.foot-name { font-family: var(--latin); font-weight: 600; font-size: .8rem; letter-spacing: .16em; text-transform: uppercase; }
+.foot-links { display: flex; gap: 1.2rem; }
+.foot-links a, .foot-copy { font-family: var(--mono); font-size: .64rem; color: var(--fg-dim); letter-spacing: .08em; }
+.foot-meta { display: flex; flex-wrap: wrap; gap: .4rem 1.6rem; margin-top: 1.4rem; font-family: var(--mono); font-size: .72rem; color: var(--fg-dim); letter-spacing: .06em; }
+.foot-meta a { color: var(--fg-dim); transition: color .3s; }
+.foot-meta a:hover { color: var(--accent); }
+.foot-links a:hover { color: var(--fg); }
+.foot-copy { margin-left: auto; }
+.foot-note { margin-top: 1.6rem; font-size: .72rem; color: var(--fg-dim); max-width: 64ch; line-height: 1.9; }
+
+/* ============================================================
+   LIGHTBOX — この製品の中心。
+   画面は「上＝番号と閉じる / 中＝作品 / 下＝キャプション」の3段。
+   スマホでは前後ボタンが最下段に降り、作品に重なりません
+============================================================ */
+.lb {
+  position: fixed; inset: 0; z-index: 100;
+  background: var(--lb-bg);
+  display: grid;
+  grid-template-columns: 4.8rem 1fr 4.8rem;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  grid-template-areas:
+    "count .     close"
+    "prev  stage next"
+    ".     cap   .";
+  padding: 1rem 1.4rem 1.8rem;
+  opacity: 0; transition: opacity .26s var(--ease);
+}
+.lb[hidden] { display: none !important; }
+.lb.on { opacity: 1; }
+.lb-count {
+  grid-area: count; align-self: center;
+  font-family: var(--mono); font-size: .72rem; letter-spacing: .12em; color: var(--fg-dim);
+}
+.lb-close {
+  grid-area: close; justify-self: end; align-self: center;
+  width: 2.6rem; height: 2.6rem; display: grid; place-items: center;
+  border: 1px solid var(--line); border-radius: 2px; color: var(--fg-dim);
+  transition: border-color .25s var(--ease), color .25s var(--ease);
+}
+.lb-close:hover { border-color: var(--fg); color: var(--fg); }
+.lb-close svg { width: 14px; height: 14px; }
+.lb-nav {
+  align-self: center; justify-self: center;
+  width: 3rem; height: 3rem; display: grid; place-items: center;
+  color: var(--fg-dim); border: 1px solid transparent; border-radius: 2px;
+  transition: color .25s var(--ease), border-color .25s var(--ease);
+}
+.lb-nav:hover { color: var(--fg); border-color: var(--line); }
+.lb-nav svg { width: 22px; height: 22px; }
+.lb-prev { grid-area: prev; }
+.lb-next { grid-area: next; }
+
+.lb-stage {
+  grid-area: stage; min-height: 0; min-width: 0;
+  display: grid; padding: .6rem 0;
+  touch-action: pan-y;
+}
+.lb-media {
+  display: flex; align-items: center; justify-content: center;
+  min-height: 0; min-width: 0; overflow: hidden;
+}
+.lb-media img, .lb-media .lb-ph {
+  max-width: 100%; max-height: 100%; width: auto; height: auto;
+  object-fit: contain;
+  box-shadow: 0 30px 70px -50px var(--shadow);
+}
+/* 画像が無いときの板（SVG）。枠と同じ見た目です */
+.lb-ph rect { fill: var(--bg2); stroke: var(--line); }
+.lb-ph text { fill: var(--muted); font-family: var(--mono); font-weight: 500; }
+.lb-media.swap { opacity: 0; transform: translateY(6px); }
+.lb-media { transition: opacity .2s var(--ease), transform .2s var(--ease); }
+
+.lb-cap {
+  grid-area: cap; text-align: center; padding-top: 1.1rem;
+  display: grid; gap: .35rem; justify-items: center;
+}
+.lb-cap h2 { font-size: .92rem; font-weight: 400; letter-spacing: .08em; }
+.lb-cap h2 span { color: var(--fg-dim); font-family: var(--mono); font-size: .74rem; margin-left: .7rem; }
+.lb-exif { font-family: var(--mono); font-size: .68rem; color: var(--fg-dim); letter-spacing: .05em; }
+
+/* 開いている間、背後のページは動きません */
+body.lb-open { overflow: hidden; }
+
+/* ============================================================
+   リビール（静かに現れます。動きは最小限）
+============================================================ */
+.rv { opacity: 0; transform: translateY(10px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
+.rv.on { opacity: 1; transform: none; }
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+@media (max-width: 1080px) {
+  :root { --gut: 1.6rem; }
+  .masonry { columns: 2; }
+  .about { grid-template-columns: 17rem 1fr; gap: 2.4rem; }
+  .serie-body { grid-template-columns: 4.5rem 1fr; }
+  .serie-facts { grid-column: 2; }
+  .contact { grid-template-columns: 1fr 16rem; gap: 2.4rem; }
+}
+@media (max-width: 820px) {
+  .sec { padding-top: 5rem; }
+  .sec-jp { display: none; }
+  .about { grid-template-columns: 1fr; }
+  .portrait-frame { max-width: 20rem; }
+  .contact { grid-template-columns: 1fr; }
+  .job { grid-template-columns: 2.2rem 1fr; }
+  .job-price { grid-column: 2; text-align: left; margin-top: .35rem; }
+  .hero-label { grid-template-columns: 1fr; }
+  .hero-meta { text-align: left; }
+  /* 幅の狭い画面では、高さではなく幅いっぱいに置きます */
+  .hero-frame { height: auto; width: 100%; }
+}
+@media (max-width: 640px) {
+  :root { --gut: 1.15rem; }
+  body { font-size: 14px; }
+  .nav-in { height: 3.4rem; gap: .7rem; }
+  .brand { font-size: .8rem; letter-spacing: .12em; }
+  .nav-links { gap: .95rem; }
+  .nav-links a { font-size: .58rem; letter-spacing: .1em; }
+  .theme-btn { margin-left: .5rem; font-size: .6rem; padding: .25rem .4rem; gap: .25rem; }
+  .hero { padding-top: 6rem; }
+  .masonry { columns: 1; }
+  .work { margin-bottom: 2.6rem; }
+  .cv { grid-template-columns: 1fr; gap: 2rem; }
+  .sec-head { margin-bottom: 2rem; }
+  .foot-copy { margin-left: 0; }
+
+  /* ライトボックス：前後ボタンは最下段へ。作品には重なりません */
+  .lb {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto minmax(0, 1fr) auto auto;
+    grid-template-areas:
+      "count close"
+      "stage stage"
+      "cap   cap"
+      "prev  next";
+    padding: .7rem 1rem 1rem;
+  }
+  .lb-nav { width: 100%; height: 3rem; border: 1px solid var(--line); margin-top: .9rem; }
+  .lb-prev { justify-self: stretch; margin-right: .35rem; }
+  .lb-next { justify-self: stretch; margin-left: .35rem; }
+  .lb-cap { padding-top: .9rem; }
+}
+@media (max-width: 400px) {
+  .nav-links a:nth-child(2) { display: none; }  /* 幅が足りないときは SERIES を隠します */
+}
+
+/* ============================================================
+   動きを抑える設定（prefers-reduced-motion）— 演出を止めて、全部見えるように
+============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important; animation-iteration-count: 1 !important;
+    animation-delay: 0ms !important;
+    transition-duration: .001ms !important; transition-delay: 0ms !important;
+  }
+  html { scroll-behavior: auto; }
+  .rv { opacity: 1; transform: none; }
+  .work figcaption { opacity: 1; }
+  .lb { opacity: 1; }
+  .lb-media.swap { opacity: 1; transform: none; }
+}
+
+/* 印刷（作品リストとして紙に出したいとき） */
+@media print {
+  .nav, .lb, .theme-btn { display: none !important; }
+  .rv { opacity: 1 !important; transform: none !important; }
+  .work figcaption { opacity: 1; }
+}
+</style>
+</head>
+<body>
+
+<!-- ページ本体。ライトボックスを開いている間、この <div> は
+     支援技術から隠されます（aria-hidden / inert） -->
+<div id="page">
+
+<!-- ============================================================
+  NAV
+============================================================ -->
+<nav class="nav">
+  <div class="nav-in">
+    <!-- EDIT: 作家名（ローマ字・イニシャルなど）。最後の一文字だけ赤にしています -->
+    <a href="#top" class="brand">KOM<i>A</i></a>
+    <!-- EDIT: ナビのリンク。不要な項目は <a> ごと削除してください -->
+    <div class="nav-links">
+      <a href="#works">Works</a>
+      <a href="#series">Series</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <button type="button" class="theme-btn" id="themeToggle" aria-label="黒いテーマに切り替え">
+      <span class="t-gallery">白</span><span class="slash">/</span><span class="t-dark">黒</span>
+    </button>
+  </div>
+</nav>
+
+<main>
+
+<!-- ============================================================
+  HERO — 一枚だけ大きく置きます
+============================================================ -->
+<header class="hero wrap" id="top">
+ <div class="hero-in">
+  <!-- EDIT: 代表作を1枚。assets/hero.jpg（2400×1600 程度）に差し替えてください。
+       ファイルが無い間はグレーの板が出ます（画像切れのアイコンは出ません） -->
+  <div class="frame hero-frame" data-n="HERO" data-size="2400 × 1600">
+    <img src="assets/hero.jpg" alt="" fetchpriority="high">
+  </div>
+
+  <div class="hero-label">
+    <div>
+      <!-- EDIT: 作家名 -->
+      <h1 class="hero-name">◯◯ ◯◯</h1>
+      <!-- EDIT: 肩書き -->
+      <p class="hero-role">写真家　<b>Photographer</b>　/　◯◯県 ◯◯市</p>
+    </div>
+    <!-- EDIT: 右の小さなデータ。展示中の情報などを1〜3行で -->
+    <p class="hero-meta">
+      <span>Selected works</span> 20◯◯ — 20◯◯<br>
+      <span>Now showing</span> 「◯◯◯◯」◯◯ギャラリー<br>
+      <span>Print</span> ◯◯ / ゼラチンシルバー
+    </p>
+  </div>
+ </div>
+</header>
+
+<!-- ============================================================
+  WORKS — メーソンリー。クリック（Enter / Space）で拡大します
+
+  ■ 1枚を差し替える手順
+  1. 画像を assets/work-01.jpg として置く
+  2. <figure> の data-title / data-year / data-meta を書き換える
+  3. data-size を実際のピクセル数にする（縦横比が自動で合います）
+  ■ 増やすとき: <figure> ごとコピーして data-n を連番にするだけです
+  ■ 拡大時だけ大きい画像を使うとき: <figure> に
+     data-full="assets/work-01-large.jpg" を足してください
+============================================================ -->
+<section class="sec wrap" id="works">
+  <div class="sec-head">
+    <span class="sec-no">01</span>
+    <h2 class="sec-title">Works</h2>
+    <span class="sec-jp">クリックすると大きく表示されます（← → で移動 / Esc で閉じる）</span>
+  </div>
+
+  <div class="masonry" id="masonry">
+
+    <!-- EDIT: ここから12点。1枚目 -->
+    <figure class="work rv" data-title="◯◯の朝" data-year="20◯◯" data-meta="◯◯mm · f/◯.◯ · 1/◯◯◯s · ISO ◯◯◯" data-size="1600 × 2400">
+      <button type="button" class="tile"><span class="frame" data-n="01"><img src="assets/work-01.jpg" alt="" loading="lazy"></span></button>
+      <figcaption><span class="cap-t">◯◯の朝</span><span class="cap-y">20◯◯</span></figcaption>
+    </figure>
+
+    <figure class="work rv" data-title="△△、六月" data-year="20◯◯" data-meta="◯◯mm · f/◯.◯ · 1/◯◯◯s · ISO ◯◯◯" data-size="2400 × 1600">
+      <button type="button" class="tile"><span class="frame" data-n="02"><img src="assets/work-02.jpg" alt="" loading="lazy"></span></button>
+      <figcaption><span class="cap-t">△△、六月</span><span class="cap-y">20◯◯</span></figcaption>
+    </figure>
+
+    <figure class="work rv" data-title="◯◯（習作）" data-year="20◯◯" data-meta="◯◯mm · f/◯.◯ · 1/◯◯◯s · ISO ◯◯◯" data-size="2000 × 2000">
+      <button type="button" class="tile"><span class="frame" data-n="03"><img src="assets/work-03.jpg" alt="" loading="lazy"></span></button>
+      <figcaption><span class="cap-t">◯◯（習作）</span><span class="cap-y">20◯◯</span></figcaption>
+    </figure>
+
+    <figure class="work rv" data-title="◯◯の岸" data-year="20◯◯" data-meta="◯◯mm · f/◯.◯ · 1/◯◯◯s · ISO ◯◯◯" data-size="2400 × 1600">
+      <button type="button" class="tile"><span class="frame" data-n="04"><img src="assets/work-04.jpg" alt="" loading="lazy"></span></button>
+      <figcaption><span class="cap-t">◯◯の岸</span><span class="cap-y">20◯◯</span></figcaption>
+    </figure>
+
+    <figure class="work rv" data-title="△△の部屋" data-year="20◯◯" data-meta="◯◯mm · f/◯.◯ · 1/◯◯◯s · ISO ◯◯◯" data-size="1600 × 2400">
+      <button type="button" class="tile"><span class="frame" data-n="05"><img src="assets/work-05.jpg" alt="" loading="lazy"></span></button>
+      <figcaption><span class="cap-t">△△の部屋</span><span class="cap-y">20◯◯</span></figcaption>
+    </figure>
+
+    <figure class="work rv" data-title="◯◯ I" data-year="20◯◯" data-meta="◯◯mm · f/◯.◯ · 1/◯◯◯s · ISO ◯◯◯" data-size="1600 × 2400">
+      <button type="button" class="tile"><span class="frame" data-n="06"><img src="assets/work-06.jpg" alt="" loading="lazy"></span></button>
+      <figcaption><span class="cap-t">◯◯ I</span><span class="cap-y">20◯◯</span></figcaption>
+    </figure>
+
+    <figure class="work rv" data-title="◯◯ II" data-year="20◯◯" data-meta="◯◯mm · f/◯.◯ · 1/◯◯◯s · ISO ◯◯◯" data-size="2000 × 2000">
+      <button type="button" class="tile"><span class="frame" data-n="07"><img src="assets/work-07.jpg" alt="" loading="lazy"></span></button>
+      <figcaption><span class="cap-t">◯◯ II</span><span class="cap-y">20◯◯</span></figcaption>
+    </figure>
+
+    <figure class="work rv" data-title="△△へ続く道" data-year="20◯◯" data-meta="◯◯mm · f/◯.◯ · 1/◯◯◯s · ISO ◯◯◯" data-size="2400 × 1600">
+      <button type="button" class="tile"><span class="frame" data-n="08"><img src="assets/work-08.jpg" alt="" loading="lazy"></span></button>
+      <figcaption><span class="cap-t">△△へ続く道</span><span class="cap-y">20◯◯</span></figcaption>
+    </figure>
+
+    <figure class="work rv" data-title="◯◯の手" data-year="20◯◯" data-meta="◯◯mm · f/◯.◯ · 1/◯◯◯s · ISO ◯◯◯" data-size="1600 × 2400">
+      <button type="button" class="tile"><span class="frame" data-n="09"><img src="assets/work-09.jpg" alt="" loading="lazy"></span></button>
+      <figcaption><span class="cap-t">◯◯の手</span><span class="cap-y">20◯◯</span></figcaption>
+    </figure>
+
+    <figure class="work rv" data-title="△△、夕" data-year="20◯◯" data-meta="◯◯mm · f/◯.◯ · 1/◯◯◯s · ISO ◯◯◯" data-size="2400 × 1600">
+      <button type="button" class="tile"><span class="frame" data-n="10"><img src="assets/work-10.jpg" alt="" loading="lazy"></span></button>
+      <figcaption><span class="cap-t">△△、夕</span><span class="cap-y">20◯◯</span></figcaption>
+    </figure>
+
+    <figure class="work rv" data-title="◯◯ III" data-year="20◯◯" data-meta="◯◯mm · f/◯.◯ · 1/◯◯◯s · ISO ◯◯◯" data-size="2000 × 2000">
+      <button type="button" class="tile"><span class="frame" data-n="11"><img src="assets/work-11.jpg" alt="" loading="lazy"></span></button>
+      <figcaption><span class="cap-t">◯◯ III</span><span class="cap-y">20◯◯</span></figcaption>
+    </figure>
+
+    <figure class="work rv" data-title="◯◯の窓" data-year="20◯◯" data-meta="◯◯mm · f/◯.◯ · 1/◯◯◯s · ISO ◯◯◯" data-size="1600 × 2400">
+      <button type="button" class="tile"><span class="frame" data-n="12"><img src="assets/work-12.jpg" alt="" loading="lazy"></span></button>
+      <figcaption><span class="cap-t">◯◯の窓</span><span class="cap-y">20◯◯</span></figcaption>
+    </figure>
+    <!-- EDIT: ここまで12点 -->
+
+  </div>
+  <p class="works-note">12 works — click to enlarge</p>
+</section>
+
+<!-- ============================================================
+  SERIES — 横長の帯を3つ。組写真・連作の紹介に
+============================================================ -->
+<section class="sec wrap" id="series">
+  <div class="sec-head">
+    <span class="sec-no">02</span>
+    <h2 class="sec-title">Series</h2>
+    <span class="sec-jp">続けて撮っている主題</span>
+  </div>
+
+  <div class="series">
+
+    <!-- EDIT: シリーズ1。画像は assets/series-1.jpg（2400×900 程度） -->
+    <article class="rv">
+      <div class="frame serie-frame" data-n="I" data-size="2400 × 800"><img src="assets/series-1.jpg" alt="" loading="lazy"></div>
+      <div class="serie-body">
+        <p class="serie-no">I</p>
+        <div>
+          <h3 class="serie-name">◯◯◯◯<span class="serie-en">Series One</span></h3>
+          <p class="serie-text">◯◯を◯年間、同じ場所で撮り続けた連作です。△△の変化と、そこに居る人のことを記録しています。◯◯についての説明をこの位置に2〜3行で書いてください。</p>
+        </div>
+        <dl class="serie-facts">
+          <div><dt>点数</dt><dd>◯◯点</dd></div>
+          <div><dt>期間</dt><dd>20◯◯ — 20◯◯</dd></div>
+          <div><dt>形式</dt><dd>◯◯ / ◯◯</dd></div>
+        </dl>
+      </div>
+    </article>
+
+    <!-- EDIT: シリーズ2 -->
+    <article class="rv">
+      <div class="frame serie-frame" data-n="II" data-size="2400 × 800"><img src="assets/series-2.jpg" alt="" loading="lazy"></div>
+      <div class="serie-body">
+        <p class="serie-no">II</p>
+        <div>
+          <h3 class="serie-name">△△△△<span class="serie-en">Series Two</span></h3>
+          <p class="serie-text">△△をテーマにした作品群です。◯◯の光と、◯◯の時間帯だけを選んで撮影しました。この説明文を自分の言葉に差し替えてください。</p>
+        </div>
+        <dl class="serie-facts">
+          <div><dt>点数</dt><dd>◯◯点</dd></div>
+          <div><dt>期間</dt><dd>20◯◯ — 継続中</dd></div>
+          <div><dt>形式</dt><dd>◯◯ / ◯◯</dd></div>
+        </dl>
+      </div>
+    </article>
+
+    <!-- EDIT: シリーズ3 -->
+    <article class="rv">
+      <div class="frame serie-frame" data-n="III" data-size="2400 × 800"><img src="assets/series-3.jpg" alt="" loading="lazy"></div>
+      <div class="serie-body">
+        <p class="serie-no">III</p>
+        <div>
+          <h3 class="serie-name">◯◯と△△<span class="serie-en">Series Three</span></h3>
+          <p class="serie-text">◯◯と△△をならべて見せる試みです。◯◯年の◯◯をきっかけにはじめました。写真集・展示の予定があればここに書けます。</p>
+        </div>
+        <dl class="serie-facts">
+          <div><dt>点数</dt><dd>◯◯点</dd></div>
+          <div><dt>期間</dt><dd>20◯◯ — 20◯◯</dd></div>
+          <div><dt>形式</dt><dd>◯◯ / ◯◯</dd></div>
+        </dl>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- ============================================================
+  ABOUT
+  ※ 略歴・展示歴・受賞歴は「実際にあったことだけ」を書いてください。
+    無い展示や受賞を書くことは景品表示法（優良誤認）に触れるおそれがあります。
+============================================================ -->
+<section class="sec wrap" id="about">
+  <div class="sec-head">
+    <span class="sec-no">03</span>
+    <h2 class="sec-title">About</h2>
+    <span class="sec-jp">略歴</span>
+  </div>
+
+  <div class="about">
+    <div class="rv">
+      <!-- EDIT: 本人の写真。assets/portrait.jpg（1200×1500 程度） -->
+      <div class="frame portrait-frame" data-n="PORTRAIT" data-size="1200 × 1500"><img src="assets/portrait.jpg" alt="◯◯ ◯◯ のポートレート" loading="lazy"></div>
+      <p class="portrait-cap">Photo by ◯◯ ◯◯</p>
+    </div>
+
+    <div class="rv">
+      <!-- EDIT: 自己紹介。3段落くらいが読みやすい分量です -->
+      <div class="bio">
+        <p>◯◯年、◯◯県生まれ。◯◯を経て、20◯◯年から写真を撮りはじめました。主な主題は◯◯と△△です。</p>
+        <p>使っている機材は◯◯と◯◯。プリントは◯◯で行っています。撮影から仕上げまでの考えかたを、この2〜3行で書いてください。</p>
+        <p>作品の販売・展示のご相談、撮影のご依頼は下の CONTACT からお願いします。</p>
+      </div>
+
+      <div class="cv">
+        <!-- EDIT: 略歴。事実だけを書いてください -->
+        <div>
+          <h3>略歴 / Biography</h3>
+          <ul>
+            <li><time>20◯◯</time><span>◯◯県◯◯市 生まれ</span></li>
+            <li><time>20◯◯</time><span>◯◯大学 ◯◯学部 卒業</span></li>
+            <li><time>20◯◯</time><span>◯◯スタジオ勤務を経て独立</span></li>
+            <li><time>20◯◯</time><span>◯◯にて制作をはじめる</span></li>
+          </ul>
+        </div>
+        <!-- EDIT: 個展。開いたことのある展示だけを書いてください -->
+        <div>
+          <h3>個展 / Solo</h3>
+          <ul>
+            <li><time>20◯◯</time><span>「◯◯◯◯」◯◯ギャラリー（◯◯市）</span></li>
+            <li><time>20◯◯</time><span>「△△△△」◯◯（◯◯市）</span></li>
+            <li><time>20◯◯</time><span>「◯◯と△△」◯◯（◯◯市）</span></li>
+          </ul>
+        </div>
+        <!-- EDIT: グループ展 -->
+        <div>
+          <h3>グループ展 / Group</h3>
+          <ul>
+            <li><time>20◯◯</time><span>「◯◯展」◯◯美術館（◯◯市）</span></li>
+            <li><time>20◯◯</time><span>「△△展」◯◯（◯◯市）</span></li>
+          </ul>
+        </div>
+        <!-- EDIT: 受賞・掲載。※ 事実のみ。無い場合はこのブロックごと削除してください -->
+        <div>
+          <h3>受賞・掲載 / Awards</h3>
+          <ul>
+            <li><time>20◯◯</time><span>◯◯賞 ◯◯（主催: ◯◯）</span></li>
+            <li><time>20◯◯</time><span>雑誌『◯◯』20◯◯年◯月号 掲載</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+  CONTACT
+============================================================ -->
+<section class="sec wrap" id="contact">
+  <div class="sec-head">
+    <span class="sec-no">04</span>
+    <h2 class="sec-title">Contact</h2>
+    <span class="sec-jp">依頼・お問い合わせ</span>
+  </div>
+
+  <div class="contact">
+    <!-- EDIT: 受けている仕事の種類と目安の料金。実際に受けられるものだけを書いてください -->
+    <div class="jobs rv">
+      <div class="job">
+        <span class="job-no">01</span>
+        <div><span class="job-name">人物・ポートレート撮影</span><span class="job-text">◯◯時間 / 仕上げ◯◯カット / ◯◯市内ほか</span></div>
+        <span class="job-price">¥◯◯,◯◯◯ —</span>
+      </div>
+      <div class="job">
+        <span class="job-no">02</span>
+        <div><span class="job-name">作品・商品の撮影</span><span class="job-text">◯◯点まで / 背景◯◯ / データ納品</span></div>
+        <span class="job-price">¥◯◯,◯◯◯ —</span>
+      </div>
+      <div class="job">
+        <span class="job-no">03</span>
+        <div><span class="job-name">プリント販売・展示のご相談</span><span class="job-text">◯◯サイズ / エディション◯◯ / 額装◯◯</span></div>
+        <span class="job-price">¥◯,◯◯◯ —</span>
+      </div>
+    </div>
+
+    <div class="contact-side rv">
+      <!-- EDIT: 連絡先 -->
+      <dl>
+        <div><dt>Email</dt><dd><a href="mailto:◯◯@example.com">◯◯@example.com</a></dd></div>
+        <div><dt>Tel</dt><dd>◯◯◯-◯◯◯◯-◯◯◯◯</dd></div>
+        <div><dt>Base</dt><dd>◯◯県◯◯市</dd></div>
+        <div><dt>Reply</dt><dd>◯営業日以内</dd></div>
+      </dl>
+      <!-- EDIT: SNS。href を自分のアカウントに。使っていないものは削除してください -->
+      <div class="sns">
+        <a href="#" rel="me noopener">Instagram</a>
+        <a href="#" rel="me noopener">X</a>
+        <a href="#" rel="me noopener">note</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============================================================
+  FOOTER
+============================================================ -->
+<footer class="foot">
+  <div class="wrap foot-in">
+    <!-- EDIT: 作家名・著作権表示 -->
+    <span class="foot-name">◯◯ ◯◯</span>
+    <div class="foot-links">
+      <a href="#works">Works</a><a href="#series">Series</a><a href="#about">About</a><a href="#contact">Contact</a><a href="#top">Top</a>
+    </div>
+    <span class="foot-copy">© 20◯◯ ◯◯ ◯◯</span>
+  </div>
+  <!-- EDIT: 権利についての一行。掲載写真の権利関係に合わせて書き換えてください -->
+  <div class="wrap"><p class="foot-note">掲載している写真の著作権は撮影者に帰属します。無断転載・二次利用はご遠慮ください。人物が写っている写真は、ご本人の許諾を得て掲載しています。</p></div>
+  <div class="wrap foot-meta">
+    <span>KOMA Template v1.0 — 個人・商用利用可／再販不可</span>
+    <!-- EDIT: 配布元へのリンク。公開時に不要であれば、この1行を削除してください -->
+    <a href="https://idatsuka.com/store.html">← Store に戻る</a>
+  </div>
+</footer>
+
+</div><!-- /#page -->
+
+<!-- ============================================================
+  LIGHTBOX — 拡大ビューア（中身は JavaScript が入れます）
+  基本的に触る必要はありません。ボタンの文言を変えたいときだけ編集してください
+============================================================ -->
+<div class="lb" id="lightbox" role="dialog" aria-modal="true" aria-label="作品ビューア" hidden>
+  <p class="lb-count" id="lbCount" aria-live="polite" aria-atomic="true">1 / 12</p>
+
+  <button type="button" class="lb-close" id="lbClose" aria-label="閉じる（Esc）">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg>
+  </button>
+
+  <button type="button" class="lb-nav lb-prev" id="lbPrev" aria-label="前の作品（←）">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 4l-8 8 8 8"/></svg>
+  </button>
+
+  <div class="lb-stage" id="lbStage">
+    <div class="lb-media" id="lbMedia"></div>
+  </div>
+
+  <button type="button" class="lb-nav lb-next" id="lbNext" aria-label="次の作品（→）">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4l8 8-8 8"/></svg>
+  </button>
+
+  <div class="lb-cap">
+    <h2 id="lbTitle">—<span id="lbYear"></span></h2>
+    <p class="lb-exif" id="lbExif"></p>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   1. テーマ切替（gallery / dark。選択はブラウザに保存されます）
+============================================================ */
+(function () {
+  var root = document.documentElement, key = 'koma-theme';
+  var btn = document.getElementById('themeToggle'), meta = document.getElementById('themeColor');
+  /* EDIT: スマホのアドレスバーの色。上の :root / [data-theme="dark"] の --bg と揃えてください */
+  var BAR = { gallery: '#fafafa', dark: '#0c0c0c' };
+  function sync() {
+    var t = root.getAttribute('data-theme') === 'dark' ? 'dark' : 'gallery';
+    if (meta) meta.setAttribute('content', BAR[t]);
+    if (!btn) return;
+    btn.setAttribute('aria-label', t === 'dark' ? '白いテーマに切り替え' : '黒いテーマに切り替え');
+    btn.querySelector('.t-gallery').style.opacity = t === 'gallery' ? '1' : '.4';
+    btn.querySelector('.t-dark').style.opacity = t === 'dark' ? '1' : '.4';
+  }
+  sync();
+  if (btn) btn.addEventListener('click', function () {
+    var next = root.getAttribute('data-theme') === 'dark' ? 'gallery' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem(key, next); } catch (e) {}
+    sync();
+  });
+})();
+
+/* ============================================================
+   2. 枠の準備
+   ・data-size（例 "1600 × 2400"）から縦横比を計算して枠に入れます
+   ・画像が無い（404）ときは <img> を外して、グレーの板だけを残します
+     — 画像切れのアイコンを出さないためです
+============================================================ */
+function komaSize(el) {
+  /* "1600 × 2400" / "1600x2400" / "1600 * 2400" のどれでも読み取ります */
+  var m = String(el.getAttribute('data-size') || '').match(/(\d+)\s*[×xX*]\s*(\d+)/);
+  return m ? { w: +m[1], h: +m[2] } : null;
+}
+(function () {
+  document.querySelectorAll('.frame').forEach(function (f) {
+    /* WORKS のタイルは data-size を親の <figure> に書きます（編集箇所を1か所にするため）。
+       ここでその値を枠にも写しています */
+    if (!f.hasAttribute('data-size')) {
+      var host = f.closest('[data-size]');
+      if (host) f.setAttribute('data-size', host.getAttribute('data-size'));
+    }
+    var s = komaSize(f);
+    if (s && s.w > 0 && s.h > 0) f.style.setProperty('--ar', s.w + ' / ' + s.h);
+    var img = f.querySelector('img');
+    if (!img) return;
+    function drop() { if (img.parentNode) img.parentNode.removeChild(img); }
+    img.addEventListener('error', drop);
+    if (img.complete && img.naturalWidth === 0) drop();
+  });
+})();
+
+/* ============================================================
+   3. ライトボックス（拡大ビューア）— この製品の中心
+   ・← → で移動 / Esc で閉じる / Tab はビューアの中だけを巡回
+   ・閉じると、開いたときのサムネイルにフォーカスが戻ります
+   ・横スワイプで移動、下スワイプで閉じる
+   ・前後2枚だけを先読み
+============================================================ */
+(function () {
+  var figs = [].slice.call(document.querySelectorAll('.work'));
+  var lb = document.getElementById('lightbox');
+  if (!figs.length || !lb) return;
+
+  var page = document.getElementById('page');
+  var media = document.getElementById('lbMedia');
+  var count = document.getElementById('lbCount');
+  var title = document.getElementById('lbTitle');
+  var year = document.getElementById('lbYear');
+  var exif = document.getElementById('lbExif');
+  var btnPrev = document.getElementById('lbPrev');
+  var btnNext = document.getElementById('lbNext');
+  var btnClose = document.getElementById('lbClose');
+  var stage = document.getElementById('lbStage');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  var idx = -1, opener = null, isOpen = false, hideTimer = 0;
+  var cache = {};   /* 先読み済みの URL */
+
+  /* 各タイルのボタンに、読み上げ用の名前を入れます（data- 属性から自動生成） */
+  figs.forEach(function (fig, i) {
+    var btn = fig.querySelector('.tile');
+    if (!btn) return;
+    btn.setAttribute('aria-haspopup', 'dialog');
+    btn.setAttribute('aria-label',
+      (fig.getAttribute('data-title') || ('作品 ' + (i + 1))) +
+      '（' + (fig.getAttribute('data-year') || '') + '）を拡大表示');
+    btn.addEventListener('click', function () { open(i, btn); });
+  });
+
+  function srcOf(fig) {
+    /* data-full があればそちら（拡大用の大きいファイル）を優先します */
+    var full = fig.getAttribute('data-full');
+    if (full) return full;
+    var img = fig.querySelector('.frame img');
+    return img ? img.getAttribute('src') : '';
+  }
+
+  /* 画像が無いときに出す板（SVG）。枠と同じ見た目で、縦横比も data-size のまま。
+     文字の大きさは「画面に出たときに何 px に見えるか」で決めます（fitPh） */
+  var NS = 'http://www.w3.org/2000/svg';
+  function placeholder(fig, n) {
+    var s = komaSize(fig) || { w: 1000, h: 1000 };
+    var svg = document.createElementNS(NS, 'svg');
+    svg.setAttribute('viewBox', '0 0 ' + s.w + ' ' + s.h);
+    svg.setAttribute('class', 'lb-ph');
+    svg.setAttribute('width', s.w); svg.setAttribute('height', s.h);
+    svg.setAttribute('aria-hidden', 'true');
+    var r = document.createElementNS(NS, 'rect');
+    svg.appendChild(r);
+    [[n, 'start', 11], [s.w + ' × ' + s.h, 'end', 10]].forEach(function (d) {
+      var t = document.createElementNS(NS, 'text');
+      t.setAttribute('text-anchor', d[1]);
+      t.setAttribute('data-px', d[2]);
+      t.textContent = d[0];
+      svg.appendChild(t);
+    });
+    svg.__s = s;
+    return svg;
+  }
+  /* 表示された実寸を測って、枠線と文字をタイルと同じ見た目の大きさに合わせます */
+  function fitPh() {
+    var svg = media.querySelector('.lb-ph');
+    if (!svg || !svg.__s) return;
+    var box = svg.getBoundingClientRect();
+    if (!box.width) return;
+    var s = svg.__s, k = s.w / box.width, pad = 13 * k;   /* k = 1CSSpx あたりの座標数 */
+    var rect = svg.querySelector('rect');
+    rect.setAttribute('x', k / 2); rect.setAttribute('y', k / 2);
+    rect.setAttribute('width', s.w - k); rect.setAttribute('height', s.h - k);
+    rect.setAttribute('stroke-width', k);
+    var ts = svg.querySelectorAll('text');
+    var f0 = (+ts[0].getAttribute('data-px')) * k, f1 = (+ts[1].getAttribute('data-px')) * k;
+    ts[0].setAttribute('font-size', f0); ts[0].setAttribute('letter-spacing', f0 * .12);
+    ts[0].setAttribute('x', pad); ts[0].setAttribute('y', pad + f0 * .85);
+    ts[1].setAttribute('font-size', f1); ts[1].setAttribute('letter-spacing', f1 * .06);
+    ts[1].setAttribute('x', s.w - pad); ts[1].setAttribute('y', s.h - pad);
+  }
+  window.addEventListener('resize', function () { if (isOpen) fitPh(); });
+
+  function preload(i) {
+    if (i < 0 || i >= figs.length) return;
+    var src = srcOf(figs[i]);
+    if (!src || cache[src]) return;
+    cache[src] = true;
+    var im = new Image(); im.src = src;
+  }
+
+  function render(i) {
+    var fig = figs[i];
+    idx = i;
+    media.textContent = '';
+
+    var src = srcOf(fig);
+    var n = (fig.querySelector('.frame') || {}).dataset;
+    n = (n && n.n) || String(i + 1);
+
+    if (src) {
+      var img = new Image();
+      img.alt = fig.getAttribute('data-title') || '';
+      img.addEventListener('error', function () {
+        /* ファイルが無いときは板に差し替え（画像切れのアイコンは出しません） */
+        if (img.parentNode === media) {
+          media.textContent = ''; media.appendChild(placeholder(fig, n));
+          requestAnimationFrame(fitPh);
+        }
+      });
+      img.src = src;
+      media.appendChild(img);
+    } else {
+      media.appendChild(placeholder(fig, n));
+      requestAnimationFrame(fitPh);
+    }
+
+    title.childNodes[0].nodeValue = fig.getAttribute('data-title') || '';
+    year.textContent = fig.getAttribute('data-year') || '';
+    exif.textContent = fig.getAttribute('data-meta') || '';
+    count.textContent = (i + 1) + ' / ' + figs.length;
+
+    /* 先読みは前後の2枚だけ */
+    preload(i - 1); preload(i + 1);
+
+    if (!reduce.matches) {
+      media.classList.add('swap');
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () { media.classList.remove('swap'); });
+      });
+    }
+  }
+
+  function go(step) {
+    if (!isOpen) return;
+    var n = (idx + step + figs.length) % figs.length;
+    render(n);
+  }
+
+  function open(i, btn) {
+    opener = btn || document.activeElement;
+    isOpen = true;
+    if (hideTimer) { clearTimeout(hideTimer); hideTimer = 0; }
+    lb.hidden = false;
+    render(i);
+    document.body.classList.add('lb-open');
+    if (page) { page.setAttribute('aria-hidden', 'true'); page.inert = true; }
+    requestAnimationFrame(function () { lb.classList.add('on'); });
+    btnClose.focus();
+  }
+
+  function close() {
+    if (!isOpen) return;
+    isOpen = false;
+    lb.classList.remove('on');
+    document.body.classList.remove('lb-open');
+    if (page) { page.removeAttribute('aria-hidden'); page.inert = false; }
+    /* フォーカスは開いたサムネイルへ戻します */
+    if (opener && document.contains(opener)) opener.focus();
+    opener = null;
+    var wait = reduce.matches ? 0 : 260;
+    hideTimer = setTimeout(function () { lb.hidden = true; media.textContent = ''; hideTimer = 0; }, wait);
+  }
+
+  btnPrev.addEventListener('click', function () { go(-1); });
+  btnNext.addEventListener('click', function () { go(1); });
+  btnClose.addEventListener('click', close);
+  /* 余白（作品の外側）をクリックしても閉じます */
+  lb.addEventListener('click', function (e) { if (e.target === lb || e.target === stage) close(); });
+
+  /* ---- キーボード。Tab はビューアの中だけを巡回します（フォーカストラップ） ---- */
+  lb.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { e.preventDefault(); close(); return; }
+    if (e.key === 'ArrowRight') { e.preventDefault(); go(1); return; }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); return; }
+    if (e.key !== 'Tab') return;
+    var f = [].slice.call(lb.querySelectorAll('button:not([disabled])'));
+    if (!f.length) return;
+    var first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && (document.activeElement === first || !lb.contains(document.activeElement))) {
+      e.preventDefault(); last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault(); first.focus();
+    }
+  });
+  /* 万一フォーカスが外へ出ても連れ戻します */
+  document.addEventListener('focusin', function (e) {
+    if (isOpen && !lb.contains(e.target)) btnClose.focus();
+  });
+
+  /* ---- スワイプ：横で移動、下で閉じる ---- */
+  (function () {
+    var x0 = 0, y0 = 0, id = null;
+    var H = 48;   /* 横スワイプと判定する距離（px） */
+    var V = 90;   /* 下スワイプで閉じる距離（px） */
+    stage.addEventListener('pointerdown', function (e) {
+      if (id !== null) return;
+      id = e.pointerId; x0 = e.clientX; y0 = e.clientY;
+    });
+    function end(e) {
+      if (id === null || e.pointerId !== id) return;
+      id = null;
+      var dx = e.clientX - x0, dy = e.clientY - y0;
+      if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > H) { go(dx < 0 ? 1 : -1); }
+      else if (dy > V && Math.abs(dx) < V) { close(); }
+    }
+    stage.addEventListener('pointerup', end);
+    stage.addEventListener('pointercancel', function () { id = null; });
+  })();
+})();
+
+/* ============================================================
+   4. リビール（スクロールすると静かに現れます）
+============================================================ */
+(function () {
+  var els = [].slice.call(document.querySelectorAll('.rv'));
+  if (!els.length) return;
+  if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    els.forEach(function (el) { el.classList.add('on'); });
+    return;
+  }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) {
+      if (!en.isIntersecting) return;
+      en.target.classList.add('on');
+      io.unobserve(en.target);
+    });
+  }, { rootMargin: '0px 0px -8% 0px' });
+  els.forEach(function (el) { io.observe(el); });
+})();
+
+/* ============================================================
+   5. 現在位置の印（ナビの赤い下線）
+============================================================ */
+(function () {
+  var links = [].slice.call(document.querySelectorAll('.nav-links a'));
+  var secs = links.map(function (a) { return document.querySelector(a.getAttribute('href')); });
+  if (!links.length || !('IntersectionObserver' in window)) return;
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) {
+      var i = secs.indexOf(en.target);
+      if (i < 0) return;
+      if (en.isIntersecting) {
+        links.forEach(function (a) { a.classList.remove('here'); });
+        links[i].classList.add('here');
+      }
+    });
+  }, { rootMargin: '-45% 0px -50% 0px' });
+  secs.forEach(function (s) { if (s) io.observe(s); });
+})();
+</script>
+
+</body>
+</html>
