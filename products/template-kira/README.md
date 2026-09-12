@@ -74,6 +74,44 @@ by IDATSUKA — https://idatsuka.com
 毎回再生したい場合は、`<head>` の判定スクリプトから `sessionStorage` の行を外してください。
 動きを抑える設定（`prefers-reduced-motion`）のブラウザでは、演出はすべて止まり、最初から全部が表示されます。
 
+## キービジュアルを画像生成ツールで作る場合
+
+同梱の空とシルエットは、ブラウザで描画した「仕様書代わりの仮ビジュアル」です。
+劇場版クオリティの絵が必要な場合は、画像生成ツール（Midjourney / Nano Banana / Stable Diffusion など）で
+作った絵に差し替えることを想定しています。差し替え先は上の3層と同じです。
+
+### 手順
+
+1. 空（16:9、2400×1350 以上）を生成し、`assets/kv-sky.jpg` として保存する
+2. 動かしたい場合は、その静止画を image-to-video（Kling / Runway / Higgsfield など）に渡して 8〜12 秒のループを作り、下の ffmpeg で `mp4` と `webm` に変換する
+3. 人物は背景透過の PNG（立ち絵）を生成し、`<svg>…<use href="#chara-main">…</svg>` を `<img class="kv-chara-img" src="chara.png" alt="">` に置き換える。シルエットで使う場合は黒ベタで塗った PNG にする
+
+### プロンプト例 — 空
+
+- EN: `anime background art, dusk sky just after sunset, towering cumulus clouds lit from below in peach and rose, upper sky deep indigo with the first stars, thin cirrus, soft crepuscular rays from a low sun at the lower right, painterly cel shading, key visual background, no people, no buildings, no text, 16:9`
+- JA: `アニメ背景美術、日没直後の夕空、下から桃色と薔薇色に照らされた入道雲、上空は藍色で星が出はじめる、薄い筋雲、右下の低い太陽からの柔らかな光芒、セル調の塗り、人物なし、建物なし、文字なし、16:9`
+- Negative: `text, watermark, people, buildings, photo, lens flare artifacts, blur`
+
+### プロンプト例 — 人物（立ち絵）
+
+- EN: `anime key visual, high-school girl seen from behind, leaning on a rooftop railing, long hair and a scarf blowing in the wind, looking up at the dusk sky, full body, clean lineart, soft cel shading, transparent background, 3:4`
+- JA: `アニメのキービジュアル、屋上の手すりにもたれる後ろ姿の女子高生、長い髪とマフラーが風になびく、夕空を見上げる、全身、清潔な線画、柔らかいセル塗り、背景透過、3:4`
+
+### プロンプト例 — 動画化（image-to-video）
+
+`slow drifting clouds, gentle light breathing on the horizon, subtle twinkling stars, static camera, no people, seamless loop, 10 seconds`
+
+### 変換コマンド（ffmpeg）
+
+```
+ffmpeg -i sky.mp4 -c:v libx264 -crf 21 -pix_fmt yuv420p -movflags +faststart -an assets/kv-sky.mp4
+ffmpeg -i sky.mp4 -c:v libvpx-vp9 -crf 34 -b:v 0 -an assets/kv-sky.webm
+ffmpeg -i sky.mp4 -frames:v 1 -q:v 3 assets/kv-sky.jpg
+```
+
+生成ツールの利用規約と、生成物の商用利用可否は必ず確認してください。
+他社のストック素材やテンプレート素材（デザインツール内の素材など）は、再配布制限があるため同梱できません。
+
 ## 予告編（TRAILER）の設定
 
 ```html
