@@ -1,150 +1,150 @@
 <!DOCTYPE html>
-<html lang="ja" data-theme="pop">
+<html lang="ja" data-theme="night">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <!-- ============================================================
-  KIRA（キラ）— キャラクター＆クリエイター向けテンプレート v1.0
+  KIRA（キラ）— 劇場版アニメ・作品公式サイトテンプレート v2.0
   by IDATSUKA (https://idatsuka.com)
 
-  VTuber・イラストレーター・同人サークル・キャラクターIP・
-  マスコットのいるインディーゲーム のための、
-  1ファイル完結のアニメ／萌え系 HTML テンプレートです。
+  劇場版アニメ／OVA／舞台／ゲームなど、「作品」の公式サイトのための
+  1ファイル完結テンプレートです。キービジュアル・イントロダクション・
+  ストーリー・キャラクター・スタッフ＆キャスト・予告編・主題歌・
+  劇場情報・特典・グッズ・ニュースまで、公式サイトに必要な一式が入っています。
 
   ■ カスタマイズ手順
   1. 下の <title> / meta description / OGP / canonical / favicon を差し替え
-  2. <style> 冒頭の :root で配色を調整（夜テーマは [data-theme="night"]）
-  3. 「EDIT:」コメントの付いた箇所のテキストを自分の内容に差し替え
-  4. キャラクターは <symbol id="chara"> のSVG（仮のイラスト）です。
-     自分のイラストに差し替える場合は、HERO の
-     <svg class="hero-art"><use href="#chara"></use></svg> を
-     <img class="hero-art" src="chara.png" alt=""> に置き換えるだけ。
-     CSS 側でどんな縦横比の画像でも収まるようにしてあります
-  5. 1ファイル完結。サーバーにアップロードするだけで公開できます
+  2. <style> 冒頭の :root で配色を調整（明るいテーマは [data-theme="dawn"]）
+  3. 「EDIT:」コメントの付いた箇所のテキストを自分の作品の内容に差し替え
+  4. キービジュアル（HERO）は次の3層でできています。差し替え方は下記のとおりです
+     ・空（背景）… assets/kv-sky.jpg（2400×1350）＋ assets/kv-sky.mp4 / .webm（1920×1080 ループ）
+       ファイルを置かない場合は CSS のグラデーション（夕暮れの空）がそのまま表示されます
+     ・街（シルエット）… <symbol id="city"> の中身を自分のイラストのパスに差し替え
+     ・人物（シルエット）… <symbol id="chara-main"> の中身を差し替え
+       キャラクター紹介の3人は <symbol id="chara-a"> / #chara-b / #chara-c です
+       いずれも fill="currentColor" のままにしておくと、CSS の --silhouette で色が変わります
+       画像を使う場合は <svg>…</svg> ごと <img src="chara.png" alt=""> に置き換えてください
+  5. 予告編は TRAILER の data-youtube-id="◯◯◯◯◯◯" を YouTube の動画ID（11文字）に
+     差し替えるだけで、再生ボタンから埋め込み再生されます
+  6. 1ファイル完結。assets/ フォルダごとサーバーにアップロードするだけで公開できます
 
   ■ 収録しているもの
-  ・ポップ（pop）／ナイト（night）の2テーマ切替（選択はブラウザに保存）
-  ・キャラクターのゆれ／視差チルト／クリックで「ぽよん」＋ハート弾け
-  ・ふわふわ舞うキラキラ（Canvas・最大40粒・タブ非表示で停止）
-  ・PC のみカーソルのキラキラ軌跡
-  ・お知らせの流れるティッカー、波形のセクション区切り、ステッカー風カード
-  ・プロフィール表／パラメータバー／ギャラリー／配信スケジュール
-  ・ボイス／グッズ（SOLD OUT リボン付き）／ファン向け情報／Q&A／リンク
-  ・prefers-reduced-motion 対応、外部ライブラリ・外部画像ゼロ
+  ・夜（night）／夜明け（dawn）の2テーマ切替（選択はブラウザに保存）
+  ・キービジュアル：空（動画＋静止画フォールバック）／街／人物の3層パララックス、
+    Ken Burns（ゆっくり寄る）、光の粒（Canvas）、流れ星、レンズフレア
+  ・オープニング演出：レターボックスが開いてタイトルが浮かぶ（1セッション1回だけ）
+  ・縦書きタイトルロゴ（スマホでは自動で横書き）・公開日の帯・CTA
+  ・ニュース／イントロダクション／ストーリー／キャラクター（タブ切替）／
+    スタッフ＆キャスト／予告編（YouTube埋め込み）／主題歌／劇場情報（地域別アコーディオン）／
+    スペシャル／グッズ／フッター（製作委員会表記・SNS）
+  ・スクロール進捗の金の細線、スクロールで立ち上がるリビール演出
+  ・prefers-reduced-motion 対応（動きを抑える設定では演出を止めて全要素を表示）
+  ・外部ライブラリゼロ／外部画像は assets/ のキービジュアルのみ
 
   ■ 掲載内容について（景品表示法）
-  名前・数字・価格・日付はすべて「◯◯」「¥◯,◯◯◯」等のプレースホルダーです。
-  登録者数・再生数・販売実績・受賞歴・ファンの声などは、
-  実際に確認できる事実だけをご記載ください。
-  根拠のない「No.1」「日本一」「大人気」などの表現はお避けください。
+  作品名「約束の星」以外の、スタッフ名・キャスト名・劇場名・電話番号・価格・公開日は
+  すべて「◯◯」等のプレースホルダーです。公開前に必ず実際の内容へ差し替えてください。
+  受賞歴・動員数・興行収入・レビュー・「全米No.1」などの実績表現は、
+  確認できる事実のみをご記載ください（根拠のない表示は景品表示法違反となります）。
+  未確定の公開日・劇場・登壇者を確定情報のように書かないようご注意ください。
 
-  ■ イラスト・キャラクターの権利について（重要）
-  収録している <symbol id="chara"> のイラストは、このテンプレート用に
-  描き起こした仮のキャラクターです。差し替える場合は、
-  ご自身が権利を持つ（または利用許諾を得た）イラストをお使いください。
-  権利を持っていない他者のキャラクター・アニメ・ゲームの画像を
-  掲載することはできません。
+  ■ 素材の権利について（重要）
+  収録しているシルエット（街・人物）は、このテンプレート用の仮の図形です。
+  差し替える際は、ご自身が権利を持つ（または利用許諾を得た）素材をお使いください。
 
   ライセンス: 個人・商用利用可 / テンプレートとしての再販・再配布は不可
 ============================================================ -->
 
-<!-- EDIT: ページタイトルと説明文（名前・肩書き・活動内容を入れると検索で見つかりやすくなります） -->
-<title>星宮 きら — ◯◯所属 VTuber 公式サイト</title>
-<meta name="description" content="◯◯所属のVTuber「星宮 きら」の公式サイト。プロフィール・配信スケジュール・イラストギャラリー・グッズ・リンクをまとめています。">
+<!-- EDIT: ページタイトルと説明文（作品名・公開時期を入れると検索で見つかりやすくなります） -->
+<title>約束の星 — 劇場版アニメ公式サイト</title>
+<meta name="description" content="劇場版アニメ「約束の星」公式サイト。2027.◯.◯ ROADSHOW。イントロダクション・ストーリー・キャラクター・スタッフ＆キャスト・予告編・劇場情報。">
 
-<!-- EDIT: OGP（SNS でシェアされたときの表示）。og:url と og:image は公開URLに合わせて差し替えてください
-     例: <meta property="og:image" content="https://example.com/ogp.png"> -->
-<meta property="og:title" content="星宮 きら — ◯◯所属 VTuber 公式サイト">
-<meta property="og:description" content="◯◯所属のVTuber「星宮 きら」の公式サイト。プロフィール・配信スケジュール・ギャラリー・グッズ。">
+<!-- EDIT: OGP（SNS でシェアされたときの表示）。og:url と og:image は公開URLに合わせて差し替えてください -->
+<meta property="og:title" content="約束の星 — 劇場版アニメ公式サイト">
+<meta property="og:description" content="その光は、ずっと前から君を見ていた。劇場版アニメ「約束の星」2027.◯.◯ ROADSHOW">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://example.com/">
-<meta property="og:site_name" content="星宮 きら">
+<meta property="og:site_name" content="約束の星">
+<meta property="og:image" content="https://example.com/assets/kv-sky.jpg">
 
 <!-- EDIT: 正規URL（canonical）。公開するURLに書き換えてください -->
 <link rel="canonical" href="https://example.com/">
 
 <!-- EDIT: ブラウザのUI色（スマホのアドレスバー等）。テーマ切替時に自動更新されます -->
-<meta name="theme-color" content="#fff7fb" id="themeColor">
+<meta name="theme-color" content="#0b0a14" id="themeColor">
 
-<!-- EDIT: ファビコン（SVG内蔵・ピンクの星）。画像を使う場合は
-     <link rel="icon" href="favicon.png"> に置き換えてください -->
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23fff7fb'/%3E%3Cpath d='M32 12l6 13 14 2-10 10 2 14-12-7-12 7 2-14-10-10 14-2z' fill='%23ff85b3' stroke='%232a2240' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E">
+<!-- EDIT: ファビコン（SVG内蔵）。夜空の四角に金の星。画像を使う場合は <link rel="icon" href="favicon.png"> に -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230b0a14'/%3E%3Cpath d='M32 12l4.6 13.4L50 30l-13.4 4.6L32 48l-4.6-13.4L14 30l13.4-4.6z' fill='%23e8c27a'/%3E%3Ccircle cx='47' cy='17' r='2' fill='%238fb4ff'/%3E%3C/svg%3E">
 
-<!-- 保存済みテーマを描画前に適用（ちらつき防止）。触らなくてOK -->
-<script>(function(){try{var t=localStorage.getItem('kira-theme');if(t==='pop'||t==='night'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();</script>
+<!-- 保存済みテーマの適用（ちらつき防止）とオープニング演出の判定。触らなくてOK -->
+<script>(function(){var d=document.documentElement;try{var t=localStorage.getItem('kira-theme');if(t==='night'||t==='dawn')d.setAttribute('data-theme',t);}catch(e){}
+try{var m=window.matchMedia('(prefers-reduced-motion: reduce)').matches;if(!m&&!sessionStorage.getItem('kira-intro')){d.classList.add('intro');sessionStorage.setItem('kira-intro','1');}}catch(e){}})();</script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=M+PLUS+Rounded+1c:wght@400;700&family=Mochiy+Pop+One&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700&family=Noto+Sans+JP:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
 
 <style>
 /* ============================================================
-   THEME — ポップ（pop / 昼）。ここを変えるだけで全体の印象が変わります
+   THEME — 夜（night / 夜空）。ここを変えるだけで全体の印象が変わります
 ============================================================ */
-:root, [data-theme="pop"] {
-  color-scheme: light;
-  --bg:   #fff7fb;        /* ベースの背景（クリーム） */
-  --bg2:  #ffffff;        /* 一段明るい面（カード・白セクション） */
-  --bg3:  #ffeef6;        /* 淡いピンクの面（差し色セクション） */
-  --fg:   #2a2240;        /* 本文の文字色（必ず濃い色に） */
-  --fg-dim: #4a4066;      /* 補助文字 */
-  --muted:  #5d5280;      /* ラベル・注釈（4.5:1 を確保） */
+:root, [data-theme="night"] {
+  color-scheme: dark;
+  --bg: #0b0a14;            /* 夜空のいちばん暗いところ（背景） */
+  --bg2: #141230;           /* 一段明るい面（ストーリー・カード） */
+  --panel: #15132a;         /* カードの地 */
+  --panel2: #1b1836;        /* カードの一段明るい地 */
+  --fg: #f3efe6;            /* 本文 */
+  --fg-dim: #ded8cc;        /* 補助文字 */
+  --muted: #9a95ad;         /* ラベル・注記 */
+  --gold: #e8c27a;          /* 金 — 罫・EN小見出し・アクセント */
+  --rule: rgba(232,194,122,.34);   /* 金の細罫 */
+  --pink: #ff9a8b;          /* 夕暮れのピンク（グラデーション用） */
+  --sky: #8fb4ff;           /* 空色（グラデーション用） */
+  --border: rgba(243,239,230,.13);
+  --shadow: 0 24px 60px rgba(0,0,0,.5);
+  --grain: .05;             /* フィルムグレインの強さ */
+  --vignette: .55;          /* 四隅の落ち込み */
+  --silhouette: #07060d;    /* 街・人物のシルエット色 */
+  --rim: rgba(143,180,255,.38);     /* シルエットの青いリムライト */
+  --hero-fg: #f3efe6;       /* キービジュアル上の文字色 */
+  /* キービジュアルの空（動画・写真が無いときのフォールバック） */
+  --sky1: #0a0916; --sky2: #191540; --sky3: #4a2a57; --sky4: #c8734a;
 
-  --pink:   #ff85b3;      /* メイン（さくらピンク） */
-  --pink-d: #ef6ba2;      /* 濃いピンク */
-  --sky:    #6fcbff;      /* サブ（スカイ） */
-  --lemon:  #ffe066;      /* アクセント（レモン） */
-  --mint:   #8fe3c4;      /* アクセント（ミント） */
-  --lav:    #c9b8ff;      /* アクセント（ラベンダー） */
-
-  --line: #2a2240;              /* 枠線の色（インク） */
-  --line-w: 2.5px;              /* 枠線の太さ */
-  --sticker: 4px 4px 0 #2a2240;         /* ステッカー風の影 */
-  --sticker-hover: 6px 6px 0 #2a2240;   /* ホバー時 */
-  --glow: none;                 /* 夜テーマだけ光ります */
-  --dot: rgba(255,133,179,.22); /* 水玉模様の色 */
-  --stripe: rgba(255,224,102,.26); /* 斜めストライプの色 */
-  --ray: rgba(255,133,179,.16); /* 集中線の色 */
-  --name-fill: #ffffff;         /* HERO の名前の塗り */
-
-  --jp:   'M PLUS Rounded 1c', 'Hiragino Maru Gothic ProN', 'Yu Gothic', sans-serif;
-  --disp: 'Mochiy Pop One', 'M PLUS Rounded 1c', 'Hiragino Maru Gothic ProN', sans-serif;
-  --en:   'Fredoka', 'M PLUS Rounded 1c', sans-serif;
-
-  --maxw: 1160px;
-  --r: 26px;                              /* 角丸の基本サイズ */
-  --pop: cubic-bezier(.34, 1.56, .64, 1); /* 少し行き過ぎて戻るイージング */
-  --ease: cubic-bezier(.16, 1, .3, 1);
+  --mincho: 'Shippori Mincho', 'Hiragino Mincho ProN', 'Yu Mincho', serif;
+  --gothic: 'Noto Sans JP', 'Hiragino Sans', sans-serif;
+  --en: 'Cormorant Garamond', 'Times New Roman', serif;
+  --maxw: 1180px;
+  --ease: cubic-bezier(.16,1,.3,1);
 }
 
-/* EDIT: ナイトテーマ（night / 夜）。ナビの「☀／☾」で切り替わります。
-   最初から夜で表示したい場合は <html lang="ja" data-theme="pop"> を
-   <html lang="ja" data-theme="night"> に変更してください */
-[data-theme="night"] {
-  color-scheme: dark;
-  --bg:   #15122b;
-  --bg2:  #1d1839;
-  --bg3:  #241d45;
-  --fg:   #f4f0ff;
-  --fg-dim: #ded6f5;
-  --muted:  #b7ace0;
-
-  --pink:   #ff7fb6;
-  --pink-d: #ff5ea3;
-  --sky:    #6fe3ff;
-  --lemon:  #ffe066;
-  --mint:   #7ff0d0;
-  --lav:    #b9a6ff;
-
-  --line: rgba(244,240,255,.62);
-  --sticker: 4px 4px 0 rgba(111,227,255,.20), 0 0 18px rgba(255,127,182,.18);
-  --sticker-hover: 6px 6px 0 rgba(111,227,255,.26), 0 0 26px rgba(255,127,182,.26);
-  --glow: 0 0 14px rgba(111,227,255,.28);
-  --dot: rgba(255,127,182,.16);
-  --stripe: rgba(111,227,255,.14);
-  --ray: rgba(255,127,182,.13);
-  --name-fill: #15122b;
+/* EDIT: 夜明けテーマ（dawn / 紙）。ナビの「NIGHT／DAWN」で切り替わります。
+   最初から dawn で表示したい場合は <html lang="ja" data-theme="night"> を
+   data-theme="dawn" に変更してください */
+[data-theme="dawn"] {
+  color-scheme: light;
+  --bg: #f4efe6;
+  --bg2: #ebe3d5;
+  --panel: #fbf8f2;
+  --panel2: #f1eade;
+  --fg: #201d29;
+  --fg-dim: #3d3749;
+  --muted: #635d71;
+  --gold: #8a6416;          /* 同じ金。紙の上でも読めるよう深く（コントラスト比 4.6:1） */
+  --rule: rgba(138,100,22,.42);
+  --pink: #e0705f;
+  --sky: #4f79cf;
+  --border: rgba(32,29,41,.14);
+  --shadow: 0 20px 50px rgba(32,29,41,.12);
+  --grain: .045;
+  --vignette: .16;
+  --silhouette: #17131f;
+  --rim: rgba(255,214,170,.55);
+  /* キービジュアルの上の文字は、どちらのテーマでも明るい色のままにします
+     （空の絵は夜のままなので、暗い文字だと読めなくなります） */
+  --hero-fg: #f6f2ea;
+  --sky1: #4b4a78; --sky2: #7d6d9c; --sky3: #c98a86; --sky4: #e9a86a;
 }
 
 /* ============================================================
@@ -154,539 +154,539 @@
 html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
 body {
   background: var(--bg); color: var(--fg);
-  font-family: var(--jp); font-weight: 400;
-  line-height: 1.9; letter-spacing: .02em;
+  font-family: var(--gothic); font-weight: 300;
+  line-height: 2; letter-spacing: .045em;
   -webkit-font-smoothing: antialiased; overflow-x: hidden;
-  transition: background-color .5s var(--ease), color .5s var(--ease);
+  transition: background-color .7s var(--ease), color .7s var(--ease);
 }
 a { color: inherit; text-decoration: none; }
-img { max-width: 100%; display: block; }
+svg { display: block; }
 button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
-::selection { background: var(--pink); color: #2a2240; }
-:focus-visible { outline: 3px solid var(--sky); outline-offset: 3px; border-radius: 6px; }
+::selection { background: var(--gold); color: #0b0a14; }
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
 
-.container { max-width: var(--maxw); margin: 0 auto; padding: 0 1.25rem; }
-.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.wrap { width: min(92vw, var(--maxw)); margin-inline: auto; }
 
-h1, h2, h3, .disp { font-family: var(--disp); font-weight: 400; line-height: 1.35; letter-spacing: .01em; }
-.en { font-family: var(--en); font-weight: 600; letter-spacing: .06em; }
+/* フィルムグレイン（静止・SVG生成）。--grain で強さを調整、不要なら削除 */
+.grain, .vignette { position: fixed; inset: 0; pointer-events: none; z-index: 60; }
+.grain {
+  opacity: var(--grain); mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.vignette { background: radial-gradient(120% 85% at 50% 45%, transparent 45%, rgba(0,0,0,var(--vignette)) 100%); }
 
-/* ふわふわ舞うキラキラ（Canvas）。body の一番奥に敷いています */
-#sparkles { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
-.page { position: relative; z-index: 1; }
+/* スクロール進捗（金の細線） */
+.progress {
+  position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 55;
+  background: linear-gradient(90deg, var(--gold), var(--pink));
+  transform: scaleX(0); transform-origin: 0 50%;
+}
 
 /* ============================================================
-   セクション共通 — 面の色・波形の区切り・見出し
-============================================================ */
-.sec { position: relative; padding: 5rem 0 6rem; }
-.s-cream { background: var(--bg); }
-.s-white { background: var(--bg2); }
-.s-tint  { background: var(--bg3); }
-
-/* 水玉模様 / 斜めストライプ（CSS グラデーションのみ） */
-.p-dot::before, .p-stripe::before {
-  content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 0;
-}
-.p-dot::before {
-  background-image: radial-gradient(var(--dot) 2.5px, transparent 2.6px);
-  background-size: 22px 22px;
-}
-.p-stripe::before {
-  background-image: repeating-linear-gradient(-45deg, var(--stripe) 0 11px, transparent 11px 34px);
-}
-.sec > .container { position: relative; z-index: 1; }
-
-/* 波形のセクション区切り。fill を w-* クラスで「次のセクションの色」に合わせます */
-.wave { position: absolute; left: 0; right: 0; bottom: -1px; line-height: 0; pointer-events: none; z-index: 2; }
-.wave svg { width: 100%; height: 46px; display: block; }
-.w-cream svg { fill: var(--bg); }
-.w-white svg { fill: var(--bg2); }
-.w-tint  svg { fill: var(--bg3); }
-
-/* セクション見出し */
-.sec-head { text-align: center; margin-bottom: 2.8rem; }
-.sec-en {
-  display: inline-block; font-family: var(--en); font-weight: 700;
-  font-size: .82rem; letter-spacing: .22em; color: var(--fg);
-  background: var(--lemon); border: var(--line-w) solid var(--line);
-  border-radius: 999px; padding: .15rem 1.1rem; transform: rotate(-2deg);
-  box-shadow: var(--sticker);
-}
-[data-theme="night"] .sec-en { color: #2a2240; }
-.sec-title { font-size: clamp(1.7rem, 4.4vw, 2.5rem); margin-top: 1rem; }
-.sec-title .hl {
-  background: linear-gradient(transparent 62%, var(--pink) 62%, var(--pink) 88%, transparent 88%);
-}
-.sec-lead { color: var(--muted); margin-top: .6rem; font-size: .95rem; }
-
-/* キラキラの飾り文字 */
-.spk { color: #c9366f; font-family: var(--en); }
-[data-theme="night"] .spk { color: var(--pink); }
-
-/* ============================================================
-   共通パーツ — ボタン・ピル・ステッカーカード・リボン・吹き出し
-============================================================ */
-.btn {
-  display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
-  font-family: var(--jp); font-weight: 700; font-size: 1rem;
-  min-height: 52px; padding: .55rem 1.6rem;
-  border: var(--line-w) solid var(--line); border-radius: 999px;
-  color: var(--fg); background: var(--bg2);
-  box-shadow: var(--sticker);
-  transition: transform .3s var(--pop), box-shadow .3s var(--pop);
-}
-.btn:hover, .btn:focus-visible { transform: translate(-2px, -2px); box-shadow: var(--sticker-hover); }
-.btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--line); }
-.btn-pink { background: var(--pink); }
-.btn-sky  { background: var(--sky); }
-.btn-lemon{ background: var(--lemon); }
-.btn-mint { background: var(--mint); }
-.btn-lav  { background: var(--lav); }
-/* 色付きボタンの上は、明るい地なので必ず濃いインク文字にします */
-.btn-pink, .btn-sky, .btn-lemon, .btn-mint, .btn-lav { color: #2a2240; }
-
-/* 小さなピル型ラベル */
-.pill {
-  display: inline-flex; align-items: center; gap: .4rem;
-  font-family: var(--en); font-weight: 600; font-size: .78rem; letter-spacing: .08em;
-  padding: .1rem .85rem; border-radius: 999px;
-  border: 2px solid var(--line); color: #2a2240; background: var(--mint);
-}
-
-/* ステッカー風カード（2.5px の枠 ＋ ずらした影） */
-.card {
-  background: var(--bg2); border: var(--line-w) solid var(--line);
-  border-radius: var(--r); box-shadow: var(--sticker);
-  padding: 1.5rem; position: relative;
-  transition: transform .35s var(--pop), box-shadow .35s var(--pop);
-}
-.card:hover { transform: translate(-2px, -2px); box-shadow: var(--sticker-hover); }
-
-/* 斜めのリボンラベル */
-.ribbon {
-  position: absolute; top: -14px; left: -10px; z-index: 3;
-  font-family: var(--en); font-weight: 700; font-size: .8rem; letter-spacing: .1em;
-  color: #2a2240; background: var(--lemon);
-  border: 2px solid var(--line); border-radius: 999px;
-  padding: .1rem .9rem; transform: rotate(-3deg); box-shadow: 2px 2px 0 var(--line);
-}
-.ribbon-sold { background: #ffd0e0; left: auto; right: -10px; transform: rotate(3deg); }
-
-/* 吹き出し（しっぽ付き・CSSのみ） */
-.bubble {
-  position: relative; display: inline-block;
-  background: var(--bg2); border: var(--line-w) solid var(--line);
-  border-radius: 22px; padding: .7rem 1.4rem; box-shadow: var(--sticker);
-  font-family: var(--disp); font-size: clamp(1rem, 2.4vw, 1.3rem);
-}
-.bubble::before, .bubble::after {
-  content: ''; position: absolute; left: 34px; width: 0; height: 0;
-  border-style: solid;
-}
-.bubble::before { bottom: -18px; border-width: 18px 14px 0 0; border-color: var(--line) transparent transparent transparent; }
-.bubble::after  { bottom: -13px; border-width: 14px 10px 0 0; border-color: var(--bg2) transparent transparent transparent; }
-
-/* ============================================================
-   NAV — 上部固定。スクロールで細くなります
+   NAV
 ============================================================ */
 #nav {
-  position: sticky; top: 0; z-index: 50;
+  position: fixed; top: 0; left: 0; right: 0; z-index: 40;
   display: flex; align-items: center; justify-content: space-between; gap: 1rem;
-  padding: .85rem 1.25rem; background: color-mix(in srgb, var(--bg) 86%, transparent);
-  backdrop-filter: blur(10px); border-bottom: 2px solid transparent;
-  transition: padding .35s var(--ease), background-color .35s var(--ease), border-color .35s var(--ease);
+  padding: .9rem clamp(1rem, 4vw, 2.6rem);
+  border-bottom: 1px solid transparent;
+  transition: background-color .5s var(--ease), border-color .5s var(--ease), backdrop-filter .5s var(--ease), transform .5s var(--ease);
 }
-#nav.scrolled { padding: .35rem 1.25rem; border-bottom-color: var(--line); }
-.brand { display: flex; align-items: center; gap: .55rem; min-height: 44px; font-family: var(--disp); font-size: 1.05rem; }
-.brand svg { width: 30px; height: 30px; flex: none; }
-.nav-right { display: flex; align-items: center; gap: .5rem; }
-.nav-links { display: flex; list-style: none; gap: .2rem; }
+#nav.scrolled {
+  background: color-mix(in srgb, var(--bg) 82%, transparent);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2); backdrop-filter: blur(14px) saturate(1.2);
+  border-bottom-color: var(--rule);
+}
+.brand { display: flex; align-items: center; gap: .6rem; }
+.brand svg { width: 22px; height: 22px; color: var(--gold); }
+.brand-name { font-family: var(--mincho); font-weight: 700; font-size: 1.02rem; letter-spacing: .22em; color: var(--hero-fg); }
+#nav.scrolled .brand-name { color: var(--fg); }
+.nav-right { display: flex; align-items: center; gap: clamp(.7rem, 2vw, 1.6rem); }
+.nav-links { display: flex; gap: clamp(.8rem, 2vw, 1.7rem); list-style: none; }
 .nav-links a {
-  display: block; padding: .3rem .7rem; border-radius: 999px;
-  font-size: .86rem; font-weight: 700; color: var(--fg-dim);
-  transition: background-color .25s var(--ease), color .25s var(--ease);
+  font-family: var(--en); font-size: .82rem; font-variant: small-caps;
+  letter-spacing: .22em; color: var(--fg-dim); position: relative; padding-bottom: 3px;
 }
-.nav-links a:hover { background: var(--pink); color: #2a2240; }
-.icon-btn {
-  width: 42px; height: 42px; flex: none; display: grid; place-items: center;
-  border: 2px solid var(--line); border-radius: 50%; background: var(--bg2);
-  font-size: 1rem; box-shadow: 2px 2px 0 var(--line);
-  transition: transform .3s var(--pop);
+#nav:not(.scrolled) .nav-links a { color: color-mix(in srgb, var(--hero-fg) 88%, transparent); }
+.nav-links a::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px;
+  background: var(--gold); transform: scaleX(0); transform-origin: 0 50%;
+  transition: transform .5s var(--ease);
 }
-.icon-btn:hover { transform: translate(-1px, -1px) rotate(-8deg); }
-.t-night { display: none; }
-[data-theme="night"] .t-day { display: none; }
-[data-theme="night"] .t-night { display: inline; }
-
-.menu-toggle { display: none; width: 42px; height: 42px; flex: none;
-  border: 2px solid var(--line); border-radius: 50%; background: var(--bg2); box-shadow: 2px 2px 0 var(--line); }
-.menu-toggle span { display: block; width: 17px; height: 2.5px; background: var(--fg); border-radius: 2px; margin: 3px auto; transition: transform .3s var(--pop), opacity .2s; }
-.menu-toggle.open span:nth-child(1) { transform: translateY(5.5px) rotate(45deg); }
+.nav-links a:hover::after { transform: scaleX(1); }
+.theme-btn {
+  font-family: var(--en); font-size: .74rem; letter-spacing: .2em; font-variant: small-caps;
+  border: 1px solid var(--rule); border-radius: 999px; padding: .3rem .8rem; color: var(--gold);
+  transition: background-color .4s var(--ease);
+}
+.theme-btn:hover { background: color-mix(in srgb, var(--gold) 14%, transparent); }
+.theme-btn .on { color: var(--gold); }
+.theme-btn .off { color: var(--muted); }
+[data-theme="night"] .theme-btn .t-dawn { color: var(--muted); }
+[data-theme="dawn"] .theme-btn .t-night { color: var(--muted); }
+.menu-toggle { display: none; width: 34px; height: 26px; position: relative; }
+.menu-toggle span {
+  position: absolute; left: 3px; right: 3px; height: 1px; background: currentColor;
+  transition: transform .5s var(--ease), opacity .3s var(--ease);
+}
+.menu-toggle span:nth-child(1) { top: 6px; } .menu-toggle span:nth-child(2) { top: 13px; } .menu-toggle span:nth-child(3) { top: 20px; }
+.menu-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
 .menu-toggle.open span:nth-child(2) { opacity: 0; }
-.menu-toggle.open span:nth-child(3) { transform: translateY(-5.5px) rotate(-45deg); }
+.menu-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
+/* モバイルの全画面メニュー */
 .mobile-menu {
-  display: none; position: fixed; inset: 4.2rem .9rem auto .9rem; z-index: 49;
-  background: var(--bg2); border: var(--line-w) solid var(--line); border-radius: var(--r);
-  box-shadow: var(--sticker); padding: .8rem; max-height: 76vh; overflow-y: auto;
+  position: fixed; inset: 0; z-index: 39; display: grid; align-content: center; gap: .2rem;
+  padding: 5rem 8vw 3rem; background: color-mix(in srgb, var(--bg) 96%, transparent);
+  -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px);
+  opacity: 0; visibility: hidden; transition: opacity .5s var(--ease), visibility .5s;
 }
-.mobile-menu.open { display: grid; gap: .1rem; }
-.mobile-menu a { padding: .65rem .9rem; border-radius: 16px; font-weight: 700; }
-.mobile-menu a:hover { background: var(--bg3); }
+.mobile-menu.open { opacity: 1; visibility: visible; }
+.mobile-menu a {
+  display: flex; align-items: baseline; gap: .9rem; padding: .55rem 0;
+  border-bottom: 1px solid var(--border); font-family: var(--mincho); font-size: 1.05rem; letter-spacing: .16em;
+}
+.mobile-menu a span { font-family: var(--en); font-size: .72rem; letter-spacing: .22em; font-variant: small-caps; color: var(--gold); }
 
 /* ============================================================
-   HERO
+   HERO — キービジュアル
 ============================================================ */
-.hero { position: relative; overflow: hidden; padding: 2.5rem 0 5.5rem; }
-.hero-grid {
-  display: grid; grid-template-columns: 1.05fr 1fr; gap: 1.5rem; align-items: center;
+/* キービジュアルの中と、その上に重なるナビは、どちらのテーマでも夜の金で統一します
+   （空の絵が夜のままなので、紙テーマの濃い金では読みにくくなるため） */
+.hero, #nav:not(.scrolled) { --gold: #e8c27a; --rule: rgba(232,194,122,.4); }
+#nav:not(.scrolled) { color: var(--hero-fg); }
+.hero { position: relative; min-height: 100svh; overflow: hidden; isolation: isolate; background: var(--sky1); }
+.kv { position: absolute; inset: 0; z-index: 0; scale: 1; animation: kenburns 30s var(--ease) infinite alternate; }
+@keyframes kenburns { from { scale: 1; } to { scale: 1.06; } }
+.kv-layer { position: absolute; inset: 0; will-change: translate; }
+/* 空：動画（assets/kv-sky.mp4 / .webm）。ファイルが無いときは下のグラデーションが見えます */
+.kv-sky { background: linear-gradient(180deg, var(--sky1) 0%, var(--sky2) 38%, var(--sky3) 68%, var(--sky4) 92%, var(--sky4) 100%); }
+.kv-sky::after {
+  content: ""; position: absolute; inset: 0;
+  background: radial-gradient(58% 34% at 72% 82%, color-mix(in srgb, var(--sky4) 60%, transparent), transparent 70%);
 }
-.hero-copy { position: relative; z-index: 2; }
-.hero-tag { margin-bottom: 1.1rem; }
-.hero-name {
-  font-size: clamp(2.9rem, 9vw, 5.2rem); line-height: 1.06; margin-bottom: .35rem;
-  color: var(--name-fill);
-  -webkit-text-stroke: 7px var(--line);
-  paint-order: stroke fill;
-  text-shadow: 6px 6px 0 var(--pink);
-}
-.hero-romaji {
-  font-family: var(--en); font-weight: 700; font-size: clamp(.95rem, 2.3vw, 1.25rem);
-  letter-spacing: .24em; color: var(--muted); margin-bottom: 1.5rem;
-}
-.hero-bubble { margin-bottom: 2.2rem; }
-.hero-cta { display: flex; flex-wrap: wrap; gap: .75rem; }
-
-/* キャラクターの舞台（集中線・キャラ・キラキラ） */
-.hero-stage { position: relative; display: grid; place-items: center; min-height: 420px; }
-/* 各レイヤーはクリックを通します（キャラクターのボタンだけが受け取ります） */
-.layer { position: absolute; inset: 0; display: grid; place-items: center; will-change: transform; pointer-events: none; }
-/* キャラクターだけは通常の流れに置き、舞台の高さを決めさせます
-   （絶対配置のままだと、幅の狭い画面で文字に重なってしまうため） */
-.layer-flow { position: relative; inset: auto; z-index: 2; width: 100%; }
-.burst {
-  width: min(112%, 620px); aspect-ratio: 1; border-radius: 50%;
+.kv-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+/* 街のシルエット：画面下いっぱい */
+.kv-city { top: auto; bottom: 0; height: clamp(170px, 34%, 400px); }
+.kv-city svg { width: 100%; height: 100%; color: var(--silhouette); filter: drop-shadow(0 -1px 4px var(--rim)); }
+/* 人物のシルエット：右3分の1に立つ */
+.kv-chara { top: auto; bottom: 2%; right: 6%; left: auto; width: min(30vw, 380px); height: 62%; }
+.kv-chara svg { width: 100%; height: 100%; color: var(--silhouette); filter: drop-shadow(3px -2px 5px var(--rim)); }
+.kv-fx { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+/* 光のにじみ（太陽の位置）。ゆっくり呼吸します */
+.kv-flare {
+  position: absolute; inset: 0; pointer-events: none; mix-blend-mode: screen;
   background:
-    repeating-conic-gradient(from 0deg, var(--ray) 0deg 3.2deg, transparent 3.2deg 11deg);
-  -webkit-mask-image: radial-gradient(circle, transparent 28%, #000 46%, #000 74%, transparent 86%);
-  mask-image: radial-gradient(circle, transparent 28%, #000 46%, #000 74%, transparent 86%);
-  animation: spin 64s linear infinite;
+    radial-gradient(30% 26% at 70% 78%, rgba(255,214,160,.42), transparent 68%),
+    radial-gradient(58% 42% at 74% 84%, color-mix(in srgb, var(--pink) 26%, transparent), transparent 72%);
+  animation: breathe 9s ease-in-out infinite alternate;
 }
-.glowball {
-  width: min(78%, 430px); aspect-ratio: 1; border-radius: 50%;
-  background: radial-gradient(circle, color-mix(in srgb, var(--pink) 40%, transparent), transparent 68%);
-  filter: blur(14px);
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-
-.chara-hold { position: relative; z-index: 2; width: 100%; display: grid; place-items: center; pointer-events: none; }
-.chara-btn {
-  pointer-events: auto;
-  display: block; width: min(100%, 400px); padding: 0; border: 0; background: none; cursor: pointer;
-  animation: bob 4.6s ease-in-out infinite;
-}
-/* どんな縦横比の画像を入れても崩れないようにしています（<img> に差し替えOK） */
-.hero-art { width: 100%; height: auto; max-height: 68vh; object-fit: contain; display: block;
-  filter: drop-shadow(0 14px 24px rgba(42,34,64,.16)); }
-[data-theme="night"] .hero-art { filter: drop-shadow(0 0 26px rgba(255,127,182,.30)); }
-[data-theme="night"] .hero-name {
-  -webkit-text-stroke-color: #f4f0ff;
-  text-shadow: 5px 5px 0 var(--pink), 0 0 26px rgba(255,127,182,.55);
-}
-@keyframes bob { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-14px) } }
-/* クリックしたときの「ぽよん」 */
-.chara-btn.poyon { animation: poyon .62s var(--pop); }
-@keyframes poyon {
-  0%   { transform: scale(1, 1) }
-  25%  { transform: scale(1.10, .88) }
-  50%  { transform: scale(.93, 1.09) }
-  75%  { transform: scale(1.04, .97) }
-  100% { transform: scale(1, 1) }
+@keyframes breathe { from { opacity: .68; } to { opacity: 1; } }
+.hero::after {
+  content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--bg) 58%, transparent) 0%, transparent 26%, transparent 58%, color-mix(in srgb, var(--bg) 92%, transparent) 100%);
 }
 
-/* HERO に散らすキラキラ文字 */
-.hero-spark { position: absolute; font-family: var(--en); font-weight: 700; color: var(--pink);
-  pointer-events: none; animation: twinkle 3.4s ease-in-out infinite; }
-.hero-spark:nth-child(2n) { color: var(--sky); animation-duration: 4.2s; }
-.hero-spark:nth-child(3n) { color: var(--lemon); animation-duration: 5s; }
-@keyframes twinkle { 0%,100% { opacity: .25; transform: scale(.75) } 50% { opacity: 1; transform: scale(1.15) } }
-
-/* クリック時に飛び散るハート・星（JSが生成） */
-.pop-bit { position: absolute; z-index: 5; pointer-events: none; font-size: 20px;
-  will-change: transform, opacity; animation: popbit .95s var(--ease) forwards; }
-@keyframes popbit {
-  0%   { opacity: 1; transform: translate(0,0) scale(.4) rotate(0deg) }
-  100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(1.25) rotate(var(--rot)) }
+/* タイトルロックアップ */
+.hero-lockup {
+  position: absolute; z-index: 3; left: clamp(1.2rem, 6vw, 5rem);
+  bottom: clamp(3.5rem, 11vh, 7rem); width: min(560px, 52vw);
+  color: var(--hero-fg);
 }
-
-/* カーソルのキラキラ（PCのみ・JSが生成） */
-.trail { position: fixed; z-index: 60; pointer-events: none; font-family: var(--en);
-  color: var(--pink); font-size: 13px; animation: trail .7s var(--ease) forwards; }
-@keyframes trail { 0% { opacity: .9; transform: translate(-50%,-50%) scale(1) } 100% { opacity: 0; transform: translate(-50%,-160%) scale(.3) } }
-
-/* ============================================================
-   NEWS — 流れるティッカー ＋ 3件のお知らせ
-============================================================ */
-.ticker {
-  display: flex; align-items: center; gap: 0;
-  border-top: var(--line-w) solid var(--line); border-bottom: var(--line-w) solid var(--line);
-  background: var(--pink); overflow: hidden;
+/* 文字の背後を少し沈めて、どんな絵の上でも読めるようにする膜 */
+.hero-lockup::before {
+  content: ""; position: absolute; inset: -14% -22% -34% -34%; z-index: -1; pointer-events: none;
+  background: radial-gradient(68% 66% at 34% 58%, rgba(7,6,13,.62), rgba(7,6,13,.34) 52%, transparent 74%);
 }
-.ticker-label {
-  flex: none; font-family: var(--en); font-weight: 700; font-size: .9rem; letter-spacing: .12em;
-  color: #2a2240; background: var(--lemon); padding: .55rem 1.1rem;
-  border-right: var(--line-w) solid var(--line);
+.lockup-row { display: flex; align-items: flex-end; gap: clamp(1rem, 2.4vw, 2.2rem); }
+/* タイトルは1文字ずつ <span> に入れて縦に積みます（PC）。
+   スマホでは下の @media で1行の横書きに戻ります */
+.kv-title {
+  font-family: var(--mincho); font-weight: 700; text-align: center;
+  font-size: clamp(2.4rem, 4.6vw, 4rem); line-height: 1.18; letter-spacing: .04em;
+  background: linear-gradient(160deg, #fff7e6 0%, var(--gold) 46%, #b9873c 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  filter: drop-shadow(0 0 22px rgba(232,194,122,.3)) drop-shadow(0 2px 2px rgba(0,0,0,.5));
+  margin: 0;
 }
-.ticker-view { flex: 1 1 auto; overflow: hidden; }
-.ticker-track { display: flex; gap: 3rem; white-space: nowrap; width: max-content; animation: slide 34s linear infinite; padding-left: 1.6rem; }
-.ticker-track span { color: #2a2240; font-weight: 700; font-size: .92rem; padding: .55rem 0; }
-@keyframes slide { from { transform: translateX(0) } to { transform: translateX(-50%) } }
-.ticker:hover .ticker-track { animation-play-state: paused; }
-@keyframes slide2 { from { transform: translateX(0) } to { transform: translateX(-50%) } }
-
-.news-list { display: grid; gap: 1rem; }
-.news-item { display: grid; grid-template-columns: auto auto 1fr; gap: .9rem; align-items: center; padding: 1rem 1.3rem; }
-.news-date { font-family: var(--en); font-weight: 600; color: var(--muted); font-size: .9rem; }
-.news-cat { font-size: .74rem; font-weight: 700; padding: .05rem .7rem; border-radius: 999px;
-  border: 2px solid var(--line); background: var(--sky); color: #2a2240; }
-.news-cat.c-goods { background: var(--lemon); }
-.news-cat.c-live  { background: var(--mint); }
-.news-title { font-weight: 700; }
-
-/* ============================================================
-   PROFILE — プロフィール表 ＋ パラメータバー
-============================================================ */
-.profile-grid { display: grid; grid-template-columns: 1.15fr 1fr; gap: 1.6rem; align-items: start; }
-.prof-table { width: 100%; border-collapse: separate; border-spacing: 0 .45rem; }
-.prof-table th, .prof-table td { text-align: left; padding: .5rem .9rem; font-size: .96rem; vertical-align: top; }
-.prof-table th {
-  width: 8.5rem; white-space: nowrap; font-weight: 700; color: #2a2240;
-  background: var(--bg3); border: 2px solid var(--line); border-radius: 14px;
+.kv-title span { display: block; }
+[data-theme="dawn"] .kv-title { filter: drop-shadow(0 1px 1px rgba(255,255,255,.5)); }
+.lockup-text { display: grid; gap: .75rem; padding-bottom: .3rem; }
+.kv-en {
+  font-family: var(--en); font-variant: small-caps; font-size: clamp(.8rem, 1.5vw, 1.05rem);
+  letter-spacing: .4em; color: var(--gold); margin: 0;
 }
-[data-theme="night"] .prof-table th { color: var(--fg); }
-.prof-table td { border-bottom: 2px dotted var(--line); }
-
-.params { display: grid; gap: 1.1rem; }
-.param-row { display: grid; gap: .3rem; }
-.param-top { display: flex; justify-content: space-between; align-items: baseline; font-weight: 700; font-size: .92rem; }
-.param-top .num { font-family: var(--en); color: var(--muted); }
-.param-bar { height: 18px; border: 2px solid var(--line); border-radius: 999px; background: var(--bg); overflow: hidden; }
-.param-fill {
-  height: 100%; width: 0; border-radius: 999px;
-  background: linear-gradient(90deg, var(--pink), var(--lemon));
-  transition: width 1.2s var(--pop);
+.kv-tag {
+  font-family: var(--mincho); font-weight: 500; font-size: clamp(.9rem, 1.5vw, 1.08rem);
+  line-height: 1.9; letter-spacing: .1em; text-shadow: 0 1px 10px rgba(0,0,0,.45);
 }
-.param-row:nth-child(2) .param-fill { background: linear-gradient(90deg, var(--sky), var(--mint)); }
-.param-row:nth-child(3) .param-fill { background: linear-gradient(90deg, var(--lav), var(--pink)); }
-.param-row:nth-child(4) .param-fill { background: linear-gradient(90deg, var(--mint), var(--sky)); }
+[data-theme="dawn"] .kv-tag, [data-theme="dawn"] .kv-release { text-shadow: 0 1px 6px rgba(255,255,255,.6); }
+.kv-release {
+  display: inline-flex; align-items: center; gap: .7rem; justify-self: start;
+  border: 1px solid var(--rule); padding: .42rem 1.1rem;
+  font-family: var(--en); font-size: clamp(.82rem, 1.4vw, 1rem); letter-spacing: .24em;
+  color: var(--gold); background: color-mix(in srgb, var(--bg) 34%, transparent);
+}
+.kv-release b { font-weight: 600; }
+.hero-cta { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: .3rem; }
+.btn {
+  display: inline-flex; align-items: center; gap: .6rem; padding: .72rem 1.5rem;
+  font-size: .86rem; letter-spacing: .16em; border: 1px solid var(--rule);
+  position: relative; overflow: hidden; transition: color .45s var(--ease), border-color .45s var(--ease);
+}
+.btn::before {
+  content: ""; position: absolute; inset: 0; background: var(--gold);
+  transform: scaleX(0); transform-origin: 0 50%; transition: transform .55s var(--ease); z-index: -1;
+}
+.btn:hover::before { transform: scaleX(1); }
+.btn:hover { color: #0b0a14; border-color: var(--gold); }
+.btn-solid { background: color-mix(in srgb, var(--gold) 92%, transparent); color: #0b0a14; border-color: var(--gold); }
+.btn-solid::before { background: #fff3dc; }
+.btn .ic { width: 14px; height: 14px; fill: currentColor; }
+.hero-scroll {
+  position: absolute; left: 50%; bottom: 1.4rem; transform: translateX(-50%); z-index: 3;
+  font-family: var(--en); font-size: .68rem; letter-spacing: .3em; font-variant: small-caps; color: var(--gold);
+  display: grid; justify-items: center; gap: .4rem;
+}
+.hero-scroll i { display: block; width: 1px; height: 40px; background: linear-gradient(var(--gold), transparent); animation: drop 2.4s var(--ease) infinite; }
+@keyframes drop { 0% { transform: scaleY(0); transform-origin: 0 0; } 50% { transform: scaleY(1); transform-origin: 0 0; } 51% { transform: scaleY(1); transform-origin: 0 100%; } 100% { transform: scaleY(0); transform-origin: 0 100%; } }
+
+/* レターボックス（オープニング演出の黒帯） */
+.letterbox { position: absolute; left: 0; right: 0; height: 0; background: #07060d; z-index: 6; pointer-events: none; }
+.letterbox-top { top: 0; }
+.letterbox-bottom { bottom: 0; }
+html.intro .letterbox { animation: lbOpen 1.4s var(--ease) .3s both; }
+@keyframes lbOpen { from { height: 51%; } to { height: 0; } }
+html.intro .hero-lockup { animation: lockIn 1.8s var(--ease) 1s both; }
+@keyframes lockIn { from { opacity: 0; letter-spacing: .4em; filter: blur(6px); } to { opacity: 1; letter-spacing: normal; filter: none; } }
+html.intro #nav, html.intro .hero-scroll { animation: fadeIn .9s var(--ease) 1.6s both; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
 /* ============================================================
-   GALLERY — イラスト枠 6 つ
+   SECTION の共通パーツ
 ============================================================ */
-.gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.3rem; }
-.tile {
-  border: var(--line-w) solid var(--line); border-radius: var(--r); box-shadow: var(--sticker);
-  overflow: hidden; background: var(--bg2);
-  transition: transform .4s var(--pop), box-shadow .4s var(--pop);
+.sec { position: relative; padding: clamp(4.5rem, 9vw, 7.5rem) 0; }
+.sec-head { margin-bottom: clamp(2rem, 4vw, 3.2rem); }
+.label {
+  display: flex; align-items: center; gap: .8rem; margin-bottom: .7rem;
+  font-family: var(--en); font-size: .8rem; font-variant: small-caps; letter-spacing: .34em; color: var(--gold);
 }
-.tile:hover { transform: rotate(-1.5deg) translate(-2px,-3px); box-shadow: var(--sticker-hover); }
-.tile:nth-child(even):hover { transform: rotate(1.5deg) translate(-2px,-3px); }
-/* EDIT: ここが「イラストを入れる枠」です。<img src="..." alt=""> に置き換えてください */
-.tile-img {
-  aspect-ratio: 4 / 3; display: grid; place-items: center; gap: .4rem;
-  border-bottom: var(--line-w) solid var(--line);
-  background:
-    radial-gradient(circle at 30% 28%, color-mix(in srgb, var(--lemon) 60%, transparent), transparent 52%),
-    repeating-linear-gradient(-45deg, var(--bg3) 0 14px, var(--bg2) 14px 28px);
-  color: var(--muted); font-weight: 700; font-size: .9rem; text-align: center;
+.label::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, var(--rule), transparent); }
+.h2 { font-family: var(--mincho); font-weight: 700; font-size: clamp(1.5rem, 3vw, 2.3rem); letter-spacing: .12em; line-height: 1.5; }
+.sec-note { color: var(--muted); font-size: .82rem; line-height: 1.9; }
+.lead { font-size: clamp(.94rem, 1.3vw, 1.02rem); color: var(--fg-dim); line-height: 2.1; }
+.ghost {
+  display: inline-flex; align-items: center; gap: .5rem; font-family: var(--en);
+  font-size: .8rem; letter-spacing: .24em; font-variant: small-caps; color: var(--gold);
+  border-bottom: 1px solid var(--rule); padding-bottom: .25rem; transition: gap .4s var(--ease);
 }
-.tile:nth-child(3n+2) .tile-img { background:
-  radial-gradient(circle at 70% 30%, color-mix(in srgb, var(--sky) 55%, transparent), transparent 52%),
-  repeating-linear-gradient(45deg, var(--bg3) 0 14px, var(--bg2) 14px 28px); }
-.tile:nth-child(3n) .tile-img { background:
-  radial-gradient(circle at 45% 70%, color-mix(in srgb, var(--lav) 55%, transparent), transparent 55%),
-  repeating-linear-gradient(-45deg, var(--bg3) 0 14px, var(--bg2) 14px 28px); }
-.tile-cap { padding: .8rem 1rem; display: flex; justify-content: space-between; gap: .6rem; align-items: center; font-size: .88rem; }
-.tile-cap .en { color: var(--muted); font-size: .78rem; }
+.ghost:hover { gap: .95rem; }
+
+/* リビール（下からマスクが開く） */
+.rv {
+  opacity: 0; clip-path: inset(0 0 100% 0); transform: translateY(18px);
+  transition: opacity .9s var(--ease), clip-path 1.1s var(--ease), transform 1.1s var(--ease);
+}
+.rv.on { opacity: 1; clip-path: inset(0 0 0 0); transform: none; }
 
 /* ============================================================
-   SCHEDULE — 週間スケジュール
+   NEWS
 ============================================================ */
-.week { display: grid; grid-template-columns: repeat(7, 1fr); gap: .7rem; }
-.day {
-  background: var(--bg2); border: var(--line-w) solid var(--line); border-radius: 20px;
-  box-shadow: var(--sticker); padding: .9rem .6rem; text-align: center; min-height: 158px;
-  transition: transform .35s var(--pop);
+.news-list { border-top: 1px solid var(--border); }
+.news-item {
+  display: grid; grid-template-columns: 8.5rem 7rem 1fr auto; align-items: center; gap: 1rem;
+  padding: 1.05rem .4rem; border-bottom: 1px solid var(--border);
+  transition: background-color .5s var(--ease), padding-left .5s var(--ease);
 }
-.day:hover { transform: translateY(-4px); }
-.day-name { font-family: var(--en); font-weight: 700; font-size: .95rem; letter-spacing: .08em; }
-.day-jp { font-size: .74rem; color: var(--muted); display: block; margin-bottom: .55rem; }
-.day.sat .day-name { color: #1f6ab8; }
-.day.sun .day-name { color: #c9366f; }
-[data-theme="night"] .day.sat .day-name { color: var(--sky); }
-[data-theme="night"] .day.sun .day-name { color: var(--pink); }
+.news-item:hover { background: color-mix(in srgb, var(--gold) 7%, transparent); padding-left: 1rem; }
+.news-date { font-family: var(--en); font-size: .92rem; letter-spacing: .16em; color: var(--gold); }
 .chip {
-  display: block; font-family: var(--en); font-weight: 600; font-size: .82rem;
-  border: 2px solid var(--line); border-radius: 999px; padding: .18rem .3rem;
-  background: var(--lemon); color: #2a2240; margin-bottom: .35rem;
+  justify-self: start; font-size: .68rem; letter-spacing: .14em; padding: .18rem .7rem;
+  border: 1px solid var(--rule); color: var(--gold); border-radius: 999px; line-height: 1.9;
 }
-.chip.c-sky { background: var(--sky); }
-.chip.c-mint { background: var(--mint); }
-.chip.c-lav { background: var(--lav); }
-.chip-note { font-size: .74rem; color: var(--muted); display: block; }
-.day-off { color: var(--muted); font-size: .84rem; padding-top: .8rem; }
-.day-off b { display: block; font-size: 1.4rem; color: var(--fg); }
+.news-ttl { font-size: .94rem; color: var(--fg); letter-spacing: .06em; }
+.news-arrow { font-family: var(--en); color: var(--muted); font-size: .9rem; }
+.news-foot { margin-top: 1.8rem; }
 
 /* ============================================================
-   VOICE — 試聴カード（見た目のみ。音声は <audio> を足してください）
+   INTRODUCTION
 ============================================================ */
-.voice-grid, .goods-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.3rem; }
-.voice-card { display: grid; gap: .9rem; }
-.voice-top { display: flex; align-items: center; gap: .9rem; }
-.play {
-  width: 54px; height: 54px; flex: none; border-radius: 50%;
-  border: var(--line-w) solid var(--line); background: var(--pink);
-  display: grid; place-items: center; box-shadow: 3px 3px 0 var(--line);
-  transition: transform .3s var(--pop);
+.intro-grid { display: grid; grid-template-columns: 1fr auto; gap: clamp(1.6rem, 4vw, 3.4rem); align-items: start; }
+.pull {
+  font-family: var(--mincho); font-weight: 700; font-size: clamp(1.35rem, 3.1vw, 2.15rem);
+  line-height: 1.95; letter-spacing: .1em; margin-bottom: 1.8rem;
 }
-.play:hover { transform: scale(1.08); }
-.play svg { width: 20px; height: 20px; margin-left: 3px; fill: #2a2240; }
-.voice-name { font-weight: 700; }
-.voice-time { font-family: var(--en); font-size: .82rem; color: var(--muted); }
-.wave-bars { display: flex; align-items: flex-end; gap: 3px; height: 34px; }
-.wave-bars i { flex: 1; background: var(--sky); border: 1.5px solid var(--line); border-radius: 3px; display: block; }
+.pull em { font-style: normal; color: var(--gold); }
+.intro-body { display: grid; gap: 1.4rem; max-width: 44rem; }
+.intro-side {
+  writing-mode: vertical-rl; font-family: var(--mincho); font-weight: 500; font-size: .92rem;
+  letter-spacing: .3em; color: var(--muted); border-right: 1px solid var(--rule); padding-right: 1.4rem;
+  max-height: 30rem;
+}
 
 /* ============================================================
-   GOODS
+   STORY
 ============================================================ */
-.goods-card { padding: 0; overflow: visible; }
-.goods-img {
-  aspect-ratio: 1 / 1; border-bottom: var(--line-w) solid var(--line);
-  border-radius: calc(var(--r) - 3px) calc(var(--r) - 3px) 0 0;
-  display: grid; place-items: center; color: var(--muted); font-weight: 700; font-size: .88rem;
-  background: repeating-linear-gradient(-45deg, var(--bg3) 0 16px, var(--bg2) 16px 32px);
+.s-story { background: var(--bg2); }
+.story-frame { border: 1px solid var(--rule); padding: clamp(1.6rem, 5vw, 4rem); position: relative; }
+.story-frame::before, .story-frame::after {
+  content: ""; position: absolute; width: 14px; height: 14px; border: 1px solid var(--gold);
 }
-.goods-body { padding: 1.1rem 1.3rem 1.4rem; display: grid; gap: .35rem; }
-.goods-name { font-weight: 700; }
-.goods-price { font-family: var(--en); font-weight: 700; font-size: 1.25rem; }
-.goods-note { font-size: .82rem; color: var(--muted); }
-.is-sold .goods-img { filter: grayscale(.65) opacity(.7); }
+.story-frame::before { top: -1px; left: -1px; border-right: 0; border-bottom: 0; }
+.story-frame::after { bottom: -1px; right: -1px; border-left: 0; border-top: 0; }
+.story-lead {
+  font-family: var(--mincho); font-weight: 700; font-size: clamp(1.1rem, 2.2vw, 1.55rem);
+  line-height: 1.95; letter-spacing: .1em; margin-bottom: 1.6rem;
+}
+.story-lead::first-letter { font-size: 1.7em; color: var(--gold); padding-right: .06em; }
+.story-body { display: grid; gap: 1.3rem; max-width: 68ch; }
+.story-catch {
+  margin-top: 2.4rem; padding-top: 1.8rem; border-top: 1px solid var(--rule);
+  font-family: var(--mincho); font-weight: 700; font-size: clamp(1.05rem, 2.4vw, 1.5rem);
+  letter-spacing: .16em; color: var(--gold); text-align: right;
+}
 
 /* ============================================================
-   FAN
+   CHARACTER
 ============================================================ */
-.fan-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.3rem; }
-.fan-card { text-align: center; display: grid; gap: .4rem; align-content: start; }
-.fan-mark { font-size: 2.4rem; line-height: 1.2; color: var(--pink); }
-.fan-card:nth-child(2) .fan-mark { color: var(--sky); }
-.fan-card:nth-child(3) .fan-mark { color: var(--lemon); -webkit-text-stroke: 1.5px var(--line); }
-.fan-label { font-family: var(--en); font-size: .76rem; letter-spacing: .16em; color: var(--muted); }
-.fan-value { font-family: var(--disp); font-size: 1.3rem; }
-.rules { grid-column: 1 / -1; text-align: left; }
-.rules ul { list-style: none; display: grid; gap: .55rem; margin-top: .8rem; }
-.rules li { display: grid; grid-template-columns: auto 1fr; gap: .6rem; font-size: .94rem; }
-.rules li::before { content: '♥'; color: var(--pink); }
+.cast-nav { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.cast-tab {
+  font-family: var(--mincho); font-size: .95rem; letter-spacing: .14em; padding: .6rem 1.15rem;
+  color: var(--muted); position: relative; transition: color .45s var(--ease);
+}
+.cast-tab::after {
+  content: ""; position: absolute; left: .6rem; right: .6rem; bottom: -1px; height: 1px;
+  background: var(--gold); transform: scaleX(0); transition: transform .55s var(--ease);
+}
+.cast-tab[aria-selected="true"] { color: var(--gold); }
+.cast-tab[aria-selected="true"]::after { transform: scaleX(1); }
+.chara-stage { position: relative; }
+.chara-panel {
+  display: grid; grid-template-columns: minmax(220px, 34%) 1fr; gap: clamp(1.4rem, 4vw, 3.4rem);
+  align-items: center; opacity: 0; visibility: hidden; position: absolute; inset: 0;
+  transition: opacity .7s var(--ease), transform .7s var(--ease); transform: translateY(10px);
+}
+.chara-panel.is-on { opacity: 1; visibility: visible; position: relative; transform: none; }
+.chara-art {
+  position: relative; aspect-ratio: 2 / 3; max-width: 360px; overflow: hidden;
+  display: grid; place-items: end center;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--sky) 14%, transparent), color-mix(in srgb, var(--pink) 12%, transparent));
+  border: 1px solid var(--border);
+}
+.chara-art::before {
+  content: ""; position: absolute; inset: 0;
+  background: radial-gradient(46% 34% at 50% 62%, color-mix(in srgb, var(--gold) 26%, transparent), transparent 70%);
+}
+.chara-art svg { position: relative; width: 100%; height: 94%; color: var(--silhouette); filter: drop-shadow(3px -2px 5px var(--rim)); }
+.chara-no {
+  position: absolute; top: .7rem; left: .9rem; font-family: var(--en); font-size: 1.5rem;
+  letter-spacing: .1em; color: var(--gold); opacity: .8;
+}
+.chara-info { display: grid; gap: .9rem; padding-bottom: .6rem; }
+.chara-read { font-family: var(--en); font-size: .82rem; letter-spacing: .3em; font-variant: small-caps; color: var(--gold); }
+.chara-name { font-family: var(--mincho); font-weight: 700; font-size: clamp(1.5rem, 3.2vw, 2.2rem); letter-spacing: .14em; }
+.chara-cv { font-size: .86rem; color: var(--muted); letter-spacing: .14em; }
+.chara-cv b { color: var(--fg); font-weight: 400; }
+.chara-desc { max-width: 54ch; color: var(--fg-dim); font-size: .93rem; line-height: 2.1; }
 
 /* ============================================================
-   Q&A
+   STAFF & CAST
 ============================================================ */
-.qa { display: grid; gap: .9rem; max-width: 820px; margin: 0 auto; }
-.qa-item {
-  background: var(--bg2); border: var(--line-w) solid var(--line);
-  border-radius: 20px; box-shadow: var(--sticker); overflow: hidden;
+.credit-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(1.4rem, 4vw, 3.4rem); }
+.credit-ttl {
+  font-family: var(--en); font-size: .82rem; letter-spacing: .3em; font-variant: small-caps;
+  color: var(--gold); padding-bottom: .7rem; border-bottom: 1px solid var(--rule); margin-bottom: .4rem;
 }
-.qa-item summary {
-  list-style: none; cursor: pointer; padding: 1rem 3rem 1rem 1.3rem;
-  font-weight: 700; position: relative;
+.credit-row {
+  display: grid; grid-template-columns: 9.5rem 1fr; gap: 1rem; align-items: baseline;
+  padding: .72rem 0; border-bottom: 1px solid var(--border);
 }
-.qa-item summary::-webkit-details-marker { display: none; }
-.qa-item summary::before { content: 'Q.'; font-family: var(--en); color: var(--pink-d); margin-right: .5rem; }
-.qa-item summary::after {
-  content: '+'; position: absolute; right: 1.1rem; top: 50%; transform: translateY(-50%);
-  font-family: var(--en); font-weight: 700; font-size: 1.6rem; line-height: 1; color: var(--pink-d); transition: transform .3s var(--pop);
-}
-.qa-item[open] summary::after { transform: translateY(-50%) rotate(135deg); }
-.qa-body { padding: 0 1.3rem 1.2rem; color: var(--fg-dim); font-size: .95rem; }
-.qa-body::before { content: 'A.'; font-family: var(--en); color: var(--sky); margin-right: .5rem; font-weight: 700; }
+.credit-role { font-size: .8rem; color: var(--muted); letter-spacing: .12em; }
+.credit-name { font-family: var(--mincho); font-size: 1.02rem; letter-spacing: .1em; }
 
 /* ============================================================
-   LINKS
+   TRAILER
 ============================================================ */
-.link-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
-.link-btn { justify-content: flex-start; padding: .6rem 1.4rem; min-height: 62px; font-size: 1rem; }
-.link-btn svg { width: 24px; height: 24px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-.link-btn .sub { margin-left: auto; font-family: var(--en); font-size: .75rem; opacity: .7; }
+.tr-frame {
+  position: relative; aspect-ratio: 16 / 9; overflow: hidden; border: 1px solid var(--rule);
+  background-color: var(--sky2);
+  background-image: linear-gradient(180deg, var(--sky1) 0%, var(--sky2) 42%, var(--sky3) 74%, var(--sky4) 100%);
+  box-shadow: var(--shadow);
+}
+.tr-poster { position: absolute; inset: 0; background: url("assets/kv-sky.jpg") center/cover no-repeat; }
+.tr-frame::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(66% 58% at 50% 50%, rgba(7,6,13,.44), rgba(7,6,13,.72));
+}
+.tr-play {
+  position: absolute; inset: 0; z-index: 2; display: grid; place-items: center; gap: .9rem; width: 100%;
+  color: #fff; align-content: center;
+}
+.tr-play i {
+  width: clamp(62px, 8vw, 92px); aspect-ratio: 1; border-radius: 50%; border: 1px solid var(--gold);
+  display: grid; place-items: center; background: color-mix(in srgb, #07060d 62%, transparent);
+  transition: transform .6s var(--ease), background-color .6s var(--ease);
+}
+.tr-play i::before { content: ""; width: 0; height: 0; margin-left: 5px; border: 11px solid transparent; border-left-color: var(--gold); border-right: 0; }
+.tr-play:hover i { transform: scale(1.08); background: color-mix(in srgb, var(--gold) 24%, transparent); }
+.tr-play span { font-family: var(--en); font-size: .84rem; letter-spacing: .32em; font-variant: small-caps; color: #fff6e2; text-shadow: 0 2px 10px rgba(7,6,13,.9); }
+.tr-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; z-index: 3; }
+.tr-foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; margin-top: 1rem; }
+
+/* ============================================================
+   MUSIC
+============================================================ */
+.music-card {
+  display: grid; grid-template-columns: auto 1fr; gap: clamp(1.4rem, 4vw, 3rem); align-items: center;
+  background: var(--panel); border: 1px solid var(--border); padding: clamp(1.4rem, 4vw, 2.8rem);
+}
+.disc { width: clamp(120px, 16vw, 190px); aspect-ratio: 1; color: var(--gold); animation: spin 24s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.music-meta { display: grid; gap: .7rem; }
+.music-kind { font-family: var(--en); font-size: .8rem; letter-spacing: .3em; font-variant: small-caps; color: var(--gold); }
+.music-ttl { font-family: var(--mincho); font-weight: 700; font-size: clamp(1.3rem, 2.8vw, 1.9rem); letter-spacing: .12em; }
+.music-artist { font-size: .95rem; color: var(--fg-dim); letter-spacing: .1em; }
+.pill-list { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .5rem; list-style: none; }
+.pill {
+  display: inline-flex; border: 1px solid var(--rule); border-radius: 999px; padding: .3rem .95rem;
+  font-size: .76rem; letter-spacing: .12em; color: var(--gold); transition: background-color .4s var(--ease);
+}
+.pill:hover { background: color-mix(in srgb, var(--gold) 14%, transparent); }
+
+/* ============================================================
+   THEATER
+============================================================ */
+.th-item { border-bottom: 1px solid var(--border); }
+.th-item:first-child { border-top: 1px solid var(--border); }
+.th-item summary {
+  list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between;
+  gap: 1rem; padding: 1.05rem .4rem; font-family: var(--mincho); font-size: 1.02rem; letter-spacing: .14em;
+  transition: color .4s var(--ease);
+}
+.th-item summary::-webkit-details-marker { display: none; }
+.th-item summary:hover { color: var(--gold); }
+.th-mark { position: relative; width: 13px; height: 13px; flex: none; }
+.th-mark::before, .th-mark::after { content: ""; position: absolute; background: var(--gold); transition: transform .5s var(--ease); }
+.th-mark::before { top: 6px; left: 0; width: 13px; height: 1px; }
+.th-mark::after { left: 6px; top: 0; width: 1px; height: 13px; }
+.th-item[open] .th-mark::after { transform: scaleY(0); }
+.th-body { overflow: hidden; }
+.th-table { width: 100%; border-collapse: collapse; font-size: .88rem; margin-bottom: 1.2rem; }
+.th-table th, .th-table td { text-align: left; padding: .65rem .6rem; border-bottom: 1px solid var(--border); font-weight: 400; }
+.th-table th { color: var(--muted); font-size: .74rem; letter-spacing: .14em; white-space: nowrap; }
+.th-table td:first-child { font-family: var(--mincho); letter-spacing: .08em; }
+.ticket-note {
+  margin-top: 1.8rem; border: 1px solid var(--rule); padding: 1.2rem clamp(1rem, 3vw, 1.8rem);
+  background: color-mix(in srgb, var(--gold) 6%, transparent); font-size: .86rem; color: var(--fg-dim);
+}
+.ticket-note b { color: var(--gold); font-weight: 500; letter-spacing: .12em; }
+
+/* ============================================================
+   SPECIAL / GOODS のカード
+============================================================ */
+.cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(1rem, 2.4vw, 1.8rem); }
+.card { display: grid; gap: .9rem; }
+.card-art {
+  position: relative; overflow: hidden; border: 1px solid var(--border);
+  background: linear-gradient(150deg, color-mix(in srgb, var(--sky) 30%, var(--panel)), color-mix(in srgb, var(--pink) 26%, var(--panel2)));
+}
+.a23 { aspect-ratio: 2 / 3; } .a11 { aspect-ratio: 1 / 1; }
+.card-art::after {
+  content: ""; position: absolute; inset: 0; opacity: .55;
+  background: radial-gradient(60% 45% at 70% 28%, rgba(255,236,200,.5), transparent 70%);
+  transition: transform 1s var(--ease);
+}
+/* ポスター枠の細い金罫と、中央に置く小さなモチーフ（画像に差し替えてもOK） */
+.card-art::before {
+  content: ""; position: absolute; inset: 10px; z-index: 1; pointer-events: none;
+  border: 1px solid color-mix(in srgb, var(--gold) 34%, transparent);
+}
+.card-art svg {
+  position: absolute; inset: 0; margin: auto; width: 20%; height: 20%; z-index: 1;
+  color: color-mix(in srgb, var(--gold) 62%, transparent);
+}
+.card-art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.card:hover .card-art::after { transform: scale(1.15); }
+.card-kind { font-family: var(--en); font-size: .74rem; letter-spacing: .28em; font-variant: small-caps; color: var(--gold); }
+.card-ttl { font-family: var(--mincho); font-weight: 700; font-size: 1.05rem; letter-spacing: .1em; }
+.card-txt { font-size: .84rem; color: var(--muted); line-height: 1.95; }
+.price { font-family: var(--en); font-size: 1.1rem; letter-spacing: .1em; color: var(--gold); }
 
 /* ============================================================
    FOOTER
 ============================================================ */
-.footer { position: relative; background: var(--bg3); border-top: var(--line-w) solid var(--line); padding: 3rem 0 2rem; text-align: center; }
-.footer-mark { font-size: 1.9rem; }
-.footer-name { font-family: var(--disp); font-size: 1.2rem; margin: .2rem 0 .5rem; }
-.footer-credit { font-size: .86rem; color: var(--muted); }
-.footer-credit a { display: inline-block; padding: .5rem .4rem; }
-.footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: .2rem 1rem; margin: 1.4rem 0; list-style: none; font-size: .88rem; }
-.footer-links a { color: var(--fg-dim); padding: .68rem .5rem; display: inline-block; line-height: 1.4; }
-.footer-links a:hover { color: var(--pink-d); }
-.footer-ver { display: block; margin-top: 1.2rem; font-size: .74rem; color: var(--muted); }
-.to-top {
-  position: fixed; right: 1rem; bottom: 1rem; z-index: 40;
-  width: 50px; height: 50px; border-radius: 50%; display: grid; place-items: center;
-  background: var(--lemon); border: var(--line-w) solid var(--line); box-shadow: var(--sticker);
-  color: #2a2240; font-size: 1.1rem; opacity: 0; pointer-events: none;
-  transition: opacity .35s var(--ease), transform .35s var(--pop);
+footer { border-top: 1px solid var(--rule); padding: clamp(3rem, 6vw, 4.5rem) 0 2.5rem; background: var(--bg); position: relative; }
+.foot-top { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2rem; align-items: flex-start; }
+.foot-logo { font-family: var(--mincho); font-weight: 700; font-size: 1.4rem; letter-spacing: .2em; }
+.foot-en { font-family: var(--en); font-size: .78rem; letter-spacing: .3em; font-variant: small-caps; color: var(--gold); margin-top: .4rem; }
+.sns { display: flex; gap: .5rem; list-style: none; }
+.sns a {
+  width: 42px; height: 42px; border: 1px solid var(--rule); border-radius: 999px; display: grid; place-items: center;
+  color: var(--gold); transition: background-color .45s var(--ease), transform .45s var(--ease);
 }
-.to-top.show { opacity: 1; pointer-events: auto; }
-.to-top:hover { transform: translateY(-4px); }
+.sns a:hover { background: color-mix(in srgb, var(--gold) 16%, transparent); transform: translateY(-3px); }
+.sns svg { width: 17px; height: 17px; fill: currentColor; }
+.foot-bottom {
+  margin-top: 2.6rem; padding-top: 1.4rem; border-top: 1px solid var(--border);
+  display: flex; flex-wrap: wrap; gap: .8rem 2rem; justify-content: space-between; align-items: center;
+  font-size: .76rem; color: var(--muted); letter-spacing: .1em;
+}
+.to-top { font-family: var(--en); font-size: .76rem; letter-spacing: .24em; font-variant: small-caps; color: var(--gold); }
+
+/* トースト */
+.toast {
+  position: fixed; left: 50%; bottom: 2rem; transform: translate(-50%, 1.4rem); z-index: 70;
+  background: var(--panel); border: 1px solid var(--rule); color: var(--fg);
+  padding: .8rem 1.4rem; font-size: .84rem; letter-spacing: .08em; box-shadow: var(--shadow);
+  opacity: 0; visibility: hidden; transition: opacity .5s var(--ease), transform .5s var(--ease), visibility .5s;
+}
+.toast.show { opacity: 1; visibility: visible; transform: translate(-50%, 0); }
 
 /* ============================================================
-   リビール（スクロールで少し行き過ぎて現れる）
+   RESPONSIVE
 ============================================================ */
-.rv { opacity: 0; transform: scale(.92) translateY(20px); transition: opacity .55s var(--ease), transform .7s var(--pop); }
-.rv.on { opacity: 1; transform: none; }
-
-/* ============================================================
-   レスポンシブ
-============================================================ */
-@media (max-width: 980px) {
+@media (max-width: 900px) {
   .nav-links { display: none; }
   .menu-toggle { display: block; }
-  .hero-grid { grid-template-columns: 1fr; text-align: center; gap: .5rem; }
-  .hero { padding-top: 1rem; }
-  .hero-stage { order: -1; min-height: 340px; }
+  .hero-lockup {
+    left: 1.2rem; right: 1.2rem; width: auto; bottom: auto; top: clamp(4.6rem, 11vh, 7rem); text-align: center;
+  }
+  .lockup-row { flex-direction: column; align-items: center; gap: .9rem; }
+  .kv-title { font-size: clamp(2.2rem, 12.5vw, 3.4rem); letter-spacing: .12em; }
+  .kv-title span { display: inline; }
+  .kv-city { height: clamp(96px, 19%, 190px); }
+  .lockup-text { justify-items: center; gap: .6rem; }
+  .kv-release { justify-self: center; }
   .hero-cta { justify-content: center; }
-  .bubble::before, .bubble::after { left: 50%; margin-left: -7px; }
-  .hero-name { -webkit-text-stroke-width: 5px; text-shadow: 4px 4px 0 var(--pink); }
-  .profile-grid { grid-template-columns: 1fr; }
-  .gallery, .voice-grid, .goods-grid, .fan-grid, .link-grid { grid-template-columns: repeat(2, 1fr); }
-  .week { grid-template-columns: 1fr; }
-  .day { display: grid; grid-template-columns: 5.5rem 1fr; gap: .6rem; align-items: center;
-    text-align: left; min-height: 0; padding: .8rem 1rem; }
-  .day-jp { margin-bottom: 0; }
-  .chip { display: inline-block; margin: 0 .35rem .2rem 0; padding: .18rem .9rem; }
-  .day-off { padding-top: 0; }
-  .day-off b { display: inline; font-size: 1rem; margin-right: .6rem; }
-  .chip-note { display: inline; }
-  .footer { padding-bottom: 5.5rem; }
+  .kv-chara { left: 50%; right: auto; bottom: 4%; transform: translateX(-50%); width: min(60vw, 300px); height: 42%; }
+  .hero-scroll { display: none; }
+  .intro-grid { grid-template-columns: 1fr; }
+  .intro-side { display: none; }
+  .chara-panel { grid-template-columns: 1fr; align-items: start; }
+  .chara-art { max-width: 280px; margin-inline: auto; width: 100%; }
+  .credit-grid { grid-template-columns: 1fr; }
+  .cards { grid-template-columns: 1fr; gap: 2rem; }
+  .music-card { grid-template-columns: 1fr; justify-items: center; text-align: center; }
+  .music-meta { justify-items: center; }
+  .news-item { grid-template-columns: 1fr auto; gap: .35rem .8rem; padding: .95rem .2rem; }
+  .news-date { grid-row: 1; }
+  .chip { grid-row: 1; grid-column: 2; }
+  .news-ttl { grid-column: 1 / -1; }
+  .news-arrow { display: none; }
+  .credit-row { grid-template-columns: 7.5rem 1fr; }
 }
-@media (max-width: 640px) {
-  .sec { padding: 3.5rem 0 4.2rem; }
-  .voice-grid, .goods-grid, .fan-grid, .link-grid { grid-template-columns: 1fr; }
-  .gallery { grid-template-columns: repeat(2, 1fr); gap: .8rem; }
-  .goods-img { aspect-ratio: 4 / 3; }
-  .hero-art { max-height: 46vh; }
-  .chara-btn { width: min(78%, 300px); }
-  .hero-stage { min-height: 300px; }
-  .news-item { grid-template-columns: auto auto; row-gap: .3rem; }
-  .news-title { grid-column: 1 / -1; }
-  .prof-table th { width: 6.6rem; font-size: .86rem; padding: .45rem .6rem; }
-  .prof-table td { font-size: .9rem; padding: .45rem .6rem; }
-  .wave svg { height: 28px; }
+@media (max-width: 480px) {
+  body { line-height: 1.95; }
+  .sec { padding: clamp(3.2rem, 12vw, 4.4rem) 0; }
+  .credit-row { grid-template-columns: 1fr; gap: .1rem; padding: .6rem 0; }
+  .th-table th { display: none; }
+  .th-table td { display: block; border: 0; padding: .12rem .2rem; }
+  .th-table tr { display: block; padding: .7rem 0; border-bottom: 1px solid var(--border); }
+  .th-table td:not(:first-child) { color: var(--muted); font-size: .8rem; }
 }
 
 /* ============================================================
-   動きを減らす設定（prefers-reduced-motion）
-   キラキラ・カーソル軌跡・ゆれはすべて止まり、内容は最初から表示されます
+   動きを抑える設定（prefers-reduced-motion）— 演出を止めて全部見えるように
 ============================================================ */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -694,685 +694,613 @@ h1, h2, h3, .disp { font-family: var(--disp); font-weight: 400; line-height: 1.3
     transition-duration: .001ms !important; transition-delay: 0ms !important;
   }
   html { scroll-behavior: auto; }
-  .rv { opacity: 1; transform: none; }
-  .burst, .chara-btn, .hero-spark, .ticker-track { animation: none; }
-  .hero-spark { opacity: .8; }
-  .param-fill { transition: none; }
-  #sparkles { display: none; }
+  .rv { opacity: 1; clip-path: none; transform: none; }
+  .letterbox { height: 0 !important; }
+  .kv { scale: 1 !important; }
+  .hero-scroll i { display: none; }
 }
 </style>
-
-<!-- JavaScript が無効なブラウザでも、内容がすべて表示されるようにしています -->
-<noscript><style>.rv { opacity: 1 !important; transform: none !important; } #sparkles { display: none; }</style></noscript>
 </head>
 <body>
 
-<!-- ふわふわ舞うキラキラ（Canvas・最大40粒） -->
-<canvas id="sparkles" aria-hidden="true"></canvas>
+<!-- スクロール進捗（金の細線） -->
+<div class="progress" id="progress" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+<div class="vignette" aria-hidden="true"></div>
 
-<!-- ============================================================
-  EDIT: キャラクターイラスト（仮）
-  ここを自分のイラストに差し替えます。いちばん簡単なのは、下の HERO にある
-    <svg class="hero-art" viewBox="0 0 400 520"><use href="#chara"></use></svg>
-  を
-    <img class="hero-art" src="chara.png" alt="">
-  に置き換えるだけ。CSS がどんな縦横比の画像でも収まるようにしています。
-  ※ ご自身が権利を持つ（または利用許諾を得た）イラストをお使いください。
-============================================================ -->
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
-<defs>
-  <linearGradient id="hairG" x1="0" y1="0" x2="0.3" y2="1">
-    <stop offset="0" stop-color="#ffcbe1"/><stop offset="0.5" stop-color="#ff93c2"/><stop offset="1" stop-color="#ef6ba2"/>
-  </linearGradient>
-  <linearGradient id="irisG" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0" stop-color="#1c6fb4"/><stop offset="0.45" stop-color="#4fb4ef"/><stop offset="1" stop-color="#cdf2ff"/>
-  </linearGradient>
-  <clipPath id="eyeLc"><ellipse cx="150" cy="196" rx="33" ry="39"/></clipPath>
-  <clipPath id="eyeRc"><ellipse cx="250" cy="196" rx="33" ry="39"/></clipPath>
-</defs>
-<symbol id="chara" viewBox="0 0 400 520">
-  <g fill="none" stroke="#2a2240" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
-    <!-- ツインテール（後ろ） -->
-    <path d="M104,150 C50,160 22,226 30,300 C36,360 58,398 88,412 C104,382 98,326 92,288 C84,240 88,188 104,150 Z" fill="url(#hairG)"/>
-    <path d="M296,150 C350,160 378,226 370,300 C364,360 342,398 312,412 C296,382 302,326 308,288 C316,240 312,188 296,150 Z" fill="url(#hairG)"/>
-    <!-- 後ろ髪 -->
-    <path d="M200,70 C130,70 84,122 86,200 C88,258 98,292 112,318 C152,300 248,300 288,318 C302,292 312,258 314,200 C316,122 270,70 200,70 Z" fill="url(#hairG)"/>
-    <!-- 首 -->
-    <path d="M182,266 h36 v40 h-36 z" fill="#ffe9de"/>
-    <!-- 脚・くつ -->
-    <path d="M166,386 v60 h28 v-60 z" fill="#ffe9de"/>
-    <path d="M206,386 v60 h28 v-60 z" fill="#ffe9de"/>
-    <path d="M156,440 h40 a12,12 0 0 1 0,24 h-40 a12,12 0 0 1 0,-24 z" fill="#ff6fa8"/>
-    <path d="M204,440 h40 a12,12 0 0 1 0,24 h-40 a12,12 0 0 1 0,-24 z" fill="#ff6fa8"/>
-    <!-- スカート -->
-    <path d="M154,350 C154,350 130,384 126,400 C160,416 240,416 274,400 C270,384 246,350 246,350 Z" fill="#8fb8ff"/>
-    <!-- 上衣 -->
-    <path d="M152,314 C152,296 172,286 200,286 C228,286 248,296 248,314 L254,364 C254,374 230,380 200,380 C170,380 146,374 146,364 Z" fill="#fffdff"/>
-    <!-- 腕・手 -->
-    <path d="M154,300 C128,310 112,344 110,370 C109,384 127,392 135,380 C144,360 156,318 160,302 Z" fill="#fffdff"/>
-    <circle cx="120" cy="382" r="17" fill="#ffe9de"/>
-    <path d="M246,300 C272,310 288,344 290,370 C291,384 273,392 265,380 C256,360 244,318 240,302 Z" fill="#fffdff"/>
-    <circle cx="280" cy="382" r="17" fill="#ffe9de"/>
-    <!-- セーラー襟 -->
-    <path d="M156,296 C176,286 224,286 244,296 L252,320 L228,352 L200,364 L172,352 L148,320 Z" fill="#8fb8ff"/>
-    <path d="M168,300 L180,336" stroke="#fffdff" stroke-width="4"/>
-    <path d="M232,300 L220,336" stroke="#fffdff" stroke-width="4"/>
-    <!-- 胸リボン -->
-    <path d="M200,340 l-24,-10 -5,22 25,5 Z M200,340 l24,-10 5,22 -25,5 Z" fill="#ff85b3"/>
-    <circle cx="200" cy="345" r="8" fill="#ff85b3"/>
-    <!-- 顔 -->
-    <ellipse cx="200" cy="178" rx="112" ry="106" fill="#ffefe7"/>
-    <!-- 前髪・サイド髪 -->
-    <path d="M84,192 C78,102 128,52 200,52 C272,52 322,102 316,192 C312,164 303,146 291,146 C278,146 268,160 259,176 C250,158 236,142 218,144 C210,146 204,152 200,158 C196,152 190,146 182,144 C164,142 150,158 141,176 C132,160 122,146 109,146 C97,146 88,164 84,192 Z" fill="url(#hairG)"/>
-    <path d="M86,176 C76,214 76,254 86,282 C99,266 100,224 97,190 Z" fill="url(#hairG)"/>
-    <path d="M314,176 C324,214 324,254 314,282 C301,266 300,224 303,190 Z" fill="url(#hairG)"/>
-    <!-- 髪のツヤ -->
-    <path d="M132,116 C152,92 190,80 224,86 C214,98 196,104 180,112 C164,120 146,124 132,116 Z" fill="#fff" opacity=".42" stroke="none"/>
-    <path d="M246,92 C258,92 268,98 274,106 C264,110 252,108 244,102 Z" fill="#fff" opacity=".38" stroke="none"/>
-    <!-- 目（左） -->
-    <ellipse cx="150" cy="196" rx="33" ry="39" fill="#fff"/>
-    <g clip-path="url(#eyeLc)" stroke="none">
-      <circle cx="150" cy="202" r="30" fill="url(#irisG)"/>
-      <ellipse cx="150" cy="206" rx="13" ry="17" fill="#241f3d"/>
-      <circle cx="140" cy="185" r="11" fill="#fff"/>
-      <circle cx="160" cy="216" r="6.5" fill="#fff" opacity=".9"/>
-    </g>
-    <ellipse cx="150" cy="196" rx="33" ry="39" fill="none"/>
-    <path d="M117,180 C123,159 137,150 156,152" stroke-width="9"/>
-    <!-- 目（右） -->
-    <ellipse cx="250" cy="196" rx="33" ry="39" fill="#fff"/>
-    <g clip-path="url(#eyeRc)" stroke="none">
-      <circle cx="250" cy="202" r="30" fill="url(#irisG)"/>
-      <ellipse cx="250" cy="206" rx="13" ry="17" fill="#241f3d"/>
-      <circle cx="240" cy="185" r="11" fill="#fff"/>
-      <circle cx="260" cy="216" r="6.5" fill="#fff" opacity=".9"/>
-    </g>
-    <ellipse cx="250" cy="196" rx="33" ry="39" fill="none"/>
-    <path d="M283,180 C277,159 263,150 244,152" stroke-width="9"/>
-    <!-- ほお・くち -->
-    <ellipse cx="120" cy="234" rx="21" ry="12" fill="#ffb0cd" stroke="none"/>
-    <ellipse cx="280" cy="234" rx="21" ry="12" fill="#ffb0cd" stroke="none"/>
-    <path d="M189,250 C194,245 206,245 211,250 C208,266 192,266 189,250 Z" fill="#e2537f" stroke-width="4"/>
-    <!-- 星のヘアピン・リボン -->
-    <path d="M128,104 l10,19 21,3 -15,15 3,21 -19,-10 -19,10 4,-21 -16,-15 21,-3 Z" fill="#ffe066" stroke-width="4"/>
-    <path d="M104,152 l-22,-12 -7,24 24,6 Z M104,152 l22,-12 7,24 -24,6 Z" fill="#ff6fa8" stroke-width="4"/>
-    <circle cx="104" cy="156" r="8" fill="#ff6fa8" stroke-width="4"/>
-    <path d="M296,152 l-22,-12 -7,24 24,6 Z M296,152 l22,-12 7,24 -24,6 Z" fill="#ff6fa8" stroke-width="4"/>
-    <circle cx="296" cy="156" r="8" fill="#ff6fa8" stroke-width="4"/>
-  </g>
-</symbol>
-
-<!-- ロゴ用の星（ナビ・フッター共通） -->
-<symbol id="star" viewBox="0 0 64 64">
-  <path d="M32 8l7.4 15.6L56 26l-12 11.8L47 56 32 47.4 17 56l3-18.2L8 26l16.6-2.4z"
-        fill="#ff85b3" stroke="#2a2240" stroke-width="4" stroke-linejoin="round"/>
-</symbol>
-</svg>
-
-<div class="page">
-
-<!-- ============================================================
-  NAV
-============================================================ -->
 <nav id="nav">
-  <!-- EDIT: 名前とロゴ -->
-  <a href="#hero" class="brand">
-    <svg viewBox="0 0 64 64" aria-hidden="true"><use href="#star"></use></svg>
-    <span>星宮 きら</span>
+  <!-- EDIT: 作品名（ナビ左上） -->
+  <a href="#top" class="brand">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-star"></use></svg>
+    <span class="brand-name">約束の星</span>
   </a>
   <div class="nav-right">
     <!-- EDIT: ナビのリンク。不要な項目は削除してください -->
     <ul class="nav-links">
-      <li><a href="#news">NEWS</a></li>
-      <li><a href="#profile">PROFILE</a></li>
-      <li><a href="#gallery">GALLERY</a></li>
-      <li><a href="#schedule">SCHEDULE</a></li>
-      <li><a href="#voice">VOICE</a></li>
-      <li><a href="#goods">GOODS</a></li>
-      <li><a href="#fan">FAN</a></li>
-      <li><a href="#qa">Q&amp;A</a></li>
-      <li><a href="#links">LINKS</a></li>
+      <li><a href="#story">Story</a></li>
+      <li><a href="#character">Character</a></li>
+      <li><a href="#staff">Staff &amp; Cast</a></li>
+      <li><a href="#trailer">Trailer</a></li>
+      <li><a href="#theater">Theater</a></li>
+      <li><a href="#goods">Goods</a></li>
     </ul>
-    <button type="button" class="icon-btn" id="themeToggle" aria-label="ナイトテーマに切り替え">
-      <span class="t-day">☀</span><span class="t-night">☾</span>
+    <button type="button" class="theme-btn" id="themeToggle" aria-label="夜明けのテーマに切り替え">
+      <span class="t-night">Night</span><span class="off">／</span><span class="t-dawn">Dawn</span>
     </button>
     <button type="button" class="menu-toggle" id="menuToggle" aria-label="メニュー" aria-expanded="false" aria-controls="mobileMenu"><span></span><span></span><span></span></button>
   </div>
 </nav>
 
 <div class="mobile-menu" id="mobileMenu">
-  <a href="#news">NEWS ｜ お知らせ</a>
-  <a href="#profile">PROFILE ｜ プロフィール</a>
-  <a href="#gallery">GALLERY ｜ イラスト</a>
-  <a href="#schedule">SCHEDULE ｜ 配信予定</a>
-  <a href="#voice">VOICE ｜ ボイス・うた</a>
-  <a href="#goods">GOODS ｜ グッズ</a>
-  <a href="#fan">FAN ｜ ファンのみなさまへ</a>
-  <a href="#qa">Q&amp;A ｜ よくある質問</a>
-  <a href="#links">LINKS ｜ リンク</a>
+  <a href="#news">お知らせ<span>News</span></a>
+  <a href="#introduction">イントロダクション<span>Introduction</span></a>
+  <a href="#story">ストーリー<span>Story</span></a>
+  <a href="#character">キャラクター<span>Character</span></a>
+  <a href="#staff">スタッフ＆キャスト<span>Staff &amp; Cast</span></a>
+  <a href="#trailer">予告編<span>Trailer</span></a>
+  <a href="#music">主題歌<span>Music</span></a>
+  <a href="#theater">劇場情報<span>Theater</span></a>
+  <a href="#special">スペシャル<span>Special</span></a>
+  <a href="#goods">グッズ<span>Goods</span></a>
 </div>
 
 <!-- ============================================================
-  HERO
+  EDIT: シルエット素材（SVG）。
+  #city … キービジュアルの街並み（2400×600）
+  #chara-main … キービジュアルの人物（600×900）
+  #chara-a / #chara-b / #chara-c … キャラクター紹介の3人（600×900）
+  中身を自分のイラストのパスに差し替えてください。
+  fill="currentColor" のままにしておくと、CSS の --silhouette で色が変わります。
+  画像を使う場合は、各 <svg>…</svg> ごと <img src="chara.png" alt=""> に置き換えます。
 ============================================================ -->
-<header class="hero p-dot" id="hero">
-  <div class="container hero-grid">
-    <div class="hero-copy">
-      <!-- EDIT: 所属・肩書きのピル -->
-      <p class="hero-tag"><span class="pill">★ ◯◯所属 / VTuber</span></p>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="city" viewBox="0 0 2400 600">
+    <g fill="currentColor">
+      <g opacity="0.55"><rect x="-40" y="338.5" width="46.7" height="261.5"/><rect x="-28.8" y="299.9" width="3" height="38.6"/><rect x="12.2" y="284" width="57.4" height="316"/><rect x="51.8" y="264.8" width="3" height="19.3"/><rect x="78.4" y="450.3" width="87.7" height="149.7"/><rect x="112.1" y="426" width="3" height="24.3"/><rect x="168.3" y="315.3" width="61.6" height="284.7"/><rect x="234.5" y="295.5" width="78.2" height="304.5"/><rect x="269.5" y="272.9" width="3" height="22.6"/><rect x="322.7" y="444.4" width="109.4" height="155.6"/><rect x="343.6" y="430.4" width="26.2" height="14"/><rect x="438.3" y="306.9" width="109.3" height="293.1"/><rect x="472.5" y="284.6" width="3" height="22.3"/><rect x="488.4" y="292.9" width="19.9" height="14"/><rect x="555" y="352.3" width="80.2" height="247.7"/><rect x="613.4" y="325.9" width="3" height="26.4"/><rect x="580.1" y="338.3" width="23.2" height="14"/><path d="M640.3 600V460.5h9.8V413.9h45.5V460.5h9.8V600Z"/><rect x="679.2" y="371" width="3" height="42.9"/><rect x="665.9" y="399.9" width="21" height="14"/><rect x="717" y="388.5" width="62.7" height="211.5"/><rect x="754.3" y="374.5" width="26.9" height="14"/><rect x="784.2" y="401.5" width="81.2" height="198.5"/><rect x="806.9" y="358.7" width="3" height="42.8"/><rect x="820.7" y="387.5" width="25.2" height="14"/><rect x="873.7" y="403.8" width="89.4" height="196.2"/><rect x="896.3" y="389.8" width="25.5" height="14"/><rect x="972.2" y="465.1" width="103.6" height="134.9"/><rect x="1080.2" y="352.3" width="70.8" height="247.7"/><rect x="1120.7" y="330.9" width="3" height="21.4"/><path d="M1158.8 600V317.3L1204.1 295.3L1249.4 317.3V600Z"/><rect x="1257.7" y="312" width="104.3" height="288"/><rect x="1296.3" y="274.7" width="3" height="37.3"/><rect x="1368.1" y="463.5" width="56.4" height="136.5"/><path d="M1429.7 600V310.7L1457.5 288.7L1485.3 310.7V600Z"/><rect x="1496.4" y="351.2" width="87.5" height="248.8"/><rect x="1587.7" y="340" width="74.9" height="260"/><rect x="1644.6" y="324.1" width="3" height="16"/><rect x="1666.8" y="318.6" width="84" height="281.4"/><rect x="1757.1" y="331.8" width="53" height="268.2"/><rect x="1792.1" y="295.5" width="3" height="36.3"/><rect x="1768.9" y="317.8" width="26.2" height="14"/><rect x="1813.5" y="358.4" width="42.9" height="241.6"/><rect x="1866.1" y="395.9" width="104.8" height="204.1"/><rect x="1932.1" y="374.4" width="3" height="21.5"/><rect x="1975.3" y="311.2" width="46.5" height="288.8"/><rect x="2024.9" y="294.4" width="48.8" height="305.6"/><rect x="2085.2" y="316.1" width="94.6" height="283.9"/><rect x="2133.8" y="302.1" width="28.5" height="14"/><path d="M2188.1 600V342L2222.7 320L2257.3 342V600Z"/><rect x="2221" y="297.9" width="3" height="22.1"/><rect x="2264.9" y="421.4" width="78.3" height="178.6"/><rect x="2292.9" y="378.9" width="3" height="42.5"/><rect x="2297.3" y="407.4" width="27.8" height="14"/><rect x="2349.4" y="417.3" width="40.2" height="182.7"/><rect x="2397.3" y="407.4" width="77.4" height="192.6"/><rect x="2455.1" y="380.3" width="3" height="27.1"/></g><g opacity="0.8"><rect x="-40" y="400.4" width="42.9" height="199.6"/><rect x="5.6" y="490.5" width="63.4" height="109.5"/><rect x="29.1" y="476.5" width="26.9" height="14"/><path d="M74.4 600V472.2L104 450.2L133.6 472.2V600Z"/><rect x="86.7" y="429.4" width="3" height="20.8"/><rect x="145.3" y="442.6" width="35.8" height="157.4"/><rect x="159.6" y="417.5" width="3" height="25.1"/><rect x="192.4" y="389.9" width="32.3" height="210.1"/><rect x="197.1" y="375.9" width="28.2" height="14"/><rect x="234.8" y="413.9" width="35.4" height="186.1"/><path d="M282.2 600V490.8h11.8V454.4h54.9V490.8h11.8V600Z"/><rect x="365.8" y="510.6" width="83.4" height="89.4"/><rect x="421.6" y="478.8" width="3" height="31.8"/><rect x="385.1" y="496.6" width="27.6" height="14"/><rect x="451.6" y="428.5" width="69.5" height="171.5"/><rect x="493.3" y="405.3" width="3" height="23.2"/><rect x="460.5" y="414.5" width="25.4" height="14"/><rect x="526.6" y="429.3" width="50.3" height="170.7"/><rect x="543" y="402.4" width="3" height="27"/><rect x="545.3" y="415.3" width="29.7" height="14"/><rect x="581" y="399.8" width="69" height="200.2"/><rect x="608.1" y="385.8" width="29.6" height="14"/><path d="M654.4 600V429.6L699.1 407.6L743.8 429.6V600Z"/><rect x="702.3" y="369.3" width="3" height="38.3"/><rect x="750.4" y="513.6" width="43" height="86.4"/><rect x="772.1" y="474.7" width="3" height="38.9"/><path d="M796.3 600V536.9L813.9 514.9L831.5 536.9V600Z"/><rect x="820.2" y="475.5" width="3" height="39.4"/><rect x="800.8" y="500.9" width="27.4" height="14"/><rect x="837.9" y="391.7" width="89.7" height="208.3"/><rect x="889.1" y="375.2" width="3" height="16.5"/><rect x="934.9" y="412.3" width="87.3" height="187.7"/><rect x="952.7" y="393.7" width="3" height="18.6"/><rect x="1026.4" y="509.9" width="73.8" height="90.1"/><rect x="1105.7" y="508.8" width="75.2" height="91.2"/><rect x="1149.3" y="494.8" width="21.7" height="14"/><rect x="1192.1" y="440.6" width="83.6" height="159.4"/><rect x="1201.5" y="426.6" width="18.5" height="14"/><rect x="1279.4" y="390.6" width="41.6" height="209.4"/><rect x="1296.2" y="357.5" width="3" height="33.1"/><rect x="1292.7" y="376.6" width="22.6" height="14"/><path d="M1327 600V523.2L1347.2 501.2L1367.4 523.2V600Z"/><path d="M1376.5 600V494h6.9V458.7h32.1V494h6.9V600Z"/><rect x="1411.4" y="411.4" width="3" height="47.3"/><rect x="1427.6" y="467.1" width="77.8" height="132.9"/><rect x="1511.5" y="466.8" width="46.4" height="133.2"/><rect x="1526.5" y="452.8" width="29.2" height="14"/><rect x="1569.1" y="481.6" width="42.5" height="118.4"/><rect x="1574.4" y="467.6" width="19.4" height="14"/><path d="M1614.7 600V448.3h5.2V397.7h24.4V448.3h5.2V600Z"/><rect x="1622.7" y="347.3" width="3" height="50.4"/><rect x="1657.3" y="434.3" width="41.8" height="165.7"/><rect x="1703.1" y="462.1" width="44.3" height="137.9"/><rect x="1757.8" y="408.1" width="32.2" height="191.9"/><rect x="1775.4" y="385.6" width="3" height="22.4"/><rect x="1796.4" y="494.2" width="32.4" height="105.8"/><rect x="1833.6" y="390.4" width="80.4" height="209.6"/><rect x="1917.2" y="428.4" width="37.4" height="171.6"/><rect x="1927.1" y="407.5" width="3" height="20.9"/><rect x="1930.3" y="414.4" width="19.2" height="14"/><rect x="1957" y="392.7" width="39.2" height="207.3"/><rect x="1967.2" y="374" width="3" height="18.7"/><rect x="2000.3" y="462.7" width="52.1" height="137.3"/><rect x="2028.8" y="422.5" width="3" height="40.2"/><rect x="2055.2" y="385.4" width="37.6" height="214.6"/><rect x="2061.5" y="371.4" width="22" height="14"/><path d="M2096 600V467.3L2130.3 445.3L2164.6 467.3V600Z"/><rect x="2173.1" y="397.8" width="46.5" height="202.2"/><path d="M2228.3 600V429.6L2259.3 407.6L2290.2 429.6V600Z"/><rect x="2297.4" y="387.3" width="63.8" height="212.7"/><rect x="2326.4" y="356.5" width="3" height="30.7"/><rect x="2370.4" y="492.6" width="46.3" height="107.4"/><path d="M2422.9 600V423.9L2449 401.9L2475 423.9V600Z"/></g><g><path d="M1490 600L1540 210L1556 130h8L1580 210L1630 600h-14L1572 220h-24L1504 600Z"/>
+  <rect x="1558" y="60" width="4" height="70"/><circle cx="1560" cy="56" r="4"/>
+  <path d="M1516 360h88l6 12h-100Z"/><path d="M1500 490h120l6 12h-132Z"/>
+  <g stroke="currentColor" stroke-width="3" fill="none"><path d="M1540 210L1620 560M1580 210L1500 560M1526 330L1606 570M1594 330L1514 570"/></g></g><g><rect x="100" y="325.4" width="6" height="274.6"/><rect x="74" y="339.4" width="58" height="4"/><rect x="82" y="359.4" width="42" height="3"/><rect x="520.3" y="335.8" width="6" height="264.2"/><rect x="494.3" y="349.8" width="58" height="4"/><rect x="502.3" y="369.8" width="42" height="3"/><rect x="996.3" y="313.4" width="6" height="286.6"/><rect x="970.3" y="327.4" width="58" height="4"/><rect x="978.3" y="347.4" width="42" height="3"/><rect x="1410.6" y="312.1" width="6" height="287.9"/><rect x="1384.6" y="326.1" width="58" height="4"/><rect x="1392.6" y="346.1" width="42" height="3"/><rect x="1835.5" y="303.4" width="6" height="296.6"/><rect x="1809.5" y="317.4" width="58" height="4"/><rect x="1817.5" y="337.4" width="42" height="3"/><rect x="2236.6" y="311.4" width="6" height="288.6"/><rect x="2210.6" y="325.4" width="58" height="4"/><rect x="2218.6" y="345.4" width="42" height="3"/></g><g fill="none" stroke="currentColor" stroke-width="1.6"><path d="M0 330 Q220 372 440 334 T880 336 T1320 340 T1760 332 T2200 338 T2400 334"/><path d="M0 350 Q220 392 440 354 T880 356 T1320 360 T1760 352 T2200 358 T2400 354"/></g>
+      <!-- 窓の明かり（色はここで変更） -->
+      <g fill="#ffcf8a" opacity=".45"><rect x="-32" y="462.4" width="7" height="10"/><rect x="-32" y="488.4" width="7" height="10"/><rect x="13.6" y="500.5" width="7" height="10"/><rect x="13.6" y="578.5" width="7" height="10"/><rect x="35.6" y="526.5" width="7" height="10"/><rect x="35.6" y="552.5" width="7" height="10"/><rect x="82.4" y="512.2" width="7" height="10"/><rect x="153.3" y="452.6" width="7" height="10"/><rect x="153.3" y="478.6" width="7" height="10"/><rect x="200.4" y="425.9" width="7" height="10"/><rect x="200.4" y="451.9" width="7" height="10"/><rect x="200.4" y="503.9" width="7" height="10"/><rect x="200.4" y="581.9" width="7" height="10"/><rect x="242.8" y="475.9" width="7" height="10"/><rect x="290.2" y="464.4" width="7" height="10"/><rect x="290.2" y="516.4" width="7" height="10"/><rect x="312.2" y="490.4" width="7" height="10"/><rect x="312.2" y="516.4" width="7" height="10"/><rect x="334.2" y="516.4" width="7" height="10"/><rect x="334.2" y="568.4" width="7" height="10"/><rect x="395.8" y="572.6" width="7" height="10"/><rect x="459.6" y="438.5" width="7" height="10"/><rect x="481.6" y="568.5" width="7" height="10"/><rect x="503.6" y="568.5" width="7" height="10"/><rect x="534.6" y="517.3" width="7" height="10"/><rect x="556.6" y="543.3" width="7" height="10"/><rect x="589" y="409.8" width="7" height="10"/><rect x="589" y="435.8" width="7" height="10"/><rect x="589" y="539.8" width="7" height="10"/><rect x="611" y="435.8" width="7" height="10"/><rect x="611" y="461.8" width="7" height="10"/><rect x="633" y="461.8" width="7" height="10"/><rect x="662.4" y="495.6" width="7" height="10"/><rect x="662.4" y="547.6" width="7" height="10"/><rect x="662.4" y="573.6" width="7" height="10"/><rect x="684.4" y="469.6" width="7" height="10"/><rect x="684.4" y="547.6" width="7" height="10"/><rect x="684.4" y="573.6" width="7" height="10"/><rect x="706.4" y="573.6" width="7" height="10"/><rect x="728.4" y="495.6" width="7" height="10"/><rect x="728.4" y="521.6" width="7" height="10"/><rect x="728.4" y="547.6" width="7" height="10"/><rect x="728.4" y="573.6" width="7" height="10"/><rect x="758.4" y="575.6" width="7" height="10"/><rect x="804.3" y="576.9" width="7" height="10"/><rect x="845.9" y="531.7" width="7" height="10"/><rect x="867.9" y="401.7" width="7" height="10"/><rect x="867.9" y="557.7" width="7" height="10"/><rect x="867.9" y="583.7" width="7" height="10"/><rect x="889.9" y="401.7" width="7" height="10"/><rect x="889.9" y="583.7" width="7" height="10"/><rect x="911.9" y="453.7" width="7" height="10"/><rect x="911.9" y="479.7" width="7" height="10"/><rect x="964.9" y="500.3" width="7" height="10"/><rect x="964.9" y="526.3" width="7" height="10"/><rect x="964.9" y="578.3" width="7" height="10"/><rect x="986.9" y="422.3" width="7" height="10"/><rect x="986.9" y="474.3" width="7" height="10"/><rect x="986.9" y="526.3" width="7" height="10"/><rect x="986.9" y="552.3" width="7" height="10"/><rect x="1034.4" y="519.9" width="7" height="10"/><rect x="1056.4" y="545.9" width="7" height="10"/><rect x="1056.4" y="571.9" width="7" height="10"/><rect x="1113.7" y="544.8" width="7" height="10"/><rect x="1113.7" y="570.8" width="7" height="10"/><rect x="1135.7" y="570.8" width="7" height="10"/><rect x="1157.7" y="544.8" width="7" height="10"/><rect x="1200.1" y="502.6" width="7" height="10"/><rect x="1244.1" y="450.6" width="7" height="10"/><rect x="1244.1" y="476.6" width="7" height="10"/><rect x="1244.1" y="528.6" width="7" height="10"/><rect x="1287.4" y="426.6" width="7" height="10"/><rect x="1287.4" y="478.6" width="7" height="10"/><rect x="1287.4" y="530.6" width="7" height="10"/><rect x="1287.4" y="556.6" width="7" height="10"/><rect x="1335" y="537.2" width="7" height="10"/><rect x="1384.5" y="494.7" width="7" height="10"/><rect x="1406.5" y="520.7" width="7" height="10"/><rect x="1406.5" y="572.7" width="7" height="10"/><rect x="1435.6" y="477.1" width="7" height="10"/><rect x="1435.6" y="555.1" width="7" height="10"/><rect x="1457.6" y="529.1" width="7" height="10"/><rect x="1479.6" y="555.1" width="7" height="10"/><rect x="1519.5" y="554.8" width="7" height="10"/><rect x="1541.5" y="476.8" width="7" height="10"/><rect x="1541.5" y="528.8" width="7" height="10"/><rect x="1541.5" y="554.8" width="7" height="10"/><rect x="1577.1" y="543.6" width="7" height="10"/><rect x="1622.7" y="485.7" width="7" height="10"/><rect x="1622.7" y="511.7" width="7" height="10"/><rect x="1711.1" y="576.1" width="7" height="10"/><rect x="1733.1" y="550.1" width="7" height="10"/><rect x="1733.1" y="576.1" width="7" height="10"/><rect x="1765.8" y="444.1" width="7" height="10"/><rect x="1765.8" y="548.1" width="7" height="10"/><rect x="1804.4" y="556.2" width="7" height="10"/><rect x="1863.6" y="400.4" width="7" height="10"/><rect x="1863.6" y="478.4" width="7" height="10"/><rect x="1863.6" y="504.4" width="7" height="10"/><rect x="1885.6" y="504.4" width="7" height="10"/><rect x="1885.6" y="556.4" width="7" height="10"/><rect x="1925.2" y="542.4" width="7" height="10"/><rect x="2008.3" y="472.7" width="7" height="10"/><rect x="2008.3" y="550.7" width="7" height="10"/><rect x="2030.3" y="550.7" width="7" height="10"/><rect x="2063.2" y="473.4" width="7" height="10"/><rect x="2104" y="533.3" width="7" height="10"/><rect x="2126" y="533.3" width="7" height="10"/><rect x="2148" y="455.3" width="7" height="10"/><rect x="2148" y="533.3" width="7" height="10"/><rect x="2181.1" y="459.8" width="7" height="10"/><rect x="2203.1" y="459.8" width="7" height="10"/><rect x="2203.1" y="485.8" width="7" height="10"/><rect x="2203.1" y="511.8" width="7" height="10"/><rect x="2203.1" y="563.8" width="7" height="10"/><rect x="2236.3" y="417.6" width="7" height="10"/><rect x="2236.3" y="469.6" width="7" height="10"/><rect x="2236.3" y="495.6" width="7" height="10"/><rect x="2258.3" y="417.6" width="7" height="10"/><rect x="2258.3" y="469.6" width="7" height="10"/><rect x="2305.4" y="397.3" width="7" height="10"/><rect x="2305.4" y="475.3" width="7" height="10"/><rect x="2305.4" y="579.3" width="7" height="10"/><rect x="2327.4" y="397.3" width="7" height="10"/><rect x="2327.4" y="501.3" width="7" height="10"/><rect x="2400.4" y="502.6" width="7" height="10"/><rect x="2430.9" y="541.9" width="7" height="10"/><rect x="2452.9" y="437.9" width="7" height="10"/><rect x="2452.9" y="463.9" width="7" height="10"/><rect x="2452.9" y="489.9" width="7" height="10"/><rect x="2452.9" y="541.9" width="7" height="10"/></g>
+    </g>
+  </symbol>
+  <symbol id="chara-main" viewBox="0 0 600 900">
+    <g fill="currentColor">
+      <path d="M341.7 132.7L342.1 140.6L341.4 148.3L339.6 155.8L336.9 162.9L333.1 169.4L328.5 175.1L323.2 179.8L317.2 183.6L310.7 186.2L304 187.6L297.1 187.9L290.2 186.8L283.5 184.6L277.2 181.3L271.3 176.8L266.2 171.4L261.8 165.2L258.3 158.3L255.8 151L254.3 143.3L253.9 135.4L254.6 127.7L256.4 120.2L259.1 113.1L262.9 106.6L267.5 100.9L272.8 96.2L278.8 92.4L285.3 89.8L292 88.4L298.9 88.1L305.8 89.2L312.5 91.4L318.8 94.7L324.7 99.2L329.8 104.6L334.2 110.8L337.7 117.7L340.2 125Z"/><path d="M347.6 117.8L348 126.5L347.2 135.3L345 143.7L341.7 151.6L337.2 158.9L331.8 165.3L325.4 170.7L318.3 175L310.7 177.9L302.7 179.6L294.5 179.9L286.4 178.8L278.5 176.4L271.1 172.6L264.2 167.7L258.2 161.7L253 154.8L249 147.1L246.1 138.8L244.4 130.2L244 121.5L244.8 112.7L247 104.3L250.3 96.4L254.8 89.1L260.2 82.7L266.6 77.3L273.7 73L281.3 70.1L289.3 68.4L297.5 68.1L305.6 69.2L313.5 71.6L320.9 75.4L327.8 80.3L333.8 86.3L339 93.2L343 100.9L345.9 109.2Z"/><path d="M289 182L288.8 186.8L288.7 193.9L288.5 202L288.3 210.1L288.2 217.2L288 222L312 222L311.8 217.2L311.7 210.1L311.5 202L311.3 193.9L311.2 186.8L311 182Z"/><path d="M258 234L265.4 230.9L275.4 228.8L287.3 227.4L300 227L312.7 227.4L324.6 228.8L334.6 230.9L342 234L346.8 238.1L349.9 243.5L351.5 249.8L352.1 256.9L352 264.6L351.3 272.9L350.6 281.4L350 290L349.1 299.2L347.5 309.5L345.3 320.3L342.9 331.5L340.5 342.6L338.3 353.3L336.8 363.2L336 372L336.8 380L339.2 387.5L342.5 394.6L345.9 401.1L348.7 407L350.1 412.2L349.5 416.5L346 420L338.7 422.6L327.8 424.5L314.5 425.6L300 426L285.5 425.6L272.2 424.5L261.3 422.6L254 420L250.5 416.5L249.9 412.2L251.3 407L254.1 401.1L257.5 394.6L260.8 387.5L263.2 380L264 372L263.2 363.2L261.7 353.3L259.5 342.6L257.1 331.5L254.7 320.3L252.5 309.5L250.9 299.2L250 290L249.4 281.4L248.7 272.9L248 264.6L247.9 256.9L248.5 249.8L250.1 243.5L253.2 238.1Z"/><path d="M247.7 235.5L245 245.5L241 260.1L236.1 276.9L231.3 293.8L227.2 308.4L224.6 318.4L247.4 325.6L251 315.9L256.1 301.6L261.9 285.1L267.6 268.5L272.7 254.3L276.3 244.5Z"/><path d="M224 321L223.9 327.1L223.5 335.9L223 346.1L222.6 356.3L222.2 365.2L222 371.2L242 372.8L242.8 366.8L243.8 358L245 347.9L246.1 337.7L247.1 328.9L248 323Z"/><path d="M323.7 244.5L327.3 254.3L332.4 268.5L338.1 285.1L343.9 301.6L349 315.9L352.6 325.6L375.4 318.4L372.8 308.4L368.7 293.8L363.9 276.9L359 260.1L355 245.5L352.3 235.5Z"/><path d="M352 323L352.9 328.9L353.9 337.7L355 347.9L356.2 358L357.2 366.8L358 372.8L378 371.2L377.8 365.2L377.4 356.3L377 346.1L376.5 335.9L376.1 327.1L376 321Z"/><path d="M256 408L344 408L355.3 427L366.2 446L375.6 465L382.8 484L387.6 503L390.2 522L391.3 541L392 560L392 564L379 556.1L366 563.7L353 556.4L340 563.5L327 556.7L314 563.2L301 556.9L288 562.9L275 557.2L262 562.7L249 557.5L236 562.4L239.8 541L243.3 522L246.3 503L249 484L251.3 465L253.3 446L254.8 427Z"/><path d="M265 539.6L265.4 577.9L265.6 633.9L265.5 698.7L265.4 763.5L265.6 819.5L266 857.8L290 858.2L291.9 820L294.1 764L296.5 699.3L298.9 634.5L301.1 578.6L303 540.4Z"/><path d="M299 540.7L301.6 579L304.9 634.9L308.5 699.6L312.1 764.3L315.4 820.2L318 858.5L342 857.5L341.7 819.2L340.8 763.2L339.5 698.4L338.2 633.6L337.3 577.6L337 539.3Z"/><path d="M262 854L265.1 852.5L269.2 851.4L274 850.7L279.1 850.5L284.2 850.7L289 851.4L293 852.5L296 854L298.3 856.4L300.2 859.7L301.8 863.7L302.9 868L303.3 872.3L303.1 876.3L302 879.6L300 882L296.5 883.5L291.2 884.6L284.8 885.3L277.9 885.5L270.9 885.3L264.6 884.6L259.4 883.5L256 882L254.2 879.6L253.3 876.3L253.4 872.3L254.1 868L255.5 863.7L257.4 859.7L259.6 856.4Z"/><path d="M314 854L317.2 852.5L321.5 851.4L326.5 850.7L331.9 850.5L337.3 850.7L342.4 851.4L346.7 852.5L350 854L352.5 856.4L354.8 859.7L356.7 863.7L358.1 868L358.9 872.3L358.9 876.3L357.9 879.6L356 882L352.4 883.5L347 884.6L340.4 885.3L333.1 885.5L325.9 885.3L319.2 884.6L313.7 883.5L310 882L307.9 879.6L306.7 876.3L306.4 872.3L306.9 868L308 863.7L309.6 859.7L311.6 856.4Z"/><path d="M257.8 139.8L261.4 142.9L265.4 147.1L269.7 152.5L274.4 158.8L279.4 165.6L284.6 172.8L290.1 180.1L291.2 188.9L292.5 197.6L294.1 205.7L295.6 213.2L297.2 220.6L299.1 228.1L301.3 235.8L303.9 243.5L306.9 251.4L310.5 259.3L314.5 267.2L319.2 275.1L324.4 282.8L329.9 290L335.8 297.1L342.1 303.9L348.7 310.6L355.8 317.1L363.1 323.3L370.7 329.2L378.6 334.8L386.7 339.9L395 344.7L403.6 349.1L412.4 353L421.4 356.6L430.4 359.8L439.5 362.6L448.6 365.1L457.5 367.2L466.3 368.9L474.8 370.3L483.3 371.4L491.9 372.2L500.7 372.5L509.4 372.4L517.8 371.9L525.9 371.3L533.5 370.4L540.3 370.5L546.4 371L551.4 371.5L555.3 372L556.7 360L552.6 359.6L547.4 359.1L541.4 358.6L534.7 357.5L527.6 355.2L520.3 352.8L512.9 350.1L505.7 347.2L499 344L492.7 340.6L486.5 336.8L479.8 332.7L473.1 328.4L466.3 324L459.5 319.4L452.8 314.7L446.4 309.9L440.2 305L434.4 300.1L429 295.3L423.8 290.3L418.6 285.1L413.3 279.7L408.1 274.2L403 268.7L398 263L393.1 257.4L388.4 251.9L383.9 246.4L379.6 241.2L375.8 236.4L372.2 231.5L368.6 226.4L365 221.2L361.3 215.7L357.6 210.1L353.9 204.3L350 198.3L346 192.2L341.9 186.3L337.9 180.4L333.8 174L329.6 167.1L329.9 158.5L330.4 150.1L330.9 142L331.5 134.4L332.2 127.5L333.1 121.2L334.2 116.2Z"/><path d="M316.3 173L317.7 176.4L319.5 180.8L321.7 186L324.3 191.9L327.2 198.1L330.4 204.7L333.8 211.3L337.4 217.8L341.3 224.1L345.2 229.8L349.3 235.2L353.6 240.6L358.1 245.9L362.8 251.1L367.8 256.2L372.9 261.2L378.2 266.1L383.7 270.7L389.4 275.1L395.3 279.3L401.3 283.2L407.6 286.9L414 290.4L420.7 293.7L427.4 296.8L434.2 299.6L441.1 302.2L448.1 304.5L455 306.6L461.8 308.4L468.8 309.9L475.9 311.1L483 312L490.2 312.6L497.3 313L504.3 313.2L511.1 313.2L517.8 313L524.1 312.6L530.3 312.1L536.4 311.3L542.6 310.2L548.7 308.8L554.5 307.1L560.1 305.4L565.3 303.7L570 302L574.2 300.4L577.7 299L580.4 297.9L579.6 294.1L576.5 294.3L572.7 294.8L568.3 295.6L563.4 296.4L558.1 297.3L552.6 298.2L546.8 299L541 299.5L535.3 299.9L529.7 299.9L523.9 299.7L517.8 299.4L511.5 299L505 298.4L498.5 297.7L491.9 296.9L485.3 295.9L478.8 294.7L472.4 293.2L466.2 291.6L460 289.8L453.6 287.7L447.3 285.4L440.9 282.9L434.6 280.2L428.3 277.4L422.2 274.5L416.2 271.3L410.3 268.1L404.7 264.7L399.3 261.2L393.9 257.5L388.6 253.5L383.4 249.3L378.2 245L373.2 240.6L368.4 236L363.7 231.4L359.1 226.8L354.8 222.2L350.6 217.3L346.4 211.9L342.3 206.1L338.3 200.1L334.5 194.1L330.9 188.3L327.6 182.9L324.6 178.1L322 174.1L319.7 171Z"/><path d="M313.5 234.7L315.9 236.3L319.2 238.1L323.3 240.2L330.2 234.7L335.4 237L341.1 239.1L347.1 241.1L353.3 242.8L359.7 244L366.2 244.7L372.9 244.7L379.5 244.1L385.9 242.9L392.2 241.5L398.3 239.9L404.2 238.3L410 236.9L415.6 235.7L420.9 234.7L426.2 234.2L431.7 234.2L437.7 234.5L444.1 235.2L450.9 236.1L457.9 237.2L465.1 238.2L472.4 239.1L479.7 239.7L487 239.9L494.1 239.5L501.1 238.4L508.1 236.8L515 234.9L521.7 232.8L528.2 230.5L534.3 228.1L540 226.3L545.1 224.9L549.3 223.7L552.7 222.9L551.3 217.1L547.8 217.9L543.5 219.1L538.4 220.5L532.6 221.9L526.3 222.8L519.7 223.7L512.9 224.4L506.3 224.8L499.9 224.9L493.9 224.5L488.2 223.7L482.1 222.4L475.8 220.7L469.2 218.8L462.3 216.8L455.3 214.8L448.2 212.9L440.8 211.4L433.4 210.2L425.8 209.8L418.3 210.1L411.1 211L404.2 212.5L397.7 214.2L391.5 216.1L385.6 218L380.1 219.7L375 221.3L370.2 222.5L365.8 223.3L361 223.7L355.8 223.7L350.3 223.5L344.7 223.1L339.1 222.5L333.7 222L330.8 213.7L326.1 213.3L321.9 213.1L318.5 213.3Z"/><path d="M0 372L600 372L600 380L0 380Z"/><path d="M0 452L600 452L600 457L0 457Z"/><path d="M57 372L63 372L63 640L57 640Z"/><path d="M197 372L203 372L203 640L197 640Z"/><path d="M397 372L403 372L403 640L397 640Z"/><path d="M537 372L543 372L543 640L537 640Z"/>
+    </g>
+  </symbol>
+  <symbol id="chara-a" viewBox="0 0 600 900">
+    <g fill="currentColor">
+      <path d="M341.7 132.7L342.1 140.6L341.4 148.3L339.6 155.8L336.9 162.9L333.1 169.4L328.5 175.1L323.2 179.8L317.2 183.6L310.7 186.2L304 187.6L297.1 187.9L290.2 186.8L283.5 184.6L277.2 181.3L271.3 176.8L266.2 171.4L261.8 165.2L258.3 158.3L255.8 151L254.3 143.3L253.9 135.4L254.6 127.7L256.4 120.2L259.1 113.1L262.9 106.6L267.5 100.9L272.8 96.2L278.8 92.4L285.3 89.8L292 88.4L298.9 88.1L305.8 89.2L312.5 91.4L318.8 94.7L324.7 99.2L329.8 104.6L334.2 110.8L337.7 117.7L340.2 125Z"/><path d="M347.6 117.8L348 126.5L347.2 135.3L345 143.7L341.7 151.6L337.2 158.9L331.8 165.3L325.4 170.7L318.3 175L310.7 177.9L302.7 179.6L294.5 179.9L286.4 178.8L278.5 176.4L271.1 172.6L264.2 167.7L258.2 161.7L253 154.8L249 147.1L246.1 138.8L244.4 130.2L244 121.5L244.8 112.7L247 104.3L250.3 96.4L254.8 89.1L260.2 82.7L266.6 77.3L273.7 73L281.3 70.1L289.3 68.4L297.5 68.1L305.6 69.2L313.5 71.6L320.9 75.4L327.8 80.3L333.8 86.3L339 93.2L343 100.9L345.9 109.2Z"/><path d="M289 182L288.8 186.8L288.7 193.9L288.5 202L288.3 210.1L288.2 217.2L288 222L312 222L311.8 217.2L311.7 210.1L311.5 202L311.3 193.9L311.2 186.8L311 182Z"/><path d="M258 234L265.4 230.9L275.4 228.8L287.3 227.4L300 227L312.7 227.4L324.6 228.8L334.6 230.9L342 234L346.8 238.1L349.9 243.5L351.5 249.8L352.1 256.9L352 264.6L351.3 272.9L350.6 281.4L350 290L349.1 299.2L347.5 309.5L345.3 320.3L342.9 331.5L340.5 342.6L338.3 353.3L336.8 363.2L336 372L336.8 380L339.2 387.5L342.5 394.6L345.9 401.1L348.7 407L350.1 412.2L349.5 416.5L346 420L338.7 422.6L327.8 424.5L314.5 425.6L300 426L285.5 425.6L272.2 424.5L261.3 422.6L254 420L250.5 416.5L249.9 412.2L251.3 407L254.1 401.1L257.5 394.6L260.8 387.5L263.2 380L264 372L263.2 363.2L261.7 353.3L259.5 342.6L257.1 331.5L254.7 320.3L252.5 309.5L250.9 299.2L250 290L249.4 281.4L248.7 272.9L248 264.6L247.9 256.9L248.5 249.8L250.1 243.5L253.2 238.1Z"/><path d="M247.7 235.5L245 245.5L241 260.1L236.1 276.9L231.3 293.8L227.2 308.4L224.6 318.4L247.4 325.6L251 315.9L256.1 301.6L261.9 285.1L267.6 268.5L272.7 254.3L276.3 244.5Z"/><path d="M224 321L223.9 327.1L223.5 335.9L223 346.1L222.6 356.3L222.2 365.2L222 371.2L242 372.8L242.8 366.8L243.8 358L245 347.9L246.1 337.7L247.1 328.9L248 323Z"/><path d="M323.7 244.5L327.3 254.3L332.4 268.5L338.1 285.1L343.9 301.6L349 315.9L352.6 325.6L375.4 318.4L372.8 308.4L368.7 293.8L363.9 276.9L359 260.1L355 245.5L352.3 235.5Z"/><path d="M352 323L352.9 328.9L353.9 337.7L355 347.9L356.2 358L357.2 366.8L358 372.8L378 371.2L377.8 365.2L377.4 356.3L377 346.1L376.5 335.9L376.1 327.1L376 321Z"/><path d="M256 408L344 408L355.3 427L366.2 446L375.6 465L382.8 484L387.6 503L390.2 522L391.3 541L392 560L392 564L379 556.1L366 563.7L353 556.4L340 563.5L327 556.7L314 563.2L301 556.9L288 562.9L275 557.2L262 562.7L249 557.5L236 562.4L239.8 541L243.3 522L246.3 503L249 484L251.3 465L253.3 446L254.8 427Z"/><path d="M265 539.6L265.4 577.9L265.6 633.9L265.5 698.7L265.4 763.5L265.6 819.5L266 857.8L290 858.2L291.9 820L294.1 764L296.5 699.3L298.9 634.5L301.1 578.6L303 540.4Z"/><path d="M299 540.7L301.6 579L304.9 634.9L308.5 699.6L312.1 764.3L315.4 820.2L318 858.5L342 857.5L341.7 819.2L340.8 763.2L339.5 698.4L338.2 633.6L337.3 577.6L337 539.3Z"/><path d="M262 854L265.1 852.5L269.2 851.4L274 850.7L279.1 850.5L284.2 850.7L289 851.4L293 852.5L296 854L298.3 856.4L300.2 859.7L301.8 863.7L302.9 868L303.3 872.3L303.1 876.3L302 879.6L300 882L296.5 883.5L291.2 884.6L284.8 885.3L277.9 885.5L270.9 885.3L264.6 884.6L259.4 883.5L256 882L254.2 879.6L253.3 876.3L253.4 872.3L254.1 868L255.5 863.7L257.4 859.7L259.6 856.4Z"/><path d="M314 854L317.2 852.5L321.5 851.4L326.5 850.7L331.9 850.5L337.3 850.7L342.4 851.4L346.7 852.5L350 854L352.5 856.4L354.8 859.7L356.7 863.7L358.1 868L358.9 872.3L358.9 876.3L357.9 879.6L356 882L352.4 883.5L347 884.6L340.4 885.3L333.1 885.5L325.9 885.3L319.2 884.6L313.7 883.5L310 882L307.9 879.6L306.7 876.3L306.4 872.3L306.9 868L308 863.7L309.6 859.7L311.6 856.4Z"/><path d="M257.8 139.8L261.4 142.9L265.4 147.1L269.7 152.5L274.4 158.8L279.4 165.6L284.6 172.8L290.1 180.1L291.2 188.9L292.5 197.6L294.1 205.7L295.6 213.2L297.2 220.6L299.1 228.1L301.3 235.8L303.9 243.5L306.9 251.4L310.5 259.3L314.5 267.2L319.2 275.1L324.4 282.8L329.9 290L335.8 297.1L342.1 303.9L348.7 310.6L355.8 317.1L363.1 323.3L370.7 329.2L378.6 334.8L386.7 339.9L395 344.7L403.6 349.1L412.4 353L421.4 356.6L430.4 359.8L439.5 362.6L448.6 365.1L457.5 367.2L466.3 368.9L474.8 370.3L483.3 371.4L491.9 372.2L500.7 372.5L509.4 372.4L517.8 371.9L525.9 371.3L533.5 370.4L540.3 370.5L546.4 371L551.4 371.5L555.3 372L556.7 360L552.6 359.6L547.4 359.1L541.4 358.6L534.7 357.5L527.6 355.2L520.3 352.8L512.9 350.1L505.7 347.2L499 344L492.7 340.6L486.5 336.8L479.8 332.7L473.1 328.4L466.3 324L459.5 319.4L452.8 314.7L446.4 309.9L440.2 305L434.4 300.1L429 295.3L423.8 290.3L418.6 285.1L413.3 279.7L408.1 274.2L403 268.7L398 263L393.1 257.4L388.4 251.9L383.9 246.4L379.6 241.2L375.8 236.4L372.2 231.5L368.6 226.4L365 221.2L361.3 215.7L357.6 210.1L353.9 204.3L350 198.3L346 192.2L341.9 186.3L337.9 180.4L333.8 174L329.6 167.1L329.9 158.5L330.4 150.1L330.9 142L331.5 134.4L332.2 127.5L333.1 121.2L334.2 116.2Z"/><path d="M316.3 173L317.7 176.4L319.5 180.8L321.7 186L324.3 191.9L327.2 198.1L330.4 204.7L333.8 211.3L337.4 217.8L341.3 224.1L345.2 229.8L349.3 235.2L353.6 240.6L358.1 245.9L362.8 251.1L367.8 256.2L372.9 261.2L378.2 266.1L383.7 270.7L389.4 275.1L395.3 279.3L401.3 283.2L407.6 286.9L414 290.4L420.7 293.7L427.4 296.8L434.2 299.6L441.1 302.2L448.1 304.5L455 306.6L461.8 308.4L468.8 309.9L475.9 311.1L483 312L490.2 312.6L497.3 313L504.3 313.2L511.1 313.2L517.8 313L524.1 312.6L530.3 312.1L536.4 311.3L542.6 310.2L548.7 308.8L554.5 307.1L560.1 305.4L565.3 303.7L570 302L574.2 300.4L577.7 299L580.4 297.9L579.6 294.1L576.5 294.3L572.7 294.8L568.3 295.6L563.4 296.4L558.1 297.3L552.6 298.2L546.8 299L541 299.5L535.3 299.9L529.7 299.9L523.9 299.7L517.8 299.4L511.5 299L505 298.4L498.5 297.7L491.9 296.9L485.3 295.9L478.8 294.7L472.4 293.2L466.2 291.6L460 289.8L453.6 287.7L447.3 285.4L440.9 282.9L434.6 280.2L428.3 277.4L422.2 274.5L416.2 271.3L410.3 268.1L404.7 264.7L399.3 261.2L393.9 257.5L388.6 253.5L383.4 249.3L378.2 245L373.2 240.6L368.4 236L363.7 231.4L359.1 226.8L354.8 222.2L350.6 217.3L346.4 211.9L342.3 206.1L338.3 200.1L334.5 194.1L330.9 188.3L327.6 182.9L324.6 178.1L322 174.1L319.7 171Z"/><path d="M313.5 234.7L315.9 236.3L319.2 238.1L323.3 240.2L330.2 234.7L335.4 237L341.1 239.1L347.1 241.1L353.3 242.8L359.7 244L366.2 244.7L372.9 244.7L379.5 244.1L385.9 242.9L392.2 241.5L398.3 239.9L404.2 238.3L410 236.9L415.6 235.7L420.9 234.7L426.2 234.2L431.7 234.2L437.7 234.5L444.1 235.2L450.9 236.1L457.9 237.2L465.1 238.2L472.4 239.1L479.7 239.7L487 239.9L494.1 239.5L501.1 238.4L508.1 236.8L515 234.9L521.7 232.8L528.2 230.5L534.3 228.1L540 226.3L545.1 224.9L549.3 223.7L552.7 222.9L551.3 217.1L547.8 217.9L543.5 219.1L538.4 220.5L532.6 221.9L526.3 222.8L519.7 223.7L512.9 224.4L506.3 224.8L499.9 224.9L493.9 224.5L488.2 223.7L482.1 222.4L475.8 220.7L469.2 218.8L462.3 216.8L455.3 214.8L448.2 212.9L440.8 211.4L433.4 210.2L425.8 209.8L418.3 210.1L411.1 211L404.2 212.5L397.7 214.2L391.5 216.1L385.6 218L380.1 219.7L375 221.3L370.2 222.5L365.8 223.3L361 223.7L355.8 223.7L350.3 223.5L344.7 223.1L339.1 222.5L333.7 222L330.8 213.7L326.1 213.3L321.9 213.1L318.5 213.3Z"/>
+    </g>
+  </symbol>
+  <symbol id="chara-b" viewBox="0 0 600 900">
+    <g fill="currentColor">
+      <path d="M342 136L341.5 143.8L339.9 151.5L337.4 158.7L334 165.4L329.7 171.4L324.7 176.5L319.1 180.6L313 183.6L306.6 185.4L300 186L293.4 185.4L287 183.6L280.9 180.6L275.3 176.5L270.3 171.4L266 165.4L262.6 158.7L260.1 151.5L258.5 143.8L258 136L258.5 128.2L260.1 120.5L262.6 113.3L266 106.6L270.3 100.6L275.3 95.5L280.9 91.4L287 88.4L293.4 86.6L300 86L306.6 86.6L313 88.4L319.1 91.4L324.7 95.5L329.7 100.6L334 106.6L337.4 113.3L339.9 120.5L341.5 128.2Z"/><path d="M348 122L347.4 130.4L345.7 138.7L342.8 146.5L338.8 153.7L333.9 160.2L328.2 165.7L321.8 170.1L314.8 173.4L307.5 175.3L300 176L292.5 175.3L285.2 173.4L278.2 170.1L271.8 165.7L266.1 160.2L261.2 153.7L257.2 146.5L254.3 138.7L252.6 130.4L252 122L252.6 113.6L254.3 105.3L257.2 97.5L261.2 90.3L266.1 83.8L271.8 78.3L278.2 73.9L285.2 70.6L292.5 68.7L300 68L307.5 68.7L314.8 70.6L321.8 73.9L328.2 78.3L333.9 83.8L338.8 90.3L342.8 97.5L345.7 105.3L347.4 113.6Z"/><path d="M269.7 152L271.7 149L274 144.8L276.4 140L278.9 134.9L281.6 130L284.4 125.8L287 122.8L289.1 121.4L291.4 120.5L294.5 119.4L298 118.4L302 117.5L306.1 116.8L310.3 116.4L314.3 116.1L317.9 116L321.2 116.1L324.7 116.5L328.5 117.1L332.3 117.9L336.2 118.9L339.8 120.1L343.2 121.3L346 122.3L348.3 123.4L350.9 125.4L353.7 128.2L356.6 131.4L359.4 134.8L362 138.1L364.5 141L366.8 142.9L377.2 137.1L376.9 134.5L376.3 131.1L375.3 126.9L373.9 122.1L372 116.9L369.5 111.7L366.2 106.4L362 101.7L357.5 97.8L352.8 94.5L347.7 91.6L342.2 89.1L336.4 87L330.4 85.4L324.3 84.4L318.1 84L312.1 84.3L306 85L299.7 86.4L293.5 88.2L287.4 90.7L281.5 93.8L276 97.7L270.9 102.6L266.7 108.7L263.8 115.4L261.7 122.1L260.3 128.6L259.3 134.8L258.7 140.3L258.4 144.8L258.3 148Z"/><path d="M345.1 101.7L348.7 101.2L353.1 99.7L358 97.8L362.7 95.9L366.7 94.5L369.3 93.9L371.6 93.7L375.2 93.7L379.5 94L384 94.4L388.2 94.4L391.4 93.9L392.6 90.1L390.6 87.8L387.6 85L383.5 82.2L378.6 79.7L372.9 78.1L366.7 78.1L360.7 80.1L355.5 83.5L351 87.4L347.3 91.6L344.6 95.3L342.9 98.3Z"/><path d="M331.4 93.4L334.5 92.2L338.5 90L342.8 87.3L347.1 84.3L350.9 81.8L353.7 80L355.6 78.8L357.8 77.6L360.2 76.3L362.5 75L364.7 73.5L366.3 72L365.7 68L363.9 67L361.5 66.1L358.3 65.4L354.6 65.4L350.5 66.1L346.3 68L342.4 71L338.7 74.9L335.2 79.2L332.2 83.6L329.9 87.5L328.6 90.6Z"/><path d="M259.6 118.8L259 115.8L257.7 112L255.9 107.7L253.8 103.5L251.8 99.6L250.1 96.6L248.7 94.1L247.1 91.5L245.4 89L243.6 86.7L241.7 84.7L239.9 83.4L236.1 84.6L235.4 86.7L235 89.3L234.9 92.5L235.3 96L236.2 99.7L237.9 103.4L240.3 107L243.4 110.7L246.9 114.3L250.5 117.3L253.7 119.7L256.4 121.2Z"/><path d="M288 180L287.8 185.1L287.7 192.4L287.5 201L287.3 209.6L287.2 216.9L287 222L313 222L312.8 216.9L312.7 209.6L312.5 201L312.3 192.4L312.2 185.1L312 180Z"/><path d="M248 236L257.2 232.5L269.7 230L284.3 228.5L300 228L315.7 228.5L330.3 230L342.8 232.5L352 236L358 240.5L361.8 245.9L363.9 252.3L364.8 259.8L364.7 268.2L364.3 277.7L363.9 288.3L364 300L365.1 314.1L366.8 331.3L368.8 350.3L370.3 370L370.7 389.2L369.5 406.7L366.2 421.4L360 432L349.8 439.2L335.4 444.4L318.4 447.5L300 448.5L281.6 447.5L264.6 444.4L250.2 439.2L240 432L233.8 421.4L230.5 406.7L229.3 389.2L229.8 370L231.2 350.3L233.2 331.3L234.9 314.1L236 300L236.1 288.3L235.7 277.7L235.3 268.2L235.3 259.8L236.1 252.3L238.2 245.9L242 240.5Z"/><path d="M236.3 238.8L234.8 249.5L232.3 265.1L229.3 283.2L226.3 301.3L223.8 316.9L222.2 327.6L245.8 332.4L248.6 321.9L252.4 306.6L256.7 288.8L261 271L264.9 255.7L267.7 245.2Z"/><path d="M224.1 336.9L228.3 342.2L234.2 350.1L241 359.3L247.8 368.5L253.7 376.4L257.8 381.7L274.2 370.3L270.6 364.6L265.3 356.3L259 346.7L252.8 337.2L247.4 328.9L243.9 323.1Z"/><path d="M332.3 245.2L335.1 255.7L339 271L343.3 288.8L347.6 306.6L351.4 321.9L354.2 332.4L377.8 327.6L376.2 316.9L373.7 301.3L370.7 283.2L367.7 265.1L365.2 249.5L363.7 238.8Z"/><path d="M356.1 323.1L352.6 328.9L347.2 337.2L341 346.7L334.7 356.3L329.4 364.6L325.8 370.3L342.2 381.7L346.3 376.4L352.2 368.5L359 359.3L365.8 350.1L371.7 342.2L375.9 336.9Z"/><path d="M335.2 239.5L338.4 249.7L342.9 264.1L348.1 281.1L353.6 299L358.8 316.3L363.2 331.4L367 345L370.6 358.8L373.9 372L376.8 383.9L379.3 393.8L381.1 401.2L390.9 398.8L389 391.4L386.6 381.5L383.6 369.5L380.2 356.3L376.6 342.5L372.8 328.6L368.4 313.5L363.2 296.1L357.7 278.2L352.4 261.2L347.9 246.8L344.8 236.5Z"/><path d="M364 388L368.7 384.1L376 381.1L384.9 378.8L394.8 377.5L404.8 377.1L414.2 377.7L422.2 379.3L428 382L432.1 386.5L435.5 393.1L438.1 401.2L439.8 410L440.4 419L440.1 427.4L438.6 434.6L436 440L431.4 444L424.7 447.6L416.4 450.4L407.3 452.5L398 453.6L389.2 453.7L381.7 452.5L376 450L371.7 445.3L367.8 438.3L364.6 429.6L362.3 420L360.8 410.3L360.5 401.3L361.5 393.6Z"/><path d="M242 430L251.8 422.9L265.7 417.8L282.2 414.8L300 413.8L317.8 414.8L334.3 417.8L348.2 422.9L358 430L363.8 440L366.8 453.1L367.5 468.8L366.8 486.3L365 504.8L362.9 523.8L361 542.4L360 560L359.4 576.9L358.4 593.9L357.2 611L355.9 628.3L354.6 645.7L353.4 663.5L352.5 681.6L352 700L352.2 720L353 741.9L354.2 764.9L355.5 787.8L356.6 809.5L357.3 829.2L357.1 845.7L356 858L353.5 866.6L349.8 872.8L345.3 876.5L340.4 877.8L335.4 876.5L330.7 872.8L326.8 866.6L324 858L322.4 845.8L321.7 829.7L321.6 810.4L321.9 789L322.3 766.3L322.6 743.3L322.6 720.9L322 700L320.8 679L319.3 656.4L317.6 633.1L315.8 610.1L313.8 588.4L311.8 568.8L309.8 552.4L308 540L306.2 531.3L304.5 525L302.7 521.3L300.9 520L299.1 521.3L297.4 525L295.7 531.3L294 540L292.3 552.4L290.7 568.8L289 588.4L287.4 610.1L285.8 633.1L284.4 656.4L283.1 679L282 700L281.3 720.9L281.1 743.3L281.1 766.3L281.3 789L281.2 810.4L280.8 829.7L279.8 845.8L278 858L275.1 866.6L271.2 872.8L266.6 876.5L261.8 877.8L256.9 876.5L252.4 872.8L248.7 866.6L246 858L244.5 845.7L243.9 829.2L243.9 809.5L244.4 787.8L245 764.9L245.7 741.9L246.1 720L246 700L245.5 681.6L244.7 663.5L243.8 645.7L242.9 628.3L241.9 611L241.1 593.9L240.4 576.9L240 560L239.1 542.4L237.3 523.8L235.2 504.8L233.4 486.3L232.5 468.8L233.3 453.1L236.2 440Z"/><path d="M240 852L244.2 850.4L249.8 849.2L256.2 848.5L263.1 848.3L270 848.5L276.4 849.2L281.9 850.4L286 852L289.1 854.5L291.9 858.1L294.1 862.4L295.6 867L296.3 871.6L296.1 875.9L294.7 879.5L292 882L287.2 883.6L280 884.8L271.3 885.5L261.9 885.8L252.4 885.5L243.8 884.8L236.7 883.6L232 882L229.5 879.5L228.3 875.9L228.3 871.6L229.4 867L231.2 862.4L233.7 858.1L236.7 854.5Z"/><path d="M318 852L322.3 850.4L328 849.2L334.7 848.5L341.9 848.3L349.1 848.5L355.8 849.2L361.6 850.4L366 852L369.4 854.5L372.5 858.1L375 862.4L376.9 867L377.9 871.6L377.9 875.9L376.6 879.5L374 882L369.1 883.6L361.8 884.8L352.9 885.5L343.1 885.8L333.3 885.5L324.4 884.8L317 883.6L312 882L309.2 879.5L307.7 875.9L307.4 871.6L308.1 867L309.7 862.4L312 858.1L314.8 854.5Z"/>
+    </g>
+  </symbol>
+  <symbol id="chara-c" viewBox="0 0 600 900">
+    <g fill="currentColor">
+      <path d="M300 140L309.7 139.8L319.2 140.1L328.5 140.7L337.5 141.8L346.3 143.2L355 145.1L363.6 147.3L372 150L380.4 153.1L388.8 156.6L397.1 160.5L405.3 164.8L413.1 169.5L420.6 174.6L427.6 180.1L434 186L440.3 193L446.6 201.3L452.7 210.4L458.3 219.8L463.1 228.7L466.8 236.8L469.2 243.4L470 248L468.8 250.2L465.7 250.5L461.1 249.3L455.5 247.3L449.4 244.8L443.1 242.4L437.2 240.6L432 240L427.4 240.5L422.9 241.7L418.4 243.3L413.9 245.1L409.4 246.9L405 248.5L400.5 249.6L396 250L391.5 249.6L387 248.4L382.4 246.8L377.9 245L373.4 243.2L368.9 241.6L364.4 240.4L360 240L355.7 240.4L351.4 241.6L347.2 243.2L343 245L338.8 246.8L334.6 248.4L330.3 249.6L326 250L321.6 249.6L317.1 248.4L312.6 246.8L308 245L303.4 243.2L298.9 241.6L294.4 240.4L290 240L285.7 240.4L281.4 241.6L277.2 243.2L273 245L268.8 246.8L264.6 248.4L260.3 249.6L256 250L251.6 249.6L247.1 248.4L242.6 246.8L238 245L233.4 243.2L228.9 241.6L224.4 240.4L220 240L215.7 240.4L211.4 241.6L207.2 243.2L203 245L198.8 246.8L194.6 248.4L190.3 249.6L186 250L181.6 249.6L177.2 248.4L172.7 246.8L168.3 245L163.7 243.2L159.2 241.6L154.6 240.4L150 240L144.8 240.8L138.9 242.7L132.6 245.4L126.5 248.1L120.9 250.5L116.3 252L113.2 252L112 250L112.8 245.7L115.1 239.3L118.8 231.5L123.5 222.8L129.1 213.7L135.2 204.8L141.6 196.7L148 190L154.7 184.4L161.9 179.3L169.7 174.6L177.9 170.3L186.5 166.3L195.4 162.6L204.6 159.2L214 156L223.9 153L234.4 150.1L245.4 147.5L256.6 145.3L267.9 143.3L279 141.8L289.8 140.6Z"/><path d="M290 142L296 122L310 122L316 142Z"/><path d="M296 246L296 273L296 312.4L296 358L296 403.6L296 443L296 470L304 470L304 443L304 403.6L304 358L304 312.4L304 273L304 246Z"/><path d="M296 469.4L295.6 472.1L294.9 476.1L294 480.9L293.4 486L293.3 491L294.3 495.5L296.7 499.2L299.9 501.9L303.5 503.9L307.2 505.3L310.9 506L314.8 505.9L318.5 504.4L321.5 501.9L324.1 499.1L326.2 496.3L327.9 494L329.1 492.5L322.9 487.5L321.6 489.1L319.8 491.4L317.9 493.9L315.9 496.2L314.3 497.6L313.2 498.1L311.8 498L309.4 497.6L306.8 496.6L304.4 495.3L302.6 493.8L301.7 492.5L301.3 490.3L301.4 486.6L302 482.1L302.8 477.5L303.5 473.5L304 470.6Z"/><path d="M340 352L339.5 359.2L338 366.2L335.6 372.9L332.4 379L328.3 384.5L323.5 389.2L318.2 393L312.4 395.7L306.3 397.4L300 398L293.7 397.4L287.6 395.7L281.8 393L276.5 389.2L271.7 384.5L267.6 379L264.4 372.9L262 366.2L260.5 359.2L260 352L260.5 344.8L262 337.8L264.4 331.1L267.6 325L271.7 319.5L276.5 314.8L281.8 311L287.6 308.3L293.7 306.6L300 306L306.3 306.6L312.4 308.3L318.2 311L323.5 314.8L328.3 319.5L332.4 325L335.6 331.1L338 337.8L339.5 344.8Z"/><path d="M254 372L254 366.3L253.5 359.8L252.7 352.9L251.9 345.8L251.2 338.6L250.9 331.8L251.1 325.5L252 320L253.6 315.2L255.6 310.7L258 306.5L260.9 302.8L264.1 299.4L267.7 296.5L271.7 294L276 292L281 290.5L286.9 289.4L293.3 288.7L300 288.5L306.7 288.7L313.1 289.4L319 290.5L324 292L328.3 294L332.3 296.5L335.9 299.4L339.1 302.8L342 306.5L344.4 310.7L346.4 315.2L348 320L348.9 325.5L349.1 331.8L348.8 338.6L348.1 345.8L347.3 352.9L346.5 359.8L346 366.3L346 372L346.5 377.2L347.5 382.3L348.8 387.2L350.1 391.8L351.3 395.8L352.1 399.3L352.4 402.1L352 404L350.6 405.2L348.5 405.8L345.8 405.9L342.8 405.3L339.6 404L336.6 402L334 399.4L332 396L330.7 391.3L330 385.2L329.6 378.1L329.4 370.4L329.1 362.7L328.6 355.4L327.6 349L326 344L323.7 340.2L320.9 337.2L317.7 334.7L314.3 332.9L310.6 331.5L307 330.6L303.4 330.2L300 330L296.6 330.2L293 330.6L289.4 331.5L285.8 332.9L282.3 334.7L279.1 337.2L276.3 340.2L274 344L272.4 349L271.4 355.4L270.9 362.7L270.6 370.4L270.4 378.1L270 385.2L269.3 391.3L268 396L266 399.4L263.4 402L260.4 404L257.3 405.3L254.2 405.9L251.5 405.8L249.4 405.2L248 404L247.6 402.1L247.9 399.3L248.7 395.8L249.9 391.8L251.2 387.2L252.5 382.3L253.5 377.2Z"/><path d="M290 392L289.8 395.9L289.7 401.5L289.5 408L289.3 414.5L289.2 420.1L289 424L311 424L310.8 420.1L310.7 414.5L310.5 408L310.3 401.5L310.2 395.9L310 392Z"/><path d="M266 430L272.2 427.8L280.4 426.3L289.9 425.3L300 425L310.1 425.3L319.6 426.3L327.8 427.8L334 430L338.1 432.5L340.8 435.1L342.3 438.1L343.1 441.9L343.5 446.7L343.9 452.7L344.6 460.4L346 470L348 482.2L350.2 497.1L352.6 513.9L355 531.9L357.4 550.2L359.8 568.2L362 585L364 600L366.9 613.8L371.3 627.4L376.1 640.6L380.6 653.1L383.8 664.6L384.7 674.8L382.4 683.3L376 690L363.7 694.9L345.7 698.4L323.8 700.5L300 701.3L276.2 700.5L254.3 698.4L236.3 694.9L224 690L217.6 683.3L215.3 674.8L216.2 664.6L219.4 653.1L223.9 640.6L228.7 627.4L233.1 613.8L236 600L238 585L240.2 568.2L242.6 550.2L245 531.9L247.4 513.9L249.8 497.1L252 482.2L254 470L255.4 460.4L256.1 452.7L256.5 446.7L256.9 441.9L257.7 438.1L259.2 435.1L261.9 432.5Z"/><path d="M328.1 438.9L328.1 444L327.9 451.4L327.5 460L327.2 468.6L327 476L327 481.1L345 482.9L345.9 477.8L347.1 470.5L348.5 462L349.8 453.5L351 446.1L351.9 441.1Z"/><path d="M329 488L328.9 489.6L328.5 491.1L327.8 492.5L326.9 493.9L325.8 495.1L324.5 496.1L323 496.9L321.4 497.5L319.7 497.9L318 498L316.3 497.9L314.6 497.5L313 496.9L311.5 496.1L310.2 495.1L309.1 493.9L308.2 492.5L307.5 491.1L307.1 489.6L307 488L307.1 486.4L307.5 484.9L308.2 483.5L309.1 482.1L310.2 480.9L311.5 479.9L313 479.1L314.6 478.5L316.3 478.1L318 478L319.7 478.1L321.4 478.5L323 479.1L324.5 479.9L325.8 480.9L326.9 482.1L327.8 483.5L328.5 484.9L328.9 486.4Z"/><path d="M250.2 437.6L248.8 447.4L246.5 461.5L243.7 477.9L240.9 494.3L238.6 508.5L237.2 518.2L254.8 521.8L257.2 512.2L260.5 498.3L264.3 482.1L268 465.9L271.4 451.9L273.8 442.4Z"/><path d="M253 528L252.9 529.6L252.6 531.1L252 532.5L251.3 533.9L250.4 535.1L249.3 536.1L248.1 536.9L246.8 537.5L245.4 537.9L244 538L242.6 537.9L241.2 537.5L239.9 536.9L238.7 536.1L237.6 535.1L236.7 533.9L236 532.5L235.4 531.1L235.1 529.6L235 528L235.1 526.4L235.4 524.9L236 523.5L236.7 522.1L237.6 520.9L238.7 519.9L239.9 519.1L241.2 518.5L242.6 518.1L244 518L245.4 518.1L246.8 518.5L248.1 519.1L249.3 519.9L250.4 520.9L251.3 522.1L252 523.5L252.6 524.9L252.9 526.4Z"/><path d="M269 685.9L269.3 703.9L269.4 730.3L269.5 760.9L269.6 791.4L269.7 817.8L270 835.9L286 836.1L286.7 818.1L287.6 791.7L288.5 761.1L289.4 730.6L290.3 704.2L291 686.1Z"/><path d="M311 686.1L311.7 704.2L312.6 730.6L313.5 761.1L314.4 791.7L315.3 818.1L316 836.1L332 835.9L332.3 817.8L332.4 791.4L332.5 760.9L332.6 730.3L332.7 703.9L333 685.9Z"/><path d="M266 832L268.6 830.9L272 830.1L275.9 829.7L280.1 829.5L284.3 829.7L288.2 830.1L291.5 830.9L294 832L295.9 833.7L297.7 836.1L299.1 838.9L300.1 842L300.6 845.1L300.5 847.9L299.7 850.3L298 852L295 853.1L290.4 853.9L284.9 854.3L278.9 854.5L272.9 854.3L267.4 853.9L262.9 853.1L260 852L258.5 850.3L257.9 847.9L258.1 845.1L258.9 842L260.2 838.9L261.9 836.1L263.9 833.7Z"/><path d="M310 832L312.7 830.9L316.2 830.1L320.4 829.7L324.9 829.5L329.4 829.7L333.6 830.1L337.2 830.9L340 832L342.2 833.7L344.3 836.1L346 838.9L347.4 842L348.2 845.1L348.3 847.9L347.6 850.3L346 852L342.9 853.1L338.2 853.9L332.4 854.3L326.1 854.5L319.8 854.3L314 853.9L309.2 853.1L306 852L304.2 850.3L303.3 847.9L303.1 845.1L303.6 842L304.7 838.9L306.1 836.1L308 833.7Z"/>
+    </g>
+  </symbol>
+  <symbol id="ic-star" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2l2.2 6.4L20.6 11l-6.4 2.2L12 20l-2.2-6.8L3.4 11l6.4-2.6z"/></symbol>
+  <symbol id="ic-play" viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z"/></symbol>
+  <symbol id="ic-pin" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a7 7 0 00-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 00-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z"/></symbol>
+  <symbol id="ic-disc" viewBox="0 0 120 120">
+    <circle cx="60" cy="60" r="58" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".8"/>
+    <circle cx="60" cy="60" r="46" fill="none" stroke="currentColor" stroke-width=".8" opacity=".45"/>
+    <circle cx="60" cy="60" r="34" fill="none" stroke="currentColor" stroke-width=".8" opacity=".45"/>
+    <circle cx="60" cy="60" r="22" fill="currentColor" opacity=".18"/>
+    <circle cx="60" cy="60" r="21" fill="none" stroke="currentColor" stroke-width="1"/>
+    <circle cx="60" cy="60" r="4" fill="currentColor"/>
+    <path d="M60 2a58 58 0 0141 17" fill="none" stroke="currentColor" stroke-width="2" opacity=".9"/>
+  </symbol>
+  <symbol id="ic-gift" viewBox="0 0 64 64"><path fill="currentColor" d="M8 26h48v30H8zM6 16h52v9H6zM30 16h4v40h-4zM32 16c-6-10-20-10-20-2 0 5 10 4 20 2zm0 0c6-10 20-10 20-2 0 5-10 4-20 2z"/></symbol>
+  <symbol id="ic-frame" viewBox="0 0 64 64"><path fill="currentColor" d="M6 8h52v48H6zm5 5v38h42V13zm6 26l10-12 7 8 6-6 8 10z"/></symbol>
+  <symbol id="ic-mic" viewBox="0 0 64 64"><path fill="currentColor" d="M32 6a8 8 0 018 8v16a8 8 0 01-16 0V14a8 8 0 018-8zM18 28h4a10 10 0 0020 0h4a14 14 0 01-12 13.8V50h8v4H22v-4h8v-8.2A14 14 0 0118 28z"/></symbol>
+  <symbol id="ic-book" viewBox="0 0 64 64"><path fill="currentColor" d="M10 10h20a6 6 0 016 6v38a8 8 0 00-6-3H10zm44 0H34a6 6 0 00-6 6v38a8 8 0 016-3h20z"/></symbol>
+  <symbol id="ic-file" viewBox="0 0 64 64"><path fill="currentColor" d="M12 6h28l12 12v40H12zm26 2v12h12zM20 34h24v3H20zm0 9h24v3H20z"/></symbol>
+  <symbol id="ic-bd" viewBox="0 0 64 64"><path fill="currentColor" d="M32 4a28 28 0 100 56 28 28 0 000-56zm0 22a6 6 0 110 12 6 6 0 010-12zm0-14a20 20 0 0117 9l-5 3a14 14 0 00-12-6z"/></symbol>
+  <symbol id="ic-x" viewBox="0 0 24 24"><path d="M4 3h4.6l4 5.6L17.4 3H21l-6.6 8.2L21.4 21h-4.6l-4.4-6.1L7 21H3.4l7-8.6z"/></symbol>
+  <symbol id="ic-yt" viewBox="0 0 24 24"><path d="M22 12c0-3-.3-4.4-.9-5.1-.6-.7-1.5-.9-3.3-1C16 5.8 13.9 5.8 12 5.8s-4 0-5.8.1c-1.8.1-2.7.3-3.3 1C2.3 7.6 2 9 2 12s.3 4.4.9 5.1c.6.7 1.5.9 3.3 1 1.8.1 3.9.1 5.8.1s4 0 5.8-.1c1.8-.1 2.7-.3 3.3-1 .6-.7.9-2.1.9-5.1zM10 15.2V8.8L15.5 12z"/></symbol>
+  <symbol id="ic-ig" viewBox="0 0 24 24"><path d="M7.5 2h9A5.5 5.5 0 0122 7.5v9a5.5 5.5 0 01-5.5 5.5h-9A5.5 5.5 0 012 16.5v-9A5.5 5.5 0 017.5 2zm0 2A3.5 3.5 0 004 7.5v9A3.5 3.5 0 007.5 20h9a3.5 3.5 0 003.5-3.5v-9A3.5 3.5 0 0016.5 4zM12 7a5 5 0 110 10 5 5 0 010-10zm0 2a3 3 0 100 6 3 3 0 000-6zm5.6-2.9a1.1 1.1 0 110 2.2 1.1 1.1 0 010-2.2z"/></symbol>
+  <symbol id="ic-tt" viewBox="0 0 24 24"><path d="M13.5 2h2.8c.3 2.1 1.6 3.6 3.7 3.9v2.8c-1.4 0-2.7-.4-3.8-1.2v6.6a6.1 6.1 0 11-6.1-6.1c.3 0 .6 0 .9.1v2.9a3.2 3.2 0 101.6 2.8z"/></symbol>
+</svg>
 
-      <!-- EDIT: キャラクター名（日本語）とローマ字表記 -->
-      <h1 class="hero-name">星宮 きら</h1>
-      <p class="hero-romaji">HOSHIMIYA KIRA</p>
-
-      <!-- EDIT: キャッチコピー（吹き出し） -->
-      <div class="hero-bubble"><span class="bubble">きらっと、届け！</span></div>
-
-      <!-- EDIT: メインのリンク2つ。href を自分のURLに差し替えてください -->
-      <div class="hero-cta">
-        <a class="btn btn-pink" href="#links">▶ ◯◯（YouTube）</a>
-        <a class="btn btn-sky" href="#links">◯◯（X）</a>
-      </div>
-    </div>
-
-    <!-- キャラクターの舞台。集中線・キャラ・キラキラが別々の深さで動きます -->
-    <div class="hero-stage" id="heroStage">
-      <div class="layer" data-depth="0.35"><div class="burst"></div></div>
-      <div class="layer" data-depth="0.6"><div class="glowball"></div></div>
-      <div class="layer layer-flow" data-depth="1.5" id="charaLayer">
-        <div class="chara-hold">
-          <button type="button" class="chara-btn" id="charaBtn" aria-label="キャラクターをタップして反応を見る">
-            <!-- EDIT: ここを <img class="hero-art" src="chara.png" alt=""> に置き換えるだけで自分のイラストになります -->
-            <svg class="hero-art" viewBox="0 0 400 520" aria-hidden="true"><use href="#chara"></use></svg>
-          </button>
-        </div>
-      </div>
-      <div class="layer" data-depth="2.6" aria-hidden="true">
-        <span class="hero-spark" style="top:8%;left:10%;font-size:26px">✦</span>
-        <span class="hero-spark" style="top:20%;right:8%;font-size:20px">★</span>
-        <span class="hero-spark" style="top:52%;left:2%;font-size:18px">♥</span>
-        <span class="hero-spark" style="bottom:16%;right:12%;font-size:24px">✦</span>
-        <span class="hero-spark" style="bottom:6%;left:22%;font-size:16px">★</span>
-        <span class="hero-spark" style="top:38%;right:2%;font-size:15px">♥</span>
-      </div>
-    </div>
-  </div>
-  <div class="wave w-white" aria-hidden="true"><svg viewBox="0 0 1440 46" preserveAspectRatio="none"><path d="M0,22 C170,44 320,6 510,14 C700,22 820,44 1000,36 C1180,28 1310,6 1440,22 L1440,46 L0,46 Z"/></svg></div>
-</header>
+<main>
 
 <!-- ============================================================
-  NEWS
+  HERO — キービジュアル
+  空（動画／グラデーション）＋ 街 ＋ 人物 の3層。
+  マウスを動かすと層がわずかにずれ、スクロールでゆっくり奥へ下がります。
 ============================================================ -->
-<section class="sec s-white" id="news" style="padding-top:2.2rem">
-  <!-- EDIT: 流れるティッカー。同じ内容を2回書くと途切れずにループします -->
-  <div class="ticker" aria-label="新着のお知らせ">
-    <span class="ticker-label">NEW!</span>
-    <div class="ticker-view">
-    <div class="ticker-track">
-      <span>◯月◯日 ◯◯時より「◯◯◯◯」配信します！</span>
-      <span>新グッズ「◯◯◯◯」受注受付中 ✦</span>
-      <span>ボイス「◯◯◯◯」公開しました ★</span>
-      <span aria-hidden="true">◯月◯日 ◯◯時より「◯◯◯◯」配信します！</span>
-      <span aria-hidden="true">新グッズ「◯◯◯◯」受注受付中 ✦</span>
-      <span aria-hidden="true">ボイス「◯◯◯◯」公開しました ★</span>
+<section class="hero" id="top">
+  <div class="kv" id="kv" aria-hidden="true">
+    <!-- EDIT: 空。assets/ に kv-sky.mp4 / kv-sky.webm（1920×1080 ループ）と
+         kv-sky.jpg（2400×1350・静止画フォールバック）を置くと動画になります。
+         置かない場合は CSS の夕暮れグラデーション（--sky1〜--sky4）が表示されます -->
+    <div class="kv-layer kv-sky" data-depth="0">
+      <video class="kv-video" autoplay muted loop playsinline poster="assets/kv-sky.jpg">
+        <source src="assets/kv-sky.webm" type="video/webm"><source src="assets/kv-sky.mp4" type="video/mp4">
+      </video>
     </div>
+    <!-- EDIT: 街のシルエット（<symbol id="city"> の中身を差し替え） -->
+    <div class="kv-layer kv-city" data-depth=".25"><svg viewBox="0 0 2400 600" preserveAspectRatio="xMidYMax slice"><use href="#city"></use></svg></div>
+    <!-- EDIT: 人物のシルエット（<symbol id="chara-main"> の中身を差し替え） -->
+    <div class="kv-layer kv-chara" data-depth=".5"><svg viewBox="0 0 600 900" preserveAspectRatio="xMidYMax meet"><use href="#chara-main"></use></svg></div>
+    <canvas class="kv-fx" id="kvfx"></canvas>
+    <div class="kv-flare"></div>
+  </div>
+
+  <div class="hero-lockup">
+    <div class="lockup-row">
+      <!-- EDIT: 作品タイトル。1文字ずつ <span> で囲むと、PCでは縦に積まれ、
+           スマホでは自動で1行の横書きになります。ロゴ画像に差し替える場合は
+           <h1 class="kv-title"><img src="assets/logo.png" alt="約束の星"></h1> でもOKです -->
+      <h1 class="kv-title"><span>約</span><span>束</span><span>の</span><span>星</span></h1>
+      <div class="lockup-text">
+        <!-- EDIT: 英題 -->
+        <p class="kv-en">The Promised Star</p>
+        <!-- EDIT: キャッチコピー（1行） -->
+        <p class="kv-tag">その光は、ずっと前から君を見ていた。</p>
+        <!-- EDIT: 公開日。未定の場合は「2027年 冬 公開」などに -->
+        <p class="kv-release"><b>2027.◯.◯</b> Roadshow</p>
+        <div class="hero-cta">
+          <a href="#trailer" class="btn btn-solid"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-play"></use></svg>予告編を見る</a>
+          <a href="#theater" class="btn"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-pin"></use></svg>劇場情報</a>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="container" style="margin-top:3rem">
-    <div class="sec-head">
-      <span class="sec-en">NEWS</span>
-      <h2 class="sec-title"><span class="hl">お知らせ</span></h2>
-      <p class="sec-lead">配信・グッズ・イベントの最新情報</p>
-    </div>
+  <span class="hero-scroll" aria-hidden="true">Scroll<i></i></span>
+  <div class="letterbox letterbox-top"></div><div class="letterbox letterbox-bottom"></div>
+</section>
 
-    <!-- EDIT: お知らせ3件。日付・分類・見出しを差し替えてください -->
+<!-- ============================================================
+  NEWS — お知らせ
+============================================================ -->
+<section class="sec" id="news">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="label">News</p>
+      <h2 class="h2">最新情報</h2>
+    </div>
+    <!-- EDIT: お知らせ4件。日付／分類チップ／見出し／リンク先 -->
     <div class="news-list">
-      <article class="card news-item rv">
-        <time class="news-date" datetime="2026-01-01">◯◯◯◯.◯◯.◯◯</time>
-        <span class="news-cat c-live">配信</span>
-        <p class="news-title">「◯◯◯◯」を◯月◯日 ◯◯:◯◯ から配信します</p>
-      </article>
-      <article class="card news-item rv">
-        <time class="news-date" datetime="2026-01-01">◯◯◯◯.◯◯.◯◯</time>
-        <span class="news-cat c-goods">グッズ</span>
-        <p class="news-title">新グッズ「◯◯◯◯」の受注受付をはじめました</p>
-      </article>
-      <article class="card news-item rv">
-        <time class="news-date" datetime="2026-01-01">◯◯◯◯.◯◯.◯◯</time>
-        <span class="news-cat">おしらせ</span>
-        <p class="news-title">公式サイトをリニューアルしました</p>
-      </article>
+      <a class="news-item rv" href="#news">
+        <span class="news-date">2026.◯.◯</span><span class="chip">NEWS</span>
+        <span class="news-ttl">公式サイトを公開しました</span><span class="news-arrow">→</span>
+      </a>
+      <a class="news-item rv" href="#trailer">
+        <span class="news-date">2026.◯.◯</span><span class="chip">MOVIE</span>
+        <span class="news-ttl">特報映像を公開しました</span><span class="news-arrow">→</span>
+      </a>
+      <a class="news-item rv" href="#music">
+        <span class="news-date">2026.◯.◯</span><span class="chip">MUSIC</span>
+        <span class="news-ttl">主題歌アーティストが決定しました</span><span class="news-arrow">→</span>
+      </a>
+      <a class="news-item rv" href="#theater">
+        <span class="news-date">2026.◯.◯</span><span class="chip">TICKET</span>
+        <span class="news-ttl">前売券の発売日が決まりました</span><span class="news-arrow">→</span>
+      </a>
     </div>
+    <p class="news-foot rv"><a class="ghost" href="#news">一覧を見る <span aria-hidden="true">→</span></a></p>
   </div>
-  <div class="wave w-cream" aria-hidden="true"><svg viewBox="0 0 1440 46" preserveAspectRatio="none"><path d="M0,24 C180,48 300,0 480,10 C660,20 780,46 960,38 C1140,30 1290,4 1440,16 L1440,46 L0,46 Z"/></svg></div>
 </section>
 
 <!-- ============================================================
-  PROFILE
+  INTRODUCTION — イントロダクション
 ============================================================ -->
-<section class="sec s-cream" id="profile">
-  <div class="container">
-    <div class="sec-head">
-      <span class="sec-en">PROFILE</span>
-      <h2 class="sec-title"><span class="hl">プロフィール</span></h2>
-      <p class="sec-lead">わたしのことを、すこしだけ</p>
+<section class="sec" id="introduction">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="label">Introduction</p>
+      <h2 class="h2">イントロダクション</h2>
     </div>
+    <div class="intro-grid">
+      <div>
+        <!-- EDIT: 大きく見せたい一文（<em> の箇所が金色になります） -->
+        <p class="pull rv">いつか、<em>あの星</em>の下で会おう。<br>——十年前の約束が、いま動きだす。</p>
+        <div class="intro-body">
+          <!-- EDIT: 導入文（2段落程度） -->
+          <p class="lead rv">◯◯と◯◯が出会ったのは、街の灯りが川面に溶ける夏の終わりでした。約束を交わした夜の空には、名前のない星がひとつ。ふたりはそれを「約束の星」と呼びました。</p>
+          <p class="lead rv">ここには、作品の成り立ちや企画の背景を2〜3段落で書きます。監督の言葉、原作との関係、制作のきっかけなど。実績や受賞歴を書く場合は、確認できる事実のみをご記載ください。</p>
+        </div>
+      </div>
+      <!-- EDIT: PCのみ表示される縦書きの添え書き -->
+      <p class="intro-side rv">星は、いつでもそこにある。見上げる者がいるかぎり。</p>
+    </div>
+  </div>
+</section>
 
-    <div class="profile-grid">
-      <!-- EDIT: プロフィール表。項目の増減は <tr> ごとコピー／削除でOK -->
-      <div class="card rv">
-        <table class="prof-table">
-          <tbody>
-            <tr><th>名前</th><td>星宮 きら（ほしみや きら）</td></tr>
-            <tr><th>誕生日</th><td>◯月◯日</td></tr>
-            <tr><th>身長</th><td>◯◯◯cm</td></tr>
-            <tr><th>イメージカラー</th><td>◯◯（#ff85b3）</td></tr>
-            <tr><th>好きなもの</th><td>◯◯◯◯・◯◯◯◯・◯◯◯◯</td></tr>
-            <tr><th>苦手なもの</th><td>◯◯◯◯・◯◯◯◯</td></tr>
-            <tr><th>ファンネーム</th><td>◯◯◯◯</td></tr>
-            <tr><th>ハッシュタグ</th><td>#◯◯◯◯　#◯◯イラスト　#◯◯配信</td></tr>
-          </tbody>
-        </table>
+<!-- ============================================================
+  STORY — ストーリー
+============================================================ -->
+<section class="sec s-story" id="story">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="label">Story</p>
+      <h2 class="h2">ストーリー</h2>
+    </div>
+    <div class="story-frame rv">
+      <!-- EDIT: あらすじ。1行目は大きめの書き出し、以降は本文 -->
+      <p class="story-lead">その街では、夏の終わりに一度だけ、空がほどけて星が降るという。</p>
+      <div class="story-body">
+        <p class="lead">高校二年の◯◯は、引っ越していった幼なじみ・◯◯との約束を、ずっと忘れられずにいた。「十年後の夏、あの丘で」——交わしたのは、たったそれだけの言葉。</p>
+        <p class="lead">約束の日、丘に立った◯◯の前に現れたのは、見知らぬ少女だった。彼女は星の名を知っていて、◯◯の名も知っていた。けれど、自分の名前だけを覚えていなかった。</p>
+        <p class="lead">失われた夏をたどるふたりの旅は、やがて十年前のあの夜へと近づいていく。空を見上げるたび、時間は少しずつ、静かに巻き戻されていった。</p>
+      </div>
+      <!-- EDIT: 締めのキャッチコピー -->
+      <p class="story-catch">——きみの名前を、空に還すまで。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+  CHARACTER — キャラクター（タブで切り替え）
+  人物を増やす場合は .cast-tab と .chara-panel を同じ数だけ追加し、
+  data-chara の値（c1 / c2 / c3…）を合わせてください。
+============================================================ -->
+<section class="sec" id="character">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="label">Character</p>
+      <h2 class="h2">キャラクター</h2>
+    </div>
+    <div class="rv">
+      <!-- EDIT: 人物名のタブ -->
+      <div class="cast-nav" role="tablist" aria-label="キャラクター">
+        <button type="button" class="cast-tab" role="tab" data-chara="c1" aria-selected="true" aria-controls="c1">◯◯ ◯◯</button>
+        <button type="button" class="cast-tab" role="tab" data-chara="c2" aria-selected="false" aria-controls="c2">◯◯ ◯◯</button>
+        <button type="button" class="cast-tab" role="tab" data-chara="c3" aria-selected="false" aria-controls="c3">◯◯</button>
       </div>
 
-      <!-- EDIT: パラメータバー。data-val は 0〜100 の目安の数値（自己申告の演出用）です。
-           実績や能力を数値で断定する表現にはしないでください -->
-      <div class="card rv">
-        <p style="font-family:var(--en);font-size:.78rem;letter-spacing:.16em;color:var(--muted);margin-bottom:1rem">STATUS</p>
-        <div class="params" id="params">
-          <div class="param-row">
-            <div class="param-top"><span>うた</span><span class="num">◯◯</span></div>
-            <div class="param-bar"><div class="param-fill" data-val="82"></div></div>
+      <div class="chara-stage">
+        <!-- EDIT: 主人公 -->
+        <div class="chara-panel is-on" id="c1" role="tabpanel">
+          <div class="chara-art"><span class="chara-no">01</span><svg viewBox="0 0 600 900" preserveAspectRatio="xMidYMax meet" aria-hidden="true"><use href="#chara-a"></use></svg></div>
+          <div class="chara-info">
+            <p class="chara-read">Protagonist</p>
+            <h3 class="chara-name">◯◯ ◯◯</h3>
+            <p class="chara-cv">CV：<b>◯◯ ◯◯</b>／主人公・高校二年生</p>
+            <p class="chara-desc">十年前の約束を忘れられないまま、同じ街で暮らしている。空を見上げる癖と、言いたいことを言えない癖がある。役柄の説明を2〜3行で書いてください。</p>
           </div>
-          <div class="param-row">
-            <div class="param-top"><span>ゲーム</span><span class="num">◯◯</span></div>
-            <div class="param-bar"><div class="param-fill" data-val="68"></div></div>
-          </div>
-          <div class="param-row">
-            <div class="param-top"><span>トーク</span><span class="num">◯◯</span></div>
-            <div class="param-bar"><div class="param-fill" data-val="90"></div></div>
-          </div>
-          <div class="param-row">
-            <div class="param-top"><span>えがく</span><span class="num">◯◯</span></div>
-            <div class="param-bar"><div class="param-fill" data-val="55"></div></div>
+        </div>
+        <!-- EDIT: 幼なじみ -->
+        <div class="chara-panel" id="c2" role="tabpanel">
+          <div class="chara-art"><span class="chara-no">02</span><svg viewBox="0 0 600 900" preserveAspectRatio="xMidYMax meet" aria-hidden="true"><use href="#chara-b"></use></svg></div>
+          <div class="chara-info">
+            <p class="chara-read">Childhood Friend</p>
+            <h3 class="chara-name">◯◯ ◯◯</h3>
+            <p class="chara-cv">CV：<b>◯◯ ◯◯</b>／幼なじみ</p>
+            <p class="chara-desc">十年前、夏の終わりに街を出ていった。約束を交わした相手であり、物語の鍵を握る人物。役柄の説明を2〜3行で書いてください。</p>
           </div>
         </div>
-        <p style="font-size:.8rem;color:var(--muted);margin-top:1rem">※ 数値はキャラクター設定上の目安です</p>
+        <!-- EDIT: 謎の少女 -->
+        <div class="chara-panel" id="c3" role="tabpanel">
+          <div class="chara-art"><span class="chara-no">03</span><svg viewBox="0 0 600 900" preserveAspectRatio="xMidYMax meet" aria-hidden="true"><use href="#chara-c"></use></svg></div>
+          <div class="chara-info">
+            <p class="chara-read">Mysterious Girl</p>
+            <h3 class="chara-name">◯◯</h3>
+            <p class="chara-cv">CV：<b>◯◯ ◯◯</b>／謎の少女</p>
+            <p class="chara-desc">約束の日、丘の上に立っていた少女。星の名を知っているのに、自分の名前だけを思い出せない。役柄の説明を2〜3行で書いてください。</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-  <div class="wave w-white" aria-hidden="true"><svg viewBox="0 0 1440 46" preserveAspectRatio="none"><path d="M0,18 C160,0 320,42 520,34 C720,26 840,0 1020,12 C1200,24 1320,44 1440,30 L1440,46 L0,46 Z"/></svg></div>
 </section>
 
 <!-- ============================================================
-  GALLERY
+  STAFF & CAST — スタッフ／キャスト
 ============================================================ -->
-<section class="sec s-white" id="gallery">
-  <div class="container">
-    <div class="sec-head">
-      <span class="sec-en">GALLERY</span>
-      <h2 class="sec-title"><span class="hl">ギャラリー</span></h2>
-      <p class="sec-lead">イラスト・ファンアート・配信サムネイル</p>
+<section class="sec s-story" id="staff">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="label">Staff &amp; Cast</p>
+      <h2 class="h2">スタッフ＆キャスト</h2>
     </div>
-
-    <!-- EDIT: 各 .tile-img の中身を <img src="art1.jpg" alt="◯◯"> に置き換えてください。
-         枠の比率（4:3）は .tile-img の aspect-ratio で変えられます -->
-    <div class="gallery">
-      <figure class="tile rv"><div class="tile-img">ここにイラスト<br>1200 × 900 px</div>
-        <figcaption class="tile-cap"><span>◯◯◯◯</span><span class="en">ILLUST 01</span></figcaption></figure>
-      <figure class="tile rv"><div class="tile-img">ここにイラスト<br>1200 × 900 px</div>
-        <figcaption class="tile-cap"><span>◯◯◯◯</span><span class="en">ILLUST 02</span></figcaption></figure>
-      <figure class="tile rv"><div class="tile-img">ここにイラスト<br>1200 × 900 px</div>
-        <figcaption class="tile-cap"><span>◯◯◯◯</span><span class="en">ILLUST 03</span></figcaption></figure>
-      <figure class="tile rv"><div class="tile-img">ここにイラスト<br>1200 × 900 px</div>
-        <figcaption class="tile-cap"><span>◯◯◯◯</span><span class="en">ILLUST 04</span></figcaption></figure>
-      <figure class="tile rv"><div class="tile-img">ここにイラスト<br>1200 × 900 px</div>
-        <figcaption class="tile-cap"><span>◯◯◯◯</span><span class="en">ILLUST 05</span></figcaption></figure>
-      <figure class="tile rv"><div class="tile-img">ここにイラスト<br>1200 × 900 px</div>
-        <figcaption class="tile-cap"><span>◯◯◯◯</span><span class="en">ILLUST 06</span></figcaption></figure>
-    </div>
-  </div>
-  <div class="wave w-tint" aria-hidden="true"><svg viewBox="0 0 1440 46" preserveAspectRatio="none"><path d="M0,30 C150,10 280,40 460,36 C640,32 760,6 940,14 C1120,22 1280,46 1440,22 L1440,46 L0,46 Z"/></svg></div>
-</section>
-
-<!-- ============================================================
-  SCHEDULE
-============================================================ -->
-<section class="sec s-tint p-stripe" id="schedule">
-  <div class="container">
-    <div class="sec-head">
-      <span class="sec-en">SCHEDULE</span>
-      <h2 class="sec-title"><span class="hl">配信スケジュール</span></h2>
-      <p class="sec-lead">今週の予定（変更になる場合があります）</p>
-    </div>
-
-    <!-- EDIT: 曜日ごとの予定。時間チップ（.chip）は増減できます。
-         お休みの日は .day-off に差し替えてください -->
-    <div class="week">
-      <div class="day rv">
-        <p class="day-name">MON<span class="day-jp">月</span></p>
-        <div><span class="chip">◯◯:◯◯</span><span class="chip-note">◯◯◯◯配信</span></div>
+    <div class="credit-grid">
+      <!-- EDIT: スタッフ（役職→名前）。行の増減は .credit-row をコピー／削除 -->
+      <div class="rv">
+        <p class="credit-ttl">Staff</p>
+        <div class="credit-row"><span class="credit-role">監督</span><span class="credit-name">◯◯ ◯◯</span></div>
+        <div class="credit-row"><span class="credit-role">脚本</span><span class="credit-name">◯◯ ◯◯</span></div>
+        <div class="credit-row"><span class="credit-role">キャラクターデザイン</span><span class="credit-name">◯◯ ◯◯</span></div>
+        <div class="credit-row"><span class="credit-role">美術監督</span><span class="credit-name">◯◯ ◯◯</span></div>
+        <div class="credit-row"><span class="credit-role">音楽</span><span class="credit-name">◯◯ ◯◯</span></div>
+        <div class="credit-row"><span class="credit-role">主題歌</span><span class="credit-name">「◯◯◯◯」／◯◯◯◯</span></div>
+        <div class="credit-row"><span class="credit-role">制作</span><span class="credit-name">◯◯◯◯</span></div>
+        <div class="credit-row"><span class="credit-role">配給</span><span class="credit-name">◯◯◯◯</span></div>
       </div>
-      <div class="day rv">
-        <p class="day-name">TUE<span class="day-jp">火</span></p>
-        <div class="day-off"><b>お休み</b>ゆっくり充電</div>
-      </div>
-      <div class="day rv">
-        <p class="day-name">WED<span class="day-jp">水</span></p>
-        <div><span class="chip c-sky">◯◯:◯◯</span><span class="chip-note">ゲーム配信</span></div>
-      </div>
-      <div class="day rv">
-        <p class="day-name">THU<span class="day-jp">木</span></p>
-        <div><span class="chip c-mint">◯◯:◯◯</span><span class="chip-note">雑談・お便り</span></div>
-      </div>
-      <div class="day rv">
-        <p class="day-name">FRI<span class="day-jp">金</span></p>
-        <div><span class="chip c-lav">◯◯:◯◯</span><span class="chip-note">うた枠</span></div>
-      </div>
-      <div class="day sat rv">
-        <p class="day-name">SAT<span class="day-jp">土</span></p>
-        <div><span class="chip">◯◯:◯◯</span><span class="chip c-sky">◯◯:◯◯</span><span class="chip-note">コラボ／ゲリラ</span></div>
-      </div>
-      <div class="day sun rv">
-        <p class="day-name">SUN<span class="day-jp">日</span></p>
-        <div class="day-off"><b>お休み</b>おやすみの日</div>
+      <!-- EDIT: キャスト（役名→声の出演） -->
+      <div class="rv">
+        <p class="credit-ttl">Cast</p>
+        <div class="credit-row"><span class="credit-role">◯◯ ◯◯</span><span class="credit-name">◯◯ ◯◯</span></div>
+        <div class="credit-row"><span class="credit-role">◯◯ ◯◯</span><span class="credit-name">◯◯ ◯◯</span></div>
+        <div class="credit-row"><span class="credit-role">◯◯</span><span class="credit-name">◯◯ ◯◯</span></div>
+        <div class="credit-row"><span class="credit-role">◯◯ ◯◯</span><span class="credit-name">◯◯ ◯◯</span></div>
+        <p class="sec-note" style="margin-top:1.4rem">※ 役名・お名前は公開前に必ず正式表記へ差し替えてください。敬称・肩書きの扱いは配給・制作の指定に合わせます。</p>
       </div>
     </div>
   </div>
-  <div class="wave w-white" aria-hidden="true"><svg viewBox="0 0 1440 46" preserveAspectRatio="none"><path d="M0,16 C180,40 340,6 520,14 C700,22 820,44 1000,36 C1180,28 1300,4 1440,20 L1440,46 L0,46 Z"/></svg></div>
 </section>
 
 <!-- ============================================================
-  VOICE
+  TRAILER — 予告編
+  EDIT: data-youtube-id に YouTube の動画ID（URLの v= のあと、11文字）を入れてください。
+        例）https://www.youtube.com/watch?v=abcdEFGhijk → data-youtube-id="abcdEFGhijk"
+        プレースホルダーのままだと、再生ボタンで案内が表示されます。
 ============================================================ -->
-<section class="sec s-white" id="voice">
-  <div class="container">
-    <div class="sec-head">
-      <span class="sec-en">VOICE</span>
-      <h2 class="sec-title"><span class="hl">ボイス・うた</span></h2>
-      <p class="sec-lead">聴いてみてね <span class="spk">♪</span></p>
+<section class="sec" id="trailer">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="label">Trailer</p>
+      <h2 class="h2">予告編</h2>
     </div>
-
-    <!-- EDIT: 実際に音を鳴らすには、各カードの中に
-           <audio controls preload="none" src="voice1.mp3"></audio>
-         を置いて、下の .play ボタン（見た目のみ）と差し替えるのがいちばん簡単です -->
-    <div class="voice-grid">
-      <article class="card voice-card rv">
-        <div class="voice-top">
-          <span class="play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4l13 8-13 8z"/></svg></span>
-          <div><p class="voice-name">◯◯◯◯（あいさつ）</p><p class="voice-time">◯:◯◯</p></div>
-        </div>
-        <div class="wave-bars" aria-hidden="true"><i style="height:30%"></i><i style="height:70%"></i><i style="height:45%"></i><i style="height:95%"></i><i style="height:55%"></i><i style="height:80%"></i><i style="height:35%"></i><i style="height:65%"></i><i style="height:50%"></i><i style="height:85%"></i><i style="height:40%"></i><i style="height:60%"></i></div>
-        <p class="goods-note">◯◯◯◯についてのひとこと。</p>
-      </article>
-      <article class="card voice-card rv">
-        <div class="voice-top">
-          <span class="play" style="background:var(--sky)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4l13 8-13 8z"/></svg></span>
-          <div><p class="voice-name">◯◯◯◯（めざまし）</p><p class="voice-time">◯:◯◯</p></div>
-        </div>
-        <div class="wave-bars" aria-hidden="true"><i style="height:60%"></i><i style="height:35%"></i><i style="height:85%"></i><i style="height:50%"></i><i style="height:70%"></i><i style="height:40%"></i><i style="height:90%"></i><i style="height:55%"></i><i style="height:75%"></i><i style="height:30%"></i><i style="height:65%"></i><i style="height:45%"></i></div>
-        <p class="goods-note">◯◯◯◯についてのひとこと。</p>
-      </article>
-      <article class="card voice-card rv">
-        <div class="voice-top">
-          <span class="play" style="background:var(--lav)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4l13 8-13 8z"/></svg></span>
-          <div><p class="voice-name">◯◯◯◯（オリジナル曲）</p><p class="voice-time">◯:◯◯</p></div>
-        </div>
-        <div class="wave-bars" aria-hidden="true"><i style="height:45%"></i><i style="height:90%"></i><i style="height:35%"></i><i style="height:75%"></i><i style="height:60%"></i><i style="height:95%"></i><i style="height:40%"></i><i style="height:70%"></i><i style="height:30%"></i><i style="height:80%"></i><i style="height:50%"></i><i style="height:65%"></i></div>
-        <p class="goods-note">◯◯◯◯についてのひとこと。</p>
-      </article>
+    <div class="tr-frame rv" id="trFrame" data-youtube-id="◯◯◯◯◯◯">
+      <div class="tr-poster" aria-hidden="true"></div>
+      <button type="button" class="tr-play" id="trPlay" aria-label="予告編を再生する">
+        <i aria-hidden="true"></i><span>Play Trailer</span>
+      </button>
+    </div>
+    <div class="tr-foot rv">
+      <!-- EDIT: 映像の説明・公開日 -->
+      <p class="sec-note">本予告　2026.◯.◯ 公開／◯分◯◯秒</p>
+      <p><a class="ghost" href="#news">特報・PVの一覧 <span aria-hidden="true">→</span></a></p>
     </div>
   </div>
-  <div class="wave w-cream" aria-hidden="true"><svg viewBox="0 0 1440 46" preserveAspectRatio="none"><path d="M0,26 C160,44 320,8 500,16 C680,24 800,46 980,34 C1160,22 1300,0 1440,18 L1440,46 L0,46 Z"/></svg></div>
 </section>
 
 <!-- ============================================================
-  GOODS
+  MUSIC — 主題歌
 ============================================================ -->
-<section class="sec s-cream p-dot" id="goods">
-  <div class="container">
-    <div class="sec-head">
-      <span class="sec-en">GOODS</span>
-      <h2 class="sec-title"><span class="hl">グッズ</span></h2>
-      <p class="sec-lead">通販・イベント頒布のご案内</p>
+<section class="sec s-story" id="music">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="label">Music</p>
+      <h2 class="h2">主題歌</h2>
     </div>
-
-    <!-- EDIT: 商品3点。価格は必ず実際の税込価格に差し替えてください。
-         画像は .goods-img を <img src="goods1.jpg" alt=""> に置き換えるだけ -->
-    <div class="goods-grid">
-      <article class="card goods-card rv">
-        <span class="ribbon">NEW</span>
-        <div class="goods-img">ここに商品画像<br>1000 × 1000 px</div>
-        <div class="goods-body">
-          <p class="goods-name">◯◯◯◯ アクリルスタンド</p>
-          <p class="goods-price">¥◯,◯◯◯<span class="goods-note" style="font-family:var(--jp);margin-left:.4rem">税込</span></p>
-          <p class="goods-note">◯◯◯◯ / 約◯◯cm / ◯◯製</p>
-        </div>
-      </article>
-      <article class="card goods-card rv">
-        <div class="goods-img">ここに商品画像<br>1000 × 1000 px</div>
-        <div class="goods-body">
-          <p class="goods-name">◯◯◯◯ 缶バッジセット</p>
-          <p class="goods-price">¥◯,◯◯◯<span class="goods-note" style="font-family:var(--jp);margin-left:.4rem">税込</span></p>
-          <p class="goods-note">◯◯◯◯ / ◯◯mm / 全◯種</p>
-        </div>
-      </article>
-      <article class="card goods-card is-sold rv">
-        <span class="ribbon ribbon-sold">SOLD OUT</span>
-        <div class="goods-img">ここに商品画像<br>1000 × 1000 px</div>
-        <div class="goods-body">
-          <p class="goods-name">◯◯◯◯ Tシャツ</p>
-          <p class="goods-price">¥◯,◯◯◯<span class="goods-note" style="font-family:var(--jp);margin-left:.4rem">税込</span></p>
-          <p class="goods-note">◯◯◯◯ / S・M・L・XL</p>
-        </div>
-      </article>
-    </div>
-    <p class="sec-lead" style="text-align:center;margin-top:1.6rem">
-      ※ 通信販売を行う場合は「特定商取引法に基づく表記」のページを別途ご用意ください
-    </p>
-  </div>
-  <div class="wave w-tint" aria-hidden="true"><svg viewBox="0 0 1440 46" preserveAspectRatio="none"><path d="M0,20 C170,2 330,38 520,32 C710,26 830,2 1010,12 C1190,22 1310,44 1440,26 L1440,46 L0,46 Z"/></svg></div>
-</section>
-
-<!-- ============================================================
-  FAN
-============================================================ -->
-<section class="sec s-tint" id="fan">
-  <div class="container">
-    <div class="sec-head">
-      <span class="sec-en">FAN</span>
-      <h2 class="sec-title"><span class="hl">ファンのみなさまへ</span></h2>
-      <p class="sec-lead">呼び名・推しマーク・二次創作について</p>
-    </div>
-
-    <!-- EDIT: ファンネーム・推しマーク・ハッシュタグ -->
-    <div class="fan-grid">
-      <article class="card fan-card rv">
-        <p class="fan-mark">♥</p>
-        <p class="fan-label">FAN NAME</p>
-        <p class="fan-value">◯◯◯◯</p>
-      </article>
-      <article class="card fan-card rv">
-        <p class="fan-mark">✦</p>
-        <p class="fan-label">MARK</p>
-        <p class="fan-value">◯◯◯◯</p>
-      </article>
-      <article class="card fan-card rv">
-        <p class="fan-mark">★</p>
-        <p class="fan-label">HASHTAG</p>
-        <p class="fan-value">#◯◯◯◯</p>
-      </article>
-
-      <!-- EDIT: 二次創作ガイドライン。実際の方針に書き換えてください -->
-      <article class="card rules rv">
-        <span class="ribbon">GUIDELINE</span>
-        <h3 style="font-size:1.15rem">二次創作ガイドライン</h3>
-        <ul>
-          <li><span>◯◯◯◯についてのルールをここに書きます（例：個人の非営利の範囲でお楽しみください）</span></li>
-          <li><span>◯◯◯◯についてのルールをここに書きます（例：公式との誤認を招く使い方はご遠慮ください）</span></li>
-          <li><span>◯◯◯◯についてのルールをここに書きます（例：センシティブな表現には必ず注意書きを添えてください）</span></li>
-          <li><span>◯◯◯◯についてのルールをここに書きます（例：公開時は #◯◯◯◯ を付けていただけると嬉しいです）</span></li>
-          <li><span>判断に迷う場合は ◯◯◯◯ までお問い合わせください</span></li>
+    <div class="music-card rv">
+      <svg class="disc" viewBox="0 0 120 120" aria-hidden="true"><use href="#ic-disc"></use></svg>
+      <div class="music-meta">
+        <!-- EDIT: 主題歌の情報 -->
+        <p class="music-kind">Theme Song</p>
+        <h3 class="music-ttl">「◯◯◯◯」</h3>
+        <p class="music-artist">◯◯◯◯（◯◯レコード）</p>
+        <p class="sec-note">2026.◯.◯ 配信リリース／劇伴：◯◯ ◯◯</p>
+        <!-- EDIT: 配信リンク。href に各サービスのURLを入れてください -->
+        <ul class="pill-list">
+          <li><a class="pill" href="#music">配信リンク ◯◯</a></li>
+          <li><a class="pill" href="#music">配信リンク ◯◯</a></li>
+          <li><a class="pill" href="#music">配信リンク ◯◯</a></li>
+          <li><a class="pill" href="#music">サウンドトラック</a></li>
         </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+  THEATER — 劇場情報（地域別・開閉式）
+  EDIT: 地域ごとの <details> の中の表に、劇場名・電話・備考を入れてください。
+============================================================ -->
+<section class="sec" id="theater">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="label">Theater</p>
+      <h2 class="h2">上映劇場</h2>
+    </div>
+    <div class="rv">
+      <details class="th-item" open>
+        <summary>北海道・東北<span class="th-mark" aria-hidden="true"></span></summary>
+        <div class="th-body"><table class="th-table">
+          <thead><tr><th>劇場名</th><th>電話</th><th>備考</th></tr></thead>
+          <tbody>
+            <tr><td>◯◯シネマ ◯◯</td><td>000-000-0000</td><td>◯月◯日〜</td></tr>
+            <tr><td>◯◯劇場</td><td>000-000-0000</td><td>◯月◯日〜</td></tr>
+          </tbody>
+        </table></div>
+      </details>
+      <details class="th-item">
+        <summary>関東<span class="th-mark" aria-hidden="true"></span></summary>
+        <div class="th-body"><table class="th-table">
+          <thead><tr><th>劇場名</th><th>電話</th><th>備考</th></tr></thead>
+          <tbody>
+            <tr><td>◯◯シネマ ◯◯</td><td>000-000-0000</td><td>◯月◯日〜</td></tr>
+            <tr><td>◯◯シネマズ ◯◯</td><td>000-000-0000</td><td>舞台挨拶実施予定</td></tr>
+            <tr><td>◯◯劇場</td><td>000-000-0000</td><td>◯月◯日〜</td></tr>
+          </tbody>
+        </table></div>
+      </details>
+      <details class="th-item">
+        <summary>中部<span class="th-mark" aria-hidden="true"></span></summary>
+        <div class="th-body"><table class="th-table">
+          <thead><tr><th>劇場名</th><th>電話</th><th>備考</th></tr></thead>
+          <tbody><tr><td>◯◯シネマ ◯◯</td><td>000-000-0000</td><td>◯月◯日〜</td></tr></tbody>
+        </table></div>
+      </details>
+      <details class="th-item">
+        <summary>近畿<span class="th-mark" aria-hidden="true"></span></summary>
+        <div class="th-body"><table class="th-table">
+          <thead><tr><th>劇場名</th><th>電話</th><th>備考</th></tr></thead>
+          <tbody><tr><td>◯◯シネマ ◯◯</td><td>000-000-0000</td><td>◯月◯日〜</td></tr></tbody>
+        </table></div>
+      </details>
+      <details class="th-item">
+        <summary>中国・四国<span class="th-mark" aria-hidden="true"></span></summary>
+        <div class="th-body"><table class="th-table">
+          <thead><tr><th>劇場名</th><th>電話</th><th>備考</th></tr></thead>
+          <tbody><tr><td>◯◯シネマ ◯◯</td><td>000-000-0000</td><td>◯月◯日〜</td></tr></tbody>
+        </table></div>
+      </details>
+      <details class="th-item">
+        <summary>九州・沖縄<span class="th-mark" aria-hidden="true"></span></summary>
+        <div class="th-body"><table class="th-table">
+          <thead><tr><th>劇場名</th><th>電話</th><th>備考</th></tr></thead>
+          <tbody><tr><td>◯◯シネマ ◯◯</td><td>000-000-0000</td><td>◯月◯日〜</td></tr></tbody>
+        </table></div>
+      </details>
+    </div>
+    <!-- EDIT: 前売券・ムビチケの案内 -->
+    <p class="ticket-note rv"><b>前売券・ムビチケ</b><br>
+      2026.◯.◯（◯）より、全国の劇場窓口およびオンラインにて発売予定。特典は◯◯（数量限定・なくなり次第終了）。
+      発売日・特典・取扱劇場は変更になる場合があります。確定した情報のみ掲載してください。</p>
+  </div>
+</section>
+
+<!-- ============================================================
+  SPECIAL — スペシャル
+============================================================ -->
+<section class="sec s-story" id="special">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="label">Special</p>
+      <h2 class="h2">スペシャル</h2>
+    </div>
+    <div class="cards">
+      <!-- EDIT: 特典・ビジュアル・イベントの3枠 -->
+      <article class="card rv">
+        <div class="card-art a23"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-gift"></use></svg></div>
+        <p class="card-kind">Bonus</p><h3 class="card-ttl">入場者特典</h3>
+        <p class="card-txt">第◯弾：◯◯（◯◯限定・数量限定）。配布期間・対象劇場は決定次第お知らせします。</p>
+        <p><a class="ghost" href="#special">詳細 <span aria-hidden="true">→</span></a></p>
+      </article>
+      <article class="card rv">
+        <div class="card-art a23"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-frame"></use></svg></div>
+        <p class="card-kind">Visual</p><h3 class="card-ttl">描き下ろしビジュアル</h3>
+        <p class="card-txt">◯◯を担当した◯◯ ◯◯による描き下ろし。壁紙の配布についてもこちらで告知します。</p>
+        <p><a class="ghost" href="#special">詳細 <span aria-hidden="true">→</span></a></p>
+      </article>
+      <article class="card rv">
+        <div class="card-art a23"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-mic"></use></svg></div>
+        <p class="card-kind">Event</p><h3 class="card-ttl">舞台挨拶</h3>
+        <p class="card-txt">◯月◯日（◯）◯◯にて実施予定。登壇者・チケット受付方法は決定次第掲載します。</p>
+        <p><a class="ghost" href="#special">詳細 <span aria-hidden="true">→</span></a></p>
       </article>
     </div>
   </div>
-  <div class="wave w-white" aria-hidden="true"><svg viewBox="0 0 1440 46" preserveAspectRatio="none"><path d="M0,28 C190,46 340,4 530,12 C720,20 840,44 1020,38 C1200,32 1320,8 1440,24 L1440,46 L0,46 Z"/></svg></div>
 </section>
 
 <!-- ============================================================
-  Q&A
+  GOODS — グッズ
 ============================================================ -->
-<section class="sec s-white" id="qa">
-  <div class="container">
-    <div class="sec-head">
-      <span class="sec-en">Q &amp; A</span>
-      <h2 class="sec-title"><span class="hl">よくある質問</span></h2>
+<section class="sec" id="goods">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="label">Goods</p>
+      <h2 class="h2">グッズ</h2>
     </div>
-
-    <!-- EDIT: 質問と答え。<details> なので JavaScript が無くても開閉します -->
-    <div class="qa">
-      <details class="qa-item rv">
-        <summary>◯◯◯◯について教えてください</summary>
-        <div class="qa-body">◯◯◯◯についての答えをここに書きます。２〜３行くらいがちょうど読みやすい長さです。</div>
-      </details>
-      <details class="qa-item rv">
-        <summary>配信のアーカイブは残りますか？</summary>
-        <div class="qa-body">◯◯◯◯についての答えをここに書きます。２〜３行くらいがちょうど読みやすい長さです。</div>
-      </details>
-      <details class="qa-item rv">
-        <summary>イラストやファンアートを描いてもいいですか？</summary>
-        <div class="qa-body">◯◯◯◯についての答えをここに書きます。二次創作ガイドラインもあわせてご確認ください。</div>
-      </details>
-      <details class="qa-item rv">
-        <summary>お仕事のご依頼はどちらへ？</summary>
-        <div class="qa-body">◯◯◯◯までご連絡ください。お返事までに◯◯日ほどいただく場合があります。</div>
-      </details>
+    <div class="cards">
+      <!-- EDIT: 商品名・説明・価格（税込かどうかも明記してください） -->
+      <article class="card rv">
+        <div class="card-art a11"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-book"></use></svg></div>
+        <p class="card-kind">Item 01</p><h3 class="card-ttl">パンフレット</h3>
+        <p class="card-txt">◯◯ページ／A4変形。劇場売店にて販売予定。</p>
+        <p class="price">¥◯,◯◯◯<span class="sec-note">（税込）</span></p>
+      </article>
+      <article class="card rv">
+        <div class="card-art a11"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-file"></use></svg></div>
+        <p class="card-kind">Item 02</p><h3 class="card-ttl">クリアファイル</h3>
+        <p class="card-txt">A4サイズ／全◯種。絵柄はランダムではありません。</p>
+        <p class="price">¥◯,◯◯◯<span class="sec-note">（税込）</span></p>
+      </article>
+      <article class="card rv">
+        <div class="card-art a11"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-bd"></use></svg></div>
+        <p class="card-kind">Item 03</p><h3 class="card-ttl">Blu-ray</h3>
+        <p class="card-txt">初回限定版／特典ディスク付き。発売日は決定次第お知らせします。</p>
+        <p class="price">¥◯,◯◯◯<span class="sec-note">（税込）</span></p>
+      </article>
     </div>
+    <p class="sec-note rv" style="margin-top:1.6rem">※ 価格・仕様・発売日はすべてプレースホルダーです。通信販売を行う場合は「特定商取引法に基づく表記」のページを別途ご用意ください。</p>
   </div>
-  <div class="wave w-cream" aria-hidden="true"><svg viewBox="0 0 1440 46" preserveAspectRatio="none"><path d="M0,22 C150,2 300,40 490,34 C680,28 800,4 990,14 C1180,24 1300,42 1440,28 L1440,46 L0,46 Z"/></svg></div>
 </section>
 
-<!-- ============================================================
-  LINKS
-============================================================ -->
-<section class="sec s-cream" id="links">
-  <div class="container">
-    <div class="sec-head">
-      <span class="sec-en">LINKS</span>
-      <h2 class="sec-title"><span class="hl">リンク</span></h2>
-      <p class="sec-lead">各SNS・ショップはこちらから</p>
-    </div>
+</main>
 
-    <!-- EDIT: href を自分のURLに。アイコンは汎用の線画です（各社のロゴではありません）。
-         不要な項目は <a> ごと削除してください -->
-    <div class="link-grid">
-      <a class="btn link-btn btn-pink rv" href="#" aria-label="YouTube（リンク先を差し替えてください）">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="4"/><path d="M10 9l5 3-5 3z"/></svg>
-        <span>YouTube</span><span class="sub">@◯◯◯◯</span></a>
-      <a class="btn link-btn btn-sky rv" href="#" aria-label="X（リンク先を差し替えてください）">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4l16 16M20 4L4 20"/></svg>
-        <span>X</span><span class="sub">@◯◯◯◯</span></a>
-      <a class="btn link-btn btn-lemon rv" href="#" aria-label="Instagram（リンク先を差し替えてください）">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".9" fill="currentColor" stroke="none"/></svg>
-        <span>Instagram</span><span class="sub">@◯◯◯◯</span></a>
-      <a class="btn link-btn btn-mint rv" href="#" aria-label="BOOTH（リンク先を差し替えてください）">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8h18l-1.5 12h-15z"/><path d="M8 8V6a4 4 0 018 0v2"/></svg>
-        <span>BOOTH</span><span class="sub">@◯◯◯◯</span></a>
-      <a class="btn link-btn btn-lav rv" href="#" aria-label="FANBOX（リンク先を差し替えてください）">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9h18v11H3z"/><path d="M3 9l2-5h14l2 5M12 9v11"/></svg>
-        <span>FANBOX</span><span class="sub">@◯◯◯◯</span></a>
-      <a class="btn link-btn rv" href="#" aria-label="Discord（リンク先を差し替えてください）">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19l1-11a3 3 0 013-3h8a3 3 0 013 3l1 11-4-2H8z"/><circle cx="9.5" cy="12" r="1.2" fill="currentColor" stroke="none"/><circle cx="14.5" cy="12" r="1.2" fill="currentColor" stroke="none"/></svg>
-        <span>Discord</span><span class="sub">@◯◯◯◯</span></a>
+<footer>
+  <div class="wrap">
+    <div class="foot-top">
+      <div>
+        <!-- EDIT: 作品名と英題 -->
+        <p class="foot-logo">約束の星</p>
+        <p class="foot-en">The Promised Star</p>
+      </div>
+      <!-- EDIT: SNS。href を各アカウントのURLに差し替えてください。不要な項目は <li> ごと削除 -->
+      <ul class="sns">
+        <li><a href="#top" aria-label="X（旧Twitter）"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-x"></use></svg></a></li>
+        <li><a href="#top" aria-label="YouTube"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-yt"></use></svg></a></li>
+        <li><a href="#top" aria-label="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-ig"></use></svg></a></li>
+        <li><a href="#top" aria-label="TikTok"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-tt"></use></svg></a></li>
+      </ul>
     </div>
-  </div>
-  <div class="wave w-tint" aria-hidden="true"><svg viewBox="0 0 1440 46" preserveAspectRatio="none"><path d="M0,30 C160,8 300,40 500,34 C700,28 820,4 1010,14 C1200,24 1320,44 1440,24 L1440,46 L0,46 Z"/></svg></div>
-</section>
-
-<!-- ============================================================
-  FOOTER
-============================================================ -->
-<footer class="footer">
-  <div class="container">
-    <p class="footer-mark"><svg viewBox="0 0 64 64" width="40" height="40" aria-hidden="true" style="margin:0 auto"><use href="#star"></use></svg></p>
-    <!-- EDIT: 名前・イラストレーター名・著作権表記 -->
-    <p class="footer-name">星宮 きら</p>
-    <p class="footer-credit">Illustration: ◯◯◯◯</p>
-    <ul class="footer-links">
-      <li><a href="#news">NEWS</a></li>
-      <li><a href="#profile">PROFILE</a></li>
-      <li><a href="#gallery">GALLERY</a></li>
-      <li><a href="#schedule">SCHEDULE</a></li>
-      <li><a href="#goods">GOODS</a></li>
-      <li><a href="#fan">FAN</a></li>
-      <li><a href="#links">LINKS</a></li>
-    </ul>
-    <p class="footer-credit">&copy; <span id="year">2026</span> ◯◯◯◯ All Rights Reserved.</p>
-    <p class="footer-credit" style="margin-top:.6rem"><a href="https://idatsuka.com/store.html">← Store に戻る</a></p>
-    <span class="footer-ver">KIRA Template v1.0 — 個人・商用利用可／再販不可</span>
+    <div class="foot-bottom">
+      <!-- EDIT: 製作委員会表記（配給・製作の指定表記に合わせてください） -->
+      <p>&copy;<span id="year">2026</span> ◯◯／「約束の星」製作委員会</p>
+      <p>KIRA Template v2.0 — 個人・商用利用可／再販不可</p>
+      <p><a class="to-top" href="#top">Page Top ↑</a></p>
+    </div>
   </div>
 </footer>
 
-<a href="#hero" class="to-top" id="toTop" aria-label="ページの先頭へ戻る">▲</a>
-
-</div><!-- /.page -->
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
-/* ============================================================
-   共通の設定
-============================================================ */
-var REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-var FINE   = window.matchMedia('(pointer: fine)').matches;
-
-/* ---- ポップ／ナイトのテーマ切替（localStorage に保存・theme-color も同期） ---- */
+/* ---- テーマ切替（night / dawn。選択はブラウザに保存されます） ---- */
 (function () {
-  var root = document.documentElement;
-  var key = 'kira-theme';
-  var meta = document.getElementById('themeColor');
-  var btn = document.getElementById('themeToggle');
+  var root = document.documentElement, key = 'kira-theme';
+  var btn = document.getElementById('themeToggle'), meta = document.getElementById('themeColor');
   function sync() {
-    var t = root.getAttribute('data-theme') === 'night' ? 'night' : 'pop';
-    if (meta) meta.setAttribute('content', getComputedStyle(root).getPropertyValue('--bg').trim() || '#fff7fb');
-    if (btn) btn.setAttribute('aria-label', t === 'night' ? 'ポップテーマに切り替え' : 'ナイトテーマに切り替え');
+    var t = root.getAttribute('data-theme') === 'dawn' ? 'dawn' : 'night';
+    if (meta) meta.setAttribute('content', t === 'dawn' ? '#f4efe6' : '#0b0a14');
+    if (btn) btn.setAttribute('aria-label', t === 'dawn' ? '夜のテーマに切り替え' : '夜明けのテーマに切り替え');
   }
   sync();
   if (btn) btn.addEventListener('click', function () {
-    var next = root.getAttribute('data-theme') === 'night' ? 'pop' : 'night';
+    var next = root.getAttribute('data-theme') === 'dawn' ? 'night' : 'dawn';
     root.setAttribute('data-theme', next);
     try { localStorage.setItem(key, next); } catch (e) {}
     sync();
   });
 })();
 
-/* ---- モバイルメニュー ---- */
+/* ---- モバイルの全画面メニュー ---- */
 (function () {
-  var toggle = document.getElementById('menuToggle');
-  var menu = document.getElementById('mobileMenu');
+  var toggle = document.getElementById('menuToggle'), menu = document.getElementById('mobileMenu');
   if (!toggle || !menu) return;
   function close() {
     toggle.classList.remove('open'); menu.classList.remove('open');
-    toggle.setAttribute('aria-expanded', 'false');
+    toggle.setAttribute('aria-expanded', 'false'); document.body.style.overflow = '';
   }
   toggle.addEventListener('click', function () {
     var open = menu.classList.toggle('open');
     toggle.classList.toggle('open', open);
     toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    document.body.style.overflow = open ? 'hidden' : '';
   });
   menu.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', close); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
 })();
 
-/* ---- スクロールでナビを細く／「先頭へ戻る」ボタンの表示 ---- */
+/* ---- スクロール：進捗の細線／ナビの背景／キービジュアルがゆっくり奥へ ---- */
 (function () {
-  var nav = document.getElementById('nav');
-  var top = document.getElementById('toTop');
+  var nav = document.getElementById('nav'), bar = document.getElementById('progress');
+  var kv = document.getElementById('kv'), hero = document.getElementById('top');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
   var ticking = false;
   function update() {
     var y = window.scrollY;
-    if (nav) nav.classList.toggle('scrolled', y > 20);
-    if (top) top.classList.toggle('show', y > 560);
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    if (bar) bar.style.transform = 'scaleX(' + (max > 0 ? Math.min(1, y / max) : 0) + ')';
+    if (nav) nav.classList.toggle('scrolled', y > 24);
+    if (kv && hero && !reduce.matches) {
+      var h = hero.offsetHeight || 1;
+      var p = Math.min(1, y / h);
+      kv.style.translate = '0 ' + (y * .3) + 'px';
+      kv.style.opacity = String(1 - p * .85);
+    }
     ticking = false;
   }
   window.addEventListener('scroll', function () {
@@ -1381,224 +1309,237 @@ var FINE   = window.matchMedia('(pointer: fine)').matches;
   update();
 })();
 
-/* ---- リビール（.rv を、兄弟ごとに少しずつ遅らせてポンと表示） ---- */
+/* ---- キービジュアルの視差（マウスを動かすと層がわずかにずれます。PCのみ） ---- */
 (function () {
-  var all = document.querySelectorAll('.rv');
-  /* 古いブラウザで IntersectionObserver が無い場合は、最初からすべて表示します */
-  if (!('IntersectionObserver' in window)) {
-    all.forEach(function (el) { el.classList.add('on'); });
-    return;
+  var kv = document.getElementById('kv'), hero = document.getElementById('top');
+  if (!kv || !hero) return;
+  var fine = window.matchMedia('(pointer: fine)'), reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  if (!fine.matches || reduce.matches) return;
+  var layers = [].slice.call(kv.querySelectorAll('.kv-layer'));
+  var MAX = 18;                       /* ずれの最大値（px）。大きくすると視差が強くなります */
+  var tx = 0, ty = 0, cx = 0, cy = 0, raf = 0;
+  function loop() {
+    cx += (tx - cx) * .06; cy += (ty - cy) * .06;
+    layers.forEach(function (l) {
+      var d = parseFloat(l.getAttribute('data-depth')) || 0;
+      var base = l.classList.contains('kv-chara') && window.innerWidth <= 900 ? 'translateX(-50%) ' : '';
+      l.style.transform = base;
+      l.style.translate = (cx * d * MAX) + 'px ' + (cy * d * MAX * .6) + 'px';
+    });
+    raf = (Math.abs(tx - cx) > .001 || Math.abs(ty - cy) > .001) ? requestAnimationFrame(loop) : 0;
   }
-  var counts = new Map();
-  all.forEach(function (el) {
-    var p = el.parentElement;
-    var n = counts.get(p) || 0;
-    counts.set(p, n + 1);
-    el.style.transitionDelay = Math.min(n * 60, 320) + 'ms';
+  hero.addEventListener('pointermove', function (e) {
+    var b = hero.getBoundingClientRect();
+    tx = (e.clientX - b.left) / b.width * 2 - 1;
+    ty = (e.clientY - b.top) / b.height * 2 - 1;
+    if (!raf) raf = requestAnimationFrame(loop);
   });
-  var io = new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) {
-      if (!e.isIntersecting) return;
-      e.target.classList.add('on');
-      io.unobserve(e.target);
-      setTimeout(function () { e.target.style.transitionDelay = ''; }, 1400);
-    });
-  }, { threshold: 0.08, rootMargin: '0px 0px -5% 0px' });
-  all.forEach(function (el) { io.observe(el); });
+  hero.addEventListener('pointerleave', function () { tx = 0; ty = 0; if (!raf) raf = requestAnimationFrame(loop); });
 })();
 
-/* ---- パラメータバー（画面に入ったら data-val の値まで伸びます） ---- */
+/* ---- 光の粒と流れ星（Canvas） ----
+   COUNT … 粒の数（画面幅に応じて自動調整）。光は事前に描いた小さな画像を貼るだけなので軽量です。
+   画面外・別タブでは描画を止め、prefers-reduced-motion では何も描きません。 */
 (function () {
-  var wrap = document.getElementById('params');
-  if (!wrap) return;
-  var fills = wrap.querySelectorAll('.param-fill');
-  function fill() { fills.forEach(function (f, i) {
-    var v = Math.max(0, Math.min(100, parseInt(f.getAttribute('data-val'), 10) || 0));
-    setTimeout(function () { f.style.width = v + '%'; }, REDUCE ? 0 : i * 130);
-  }); }
-  var io = new IntersectionObserver(function (es) {
-    es.forEach(function (e) { if (e.isIntersecting) { fill(); io.disconnect(); } });
-  }, { threshold: 0.3 });
-  io.observe(wrap);
-})();
-
-/* ---- Q&A（<details> の開閉。JS が無くても動きます） ---- */
-(function () {
-  if (REDUCE) return;
-  document.querySelectorAll('.qa-item').forEach(function (d) {
-    d.addEventListener('toggle', function () {
-      if (!d.open) return;
-      d.style.transition = 'none';
-    });
-  });
-})();
-
-/* ============================================================
-   HERO — 視差チルト／クリックの「ぽよん」＋ハート弾け
-============================================================ */
-(function () {
-  var stage = document.getElementById('heroStage');
-  if (!stage) return;
-  var layers = Array.prototype.slice.call(stage.querySelectorAll('.layer'));
-
-  /* マウスを動かすと、深さ（data-depth）ごとに違う量だけずれます */
-  if (!REDUCE && FINE) {
-    var raf = null, tx = 0, ty = 0;
-    stage.addEventListener('mousemove', function (e) {
-      var r = stage.getBoundingClientRect();
-      tx = ((e.clientX - r.left) / r.width - 0.5) * 2;   /* -1 〜 1 */
-      ty = ((e.clientY - r.top) / r.height - 0.5) * 2;
-      if (!raf) raf = requestAnimationFrame(apply);
-    });
-    stage.addEventListener('mouseleave', function () {
-      tx = 0; ty = 0; if (!raf) raf = requestAnimationFrame(apply);
-    });
-    function apply() {
-      raf = null;
-      layers.forEach(function (l) {
-        var d = parseFloat(l.getAttribute('data-depth')) || 1;
-        l.style.transform = 'translate3d(' + (tx * d * 9) + 'px,' + (ty * d * 7) + 'px,0) rotate(' + (tx * d * 0.5) + 'deg)';
-      });
-    }
-  }
-
-  /* クリック／タップで「ぽよん」＋ハートと星が弾けます */
-  var btn = document.getElementById('charaBtn');
-  var BITS = ['♥', '★', '✦', '♪', '♥', '★'];
-  if (btn) btn.addEventListener('click', function () {
-    if (!REDUCE) {
-      btn.classList.remove('poyon');
-      void btn.offsetWidth;               /* アニメーションを巻き戻す */
-      btn.classList.add('poyon');
-    }
-    var r = btn.getBoundingClientRect();
-    var sr = stage.getBoundingClientRect();
-    var cx = r.left - sr.left + r.width / 2;
-    var cy = r.top - sr.top + r.height * 0.32;
-    var n = REDUCE ? 0 : 10;
-    for (var i = 0; i < n; i++) {
-      var s = document.createElement('span');
-      s.className = 'pop-bit';
-      s.textContent = BITS[i % BITS.length];
-      var a = (Math.PI * 2 * i) / n + Math.random() * 0.4;
-      var dist = 80 + Math.random() * 70;
-      s.style.left = cx + 'px';
-      s.style.top = cy + 'px';
-      s.style.setProperty('--dx', Math.cos(a) * dist + 'px');
-      s.style.setProperty('--dy', (Math.sin(a) * dist - 40) + 'px');
-      s.style.setProperty('--rot', (Math.random() * 240 - 120) + 'deg');
-      s.style.color = ['#ff85b3', '#6fcbff', '#ffe066', '#c9b8ff'][i % 4];
-      stage.appendChild(s);
-      (function (el) { setTimeout(function () { el.remove(); }, 1000); })(s);
-    }
-  });
-})();
-
-/* ============================================================
-   ふわふわ舞うキラキラ（Canvas）
-   ・粒はあらかじめ小さな画像に描いておき、毎フレームは貼るだけ（影を使わない）
-   ・最大40粒／タブが非表示のあいだは止まります
-============================================================ */
-(function () {
-  if (REDUCE) return;
-  var cv = document.getElementById('sparkles');
+  var cv = document.getElementById('kvfx');
   if (!cv || !cv.getContext) return;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
   var ctx = cv.getContext('2d');
-  var dpr = Math.min(window.devicePixelRatio || 1, 2);
-  var W = 0, H = 0, parts = [], raf = null, sprites = {};
-  var COLORS = ['#ff85b3', '#6fcbff', '#ffe066', '#c9b8ff'];
+  var hero = document.getElementById('top');
+  var W = 0, H = 0, dpr = 1, raf = 0, onScreen = true, last = 0;
+  var parts = [], sprites = {}, shoot = null, nextShoot = 0;
+  var COLORS = [[232,194,122], [255,236,200], [143,180,255]];
 
-  /* 4方向にのびる小さな星のスプライトを1回だけ描いておきます */
-  function sprite(color) {
-    if (sprites[color]) return sprites[color];
-    var s = 48, c = document.createElement('canvas');
-    c.width = c.height = s;
+  function sprite(rgb) {
+    var s = 64, c = document.createElement('canvas'); c.width = c.height = s;
     var g = c.getContext('2d');
-    var grd = g.createRadialGradient(s / 2, s / 2, 0, s / 2, s / 2, s / 2);
-    grd.addColorStop(0, color); grd.addColorStop(1, 'rgba(255,255,255,0)');
-    g.globalAlpha = .55; g.fillStyle = grd; g.beginPath(); g.arc(s / 2, s / 2, s / 2, 0, 6.2832); g.fill();
-    g.globalAlpha = 1; g.fillStyle = color;
-    g.beginPath();
-    g.moveTo(s / 2, 3); g.quadraticCurveTo(s / 2 + 3, s / 2 - 3, s - 3, s / 2);
-    g.quadraticCurveTo(s / 2 + 3, s / 2 + 3, s / 2, s - 3);
-    g.quadraticCurveTo(s / 2 - 3, s / 2 + 3, 3, s / 2);
-    g.quadraticCurveTo(s / 2 - 3, s / 2 - 3, s / 2, 3);
-    g.fill();
-    sprites[color] = c;
+    var rg = g.createRadialGradient(s / 2, s / 2, 0, s / 2, s / 2, s / 2);
+    rg.addColorStop(0, 'rgba(' + rgb.join(',') + ',1)');
+    rg.addColorStop(.25, 'rgba(' + rgb.join(',') + ',.55)');
+    rg.addColorStop(1, 'rgba(' + rgb.join(',') + ',0)');
+    g.fillStyle = rg; g.fillRect(0, 0, s, s);
     return c;
   }
-
-  function resize() {
-    W = window.innerWidth; H = window.innerHeight;
-    cv.width = Math.floor(W * dpr); cv.height = Math.floor(H * dpr);
-    cv.style.width = W + 'px'; cv.style.height = H + 'px';
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    /* 画面の広さに合わせて 18〜40 粒 */
-    var n = Math.max(18, Math.min(40, Math.round(W / 44)));
+  function build() {
+    COLORS.forEach(function (c, i) { sprites[i] = sprite(c); });
+    var n = Math.round(Math.min(90, Math.max(60, W / 15)));
     parts = [];
-    for (var i = 0; i < n; i++) parts.push(make(true));
+    for (var i = 0; i < n; i++) parts.push(make(Math.random() * H));
   }
-  function make(anywhere) {
+  function make(y) {
     return {
-      x: Math.random() * W,
-      y: anywhere ? Math.random() * H : H + 20,
-      s: 6 + Math.random() * 14,
-      vy: -(0.12 + Math.random() * 0.34),
-      vx: (Math.random() - 0.5) * 0.22,
+      x: Math.random() * W, y: y,
+      r: .7 + Math.random() * 1.9,
+      sp: .12 + Math.random() * .38,            /* 上へ流れる速さ */
+      sw: .25 + Math.random() * .8,             /* 横ゆれの幅 */
       ph: Math.random() * 6.28,
-      sp: 0.8 + Math.random() * 1.6,
-      c: COLORS[(Math.random() * COLORS.length) | 0]
+      a: .16 + Math.random() * .42,
+      c: Math.random() < .72 ? (Math.random() < .5 ? 0 : 1) : 2
     };
   }
-  function frame(t) {
+  function resize() {
+    var b = cv.getBoundingClientRect();
+    if (!b.width || !b.height) return;
+    dpr = Math.min(2, window.devicePixelRatio || 1);
+    W = b.width; H = b.height;
+    cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    build();
+  }
+  function frame(now) {
+    raf = 0;
+    if (!onScreen || document.hidden || reduce.matches) return;
+    var dt = Math.min(64, now - last) / 16.7; last = now;
     ctx.clearRect(0, 0, W, H);
+    ctx.globalCompositeOperation = 'lighter';
     for (var i = 0; i < parts.length; i++) {
       var p = parts[i];
-      p.y += p.vy; p.x += p.vx + Math.sin(t / 1400 + p.ph) * 0.16;
-      if (p.y < -30) { parts[i] = make(false); continue; }
-      var a = 0.30 + 0.30 * (1 + Math.sin(t / 520 * p.sp + p.ph)) / 2;
-      ctx.globalAlpha = a;
-      ctx.drawImage(sprite(p.c), p.x - p.s / 2, p.y - p.s / 2, p.s, p.s);
+      p.y -= p.sp * dt; p.ph += .012 * dt;
+      var x = p.x + Math.sin(p.ph) * p.sw * 14;
+      if (p.y < -20) { parts[i] = make(H + 20); continue; }
+      var s = p.r * 8;
+      ctx.globalAlpha = p.a * (.55 + .45 * Math.sin(p.ph * .7));
+      ctx.drawImage(sprites[p.c], x - s / 2, p.y - s / 2, s, s);
     }
-    ctx.globalAlpha = 1;
+    /* 流れ星：6〜12秒に1回 */
+    if (!shoot && now > nextShoot) {
+      shoot = { x: W * (.25 + Math.random() * .6), y: H * (.05 + Math.random() * .3), vx: -(5 + Math.random() * 3), vy: 2.4 + Math.random() * 1.4, life: 1 };
+    }
+    if (shoot) {
+      shoot.x += shoot.vx * dt; shoot.y += shoot.vy * dt; shoot.life -= .012 * dt;
+      var len = 120;
+      var gx = shoot.x - shoot.vx * len / 6, gy = shoot.y - shoot.vy * len / 6;
+      var g = ctx.createLinearGradient(shoot.x, shoot.y, gx, gy);
+      g.addColorStop(0, 'rgba(255,246,226,' + Math.max(0, shoot.life) + ')');
+      g.addColorStop(1, 'rgba(232,194,122,0)');
+      ctx.globalAlpha = 1; ctx.strokeStyle = g; ctx.lineWidth = 2; ctx.lineCap = 'round';
+      ctx.beginPath(); ctx.moveTo(shoot.x, shoot.y); ctx.lineTo(gx, gy); ctx.stroke();
+      if (shoot.life <= 0 || shoot.x < -160 || shoot.y > H + 60) { shoot = null; nextShoot = now + 6000 + Math.random() * 6000; }
+    }
+    ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over';
     raf = requestAnimationFrame(frame);
   }
-  function start() { if (!raf) raf = requestAnimationFrame(frame); }
-  function stop() { if (raf) { cancelAnimationFrame(raf); raf = null; } }
-
-  resize();
-  window.addEventListener('resize', function () { resize(); }, { passive: true });
-  document.addEventListener('visibilitychange', function () { document.hidden ? stop() : start(); });
-  start();
+  function start() { if (!raf && !reduce.matches) { last = performance.now(); raf = requestAnimationFrame(frame); } }
+  if ('IntersectionObserver' in window && hero) {
+    new IntersectionObserver(function (en) { onScreen = en[0].isIntersecting; if (onScreen) start(); }).observe(hero);
+  }
+  document.addEventListener('visibilitychange', function () { if (!document.hidden) start(); });
+  if ('ResizeObserver' in window) new ResizeObserver(resize).observe(cv); else window.addEventListener('resize', resize);
+  reduce.addEventListener && reduce.addEventListener('change', function () {
+    if (reduce.matches) { cancelAnimationFrame(raf); raf = 0; ctx.clearRect(0, 0, W, H); } else start();
+  });
+  resize(); nextShoot = performance.now() + 3000; start();
 })();
 
-/* ---- カーソルのキラキラ軌跡（マウスのある端末だけ・約60msごと） ---- */
+/* ---- リビール（.rv が付いた要素が、下からマスクが開くように現れます） ----
+   clip-path でマスクした要素は IntersectionObserver が反応しないため、
+   位置を直接見て判定しています。兄弟要素は少しずつ遅れて現れます。 */
 (function () {
-  if (REDUCE || !FINE) return;
-  var last = 0;
-  var MARKS = ['✦', '★', '♥'];
-  var COLORS = ['#ff85b3', '#6fcbff', '#ffe066', '#c9b8ff'];
-  document.addEventListener('mousemove', function (e) {
-    var now = Date.now();
-    if (now - last < 60) return;
-    last = now;
-    var s = document.createElement('span');
-    s.className = 'trail';
-    s.textContent = MARKS[(Math.random() * MARKS.length) | 0];
-    s.style.left = e.clientX + (Math.random() * 16 - 8) + 'px';
-    s.style.top = e.clientY + (Math.random() * 16 - 8) + 'px';
-    s.style.color = COLORS[(Math.random() * COLORS.length) | 0];
-    s.style.fontSize = (9 + Math.random() * 7) + 'px';
-    document.body.appendChild(s);
-    setTimeout(function () { s.remove(); }, 720);
-  }, { passive: true });
+  var els = [].slice.call(document.querySelectorAll('.rv'));
+  var counts = new Map();
+  els.forEach(function (el) {
+    var p = el.parentElement, n = counts.get(p) || 0;
+    counts.set(p, n + 1);
+    el.style.transitionDelay = Math.min(n * 90, 450) + 'ms';
+  });
+  var ticking = false;
+  function clear(el) { setTimeout(function () { el.style.transitionDelay = ''; }, 1800); }
+  function check() {
+    ticking = false;
+    var vh = window.innerHeight || 800;
+    for (var i = els.length - 1; i >= 0; i--) {
+      if (els[i].getBoundingClientRect().top < vh * .92) {
+        els[i].classList.add('on'); clear(els[i]); els.splice(i, 1);
+      }
+    }
+  }
+  function onScroll() { if (!ticking && els.length) { ticking = true; requestAnimationFrame(check); } }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  check();
+})();
+
+/* ---- キャラクターのタブ切替（クロスフェード） ---- */
+(function () {
+  var tabs = [].slice.call(document.querySelectorAll('.cast-tab'));
+  if (!tabs.length) return;
+  tabs.forEach(function (t) {
+    t.addEventListener('click', function () {
+      tabs.forEach(function (o) { o.setAttribute('aria-selected', String(o === t)); });
+      document.querySelectorAll('.chara-panel').forEach(function (p) {
+        p.classList.toggle('is-on', p.id === t.getAttribute('data-chara'));
+      });
+    });
+    t.addEventListener('keydown', function (e) {
+      var i = tabs.indexOf(t), n = e.key === 'ArrowRight' ? i + 1 : e.key === 'ArrowLeft' ? i - 1 : -1;
+      if (n < 0 || n >= tabs.length) return;
+      e.preventDefault(); tabs[n].focus(); tabs[n].click();
+    });
+  });
+})();
+
+/* ---- トースト（画面下に出る短いお知らせ） ---- */
+function kiraToast(msg) {
+  var el = document.getElementById('toast');
+  if (!el) return;
+  el.textContent = msg; el.classList.add('show');
+  clearTimeout(el._t); el._t = setTimeout(function () { el.classList.remove('show'); }, 3600);
+}
+
+/* ---- 予告編：再生ボタンで YouTube を埋め込み ----
+   data-youtube-id が11文字の動画IDでない（＝プレースホルダーのまま）ときは案内を出します。 */
+(function () {
+  var frame = document.getElementById('trFrame'), btn = document.getElementById('trPlay');
+  if (!frame || !btn) return;
+  btn.addEventListener('click', function () {
+    var id = (frame.getAttribute('data-youtube-id') || '').trim();
+    if (!/^[A-Za-z0-9_-]{11}$/.test(id)) { kiraToast('YouTube の動画IDを設定してください'); return; }
+    var f = document.createElement('iframe');
+    f.src = 'https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1&rel=0';
+    f.title = '予告編';
+    f.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+    f.setAttribute('allowfullscreen', '');
+    frame.appendChild(f); btn.remove();
+    var poster = frame.querySelector('.tr-poster'); if (poster) poster.remove();
+  });
+})();
+
+/* ---- 劇場情報のアコーディオン（JS が無くても開閉します） ---- */
+(function () {
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.querySelectorAll('details.th-item').forEach(function (d) {
+    var body = d.querySelector('.th-body');
+    if (!body) return;
+    body.style.transition = 'height .55s cubic-bezier(.16,1,.3,1)';
+    if (!d.open) body.style.height = '0px';
+    d.querySelector('summary').addEventListener('click', function (e) {
+      if (reduce) return;
+      e.preventDefault();
+      var h = body.scrollHeight;
+      if (!d.open) {
+        d.open = true; body.style.height = '0px';
+        requestAnimationFrame(function () { body.style.height = h + 'px'; });
+        setTimeout(function () { if (d.open) body.style.height = 'auto'; }, 600);
+      } else {
+        body.style.height = h + 'px';
+        requestAnimationFrame(function () { body.style.height = '0px'; });
+        setTimeout(function () { d.open = false; }, 560);
+      }
+    });
+  });
+})();
+
+/* ---- 動きを抑える設定のときは、空の動画も止めます ---- */
+(function () {
+  var v = document.querySelector('.kv-video'), m = window.matchMedia('(prefers-reduced-motion: reduce)');
+  if (!v) return;
+  function apply() { if (m.matches) { v.removeAttribute('autoplay'); v.pause(); } else { var pr = v.play(); if (pr && pr.catch) pr.catch(function () {}); } }
+  apply();
+  m.addEventListener && m.addEventListener('change', apply);
 })();
 
 /* ---- フッターの年を自動更新 ---- */
-(function () {
-  var y = document.getElementById('year');
-  if (y) y.textContent = new Date().getFullYear();
-})();
+(function () { var y = document.getElementById('year'); if (y) y.textContent = new Date().getFullYear(); })();
 </script>
 </body>
 </html>
