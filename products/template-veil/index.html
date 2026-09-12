@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="ja" data-theme="cinema">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- ============================================================
+  VEIL（ヴェール）— 没入型ブランドサイト テンプレート v1.0
+  by IDATSUKA (https://idatsuka.com)
+
+  一枚の写真（または動画）が画面いっぱいに広がり、その上に
+  すりガラスの UI が浮かぶ——「絵が主役、文字は最小限」の
+  ブランドサイト用テンプレートです。1ファイル完結。
+
+  スタジオ・アトリエ・建築・プロダクト・ホテル・ギャラリーなど、
+  「見せる写真が1枚ある」業種のために作りました。
+
+  ■ カスタマイズ手順
+  1. 下の <title> / meta description / OGP / canonical / favicon を差し替え
+  2. <style> 冒頭の :root で配色を調整（昼のテーマは [data-theme="studio"]）
+  3. 「EDIT:」コメントの付いた箇所のテキストを自分の内容に差し替え
+  4. 主役の絵を差し替えます。画像は assets/ に置くだけです
+     ・HERO の背景 … assets/hero.jpg（2400×1500 程度を推奨）
+       動画にする場合は、HERO の中の「動画にする場合」と書かれた行のコメントを外してください
+       （assets/hero.mp4 / assets/hero.webm、1920×1080 のループ素材）
+     ・SHOWCASE の帯 … assets/showcase.jpg / showcase-2.jpg / showcase-3.jpg
+     ファイルを置かなかった場合は CSS のグラデーション（夕暮れ／クリーム）が
+     そのまま表示されます。画像切れのアイコンは出ません
+  5. すりガラスの部品は .glass / .nav-pill / .pill / .panel / .bubble /
+     .eyebrow / .crosshair / .stat-strip の8種類です。コピーして増やせます
+  6. 1ファイル完結。index.html と assets/ をサーバーにアップロードするだけで公開できます
+
+  ■ 収録しているもの
+  ・夜（cinema）／昼（studio）の2テーマ切替（選択はブラウザに保存）
+  ・すりガラスキット：浮遊ピルナビ／CTAピル／データパネル（スパークライン付き）／
+    チャットバブル／四隅のクロスヘア／統計ストリップ
+  ・HERO 演出：灯りがひとつずつ点っていく光の層（約6秒で巡回）、
+    28秒かけてゆっくり寄る Ken Burns、舞い上がる塵（Canvas）、
+    マウス視差（PCのみ・最大14px）、見出しのフォーカスプル（ぼけ→合焦）
+  ・流れる帯（ティッカー）、全幅のショーケース帯、統計ストリップ、引用
+  ・画像が無いときはグラデーションで代替（外部画像ゼロでも完成して見えます）
+  ・prefers-reduced-motion 対応、外部ライブラリゼロ
+  ・OGP / canonical / theme-color / SVG ファビコン内蔵
+
+  ■ 掲載内容について（景品表示法）
+  会社名・人物名・数字・価格・日付・実績は、すべて「◯◯」「△△」「¥◯,◯◯◯」
+  「◯◯K+」等のプレースホルダーです。公開前に必ず実際の内容へ差し替えてください。
+  受賞歴・導入社数・売上・フォロワー数・お客様の声（レビュー）は、
+  確認できる事実のみをご記載ください。根拠のない「No.1」「業界最高」
+  「◯◯％の方が満足」などの表示は景品表示法（優良誤認・有利誤認）違反となります。
+  実在しない企業名・人物名を導入事例や推薦コメントとして掲載しないでください。
+
+  ■ 素材の権利について（重要）
+  このテンプレートには写真・動画・フォントファイルは同梱していません。
+  assets/ に置く素材は、ご自身が権利を持つ（または利用許諾を得た）ものをお使いください。
+
+  ライセンス: 個人・商用利用可 / テンプレートとしての再販・再配布は不可
+============================================================ -->
+
+<!-- EDIT: ページタイトルと説明文（屋号・業種・地域を入れると検索で見つかりやすくなります） -->
+<title>◯◯◯◯ — 見えないものを、見えるようにする。</title>
+<meta name="description" content="◯◯を手がける◯◯◯◯のブランドサイト。仕事・私たちについて・サービス・お問い合わせ。">
+
+<!-- EDIT: OGP（SNS でシェアされたときの表示）。og:url と og:image は公開URLに合わせて差し替えてください -->
+<meta property="og:title" content="◯◯◯◯ — 見えないものを、見えるようにする。">
+<meta property="og:description" content="◯◯を手がける◯◯◯◯のブランドサイト。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://example.com/">
+<meta property="og:site_name" content="◯◯◯◯">
+<meta property="og:image" content="https://example.com/assets/hero.jpg">
+
+<!-- EDIT: 正規URL（canonical）。公開するURLに書き換えてください -->
+<link rel="canonical" href="https://example.com/">
+
+<!-- EDIT: ブラウザのUI色（スマホのアドレスバー等）。テーマ切替時に自動更新されます -->
+<meta name="theme-color" content="#0a0b0d" id="themeColor">
+
+<!-- EDIT: ファビコン（SVG内蔵）。黒地に薄い布（ヴェール）の弧。
+     画像を使う場合は <link rel="icon" href="favicon.png"> に置き換えてください -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230a0b0d'/%3E%3Cpath d='M12 44c6-20 34-20 40 0' fill='none' stroke='%23f6efe6' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M18 50c5-13 23-13 28 0' fill='none' stroke='%23f6efe6' stroke-width='2' stroke-linecap='round' opacity='.5'/%3E%3Ccircle cx='32' cy='19' r='3.4' fill='%23f6efe6'/%3E%3C/svg%3E">
+
+<!-- 保存済みテーマを描画前に適用（ちらつき防止）。触らなくてOK -->
+<script>(function(){try{var t=localStorage.getItem('veil-theme');if(t==='cinema'||t==='studio'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   THEME — 夜（cinema）。ここを変えるだけで全体の印象が変わります。
+   VEIL の考えかた: UI はほとんど無彩色にして、色は「絵」に持たせます。
+============================================================ */
+:root, [data-theme="cinema"] {
+  color-scheme: dark;
+  --bg: #0a0b0d;           /* 地（いちばん暗いところ） */
+  --bg2: #121317;          /* 一段明るい面（セクションの帯） */
+  --fg: #f4f2ee;           /* 本文 */
+  --fg-dim: #c2bfb8;       /* 補助文字・ラベル */
+  --muted: #8a8780;        /* 飾りの線・クロスヘアだけに使う薄い色 */
+
+  --glass: rgba(255,255,255,.07);        /* すりガラスの地 */
+  --glass-line: rgba(255,255,255,.16);   /* すりガラスの縁 */
+  /* すりガラスの下に敷く薄い膜。写真が明るくても暗くても文字が読めるようにします。
+     これが無いと、暗い写真の上でガラスが「見えなくなる」ことがあります */
+  --glass-scrim: linear-gradient(180deg, rgba(10,11,13,.34) 0%, rgba(10,11,13,.54) 100%);
+  --glass-top: rgba(255,255,255,.17);    /* ガラス上端のハイライト */
+
+  --accent: #f6efe6;       /* 温かい白 — このテーマに色のアクセントはありません */
+  --accent-strong: #f6efe6;/* 塗りボタンの地。文字は --accent-ink で置きます */
+  --accent-ink: #0a0b0d;   /* 塗りボタンの文字色 */
+  --shadow: rgba(0,0,0,.5);
+  --rule: rgba(244,242,238,.13);   /* セクションの罫線 */
+
+  --hero-fg: #f4f2ee;      /* 絵の上に載る文字の色 */
+  --hero-shadow: 0 2px 26px rgba(0,0,0,.55);
+  /* 絵の上にかける膜（上下）。文字を読みやすくするためのものです */
+  --hero-scrim: linear-gradient(180deg, rgba(10,11,13,.52) 0%, rgba(10,11,13,0) 26%, rgba(10,11,13,0) 44%, rgba(10,11,13,.82) 100%);
+
+  /* EDIT: assets/hero.jpg を置かないときに表示される「夕暮れ」のグラデーション。
+     4色を変えるだけで、絵が無くても成立する画面になります */
+  --stage1: #07080a;  --stage2: #15192a;  --stage3: #3a2c43;  --stage4: #8a5539;
+  --glow-color: rgba(255,192,112,.62);   /* 灯りの色 */
+  --glow-blend: screen;                  /* 灯りの重ね方 */
+  --fx-rgb: 255,226,190;                 /* 舞う塵の色（Canvas） */
+  --fx-alpha: .5;
+
+  --sans: 'Instrument Sans', -apple-system, 'Segoe UI', 'Helvetica Neue', 'Hiragino Sans', 'Noto Sans JP', sans-serif;
+  --serif: 'Instrument Serif', 'Hiragino Mincho ProN', 'Yu Mincho', Georgia, 'Times New Roman', serif;
+  --mono: 'DM Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+  --maxw: 1240px;
+  --ease: cubic-bezier(.16,1,.3,1);
+}
+
+/* EDIT: 昼テーマ（studio / クリーム）。ナビの「Cinema／Studio」で切り替わります。
+   最初から昼で表示したい場合は <html lang="ja" data-theme="cinema"> を
+   <html lang="ja" data-theme="studio"> に変更してください。
+   このテーマだけ、大見出しと引用がセリフ体（明朝）になります */
+[data-theme="studio"] {
+  color-scheme: light;
+  --bg: #f4efe9;
+  --bg2: #ebe4dc;
+  --fg: #1c1a18;
+  --fg-dim: #4a463f;
+  --muted: #7d766c;
+
+  --glass: rgba(255,255,255,.55);
+  --glass-line: rgba(28,26,24,.10);
+  --glass-scrim: linear-gradient(180deg, rgba(255,255,255,.46) 0%, rgba(255,255,255,.28) 100%);
+  --glass-top: rgba(255,255,255,.85);
+
+  --accent: #c9703f;        /* テラコッタ — 印・罫・グラフだけに使う色 */
+  --accent-strong: #a8542a; /* 塗りボタンの地（白文字で 5.2:1 を確保するため少し濃く） */
+  --accent-ink: #fffaf5;
+  --shadow: rgba(28,26,24,.14);
+  --rule: rgba(28,26,24,.12);
+
+  --hero-fg: #1c1a18;
+  --hero-shadow: 0 2px 22px rgba(255,255,255,.6);
+  --hero-scrim: linear-gradient(180deg, rgba(244,239,233,.44) 0%, rgba(244,239,233,0) 24%, rgba(244,239,233,0) 44%, rgba(244,239,233,.7) 100%);
+
+  --stage1: #fbf7f2;  --stage2: #ecdfd0;  --stage3: #d4b699;  --stage4: #b5855f;
+  --glow-color: rgba(238,150,95,.42);
+  --glow-blend: multiply;
+  --fx-rgb: 120,95,72;
+  --fx-alpha: .34;
+}
+
+/* ============================================================
+   BASE
+============================================================ */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 6rem; }
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: var(--sans); font-weight: 400;
+  font-size: 16px; line-height: 1.85; letter-spacing: .015em;
+  -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  transition: background-color .7s var(--ease), color .7s var(--ease);
+}
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+::selection { background: var(--fg); color: var(--bg); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+.wrap { width: min(100% - 2.4rem, var(--maxw)); margin-inline: auto; }
+.sec { position: relative; padding: clamp(4.5rem, 11vw, 8.5rem) 0; }
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* 見出し */
+/* EDIT: 見出しの大きさ。日本語は1文字が広いので、英語だけの見出しにする場合は
+   5.4vw / 4.4rem をもう少し大きくしても綺麗に収まります */
+.h1 {
+  font-weight: 500; font-size: clamp(2.1rem, 5.4vw, 4.4rem); line-height: 1.14;
+  letter-spacing: -.015em; text-wrap: balance;
+}
+.h2 { font-weight: 500; font-size: clamp(1.7rem, 3.4vw, 2.7rem); line-height: 1.25; letter-spacing: -.01em; }
+.h3 { font-weight: 500; font-size: 1.08rem; line-height: 1.5; letter-spacing: .01em; }
+.lead { color: var(--fg-dim); font-size: clamp(.98rem, 1.2vw, 1.06rem); }
+/* 昼テーマだけ、大見出しがセリフ体になります（日本語は明朝にフォールバックします） */
+[data-theme="studio"] .display { font-family: var(--serif); font-weight: 400; letter-spacing: 0; }
+
+/* ============================================================
+   GLASS KIT — このテンプレートの中心。コピーして増やせます
+   .glass / .glass-pill / .glass-card / .nav-pill / .pill /
+   .eyebrow / .panel / .bubble / .crosshair / .stat-strip
+============================================================ */
+
+/* すりガラスの基本。--glass-scrim（下地の膜）のおかげで、
+   真っ暗な写真の上でも真っ白な写真の上でもガラスの形が必ず見えます */
+.glass {
+  position: relative;
+  background-color: var(--glass);
+  background-image: var(--glass-scrim);
+  -webkit-backdrop-filter: blur(20px) saturate(1.3);
+  backdrop-filter: blur(20px) saturate(1.3);
+  border: 1px solid var(--glass-line);
+  box-shadow: 0 18px 50px -18px var(--shadow), inset 0 1px 0 var(--glass-top);
+}
+.glass-pill { border-radius: 999px; }
+.glass-card { border-radius: 18px; }
+
+/* 浮遊ピルナビ。24px スクロールすると少し縮んで濃くなります */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+  display: flex; justify-content: center;
+  padding: clamp(.8rem, 1.6vw, 1.3rem) clamp(.8rem, 3vw, 1.6rem);
+  pointer-events: none;
+  transition: padding .5s var(--ease);
+}
+.nav.scrolled { padding-top: .6rem; padding-bottom: .6rem; }
+.nav-pill {
+  pointer-events: auto;
+  display: flex; align-items: center; gap: clamp(.5rem, 1.4vw, 1.1rem);
+  width: min(100%, var(--maxw));
+  padding: .5rem .5rem .5rem 1.15rem;
+  color: var(--hero-fg);
+  transition: padding .5s var(--ease), background-color .5s var(--ease), color .5s var(--ease);
+}
+.nav.scrolled .nav-pill {
+  padding-block: .34rem;
+  background-color: color-mix(in srgb, var(--glass) 100%, var(--bg) 34%);
+}
+.nav-brand { display: flex; align-items: center; gap: .58rem; margin-right: auto; }
+.nav-brand svg { width: 20px; height: 20px; flex: none; }
+.nav-wordmark { font-weight: 600; font-size: .95rem; letter-spacing: .34em; text-transform: uppercase; }
+.nav-links { display: flex; align-items: center; gap: clamp(.6rem, 1.7vw, 1.5rem); list-style: none; }
+.nav-links a {
+  font-family: var(--mono); font-size: .73rem; letter-spacing: .17em; text-transform: uppercase;
+  padding: .5rem .15rem; position: relative; opacity: .82; transition: opacity .4s var(--ease);
+}
+.nav-links a::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: .28rem; height: 1px;
+  background: currentColor; transform: scaleX(0); transform-origin: 0 50%;
+  transition: transform .5s var(--ease);
+}
+.nav-links a:hover { opacity: 1; }
+.nav-links a:hover::after { transform: scaleX(1); }
+
+/* テーマ切替ボタン（Cinema／Studio） */
+.theme-btn {
+  font-family: var(--mono); font-size: .68rem; letter-spacing: .14em; text-transform: uppercase;
+  border: 1px solid var(--glass-line); border-radius: 999px;
+  min-height: 34px; padding: 0 .78rem; display: inline-flex; align-items: center; gap: .34rem;
+  transition: background-color .4s var(--ease);
+}
+.theme-btn:hover { background: color-mix(in srgb, currentColor 12%, transparent); }
+.theme-btn .off { opacity: .42; }
+
+/* CTA ピル。押せる部品は最低 44px の高さを確保しています */
+.pill {
+  display: inline-flex; align-items: center; justify-content: center; gap: .55rem;
+  min-height: 44px; padding: .6rem 1.35rem; border-radius: 999px;
+  font-size: .9rem; font-weight: 500; letter-spacing: .02em; white-space: nowrap;
+  transition: transform .5s var(--ease), background-color .4s var(--ease), border-color .4s var(--ease), opacity .4s var(--ease);
+}
+.pill:hover { transform: translateY(-2px); }
+.pill svg { width: 16px; height: 16px; flex: none; }
+/* 塗り */
+.pill-solid {
+  background: var(--accent-strong); color: var(--accent-ink);
+  border: 1px solid transparent; box-shadow: 0 14px 34px -14px var(--shadow);
+}
+.pill-solid:hover { background: color-mix(in srgb, var(--accent-strong) 88%, var(--fg)); }
+/* 線だけ（すりガラス） */
+.pill-ghost {
+  background-color: var(--glass); background-image: var(--glass-scrim);
+  -webkit-backdrop-filter: blur(20px) saturate(1.3); backdrop-filter: blur(20px) saturate(1.3);
+  border: 1px solid var(--glass-line); color: inherit;
+  box-shadow: inset 0 1px 0 var(--glass-top);
+}
+.pill-ghost:hover { border-color: color-mix(in srgb, currentColor 40%, transparent); }
+.pill-ghost .arw { transition: transform .5s var(--ease); }
+.pill-ghost:hover .arw { transform: translateX(4px); }
+/* ナビの中の小さい CTA */
+.pill-sm { min-height: 38px; padding: .3rem 1rem; font-size: .82rem; }
+
+/* 小見出し（• ◯◯ の形） */
+.eyebrow {
+  display: inline-flex; align-items: center; gap: .5rem;
+  font-family: var(--mono); font-size: .72rem; font-weight: 500;
+  letter-spacing: .2em; text-transform: uppercase; color: var(--fg-dim);
+}
+.eyebrow::before {
+  content: ""; width: 5px; height: 5px; border-radius: 50%;
+  background: currentColor; flex: none;
+}
+.hero .eyebrow, .band .eyebrow { color: var(--hero-fg); opacity: .88; }
+
+/* 浮遊データパネル（見出し＋2行＋スパークライン） */
+.panel {
+  border-radius: 18px; padding: 1.05rem 1.15rem 1.1rem;
+  display: grid; gap: .7rem;
+}
+.panel-ttl {
+  font-family: var(--mono); font-size: .7rem; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--fg-dim); display: flex; align-items: center; justify-content: space-between; gap: .8rem;
+}
+.panel-row {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 1rem;
+  font-size: .86rem; padding-block: .18rem;
+  border-top: 1px solid var(--glass-line);
+}
+.panel-row:first-of-type { border-top: 0; }
+.panel-row b { font-weight: 500; font-variant-numeric: tabular-nums; }
+.panel-row span { color: var(--fg-dim); font-family: var(--mono); font-size: .74rem; letter-spacing: .06em; }
+.spark { width: 100%; height: 34px; display: block; overflow: visible; }
+.spark path { fill: none; stroke: var(--accent); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.spark .spark-fill { fill: color-mix(in srgb, var(--accent) 12%, transparent); stroke: none; }
+.hero .panel, .band .panel { color: var(--hero-fg); }
+.hero .panel .panel-ttl, .hero .panel .panel-row span { color: color-mix(in srgb, var(--hero-fg) 74%, transparent); }
+
+/* チャットバブル（小さいガラスのピル。順に浮かび上がります） */
+.bubble {
+  border-radius: 999px 999px 999px 6px;
+  padding: .62rem 1.05rem; font-size: .84rem; line-height: 1.5;
+  max-width: 17rem; color: var(--hero-fg);
+}
+.bubble b { font-weight: 500; }
+.bubble-alt { border-radius: 999px 999px 6px 999px; }
+
+/* 四隅のクロスヘア（+ の印）。飾りなので薄く置きます */
+.crosshairs { position: absolute; inset: clamp(.9rem, 2.4vw, 1.8rem); pointer-events: none; z-index: 3; }
+.crosshair {
+  position: absolute; font-family: var(--mono); font-size: .8rem; line-height: 1;
+  color: var(--muted); opacity: .5; user-select: none;
+}
+.hero .crosshair, .band .crosshair { color: var(--hero-fg); opacity: .34; }
+.ch-tl { top: 0; left: 0; } .ch-tr { top: 0; right: 0; }
+.ch-bl { bottom: 0; left: 0; } .ch-br { bottom: 0; right: 0; }
+
+/* 統計ストリップ */
+.stat-strip {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+}
+.stat {
+  padding: clamp(1.6rem, 3.4vw, 2.6rem) clamp(.8rem, 2vw, 1.6rem);
+  border-left: 1px solid var(--rule); text-align: center;
+}
+.stat:first-child { border-left: 0; }
+.stat-num {
+  font-size: clamp(1.9rem, 4.6vw, 3.2rem); font-weight: 500; line-height: 1;
+  letter-spacing: -.02em; font-variant-numeric: tabular-nums;
+}
+[data-theme="studio"] .stat-num { font-family: var(--serif); font-weight: 400; }
+.stat-cap {
+  margin-top: .72rem; font-family: var(--mono); font-size: .7rem;
+  letter-spacing: .17em; text-transform: uppercase; color: var(--fg-dim);
+}
+
+/* ============================================================
+   HERO
+============================================================ */
+.hero {
+  position: relative; min-height: 100svh; overflow: hidden; isolation: isolate;
+  background: var(--stage1); color: var(--hero-fg);
+  display: grid; align-items: end;
+}
+.stage { position: absolute; inset: 0; z-index: 0; }
+/* 主役の絵。assets/hero.jpg が無ければ下のグラデーションが見えます */
+.stage-media {
+  position: absolute; inset: 0; overflow: hidden;
+  background:
+    radial-gradient(72% 46% at 68% 88%, color-mix(in srgb, var(--stage4) 72%, transparent), transparent 70%),
+    linear-gradient(180deg, var(--stage1) 0%, var(--stage2) 40%, var(--stage3) 72%, var(--stage4) 100%);
+  animation: kenburns 28s var(--ease) infinite alternate;
+  will-change: transform;
+}
+@keyframes kenburns { from { scale: 1; } to { scale: 1.05; } }
+.stage-img, .stage-video {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+}
+/* 画像が無いとき（404）は JS が .stage-img を外し、グラデーションだけが残ります */
+
+/* 灯りが点っていく層。3〜5個の暖かい円が順に明るくなり、しばらく灯って、また消えます */
+.stage-glow { position: absolute; inset: 0; mix-blend-mode: var(--glow-blend); pointer-events: none; }
+.stage-glow i {
+  position: absolute; display: block; border-radius: 50%;
+  background: radial-gradient(circle, var(--glow-color) 0%, transparent 68%);
+  opacity: 0; animation: lightUp 14s var(--ease) infinite;
+}
+/* EDIT: 灯りの位置と大きさ（写真の窓の位置に合わせると効果的です）。left/top/width/height と delay。
+   小さめ・地平線の少し上に置くと「窓に灯りがともる」ように見えます */
+.stage-glow i:nth-child(1) { left: 15%; top: 64%; width: 13%; height: 10%; animation-delay: 0s; }
+.stage-glow i:nth-child(2) { left: 33%; top: 69%; width: 10%; height: 8%;  animation-delay: 1.1s; }
+.stage-glow i:nth-child(3) { left: 50%; top: 62%; width: 14%; height: 11%; animation-delay: 2.2s; }
+.stage-glow i:nth-child(4) { left: 66%; top: 70%; width: 11%; height: 8.5%; animation-delay: 3.3s; }
+.stage-glow i:nth-child(5) { left: 79%; top: 65%; width: 12%; height: 9.5%; animation-delay: 4.4s; }
+@keyframes lightUp {
+  0%   { opacity: 0; }
+  6%   { opacity: 0; }
+  20%  { opacity: .9; }
+  62%  { opacity: .82; }
+  82%  { opacity: 0; }
+  100% { opacity: 0; }
+}
+.stage-fx { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+/* 絵の上にかける膜（文字を読みやすくするため） */
+.hero::after {
+  content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: var(--hero-scrim);
+}
+
+.hero-inner {
+  position: relative; z-index: 4;
+  width: min(100% - 2.4rem, var(--maxw)); margin-inline: auto;
+  padding-block: clamp(5.5rem, 12vh, 8rem) clamp(3.6rem, 9vh, 6rem);
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 2.5rem;
+}
+.lockup { display: grid; gap: clamp(1rem, 2vw, 1.4rem); justify-items: start; max-width: 46rem; }
+.lockup .h1 { text-shadow: var(--hero-shadow); }
+/* 見出しのフォーカスプル：ぼけた状態から合焦します（読み込み時に1回だけ） */
+.focus-pull { animation: focusPull 1.9s var(--ease) both; }
+@keyframes focusPull {
+  from { filter: blur(14px); opacity: 0; letter-spacing: .04em; }
+  60%  { opacity: 1; }
+  to   { filter: blur(0); opacity: 1; letter-spacing: -.02em; }
+}
+.h1-en {
+  font-family: var(--mono); font-size: clamp(.7rem, 1.1vw, .78rem);
+  letter-spacing: .26em; text-transform: uppercase; opacity: .75;
+}
+.hero-sub { max-width: 30rem; color: var(--hero-fg); opacity: .88; text-shadow: var(--hero-shadow); }
+.hero-cta { display: flex; flex-wrap: wrap; gap: .7rem; }
+
+.hero-side { display: grid; gap: .75rem; justify-items: end; width: min(21rem, 30vw); }
+.hero-side .panel { width: 100%; }
+.bubble-in { animation: bubbleIn 1.1s var(--ease) both; }
+.bubble-in:nth-of-type(1) { animation-delay: 1.15s; }
+.bubble-in:nth-of-type(2) { animation-delay: 1.45s; }
+@keyframes bubbleIn {
+  from { opacity: 0; transform: translateY(14px) scale(.97); }
+  to   { opacity: 1; transform: none; }
+}
+
+.scroll-cue {
+  position: absolute; z-index: 4; left: 50%; bottom: 1.3rem; transform: translateX(-50%);
+  display: grid; justify-items: center; gap: .5rem;
+  font-family: var(--mono); font-size: .64rem; letter-spacing: .26em; text-transform: uppercase;
+  color: var(--hero-fg); opacity: .6;
+}
+.scroll-cue i {
+  width: 1px; height: 34px; background: currentColor; display: block;
+  transform-origin: 50% 0; animation: cue 2.6s var(--ease) infinite;
+}
+@keyframes cue {
+  0%, 100% { transform: scaleY(.3); opacity: .25; }
+  50%      { transform: scaleY(1); opacity: .9; }
+}
+
+/* ============================================================
+   TICKER — 細い流れる帯
+============================================================ */
+.ticker {
+  position: relative; overflow: hidden; border-block: 1px solid var(--rule);
+  background: var(--bg2); padding-block: .85rem;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+          mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+.ticker-track {
+  display: flex; width: max-content; gap: 0;
+  animation: marquee 38s linear infinite;
+}
+.ticker:hover .ticker-track { animation-play-state: paused; }
+.ticker-group { display: flex; flex: none; }
+.ticker-item {
+  display: inline-flex; align-items: center; gap: 2.2rem; padding-inline: 1.1rem;
+  font-family: var(--mono); font-size: .78rem; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--fg-dim); white-space: nowrap;
+}
+.ticker-item::after { content: "✦"; color: var(--accent); font-size: .7rem; opacity: .8; }
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* ============================================================
+   INTRO
+============================================================ */
+.intro-grid {
+  display: grid; grid-template-columns: minmax(0, 1fr) 12rem; gap: clamp(2rem, 5vw, 4.5rem);
+  align-items: start;
+}
+.intro-big {
+  font-size: clamp(1.55rem, 3.6vw, 2.85rem); line-height: 1.42; font-weight: 400;
+  letter-spacing: -.005em; text-wrap: balance; margin-block: 1.4rem 1.8rem;
+}
+.intro-body { display: grid; gap: 1.1rem; max-width: 34rem; color: var(--fg-dim); font-size: .96rem; }
+.intro-meta { display: grid; gap: 1.3rem; padding-top: .5rem; }
+.meta-item { display: grid; gap: .25rem; border-top: 1px solid var(--rule); padding-top: .7rem; }
+.meta-k {
+  font-family: var(--mono); font-size: .66rem; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--muted);
+}
+.meta-v { font-family: var(--mono); font-size: .86rem; letter-spacing: .06em; }
+
+/* ============================================================
+   FEATURES
+============================================================ */
+.features { background: var(--bg); }
+.features::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(46% 40% at 12% 8%, color-mix(in srgb, var(--bg2) 92%, transparent), transparent 72%),
+    radial-gradient(50% 44% at 88% 84%, color-mix(in srgb, var(--bg2) 80%, transparent), transparent 74%);
+}
+.features > .wrap { position: relative; z-index: 1; }
+.sec-head { display: grid; gap: .9rem; margin-bottom: clamp(2.2rem, 5vw, 3.6rem); max-width: 34rem; }
+.feat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(1rem, 2vw, 1.5rem); }
+.feat { padding: clamp(1.3rem, 2.4vw, 1.9rem); align-content: start; gap: .9rem; }
+.feat-top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.feat-no { font-family: var(--mono); font-size: .7rem; letter-spacing: .18em; color: var(--muted); }
+.feat-ic { width: 24px; height: 24px; color: var(--accent); flex: none; }
+.feat-ic svg { width: 100%; height: 100%; }
+.feat p { color: var(--fg-dim); font-size: .92rem; }
+
+/* ============================================================
+   SHOWCASE
+============================================================ */
+.band {
+  position: relative; overflow: hidden; isolation: isolate;
+  min-height: clamp(24rem, 62vh, 40rem); display: grid; align-items: end;
+  color: var(--hero-fg); background: var(--stage2);
+}
+.band-media {
+  position: absolute; inset: 0; overflow: hidden;
+  background:
+    radial-gradient(64% 52% at 24% 18%, color-mix(in srgb, var(--stage3) 78%, transparent), transparent 70%),
+    linear-gradient(148deg, var(--stage2) 0%, var(--stage3) 52%, var(--stage4) 100%);
+}
+.band-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.band::after {
+  content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: var(--hero-scrim);
+}
+.band-inner {
+  position: relative; z-index: 2;
+  width: min(100% - 2.4rem, var(--maxw)); margin-inline: auto;
+  padding-block: clamp(2rem, 5vw, 3.2rem);
+  display: flex; align-items: flex-end; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap;
+}
+.band-cap { padding: 1.2rem 1.4rem; max-width: 27rem; display: grid; gap: .55rem; }
+.band-cap p { color: color-mix(in srgb, var(--hero-fg) 82%, transparent); font-size: .9rem; }
+.band-page {
+  font-family: var(--mono); font-size: .74rem; letter-spacing: .2em;
+  color: var(--hero-fg); opacity: .7; white-space: nowrap;
+}
+.band-page b { font-weight: 500; opacity: 1; }
+.band-2up { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(1rem, 2vw, 1.5rem); margin-top: clamp(1rem, 2vw, 1.5rem); }
+.band-2up .band { min-height: clamp(17rem, 34vh, 24rem); border-radius: 18px; }
+.band-2up .band-inner { padding-inline: 1.1rem; }
+.band-2up .band-cap { max-width: none; width: 100%; }
+
+/* ============================================================
+   VOICE — 引用
+============================================================ */
+.voice { text-align: center; }
+.quote {
+  font-family: var(--serif); font-style: italic; font-weight: 400;
+  font-size: clamp(1.5rem, 3.6vw, 2.7rem); line-height: 1.42; letter-spacing: 0;
+  max-width: 44rem; margin-inline: auto; text-wrap: balance;
+}
+.quote-mark { display: block; font-size: 2.4em; line-height: 0; height: .5em; color: var(--accent); opacity: .5; }
+.quote-by {
+  margin-top: 1.8rem; font-family: var(--mono); font-size: .74rem;
+  letter-spacing: .18em; text-transform: uppercase; color: var(--fg-dim);
+}
+
+/* ============================================================
+   CTA
+============================================================ */
+.cta-panel {
+  position: relative; overflow: hidden; border-radius: 22px;
+  padding: clamp(2.6rem, 6vw, 5rem) clamp(1.4rem, 4vw, 3.5rem);
+  display: grid; justify-items: center; gap: 1.8rem; text-align: center;
+  color: var(--hero-fg);
+  background:
+    radial-gradient(70% 90% at 50% 120%, color-mix(in srgb, var(--stage4) 62%, transparent), transparent 70%),
+    linear-gradient(160deg, var(--stage1) 0%, var(--stage2) 55%, var(--stage3) 100%);
+  border: 1px solid var(--glass-line);
+}
+.cta-panel .h2 { max-width: 34rem; text-shadow: var(--hero-shadow); }
+
+/* ============================================================
+   FOOTER
+============================================================ */
+.foot { border-top: 1px solid var(--rule); padding-block: clamp(2.6rem, 6vw, 4rem) 2rem; }
+.foot-grid {
+  display: grid; grid-template-columns: 1.4fr repeat(3, minmax(0, 1fr));
+  gap: clamp(1.6rem, 4vw, 3rem);
+}
+.foot-brand { display: grid; gap: .8rem; align-content: start; }
+.foot-mark { display: flex; align-items: center; gap: .6rem; }
+.foot-mark svg { width: 24px; height: 24px; }
+.foot-note { color: var(--fg-dim); font-size: .87rem; max-width: 22rem; }
+.foot-col { display: grid; gap: .55rem; align-content: start; }
+.foot-h {
+  font-family: var(--mono); font-size: .66rem; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: .3rem;
+}
+.foot-col a { font-size: .9rem; color: var(--fg-dim); transition: color .35s var(--ease); }
+.foot-col a:hover { color: var(--fg); }
+.foot-bottom {
+  margin-top: clamp(2.2rem, 5vw, 3.4rem); padding-top: 1.3rem; border-top: 1px solid var(--rule);
+  display: flex; flex-wrap: wrap; gap: .5rem 1.6rem; justify-content: space-between;
+  font-family: var(--mono); font-size: .7rem; letter-spacing: .1em; color: var(--muted);
+}
+
+/* ============================================================
+   モバイルの全画面メニュー
+============================================================ */
+.menu-toggle { display: none; width: 42px; height: 42px; position: relative; border-radius: 999px; }
+.menu-toggle span {
+  position: absolute; left: 12px; right: 12px; height: 1.5px; background: currentColor; border-radius: 2px;
+  transition: transform .5s var(--ease), opacity .3s var(--ease);
+}
+.menu-toggle span:nth-child(1) { top: 16px; }
+.menu-toggle span:nth-child(2) { top: 24px; }
+.menu-toggle.open span:nth-child(1) { transform: translateY(4px) rotate(45deg); }
+.menu-toggle.open span:nth-child(2) { transform: translateY(-4px) rotate(-45deg); }
+.mobile-menu {
+  position: fixed; inset: 0; z-index: 49; display: grid; align-content: center; gap: .2rem;
+  padding: 6rem 8vw 4rem;
+  background: color-mix(in srgb, var(--bg) 82%, transparent);
+  -webkit-backdrop-filter: blur(26px) saturate(1.2); backdrop-filter: blur(26px) saturate(1.2);
+  opacity: 0; visibility: hidden; transition: opacity .5s var(--ease), visibility .5s;
+}
+.mobile-menu.open { opacity: 1; visibility: visible; }
+.mobile-menu a {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 1rem;
+  padding: .85rem 0; border-bottom: 1px solid var(--rule);
+  font-size: 1.15rem; font-weight: 500; letter-spacing: .02em;
+}
+.mobile-menu a i {
+  font-family: var(--mono); font-style: normal; font-size: .68rem;
+  letter-spacing: .18em; text-transform: uppercase; color: var(--muted);
+}
+.mobile-menu .pill { margin-top: 1.6rem; justify-self: start; }
+
+/* ============================================================
+   リビール（スクロールで、ぼけながら現れます）
+============================================================ */
+.rv {
+  opacity: 0; transform: translateY(16px); filter: blur(6px);
+  transition: opacity .9s var(--ease), transform 1s var(--ease), filter .9s var(--ease);
+}
+.rv.on { opacity: 1; transform: none; filter: none; }
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+@media (max-width: 1000px) {
+  .nav-links { display: none; }
+  .nav-cta { display: none; }
+  .menu-toggle { display: block; }
+  .nav-pill { padding: .4rem .4rem .4rem 1.05rem; }
+  .hero-inner { grid-template-columns: 1fr; gap: 1.6rem; align-items: end; }
+  .hero-side { width: 100%; justify-items: stretch; }
+  .hero-side .bubble { display: none; }
+  .intro-grid { grid-template-columns: 1fr; }
+  .intro-meta { grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+  .feat-grid { grid-template-columns: 1fr; }
+  .foot-grid { grid-template-columns: 1fr 1fr; }
+  .foot-brand { grid-column: 1 / -1; }
+}
+@media (max-width: 640px) {
+  body { font-size: 15px; line-height: 1.8; }
+  .wrap { width: min(100% - 2rem, var(--maxw)); }
+  .hero-inner { width: min(100% - 2rem, var(--maxw)); padding-block: 5.5rem 3.4rem; }
+  .h1 { font-size: clamp(1.9rem, 9.6vw, 2.7rem); }
+  .lockup { gap: .85rem; }
+  .hero-cta { width: 100%; }
+  .hero-cta .pill { flex: 1 1 auto; }
+  .hero .panel { padding: .85rem .95rem .9rem; }
+  .hero .spark { height: 26px; }
+  .scroll-cue { display: none; }
+  .stat-strip { grid-template-columns: 1fr; }
+  .stat { border-left: 0; border-top: 1px solid var(--rule); text-align: left; padding-inline: 0; }
+  .stat:first-child { border-top: 0; }
+  .band-inner { flex-direction: column; align-items: stretch; }
+  .band-cap { max-width: none; }
+  .band-page { align-self: flex-end; }
+  .band-2up { grid-template-columns: 1fr; }
+  .intro-meta { grid-template-columns: 1fr; }
+  .foot-grid { grid-template-columns: 1fr; }
+  .foot-bottom { flex-direction: column; }
+  .ticker-item { font-size: .72rem; gap: 1.6rem; }
+}
+
+/* ============================================================
+   動きを抑える設定（prefers-reduced-motion）— 演出を止めて、全部見えるように
+============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important; animation-iteration-count: 1 !important;
+    animation-delay: 0ms !important;
+    transition-duration: .001ms !important; transition-delay: 0ms !important;
+  }
+  html { scroll-behavior: auto; }
+  .rv { opacity: 1; transform: none; filter: none; }
+  .focus-pull { animation: none; }
+  .stage-media { scale: 1 !important; }
+  .stage-glow i { opacity: .8; }
+  .scroll-cue i { animation: none; }
+  .ticker-track { animation: none; transform: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+  ICONS — 24px グリッドの線画。中身を差し替えればアイコンが変わります
+============================================================ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="ic-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+    <path d="M2.5 17C5 8 19 8 21.5 17"/><path d="M5.5 20.5C7.5 14.5 16.5 14.5 18.5 20.5" opacity=".5"/><circle cx="12" cy="5.4" r="1.7" fill="currentColor" stroke="none"/>
+  </symbol>
+  <symbol id="ic-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M4 12h15"/><path d="M13 6l6 6-6 6"/>
+  </symbol>
+  <symbol id="ic-aperture" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="9"/><path d="M12 3v7M20.8 8.5l-6.6 3.8M18.5 19.5l-6.5-7.5M3.2 8.5l6.6 3.8M5.5 19.5l6.5-7.5"/>
+  </symbol>
+  <symbol id="ic-layers" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 3.5l8.5 4.6L12 12.7 3.5 8.1z"/><path d="M3.5 12.4L12 17l8.5-4.6"/><path d="M3.5 16.4L12 21l8.5-4.6"/>
+  </symbol>
+  <symbol id="ic-wave" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M2.5 14.5c2.6-6 5.2-6 7.8 0s5.2 6 7.8 0 3.4-3 3.4-3"/><path d="M2.5 19.5c2.6-4 5.2-4 7.8 0s5.2 4 7.8 0" opacity=".45"/>
+  </symbol>
+</svg>
+
+<!-- ============================================================
+  NAV — 浮遊するすりガラスのピル
+============================================================ -->
+<nav class="nav" id="nav">
+  <div class="nav-pill glass glass-pill">
+    <!-- EDIT: ロゴ（左）。文字だけにする場合は <svg> を削除してください -->
+    <a href="#top" class="nav-brand" aria-label="◯◯◯◯ トップへ">
+      <svg aria-hidden="true"><use href="#ic-mark"></use></svg>
+      <span class="nav-wordmark">VEIL</span>
+    </a>
+    <!-- EDIT: ナビのリンク。不要な項目は <li> ごと削除してください -->
+    <ul class="nav-links">
+      <li><a href="#work">Work</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button type="button" class="theme-btn" id="themeToggle" aria-label="昼（Studio）のテーマに切り替え">
+      <span class="t-cinema">Cinema</span><span class="off">/</span><span class="t-studio">Studio</span>
+    </button>
+    <!-- EDIT: ナビ右の CTA -->
+    <a href="#contact" class="pill pill-solid pill-sm nav-cta">はじめる</a>
+    <button type="button" class="menu-toggle" id="menuToggle" aria-label="メニュー" aria-expanded="false" aria-controls="mobileMenu">
+      <span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#work">仕事<i>Work</i></a>
+  <a href="#about">私たちについて<i>About</i></a>
+  <a href="#services">サービス<i>Services</i></a>
+  <a href="#voice">お客様の声<i>Voice</i></a>
+  <a href="#contact">お問い合わせ<i>Contact</i></a>
+  <a href="#contact" class="pill pill-solid">はじめる</a>
+</div>
+
+<!-- ============================================================
+  HERO — 絵が主役。文字とガラスはその上に浮かびます
+============================================================ -->
+<section class="hero" id="top">
+  <div class="stage" id="stage" aria-hidden="true">
+    <div class="stage-media">
+      <!-- EDIT: 主役の絵。assets/hero.jpg（2400×1500 程度）に差し替えてください。
+           ファイルが無い場合は CSS のグラデーションが表示されます（画像切れは出ません） -->
+      <img class="stage-img" src="assets/hero.jpg" alt="" fetchpriority="high">
+      <!-- 動画にする場合：上の <img> を消して、下の3行のコメントを外してください
+      <video class="stage-video" autoplay muted loop playsinline poster="assets/hero.jpg">
+        <source src="assets/hero.webm" type="video/webm"><source src="assets/hero.mp4" type="video/mp4">
+      </video>
+      -->
+    </div>
+    <!-- 灯りが順に点っていく層（位置は CSS の .stage-glow i:nth-child() で調整） -->
+    <div class="stage-glow"><i></i><i></i><i></i><i></i><i></i></div>
+    <canvas class="stage-fx" id="stagefx"></canvas>
+  </div>
+
+  <div class="crosshairs" aria-hidden="true">
+    <span class="crosshair ch-tl">+</span><span class="crosshair ch-tr">+</span>
+    <span class="crosshair ch-bl">+</span><span class="crosshair ch-br">+</span>
+  </div>
+
+  <div class="hero-inner">
+    <div class="lockup" data-depth="1.1">
+      <!-- EDIT: 小見出し（• のあとに短い一言） -->
+      <p class="eyebrow">◯◯◯◯ — ◯◯スタジオ</p>
+      <!-- EDIT: 見出し（2行）。読み込み時にぼけから合焦します -->
+      <h1 class="h1 display focus-pull">見えないものを、<br>見えるようにする。</h1>
+      <!-- EDIT: 英語の一行（無くても成立します） -->
+      <p class="h1-en">Making the unseen visible</p>
+      <!-- EDIT: 説明（1文で。VEIL は文字を増やさないほど綺麗に見えます） -->
+      <p class="hero-sub">◯◯と◯◯のあいだにあるものを、◯◯というかたちにして届けています。</p>
+      <div class="hero-cta">
+        <!-- EDIT: ボタン2つ -->
+        <a href="#contact" class="pill pill-solid">お問い合わせ</a>
+        <a href="#services" class="pill pill-ghost">できること<svg class="arw" aria-hidden="true"><use href="#ic-arrow"></use></svg></a>
+      </div>
+    </div>
+
+    <div class="hero-side">
+      <!-- EDIT: データパネル。数字はプレースホルダーです。実績値に差し替えてください -->
+      <div class="panel glass glass-card" data-depth="1.6">
+        <p class="panel-ttl"><span>Recent work</span><span>◯◯／◯◯</span></p>
+        <div class="panel-row"><b>◯◯◯◯ プロジェクト</b><span>◯◯.◯</span></div>
+        <div class="panel-row"><b>◯◯◯◯ プロジェクト</b><span>◯◯.◯</span></div>
+        <svg class="spark" viewBox="0 0 200 34" preserveAspectRatio="none" aria-hidden="true">
+          <path class="spark-fill" d="M0 26L24 21L48 24L72 14L96 18L120 9L144 13L168 5L200 8V34H0Z"/>
+          <path d="M0 26L24 21L48 24L72 14L96 18L120 9L144 13L168 5L200 8"/>
+        </svg>
+      </div>
+      <!-- EDIT: 小さな吹き出し2つ。短い言葉だけにしてください -->
+      <p class="bubble bubble-in glass" data-depth="2.1"><b>◯◯</b> のご相談、受付中です</p>
+      <p class="bubble bubble-alt bubble-in glass" data-depth="2.4">次の枠は <b>◯月</b> から</p>
+    </div>
+  </div>
+
+  <span class="scroll-cue" aria-hidden="true"><i></i>Scroll</span>
+</section>
+
+<main>
+
+<!-- ============================================================
+  TICKER — 細い流れる帯（CSS のみ。hover で止まります）
+============================================================ -->
+<!-- EDIT: 流す言葉。.ticker-group を2つとも同じ内容にしてください（途切れずに繋がります） -->
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track">
+    <div class="ticker-group">
+      <span class="ticker-item">◯◯◯◯</span><span class="ticker-item">△△△△</span>
+      <span class="ticker-item">◯◯デザイン</span><span class="ticker-item">◯◯ディレクション</span>
+      <span class="ticker-item">△△◯◯</span><span class="ticker-item">◯◯◯◯</span>
+    </div>
+    <div class="ticker-group">
+      <span class="ticker-item">◯◯◯◯</span><span class="ticker-item">△△△△</span>
+      <span class="ticker-item">◯◯デザイン</span><span class="ticker-item">◯◯ディレクション</span>
+      <span class="ticker-item">△△◯◯</span><span class="ticker-item">◯◯◯◯</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+  INTRO — 大きな一文と、右のメタ列
+============================================================ -->
+<section class="sec" id="about">
+  <div class="wrap intro-grid">
+    <div>
+      <p class="eyebrow rv">About</p>
+      <!-- EDIT: 大きな一文（このページでいちばん長い文章。2〜3行に収めてください） -->
+      <p class="intro-big display rv">わたしたちは、◯◯のための◯◯をつくる◯人の小さなチームです。</p>
+      <div class="intro-body">
+        <!-- EDIT: 短い段落を2つ -->
+        <p class="rv">◯◯年から△△で活動しています。◯◯と◯◯を行き来しながら、ひとつの仕事に時間をかけて向き合うやり方を続けてきました。</p>
+        <p class="rv">つくるものは毎回ちがいますが、やっていることは同じです。まだかたちになっていないものを見つけて、誰かに手渡せるところまで持っていくこと。</p>
+      </div>
+    </div>
+    <!-- EDIT: 右のメタ列（設立年・拠点・体制など） -->
+    <div class="intro-meta rv">
+      <div class="meta-item"><span class="meta-k">Established</span><span class="meta-v">EST. ◯◯◯◯</span></div>
+      <div class="meta-item"><span class="meta-k">Location</span><span class="meta-v">◯◯ / ◯◯</span></div>
+      <div class="meta-item"><span class="meta-k">Team</span><span class="meta-v">◯◯ / ◯◯</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+  FEATURES — すりガラスのカード3枚
+============================================================ -->
+<section class="sec features" id="services">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow rv">Services</p>
+      <!-- EDIT: 見出しと補足 -->
+      <h2 class="h2 display rv">できること</h2>
+      <p class="lead rv">◯◯から◯◯まで、必要なところだけでもお手伝いします。</p>
+    </div>
+    <div class="feat-grid">
+      <!-- EDIT: 3項目。増やす場合は <article> ごとコピーしてください -->
+      <article class="feat panel glass glass-card rv">
+        <div class="feat-top">
+          <span class="feat-no">01</span>
+          <span class="feat-ic"><svg aria-hidden="true"><use href="#ic-aperture"></use></svg></span>
+        </div>
+        <h3 class="h3">◯◯◯◯デザイン</h3>
+        <p>◯◯を整理して、見えるかたちにするところから始めます。<br>期間の目安は◯◯週間ほどです。</p>
+      </article>
+      <article class="feat panel glass glass-card rv">
+        <div class="feat-top">
+          <span class="feat-no">02</span>
+          <span class="feat-ic"><svg aria-hidden="true"><use href="#ic-layers"></use></svg></span>
+        </div>
+        <h3 class="h3">◯◯◯◯ディレクション</h3>
+        <p>撮影・制作・実装まで、◯◯の視点で通して見ます。<br>ご予算は ¥◯,◯◯◯,◯◯◯ から。</p>
+      </article>
+      <article class="feat panel glass glass-card rv">
+        <div class="feat-top">
+          <span class="feat-no">03</span>
+          <span class="feat-ic"><svg aria-hidden="true"><use href="#ic-wave"></use></svg></span>
+        </div>
+        <h3 class="h3">◯◯◯◯サポート</h3>
+        <p>公開したあとの更新・改善を、月◯回のペースで。<br>月額 ¥◯◯,◯◯◯ から。</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+  SHOWCASE — 全幅の絵の帯＋浮かぶキャプション
+============================================================ -->
+<section class="sec" id="work" style="padding-bottom:0">
+  <div class="wrap sec-head">
+    <p class="eyebrow rv">Work</p>
+    <h2 class="h2 display rv">仕事</h2>
+  </div>
+</section>
+
+<!-- EDIT: 大きい帯の絵。assets/showcase.jpg に差し替えてください（無い場合はグラデーション） -->
+<section class="band" aria-label="事例 01">
+  <div class="band-media" aria-hidden="true"><img class="band-img" src="assets/showcase.jpg" alt=""></div>
+  <div class="crosshairs" aria-hidden="true">
+    <span class="crosshair ch-tl">+</span><span class="crosshair ch-tr">+</span>
+    <span class="crosshair ch-bl">+</span><span class="crosshair ch-br">+</span>
+  </div>
+  <div class="band-inner">
+    <!-- EDIT: 事例のキャプション。実在しない企業名は書かないでください -->
+    <div class="band-cap glass glass-card rv">
+      <p class="eyebrow">Project 01</p>
+      <h3 class="h3">◯◯◯◯ — ◯◯のためのブランドサイト</h3>
+      <p>◯◯年／◯◯・◯◯・◯◯を担当しました。</p>
+    </div>
+    <p class="band-page"><b>01</b> / 03</p>
+  </div>
+</section>
+
+<div class="wrap band-2up">
+  <!-- EDIT: 小さい帯2つ。assets/showcase-2.jpg / showcase-3.jpg -->
+  <section class="band" aria-label="事例 02">
+    <div class="band-media" aria-hidden="true"><img class="band-img" src="assets/showcase-2.jpg" alt=""></div>
+    <div class="band-inner">
+      <div class="band-cap glass glass-card rv">
+        <p class="eyebrow">Project 02</p>
+        <h3 class="h3">◯◯◯◯ — ◯◯の◯◯</h3>
+        <p>◯◯年／◯◯を担当しました。</p>
+      </div>
+      <p class="band-page"><b>02</b> / 03</p>
+    </div>
+  </section>
+  <section class="band" aria-label="事例 03">
+    <div class="band-media" aria-hidden="true"><img class="band-img" src="assets/showcase-3.jpg" alt=""></div>
+    <div class="band-inner">
+      <div class="band-cap glass glass-card rv">
+        <p class="eyebrow">Project 03</p>
+        <h3 class="h3">◯◯◯◯ — △△の◯◯</h3>
+        <p>◯◯年／◯◯・◯◯を担当しました。</p>
+      </div>
+      <p class="band-page"><b>03</b> / 03</p>
+    </div>
+  </section>
+</div>
+
+<!-- ============================================================
+  STATS — 数字の帯
+  ※ 数字は必ず実際に確認できる値に差し替えてください（景品表示法）
+============================================================ -->
+<section class="sec">
+  <div class="wrap">
+    <div class="stat-strip rv">
+      <!-- EDIT: 3つの数字とキャプション -->
+      <div class="stat"><p class="stat-num">◯◯K+</p><p class="stat-cap">◯◯◯◯</p></div>
+      <div class="stat"><p class="stat-num">◯◯M+</p><p class="stat-cap">△△△△</p></div>
+      <div class="stat"><p class="stat-num">◯◯.◯%</p><p class="stat-cap">◯◯◯◯</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+  VOICE — 引用
+  ※ 重要：実在しないお客様の声・推薦コメント・レビューを載せないでください。
+    掲載するときは、必ずご本人の許諾を得た実際のコメントを使ってください。
+============================================================ -->
+<section class="sec voice" id="voice">
+  <div class="wrap">
+    <p class="eyebrow rv" style="justify-self:center">Voice</p>
+    <!-- EDIT: 引用（実際にいただいた言葉に差し替えてください） -->
+    <blockquote class="quote rv" style="margin-top:1.6rem">
+      <span class="quote-mark" aria-hidden="true">“</span>
+      ◯◯のことを、こちらより先に言葉にしてくれました。
+    </blockquote>
+    <!-- EDIT: 誰の言葉か（実在しない企業名・人名は書かないでください） -->
+    <p class="quote-by rv">◯◯◯◯ ◯◯部 ◯◯ 様</p>
+  </div>
+</section>
+
+<!-- ============================================================
+  CTA
+============================================================ -->
+<section class="sec" id="contact" style="padding-top:0">
+  <div class="wrap">
+    <div class="cta-panel rv">
+      <div class="crosshairs" aria-hidden="true">
+        <span class="crosshair ch-tl">+</span><span class="crosshair ch-tr">+</span>
+        <span class="crosshair ch-bl">+</span><span class="crosshair ch-br">+</span>
+      </div>
+      <p class="eyebrow">Contact</p>
+      <!-- EDIT: 一行のコピーとボタン -->
+      <h2 class="h2 display">まだ言葉になっていない話から、はじめましょう。</h2>
+      <a href="mailto:hello@example.com" class="pill pill-solid">お問い合わせ</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============================================================
+  FOOTER
+============================================================ -->
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <!-- EDIT: ロゴと一言 -->
+        <p class="foot-mark"><svg aria-hidden="true"><use href="#ic-mark"></use></svg><span class="nav-wordmark">VEIL</span></p>
+        <p class="foot-note">◯◯を手がける◯◯◯◯のブランドサイト。◯◯県△△市◯◯町◯-◯-◯</p>
+      </div>
+      <!-- EDIT: リンク3列。href を実際のページに差し替えてください -->
+      <nav class="foot-col" aria-label="サイト">
+        <p class="foot-h">Site</p>
+        <a href="#work">仕事</a><a href="#about">私たちについて</a><a href="#services">サービス</a>
+      </nav>
+      <nav class="foot-col" aria-label="会社">
+        <p class="foot-h">Company</p>
+        <a href="#about">会社概要</a><a href="#contact">採用</a><a href="#contact">お問い合わせ</a>
+      </nav>
+      <nav class="foot-col" aria-label="その他">
+        <p class="foot-h">Elsewhere</p>
+        <a href="#top">Instagram</a><a href="#top">X</a><a href="#top">Note</a>
+      </nav>
+    </div>
+    <div class="foot-bottom">
+      <!-- EDIT: 著作権表記 -->
+      <p>&copy; <span id="year">2026</span> ◯◯◯◯</p>
+      <p>VEIL Template v1.0 — 個人・商用利用可／再販不可</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ---- テーマ切替（cinema / studio。選択はブラウザに保存されます） ---- */
+(function () {
+  var root = document.documentElement, key = 'veil-theme';
+  var btn = document.getElementById('themeToggle'), meta = document.getElementById('themeColor');
+  /* EDIT: スマホのアドレスバーの色。上の :root の --bg と揃えてください */
+  var BAR = { cinema: '#0a0b0d', studio: '#f4efe9' };
+  function sync() {
+    var t = root.getAttribute('data-theme') === 'studio' ? 'studio' : 'cinema';
+    if (meta) meta.setAttribute('content', BAR[t]);
+    if (btn) btn.setAttribute('aria-label', t === 'studio' ? '夜（Cinema）のテーマに切り替え' : '昼（Studio）のテーマに切り替え');
+    if (btn) {
+      btn.querySelector('.t-cinema').style.opacity = t === 'cinema' ? '1' : '.42';
+      btn.querySelector('.t-studio').style.opacity = t === 'studio' ? '1' : '.42';
+    }
+  }
+  sync();
+  if (btn) btn.addEventListener('click', function () {
+    var next = root.getAttribute('data-theme') === 'studio' ? 'cinema' : 'studio';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem(key, next); } catch (e) {}
+    sync();
+  });
+})();
+
+/* ---- 画像が無いときはグラデーションだけを残します（画像切れのアイコンを出さないため） ---- */
+(function () {
+  document.querySelectorAll('.stage-img, .band-img').forEach(function (img) {
+    function drop() { if (img.parentNode) img.parentNode.removeChild(img); }
+    img.addEventListener('error', drop);
+    if (img.complete && img.naturalWidth === 0) drop();
+  });
+})();
+
+/* ---- モバイルの全画面メニュー ---- */
+(function () {
+  var toggle = document.getElementById('menuToggle'), menu = document.getElementById('mobileMenu');
+  if (!toggle || !menu) return;
+  function close() {
+    toggle.classList.remove('open'); menu.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false'); document.body.style.overflow = '';
+  }
+  toggle.addEventListener('click', function () {
+    var open = menu.classList.toggle('open');
+    toggle.classList.toggle('open', open);
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    document.body.style.overflow = open ? 'hidden' : '';
+  });
+  menu.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', close); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+})();
+
+/* ---- スクロールでナビが少し縮みます ---- */
+(function () {
+  var nav = document.getElementById('nav'), ticking = false;
+  function update() { ticking = false; nav.classList.toggle('scrolled', window.scrollY > 24); }
+  window.addEventListener('scroll', function () {
+    if (!ticking) { ticking = true; requestAnimationFrame(update); }
+  }, { passive: true });
+  update();
+})();
+
+/* ---- マウス視差（PC のみ。層ごとに深さが違います） ----
+   MAX を大きくすると動きが強くなります。data-depth が各層の深さです。 */
+(function () {
+  var hero = document.getElementById('top'), stage = document.getElementById('stage');
+  if (!hero || !stage) return;
+  var fine = window.matchMedia('(pointer: fine)'), reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  if (!fine.matches || reduce.matches) return;
+  var MAX = 14;   /* ずれの最大値（px） */
+  var media = stage.querySelector('.stage-media');
+  var layers = [].slice.call(hero.querySelectorAll('[data-depth]'));
+  var tx = 0, ty = 0, cx = 0, cy = 0, raf = 0;
+  function loop() {
+    cx += (tx - cx) * .07; cy += (ty - cy) * .07;
+    if (media) media.style.translate = (cx * .35 * MAX) + 'px ' + (cy * .35 * MAX * .6) + 'px';
+    layers.forEach(function (l) {
+      var d = parseFloat(l.getAttribute('data-depth')) || 0;
+      l.style.translate = (cx * d * MAX * .5) + 'px ' + (cy * d * MAX * .3) + 'px';
+    });
+    raf = (Math.abs(tx - cx) > .001 || Math.abs(ty - cy) > .001) ? requestAnimationFrame(loop) : 0;
+  }
+  hero.addEventListener('pointermove', function (e) {
+    var b = hero.getBoundingClientRect();
+    tx = (e.clientX - b.left) / b.width * 2 - 1;
+    ty = (e.clientY - b.top) / b.height * 2 - 1;
+    if (!raf) raf = requestAnimationFrame(loop);
+  });
+  hero.addEventListener('pointerleave', function () { tx = 0; ty = 0; if (!raf) raf = requestAnimationFrame(loop); });
+})();
+
+/* ---- 舞い上がる塵（Canvas） ----
+   COUNT … 粒の数。光は事前に描いた1枚の小さな画像を貼るだけなので軽量です。
+   画面外・別タブでは描画を止め、prefers-reduced-motion では何も描きません。 */
+(function () {
+  var cv = document.getElementById('stagefx');
+  if (!cv || !cv.getContext) return;
+  var ctx = cv.getContext('2d'), hero = document.getElementById('top');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var W = 0, H = 0, dpr = 1, raf = 0, onScreen = true, last = 0;
+  var parts = [], sprite = null, theme = '';
+
+  function css(v) { return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
+  function makeSprite() {
+    var rgb = css('--fx-rgb') || '255,226,190';
+    var s = 48, c = document.createElement('canvas'); c.width = c.height = s;
+    var g = c.getContext('2d');
+    var rg = g.createRadialGradient(s / 2, s / 2, 0, s / 2, s / 2, s / 2);
+    rg.addColorStop(0, 'rgba(' + rgb + ',1)');
+    rg.addColorStop(.3, 'rgba(' + rgb + ',.5)');
+    rg.addColorStop(1, 'rgba(' + rgb + ',0)');
+    g.fillStyle = rg; g.fillRect(0, 0, s, s);
+    sprite = c; theme = document.documentElement.getAttribute('data-theme') || 'cinema';
+  }
+  function make(y) {
+    return {
+      x: Math.random() * W, y: y,
+      r: .7 + Math.random() * 1.8,          /* 粒の大きさ */
+      sp: .08 + Math.random() * .3,         /* 上へ流れる速さ */
+      sw: .3 + Math.random() * .9,          /* 横ゆれの幅 */
+      ph: Math.random() * 6.28,
+      a: .18 + Math.random() * .5
+    };
+  }
+  function build() {
+    var n = Math.round(Math.min(50, Math.max(30, W / 26)));   /* COUNT: 30〜50 */
+    parts = []; for (var i = 0; i < n; i++) parts.push(make(Math.random() * H));
+  }
+  function resize() {
+    var b = cv.getBoundingClientRect();
+    if (!b.width || !b.height) return;
+    dpr = Math.min(2, window.devicePixelRatio || 1);
+    W = b.width; H = b.height;
+    cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    build();
+  }
+  function frame(now) {
+    raf = 0;
+    if (!onScreen || document.hidden || reduce.matches) return;
+    if (theme !== document.documentElement.getAttribute('data-theme')) makeSprite();
+    var alpha = parseFloat(css('--fx-alpha')) || .5;
+    var dt = Math.min(64, now - last) / 16.7; last = now;
+    ctx.clearRect(0, 0, W, H);
+    ctx.globalCompositeOperation = theme === 'studio' ? 'source-over' : 'lighter';
+    for (var i = 0; i < parts.length; i++) {
+      var p = parts[i];
+      p.y -= p.sp * dt; p.ph += .01 * dt;
+      if (p.y < -24) { parts[i] = make(H + 24); continue; }
+      var x = p.x + Math.sin(p.ph) * p.sw * 16, s = p.r * 9;
+      ctx.globalAlpha = p.a * alpha * (.5 + .5 * Math.sin(p.ph * .8));
+      ctx.drawImage(sprite, x - s / 2, p.y - s / 2, s, s);
+    }
+    ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over';
+    raf = requestAnimationFrame(frame);
+  }
+  function start() { if (!raf && !reduce.matches) { last = performance.now(); raf = requestAnimationFrame(frame); } }
+  makeSprite();
+  if ('IntersectionObserver' in window && hero) {
+    new IntersectionObserver(function (en) { onScreen = en[0].isIntersecting; if (onScreen) start(); }).observe(hero);
+  }
+  document.addEventListener('visibilitychange', function () { if (!document.hidden) start(); });
+  if ('ResizeObserver' in window) new ResizeObserver(resize).observe(cv); else window.addEventListener('resize', resize);
+  if (reduce.addEventListener) reduce.addEventListener('change', function () {
+    if (reduce.matches) { cancelAnimationFrame(raf); raf = 0; ctx.clearRect(0, 0, W, H); } else start();
+  });
+  resize(); start();
+})();
+
+/* ---- リビール（.rv の付いた要素が、ぼけながら現れます。兄弟は少しずつ遅れます） ---- */
+(function () {
+  var els = [].slice.call(document.querySelectorAll('.rv'));
+  var counts = new Map();
+  els.forEach(function (el) {
+    var p = el.parentElement, n = counts.get(p) || 0;
+    counts.set(p, n + 1);
+    el.style.transitionDelay = Math.min(n * 80, 400) + 'ms';
+  });
+  var ticking = false;
+  function check() {
+    ticking = false;
+    var vh = window.innerHeight || 800;
+    for (var i = els.length - 1; i >= 0; i--) {
+      if (els[i].getBoundingClientRect().top < vh * .92) {
+        var el = els[i];
+        el.classList.add('on');
+        setTimeout(function () { el.style.transitionDelay = ''; }, 1600);
+        els.splice(i, 1);
+      }
+    }
+  }
+  function onScroll() { if (!ticking && els.length) { ticking = true; requestAnimationFrame(check); } }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  check();
+})();
+
+/* ---- 動きを抑える設定のときは、背景の動画も止めます ---- */
+(function () {
+  var v = document.querySelector('.stage-video'), m = window.matchMedia('(prefers-reduced-motion: reduce)');
+  if (!v) return;
+  function apply() {
+    if (m.matches) { v.removeAttribute('autoplay'); v.pause(); }
+    else { var pr = v.play(); if (pr && pr.catch) pr.catch(function () {}); }
+  }
+  apply();
+  if (m.addEventListener) m.addEventListener('change', apply);
+})();
+
+/* ---- フッターの年を自動更新 ---- */
+(function () { var y = document.getElementById('year'); if (y) y.textContent = new Date().getFullYear(); })();
+</script>
+</body>
+</html>
