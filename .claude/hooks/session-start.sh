@@ -1,0 +1,42 @@
+#!/bin/bash
+# SessionStart hook: make the Codex CLI available so Claude can delegate to it.
+#
+# This repo is a static site with no build step, so there are no project
+# dependencies to install. The only thing a fresh remote container is missing
+# is the `codex` binary itself.
+set -uo pipefail
+
+# Local machines are expected to manage their own Codex install; only bootstrap
+# the ephemeral remote containers.
+if [ "${CLAUDE_CODE_REMOTE:-}" != "true" ]; then
+  exit 0
+fi
+
+if ! command -v codex >/dev/null 2>&1; then
+  echo "session-start: installing @openai/codex ..."
+  if ! npm install -g @openai/codex >/dev/null 2>&1; then
+    echo "session-start: WARNING - could not install @openai/codex (npm registry unreachable?)." >&2
+    echo "session-start: Codex delegation will be unavailable this session." >&2
+    exit 0
+  fi
+fi
+
+echo "session-start: codex $(codex --version 2>/dev/null || echo '(version unknown)')"
+
+# Codex does not read OPENAI_API_KEY directly; the key has to be written into
+# $CODEX_HOME/auth.json by `codex login --with-api-key` before it is sent to the
+# API. Do that once per container, since the container is ephemeral.
+if ! codex login status >/dev/null 2>&1 && [ -n "${OPENAI_API_KEY:-}" ]; then
+  if printenv OPENAI_API_KEY | codex login --with-api-key >/dev/null 2>&1; then
+    echo "session-start: codex authenticated from OPENAI_API_KEY"
+  else
+    echo "session-start: WARNING - codex login with OPENAI_API_KEY failed." >&2
+  fi
+fi
+
+if ! codex login status >/dev/null 2>&1; then
+  echo "session-start: NOTE - Codex has no credentials. Set OPENAI_API_KEY in the"
+  echo "session-start: environment's variables to enable delegation. See docs/CODEX.md."
+fi
+
+exit 0

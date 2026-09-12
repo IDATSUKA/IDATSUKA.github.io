@@ -1,0 +1,25 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.sh"
+          }
+        ]
+      }
+    ]
+  },
+  "permissions": {
+    "allow": [
+      "Bash(codex --version)",
+      "Bash(codex login status)",
+      "Bash(codex doctor:*)",
+      "Bash(codex exec:*)",
+      "Bash(codex review:*)",
+      "Bash(.claude/scripts/codex-run.sh:*)",
+      "Bash(npm install -g @openai/codex)"
+    ]
+  }
+}
