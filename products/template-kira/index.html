@@ -272,6 +272,12 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 /* 人物のシルエット：右3分の1に立つ */
 .kv-chara { top: auto; bottom: 2%; right: 6%; left: auto; width: min(30vw, 380px); height: 62%; }
 .kv-chara svg { width: 100%; height: 100%; color: var(--silhouette); filter: drop-shadow(3px -2px 5px var(--rim)); }
+/* 立ち絵の画像を使う場合：<svg>…</svg> を <img class="kv-chara-img" src="chara.png" alt=""> に置き換え。
+   どんな縦横比でも、足元を下端に合わせて収まります */
+.kv-chara .kv-chara-img, .kv-chara img {
+  width: 100%; height: 100%; object-fit: contain; object-position: bottom center;
+  filter: drop-shadow(6px -3px 14px rgba(0,0,0,.45));
+}
 .kv-fx { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
 /* 光のにじみ（太陽の位置）。ゆっくり呼吸します */
 .kv-flare {
@@ -478,6 +484,7 @@ html.intro #nav, html.intro .hero-scroll { animation: fadeIn .9s var(--ease) 1.6
   background: radial-gradient(46% 34% at 50% 62%, color-mix(in srgb, var(--gold) 26%, transparent), transparent 70%);
 }
 .chara-art svg { position: relative; width: 100%; height: 94%; color: var(--silhouette); filter: drop-shadow(3px -2px 5px var(--rim)); }
+.chara-art img { position: relative; width: 100%; height: 94%; object-fit: contain; object-position: bottom center; }
 .chara-no {
   position: absolute; top: .7rem; left: .9rem; font-family: var(--en); font-size: 1.5rem;
   letter-spacing: .1em; color: var(--gold); opacity: .8;
