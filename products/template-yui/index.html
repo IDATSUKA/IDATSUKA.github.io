@@ -1,0 +1,1374 @@
+<!DOCTYPE html>
+<html lang="ja" data-theme="blanc">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- ============================================================
+  YUI（結）— Web招待状テンプレート v1.0
+  by IDATSUKA (https://idatsuka.com)
+
+  結婚式の Web 招待状のための、1ファイル完結のテンプレートです。
+  ゲストはこのページを「LINE から、スマホで、一度だけ」開きます。
+  そのとき知りたいこと —— 誰の式か / いつか / どこか / 何を着ればいいか /
+  どう返事をするか —— が上から順に並ぶように作りました。
+  スマホ（390px）での見えかたを基準に設計しています。
+
+  ■ カスタマイズ手順
+  1. 下の <title> / meta description / OGP / canonical / favicon を差し替え
+  2. <style> 冒頭の :root で配色を調整（夜のテーマは [data-theme="noir"]）
+  3. 「EDIT:」コメントの付いた箇所を、おふたりの内容に差し替え
+  4. カウントダウンは HERO の1か所だけ書き換えます
+       <div class="countdown" data-when="2027-06-12T11:00+09:00">
+     「年-月-日Tの時:分+09:00」の形式です（+09:00 は日本時間の意味。
+     この書き方なら、ゲストのスマホが海外時刻でも正しく表示されます）。
+     日時が過ぎると自動で「ありがとうございました」に変わります。
+     カウントダウンが不要なら、この <div> ごと削除してください
+  5. 出欠フォームの送信先を決めます（下の「■ 出欠フォームについて」を参照）
+  6. 写真を assets/ に置きます（任意）
+       ・assets/hero.jpg … 表紙の写真（1600×2000 程度の縦長を推奨）
+       ・assets/groom.jpg / assets/bride.jpg … ふたりについてのカード写真
+     置かなかった場合は淡いグラデーションが表示されます（画像切れは出ません）
+  7. index.html と assets/ をサーバーにアップロードして、その URL を
+     LINE などでゲストに送れば公開完了です
+
+  ■ 収録しているもの
+  ・白（blanc）／夜（noir）の2テーマ切替（選択はブラウザに保存）
+  ・カウントダウン（属性1つで動作。残り◯日◯時間◯分／過ぎたら御礼の言葉に）
+  ・出欠フォーム（RSVP）：出席・欠席／お名前／ふりがな／ご連絡先／同伴者／
+    アレルギー／メッセージ。FormSubmit で送信し、そのままお礼の画面に変わります
+  ・当日の流れ（縦線のタイムライン）、会場案内、ドレスコードの色見本、
+    ふたりのプロフィールカード、ごあいさつ、お問い合わせ
+  ・写真が無くてもグラデーションで成立します（外部画像ゼロでも完成して見えます）
+  ・prefers-reduced-motion 対応、外部ライブラリゼロ
+  ・OGP / canonical / theme-color / SVG ファビコン内蔵
+
+  ■ 出欠フォームについて（個人情報のあつかい・重要）
+  返信フォームには、ゲストの お名前・メールアドレス・アレルギー・同伴者 といった
+  個人情報（および食物アレルギーという要配慮情報）が届きます。
+  ・送信先のメールアドレスは、おふたり専用のものをお使いください。
+    そのアドレスや受信箱を、SNS やブログなど公開の場に貼らないでください
+  ・回答内容を、ご本人の許可なく他のゲストや第三者に共有しないでください
+  ・挙式が終わり、席次・引出物の手配が済んだら、
+    受信したメールと控えは削除してください（持ち続けないのがいちばん安全です）
+  ・このページ自体は、入力内容をどこにも保存しません（送信先にメールが届くだけです）
+
+  ■ 写真について（重要）
+  このテンプレートに写真・フォントファイルは同梱していません。
+  assets/ に置く写真は、必ず 写っているご本人と撮影者（カメラマン）の許諾を
+  得たものをお使いください。前撮りの写真は、スタジオとの契約で
+  Web 掲載が制限されている場合があります。事前にご確認ください。
+
+  ■ 掲載内容について（景品表示法）
+  お名前・会場名・住所・電話番号・日付・金額は、すべて「◯◯」「△△」
+  「2027.◯.◯」「¥◯,◯◯◯」等のプレースホルダーです。
+  公開前に必ず実際の内容へ差し替えてください。
+  実在しない会場名・店名や、確認できない情報（受賞歴・順位・口コミ等）を
+  書かないようご注意ください。会費・ご祝儀の額を記載する場合は、
+  税込／税別の別と、当日の支払方法を正確にご記載ください。
+
+  ライセンス: 個人・商用利用可 / テンプレートとしての再販・再配布は不可
+============================================================ -->
+
+<!-- EDIT: ページタイトルと説明文（LINE で送ったときにここが見出しになります） -->
+<title>◯◯ & ◯◯ Wedding Invitation — 2027.◯.◯</title>
+<meta name="description" content="◯◯と◯◯の結婚式のご案内です。2027年◯月◯日、△△にて。お手数ですが、◯月◯日までに出欠のご返信をお願いいたします。">
+
+<!-- EDIT: OGP（LINE / SNS で共有されたときの表示）。og:url と og:image は公開URLに合わせて差し替えてください -->
+<meta property="og:title" content="◯◯ & ◯◯ Wedding Invitation">
+<meta property="og:description" content="2027年◯月◯日、△△にて。出欠のご返信をお願いいたします。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://example.com/">
+<meta property="og:site_name" content="◯◯ & ◯◯ Wedding">
+<meta property="og:image" content="https://example.com/assets/hero.jpg">
+
+<!-- EDIT: 正規URL（canonical）。公開するURLに書き換えてください -->
+<link rel="canonical" href="https://example.com/">
+
+<!-- 検索結果に出したくない招待状の場合は、次の1行のコメントを外してください -->
+<!-- <meta name="robots" content="noindex, nofollow"> -->
+
+<!-- EDIT: スマホのアドレスバーの色。テーマ切替時に自動更新されます -->
+<meta name="theme-color" content="#fdfaf7" id="themeColor">
+
+<!-- EDIT: ファビコン（SVG内蔵）。ふたつの輪が結ばれたしるし。
+     画像を使う場合は <link rel="icon" href="favicon.png"> に置き換えてください -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23fdfaf7'/%3E%3Ccircle cx='26' cy='32' r='13' fill='none' stroke='%23c98f8f' stroke-width='2.6'/%3E%3Ccircle cx='38' cy='32' r='13' fill='none' stroke='%23c2a878' stroke-width='2.6'/%3E%3C/svg%3E">
+
+<!-- 保存済みテーマを描画前に適用（ちらつき防止）。触らなくてOK -->
+<script>(function(){try{var t=localStorage.getItem('yui-theme');if(t==='blanc'||t==='noir'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Klee+One:wght@400;600&family=Zen+Maru+Gothic:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   THEME — 白（blanc / 紙）。ここを変えるだけで全体の印象が変わります
+============================================================ */
+:root, [data-theme="blanc"] {
+  color-scheme: light;
+  --bg: #fdfaf7;            /* 紙の地 */
+  --bg2: #f6efe8;           /* 一段沈めた面（カード・フォームの入力欄） */
+  --fg: #3a3330;            /* 本文 */
+  --fg-dim: #5e534d;        /* 補助文字・ラベル（小さい文字はここまで） */
+  --muted: #948379;         /* 飾り・罫・アイコン専用。小さい本文には使いません */
+  --accent: #c98f8f;        /* くすみピンク — 罫・印・見出しの添え（文字には使いません） */
+  --accent-ink: #9d5757;    /* 同じピンクを、文字にしても読める濃さにしたもの（白地で 4.5:1 以上） */
+  --gold: #c2a878;          /* 箔 — 細い罫と装飾 */
+  --date-ink: #8a6f3e;      /* 日付など、大きな文字に使う箔の色（白地で読める濃さ） */
+  --line: rgba(58,51,48,.12);
+  --line-soft: rgba(58,51,48,.07);
+  --shadow: 0 1px 2px rgba(58,51,48,.04), 0 10px 30px rgba(58,51,48,.06);
+  --grain: .05;             /* 紙の繊維の強さ（0 で消えます） */
+
+  /* EDIT: assets/hero.jpg を置かないときの表紙のグラデーション（白のテーマ） */
+  --hero1: #fdfaf7;
+  --hero2: #f7ece6;
+  --hero3: #efdfd8;
+  --hero-fg: #3a3330;                                  /* 表紙の文字色 */
+  --hero-scrim: linear-gradient(180deg, rgba(253,250,247,.72) 0%, rgba(253,250,247,.38) 38%, rgba(253,250,247,.86) 100%);
+  --hero-glow: rgba(255,255,255,.6);
+
+  --display: 'Marcellus', 'Times New Roman', 'Hiragino Mincho ProN', serif;
+  --hand: 'Klee One', 'Hiragino Mincho ProN', 'Yu Mincho', 'Noto Serif JP', serif;
+  --body: 'Zen Maru Gothic', 'Hiragino Sans', 'Yu Gothic', 'Meiryo', sans-serif;
+  --maxw: 640px;            /* 本文の幅。招待状なので、PC でも広げすぎません */
+  --ease: cubic-bezier(.22,1,.36,1);
+}
+
+/* EDIT: 夜のテーマ（noir）。右上の「白 / 夜」で切り替わります。
+   最初から夜で表示したい場合は <html lang="ja" data-theme="blanc"> を
+   <html lang="ja" data-theme="noir"> に変更してください */
+[data-theme="noir"] {
+  color-scheme: dark;
+  --bg: #1a1614;
+  --bg2: #241e1b;
+  --fg: #f0e8e2;
+  --fg-dim: #d3c6bd;
+  --muted: #9c8b80;
+  --accent: #dba8a8;
+  --accent-ink: #dba8a8;
+  --gold: #d4a373;
+  --date-ink: #d4a373;
+  --line: rgba(240,232,226,.14);
+  --line-soft: rgba(240,232,226,.07);
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 14px 40px rgba(0,0,0,.4);
+  --grain: .06;
+
+  /* EDIT: 写真が無いときの表紙のグラデーション（夜のテーマ） */
+  --hero1: #241e1b;
+  --hero2: #2e2320;
+  --hero3: #1a1614;
+  --hero-fg: #f6efe9;
+  --hero-scrim: linear-gradient(180deg, rgba(26,22,20,.62) 0%, rgba(26,22,20,.34) 38%, rgba(26,22,20,.9) 100%);
+  --hero-glow: rgba(219,168,168,.18);
+}
+
+/* ============================================================
+   BASE — スマホ（390px）を基準に書いています
+============================================================ */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 4.5rem; -webkit-text-size-adjust: 100%; }
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: var(--body); font-weight: 400;
+  font-size: 16px; line-height: 1.95; letter-spacing: .03em;
+  -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  transition: background-color .5s var(--ease), color .5s var(--ease);
+}
+a { color: inherit; }
+img { max-width: 100%; display: block; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { background: none; border: 0; cursor: pointer; }
+::selection { background: var(--accent); color: var(--bg); }
+:focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 3px; border-radius: 2px; }
+
+/* 紙の繊維。--grain を 0 にすると消えます */
+body::after {
+  content: ''; position: fixed; inset: 0; z-index: 60; pointer-events: none;
+  opacity: var(--grain); mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.86 .3' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)'/%3E%3C/svg%3E");
+  background-size: 220px 220px;
+}
+[data-theme="noir"] body::after { mix-blend-mode: screen; }
+
+.wrap { width: min(100% - 2.5rem, var(--maxw)); margin-inline: auto; }
+section { padding-block: 3.6rem; }
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* ============================================================
+   見出しまわり
+============================================================ */
+.eyebrow {
+  font-family: var(--display); font-size: .7rem; letter-spacing: .32em;
+  text-transform: uppercase; color: var(--fg-dim);
+  display: flex; align-items: center; justify-content: center; gap: .8rem;
+}
+.eyebrow::before, .eyebrow::after {
+  content: ''; width: 1.6rem; height: 1px; background: var(--gold); opacity: .8;
+}
+.h2 {
+  font-family: var(--hand); font-weight: 600; font-size: 1.45rem;
+  letter-spacing: .1em; line-height: 1.6; text-align: center;
+  margin-top: .7rem;
+}
+.lead {
+  color: var(--fg-dim); text-align: center; font-size: .92rem;
+  line-height: 2.1; margin-top: .9rem;
+}
+.sec-head { margin-bottom: 2.2rem; }
+
+/* 区切りの飾り（細い罫＋菱形） */
+.divider { display: flex; align-items: center; gap: .9rem; color: var(--gold); }
+.divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: currentColor; opacity: .45; }
+.divider i { width: 5px; height: 5px; rotate: 45deg; background: currentColor; display: block; }
+
+/* ============================================================
+   上のバー（しるし＋テーマ切替）
+============================================================ */
+.topbar {
+  position: fixed; inset: 0 0 auto 0; z-index: 50;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 1rem; padding: .55rem max(1.25rem, calc((100vw - var(--maxw)) / 2 - 1rem));
+  background: transparent; transition: background-color .4s var(--ease), box-shadow .4s var(--ease);
+}
+.topbar.scrolled {
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 1px 0 var(--line-soft);
+}
+.mark { display: flex; align-items: center; gap: .45rem; min-height: 44px; color: var(--fg); }
+.mark svg { width: 26px; height: 26px; }
+.mark span {
+  font-family: var(--display); font-size: .68rem; letter-spacing: .28em;
+  text-transform: uppercase; color: var(--fg-dim);
+}
+.theme-btn {
+  min-height: 44px; min-width: 44px; padding: 0 .7rem;
+  display: flex; align-items: center; gap: .4rem;
+  font-family: var(--hand); font-size: .88rem; letter-spacing: .08em; color: var(--fg);
+  border-radius: 999px; transition: background-color .3s var(--ease);
+}
+.theme-btn:hover { background: color-mix(in srgb, var(--fg) 7%, transparent); }
+.theme-btn .slash { color: var(--muted); font-size: .72rem; }
+.theme-btn .off { opacity: .4; }
+
+/* ============================================================
+   HERO — 表紙。写真が無ければグラデーションで成立します
+============================================================ */
+.hero {
+  position: relative; isolation: isolate;
+  min-height: 100svh; padding-block: 5.2rem 3.4rem;
+  display: grid; align-items: center; justify-items: center;
+  color: var(--hero-fg); text-align: center; overflow: hidden;
+}
+.hero-media {
+  position: absolute; inset: 0; z-index: -2; overflow: hidden;
+  background:
+    radial-gradient(70% 42% at 50% 18%, var(--hero-glow), transparent 70%),
+    linear-gradient(170deg, var(--hero1) 0%, var(--hero2) 52%, var(--hero3) 100%);
+}
+.hero-img {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  animation: breathe 34s var(--ease) infinite alternate;
+}
+@keyframes breathe { from { scale: 1; } to { scale: 1.06; } }
+/* 写真の上にかける薄い膜。文字が読めるようにするためのものです */
+.hero-media::after { content: ''; position: absolute; inset: 0; background: var(--hero-scrim); }
+
+/* 表紙の内側の細い枠（招待状のケイ） */
+.hero-frame {
+  position: absolute; inset: 1.1rem; z-index: -1; pointer-events: none;
+  border: 1px solid color-mix(in srgb, var(--gold) 55%, transparent);
+}
+.hero-frame::before, .hero-frame::after {
+  content: ''; position: absolute; left: 50%; translate: -50% 0;
+  width: 34%; height: 1px; background: var(--bg);
+}
+.hero-frame::before { top: -1px; }
+.hero-frame::after { bottom: -1px; }
+
+.hero-inner { width: min(100% - 3.4rem, 520px); display: grid; justify-items: center; }
+.hero-label {
+  font-family: var(--display); font-size: .66rem; letter-spacing: .38em;
+  text-transform: uppercase; color: var(--fg-dim);
+}
+/* EDIT: ローマ字のお名前（例: TARO / HANAKO）。ここが表紙でいちばん目を引きます */
+.hero-latin {
+  font-family: var(--display); font-size: clamp(1.6rem, 9vw, 2.5rem);
+  letter-spacing: .12em; line-height: 1.25; margin-top: 1.5rem;
+  display: grid; gap: .2rem; justify-items: center;
+}
+.hero-latin .amp {
+  font-size: .6em; color: var(--accent-ink); letter-spacing: 0;
+  display: block; margin-block: .12em;
+}
+/* EDIT: 漢字のお名前 */
+.hero-kanji {
+  font-family: var(--hand); font-weight: 600;
+  font-size: clamp(1.05rem, 5vw, 1.3rem); letter-spacing: .3em;
+  margin-top: 1.1rem; text-indent: .3em;
+}
+.hero-date {
+  font-family: var(--display); font-size: clamp(1.15rem, 5.6vw, 1.5rem);
+  letter-spacing: .14em; color: var(--date-ink);
+  margin-top: 1.5rem; display: flex; align-items: center; gap: .85rem;
+}
+.hero-date::before, .hero-date::after {
+  content: ''; width: 1.5rem; height: 1px; background: var(--gold);
+}
+.hero-week { font-family: var(--body); font-size: .8rem; letter-spacing: .2em; color: var(--fg-dim); margin-top: .45rem; }
+
+/* カウントダウン */
+.countdown {
+  margin-top: 2.1rem; padding: .9rem 1.3rem;
+  border: 1px solid color-mix(in srgb, var(--gold) 45%, transparent);
+  background: color-mix(in srgb, var(--bg) 55%, transparent);
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+}
+.cd-label { font-size: .68rem; letter-spacing: .26em; color: var(--fg-dim); text-align: center; }
+.cd-row { display: flex; align-items: baseline; justify-content: center; gap: .55rem; margin-top: .3rem; }
+.cd-unit { display: flex; align-items: baseline; gap: .15rem; }
+.cd-num { font-family: var(--display); font-size: 1.6rem; letter-spacing: .04em; line-height: 1.2; color: var(--date-ink); }
+.cd-suf { font-family: var(--hand); font-size: .82rem; color: var(--fg-dim); }
+.cd-done { font-family: var(--hand); font-size: 1rem; letter-spacing: .12em; text-align: center; color: var(--fg); }
+.countdown[hidden] { display: none; }
+
+.hero-cue {
+  position: absolute; bottom: 1.9rem; left: 50%; translate: -50% 0;
+  font-family: var(--display); font-size: .6rem; letter-spacing: .3em;
+  text-transform: uppercase; color: var(--fg-dim);
+  display: grid; justify-items: center; gap: .5rem;
+}
+.hero-cue i { display: block; width: 1px; height: 2rem; background: var(--gold); transform-origin: top; animation: cue 2.6s var(--ease) infinite; }
+@keyframes cue { 0% { scale: 1 0; opacity: 0; } 40% { scale: 1 1; opacity: 1; } 100% { scale: 1 1; opacity: 0; } }
+
+/* ============================================================
+   ごあいさつ — 一通の手紙のように
+============================================================ */
+.letter {
+  background: var(--bg2); border: 1px solid var(--line-soft);
+  padding: 2.2rem 1.5rem 1.8rem; box-shadow: var(--shadow);
+  position: relative;
+}
+.letter p {
+  font-family: var(--hand); font-size: 1rem; line-height: 2.35;
+  letter-spacing: .05em; color: var(--fg);
+}
+.letter p + p { margin-top: 1.4rem; }
+.letter-sign {
+  margin-top: 2rem; display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem;
+}
+.letter-sign .who {
+  font-family: var(--hand); font-size: .92rem; letter-spacing: .16em; color: var(--fg-dim); line-height: 2;
+}
+.letter-sign .who b { font-weight: 600; color: var(--fg); font-size: 1.02rem; }
+/* 印（朱印のかわりの、くすみピンクの丸） */
+.seal {
+  flex: 0 0 auto; width: 52px; height: 52px; border-radius: 50%;
+  border: 1.5px solid var(--accent); color: var(--accent-ink);
+  display: grid; place-items: center;
+  font-family: var(--hand); font-weight: 600; font-size: 1.15rem; letter-spacing: 0;
+  rotate: -4deg; opacity: .9;
+}
+
+/* ============================================================
+   日時 — 挙式 / 受付 / 披露宴
+============================================================ */
+.when-list { display: grid; gap: 0; border-top: 1px solid var(--line); }
+.when-row {
+  display: grid; grid-template-columns: 1fr auto; align-items: baseline; gap: .8rem;
+  padding-block: 1.05rem; border-bottom: 1px solid var(--line);
+}
+.when-row dt { font-family: var(--hand); font-size: 1rem; letter-spacing: .12em; }
+.when-row dt small { display: block; font-family: var(--body); font-size: .72rem; letter-spacing: .14em; color: var(--fg-dim); margin-top: .1rem; }
+.when-row dd { font-family: var(--display); font-size: 1.35rem; letter-spacing: .06em; color: var(--date-ink); }
+.when-note { margin-top: 1.2rem; font-size: .84rem; color: var(--fg-dim); line-height: 2; }
+
+/* ============================================================
+   タイムライン — 当日の流れ
+============================================================ */
+/* --tl-col は時刻の列の幅です。「◯◯:◯◯」が入る幅にしてあります。
+   実際の時刻（11:00 など）に差し替えたあと、詰めたければ 3.6rem 程度まで狭められます */
+.tl { margin-top: .4rem; --tl-col: 5rem; --tl-gap: 1.3rem; }
+.tl-item {
+  position: relative; display: grid; grid-template-columns: var(--tl-col) 1fr;
+  gap: 0 var(--tl-gap); padding-bottom: 1.9rem;
+}
+.tl-item:last-child { padding-bottom: 0; }
+.tl-item::before {   /* 縦の線 */
+  content: ''; position: absolute; left: calc(var(--tl-col) + var(--tl-gap) / 2 - 1px);
+  top: .95rem; bottom: -.2rem; width: 1px; background: var(--line);
+}
+.tl-item:last-child::before { display: none; }
+.tl-item::after {    /* 時刻の点 */
+  content: ''; position: absolute; left: calc(var(--tl-col) + var(--tl-gap) / 2 - 4px);
+  top: .7rem; width: 7px; height: 7px; border-radius: 50%;
+  background: var(--bg); border: 1.5px solid var(--gold);
+}
+.tl-item.is-main::after { background: var(--accent); border-color: var(--accent); }
+.tl-time {
+  font-family: var(--display); font-size: .95rem; letter-spacing: 0; white-space: nowrap;
+  color: var(--date-ink); padding-top: .15rem;
+}
+.tl-body h3 { font-family: var(--hand); font-weight: 600; font-size: 1rem; letter-spacing: .1em; }
+.tl-body p { font-size: .84rem; color: var(--fg-dim); line-height: 1.95; margin-top: .15rem; }
+
+/* ============================================================
+   会場
+============================================================ */
+.venue-name { font-family: var(--hand); font-weight: 600; font-size: 1.25rem; letter-spacing: .12em; text-align: center; }
+.venue-sub { font-family: var(--display); font-size: .7rem; letter-spacing: .26em; text-transform: uppercase; color: var(--fg-dim); text-align: center; margin-top: .5rem; }
+.venue-table { width: 100%; margin-top: 1.8rem; border-top: 1px solid var(--line); }
+.venue-table tr { border-bottom: 1px solid var(--line); }
+.venue-table th, .venue-table td { text-align: left; padding-block: .85rem; vertical-align: top; font-weight: 400; }
+.venue-table th {
+  width: 5.2rem; font-family: var(--hand); font-size: .84rem; letter-spacing: .14em; color: var(--fg-dim);
+  padding-right: .8rem;
+}
+.venue-table td { font-size: .92rem; line-height: 1.95; }
+.venue-table a { color: var(--accent-ink); text-underline-offset: 3px; }
+
+/* 地図のプレースホルダ */
+.map {
+  margin-top: 1.6rem; position: relative; aspect-ratio: 4 / 3; max-width: 100%;
+  border: 1px solid var(--line); background: var(--bg2);
+  background-image:
+    repeating-linear-gradient(0deg, var(--line-soft) 0 1px, transparent 1px 34px),
+    repeating-linear-gradient(90deg, var(--line-soft) 0 1px, transparent 1px 34px);
+  display: grid; place-items: center; gap: .6rem; text-align: center; padding: 1rem;
+}
+.map svg { width: 30px; height: 30px; color: var(--accent); }
+.map p { font-size: .78rem; color: var(--fg-dim); line-height: 1.9; }
+.map-link {
+  display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+  min-height: 48px; margin-top: 1rem; width: 100%;
+  border: 1px solid var(--line); background: var(--bg2);
+  font-family: var(--hand); font-size: .92rem; letter-spacing: .1em;
+  text-decoration: none; transition: border-color .3s var(--ease), background-color .3s var(--ease);
+}
+.map-link:hover { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 8%, var(--bg2)); }
+.bus {
+  margin-top: 1.4rem; padding: 1rem 1.1rem; background: var(--bg2);
+  border-left: 2px solid var(--accent); font-size: .86rem; line-height: 2; color: var(--fg-dim);
+}
+.bus b { color: var(--fg); font-weight: 500; }
+
+/* ============================================================
+   ドレスコード
+============================================================ */
+.dress-text { text-align: center; font-family: var(--hand); font-size: 1rem; line-height: 2.2; letter-spacing: .05em; }
+.swatches { display: flex; justify-content: center; gap: 1.6rem; margin-top: 1.9rem; }
+.swatch { display: grid; justify-items: center; gap: .6rem; }
+.swatch i {
+  width: 58px; height: 58px; border-radius: 50%; display: block;
+  box-shadow: inset 0 0 0 1px var(--line), 0 6px 16px rgba(0,0,0,.07);
+}
+.swatch span { font-size: .74rem; letter-spacing: .1em; color: var(--fg-dim); }
+.dress-note { margin-top: 1.6rem; font-size: .84rem; color: var(--fg-dim); line-height: 2; text-align: center; }
+
+/* ============================================================
+   ふたりについて
+============================================================ */
+.about-cards { display: grid; gap: 1.4rem; }
+.p-card { background: var(--bg2); border: 1px solid var(--line-soft); box-shadow: var(--shadow); overflow: hidden; }
+.p-photo {
+  position: relative; aspect-ratio: 4 / 5; overflow: hidden;
+  background: linear-gradient(160deg, var(--hero2) 0%, var(--hero3) 100%);
+  display: grid; place-items: center;
+}
+.p-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.p-photo .ph { font-family: var(--display); font-size: .64rem; letter-spacing: .26em; text-transform: uppercase; color: var(--fg-dim); }
+.p-body { padding: 1.3rem 1.3rem 1.5rem; }
+.p-role { font-family: var(--display); font-size: .64rem; letter-spacing: .28em; text-transform: uppercase; color: var(--accent-ink); }
+.p-name { font-family: var(--hand); font-weight: 600; font-size: 1.15rem; letter-spacing: .16em; margin-top: .4rem; }
+.p-latin { font-family: var(--display); font-size: .78rem; letter-spacing: .18em; color: var(--fg-dim); margin-top: .2rem; }
+.p-list { margin-top: 1rem; border-top: 1px solid var(--line); }
+.p-list div { display: grid; grid-template-columns: 4.4rem 1fr; gap: .8rem; padding-block: .55rem; border-bottom: 1px solid var(--line-soft); font-size: .84rem; }
+.p-list dt { color: var(--fg-dim); font-size: .78rem; letter-spacing: .1em; }
+.story { margin-top: 1.6rem; font-size: .9rem; line-height: 2.1; color: var(--fg-dim); }
+.story b { display: block; font-family: var(--hand); font-weight: 600; font-size: .95rem; letter-spacing: .12em; color: var(--fg); margin-bottom: .4rem; }
+
+/* ============================================================
+   出欠フォーム（RSVP）
+============================================================ */
+.rsvp { background: var(--bg2); border-block: 1px solid var(--line); }
+.deadline {
+  display: grid; justify-items: center; gap: .3rem; text-align: center;
+  padding: 1rem 1.2rem; margin-bottom: 1.8rem;
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  background: color-mix(in srgb, var(--accent) 7%, transparent);
+}
+.deadline span { font-size: .76rem; letter-spacing: .18em; color: var(--fg-dim); }
+.deadline strong { font-family: var(--display); font-size: 1.2rem; letter-spacing: .08em; color: var(--accent-ink); font-weight: 400; }
+.deadline em { font-style: normal; font-size: .8rem; color: var(--fg-dim); }
+
+.field { margin-bottom: 1.5rem; }
+.f-label { display: block; font-family: var(--hand); font-size: .92rem; letter-spacing: .1em; margin-bottom: .5rem; }
+.req {
+  font-family: var(--body); font-size: .66rem; letter-spacing: .08em;
+  color: var(--accent-ink); border: 1px solid currentColor; border-radius: 2px;
+  padding: .05rem .3rem; margin-left: .5rem; vertical-align: 2px;
+}
+.opt { font-family: var(--body); font-size: .7rem; color: var(--fg-dim); margin-left: .5rem; letter-spacing: .08em; }
+.f-help { font-size: .76rem; color: var(--fg-dim); line-height: 1.85; margin-top: .4rem; }
+/* 文字サイズ 16px は、スマホで入力時に画面が拡大されないようにするためです（変えないでください） */
+.input, .select, .textarea {
+  width: 100%; min-height: 48px; padding: .75rem .9rem;
+  font-size: 16px; line-height: 1.7; font-family: var(--body);
+  background: var(--bg); color: var(--fg);
+  border: 1px solid var(--line); border-radius: 2px;
+  transition: border-color .25s var(--ease), box-shadow .25s var(--ease);
+}
+.textarea { min-height: 96px; resize: vertical; }
+.input:focus, .select:focus, .textarea:focus {
+  outline: none; border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent);
+}
+.input:user-invalid, .textarea:user-invalid { border-color: var(--accent-ink); }
+.select {
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%), linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+  background-position: calc(100% - 1.05rem) 1.32rem, calc(100% - .75rem) 1.32rem;
+  background-size: 6px 6px, 6px 6px; background-repeat: no-repeat;
+  padding-right: 2.4rem;
+}
+
+fieldset { border: 0; }
+legend { font-family: var(--hand); font-size: .92rem; letter-spacing: .1em; margin-bottom: .6rem; }
+.choices { display: grid; grid-template-columns: 1fr 1fr; gap: .7rem; }
+.choice {
+  position: relative; display: flex; align-items: center; justify-content: center; gap: .5rem;
+  min-height: 56px; padding: .6rem;
+  border: 1px solid var(--line); background: var(--bg); border-radius: 2px;
+  font-family: var(--hand); font-size: 1rem; letter-spacing: .12em; cursor: pointer;
+  transition: border-color .25s var(--ease), background-color .25s var(--ease);
+}
+.choice input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.choice i {
+  width: 16px; height: 16px; border-radius: 50%; border: 1px solid var(--muted);
+  display: grid; place-items: center; flex: 0 0 auto;
+}
+.choice i::after { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); scale: 0; transition: scale .25s var(--ease); }
+.choice:hover { border-color: var(--accent); }
+.choice:has(input:checked) { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 10%, transparent); }
+.choice:has(input:checked) i { border-color: var(--accent); }
+.choice:has(input:checked) i::after { scale: 1; }
+.choice:has(input:focus-visible) { outline: 2px solid var(--accent-ink); outline-offset: 3px; }
+
+.submit {
+  width: 100%; min-height: 56px; margin-top: .6rem;
+  background: var(--fg); color: var(--bg);
+  font-family: var(--hand); font-size: 1rem; letter-spacing: .2em;
+  border-radius: 2px; transition: opacity .25s var(--ease), transform .25s var(--ease);
+}
+.submit:hover { opacity: .86; }
+.submit:active { transform: translateY(1px); }
+.submit[disabled] { opacity: .5; cursor: default; }
+.form-err {
+  margin-top: 1rem; padding: 1rem 1.1rem; font-size: .86rem; line-height: 2;
+  border: 1px solid var(--accent); background: color-mix(in srgb, var(--accent) 10%, transparent);
+}
+.form-err a { color: var(--accent-ink); font-weight: 500; }
+.form-err[hidden] { display: none; }
+.privacy { margin-top: 1.4rem; font-size: .76rem; color: var(--fg-dim); line-height: 1.95; }
+
+/* 送信後のお礼 */
+.thanks {
+  display: grid; justify-items: center; text-align: center; gap: .8rem;
+  padding: 2.6rem 1.4rem; background: var(--bg); border: 1px solid var(--line);
+}
+.thanks[hidden] { display: none; }
+.thanks .ring { width: 56px; height: 56px; border-radius: 50%; border: 1.5px solid var(--accent); display: grid; place-items: center; color: var(--accent-ink); }
+.thanks h3 { font-family: var(--hand); font-weight: 600; font-size: 1.2rem; letter-spacing: .14em; }
+.thanks p { font-size: .88rem; color: var(--fg-dim); line-height: 2.05; }
+.thanks .sig { font-family: var(--display); font-size: .74rem; letter-spacing: .26em; color: var(--fg-dim); margin-top: .4rem; }
+
+/* ============================================================
+   お問い合わせ / FOOTER
+============================================================ */
+.contact-box { text-align: center; }
+.contact-box .row { padding-block: 1rem; border-bottom: 1px solid var(--line); }
+.contact-box .row:first-child { border-top: 1px solid var(--line); }
+.contact-box dt { font-size: .74rem; letter-spacing: .2em; color: var(--fg-dim); }
+.contact-box dd { font-family: var(--hand); font-size: 1.02rem; letter-spacing: .1em; margin-top: .3rem; }
+.contact-box dd a { color: var(--accent-ink); text-underline-offset: 4px; }
+
+footer {
+  text-align: center; padding: 3.2rem 1.25rem calc(5.6rem + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--line);
+}
+.f-latin { font-family: var(--display); font-size: 1.05rem; letter-spacing: .24em; }
+.f-date { font-family: var(--display); font-size: .76rem; letter-spacing: .22em; color: var(--fg-dim); margin-top: .5rem; }
+.f-thanks { font-family: var(--hand); font-size: .88rem; letter-spacing: .1em; color: var(--fg-dim); margin-top: 1.6rem; }
+.f-credit { font-size: .7rem; letter-spacing: .08em; color: var(--fg-dim); margin-top: 1.8rem; }
+.f-credit a { color: inherit; }
+
+/* 下に出る「ご返信」ボタン（スマホ用） */
+.jump {
+  position: fixed; z-index: 45; left: 50%; translate: -50% 0;
+  bottom: calc(.9rem + env(safe-area-inset-bottom));
+  max-width: calc(100% - 2.5rem); padding-inline: 1.9rem;
+  min-height: 52px; display: flex; align-items: center; justify-content: center; gap: .6rem;
+  background: var(--fg); color: var(--bg); text-decoration: none;
+  font-family: var(--hand); font-size: .95rem; letter-spacing: .16em; white-space: nowrap;
+  border-radius: 999px; box-shadow: 0 6px 24px rgba(0,0,0,.18);
+  opacity: 0; transform: translateY(120%); pointer-events: none;
+  transition: opacity .4s var(--ease), transform .5s var(--ease);
+}
+.jump.on { opacity: 1; transform: none; pointer-events: auto; }
+
+/* ============================================================
+   リビール（スクロールで、そっと現れます）
+============================================================ */
+.rv { opacity: 0; transform: translateY(14px); transition: opacity 1s var(--ease), transform 1.1s var(--ease); }
+.rv.on { opacity: 1; transform: none; }
+
+/* ============================================================
+   タブレット・PC（スマホの見えかたを崩さずに、余白と段組だけ足します）
+============================================================ */
+@media (min-width: 700px) {
+  section { padding-block: 5.2rem; }
+  .h2 { font-size: 1.7rem; }
+  .letter { padding: 3rem 3rem 2.4rem; }
+  .letter p { font-size: 1.05rem; }
+  .about-cards { grid-template-columns: 1fr 1fr; gap: 1.6rem; }
+  .p-photo { max-height: 360px; }
+  .swatches { gap: 2.6rem; }
+  .swatch i { width: 66px; height: 66px; }
+  .map-link { width: auto; padding-inline: 2rem; }
+  .venue-table th { width: 6.5rem; }
+  .jump { display: none; }
+  /* 上のバーとぶつからないよう、枠の上辺だけ少し下げます */
+  .hero-frame { inset: 4.2rem 1.8rem 1.8rem; }
+  footer { padding-bottom: 3.6rem; }
+}
+/* PC。招待状らしさを保ったまま、文字と余白だけ大きくします */
+@media (min-width: 1100px) {
+  :root { --maxw: 700px; }
+  body { font-size: 17px; }
+  .topbar { padding-inline: 3.2rem; }
+  .hero-frame { inset: 4.8rem 2.6rem 2.6rem; }
+  .hero-inner { width: min(100% - 8rem, 660px); }
+  .hero-label { font-size: .74rem; }
+  .hero-latin { font-size: 4rem; margin-top: 2.2rem; }
+  .hero-kanji { font-size: 1.45rem; margin-top: 1.6rem; }
+  .hero-date { font-size: 1.85rem; margin-top: 2rem; }
+  .hero-date::before, .hero-date::after { width: 2.4rem; }
+  .hero-week { font-size: .86rem; }
+  .countdown { margin-top: 2.8rem; padding: 1.1rem 2rem; }
+  .cd-num { font-size: 1.95rem; }
+  .h2 { font-size: 1.9rem; }
+  .when-row dd { font-size: 1.5rem; }
+  .tl { --tl-col: 5.4rem; --tl-gap: 1.8rem; }
+  .tl-time { font-size: 1.05rem; }
+  .venue-name { font-size: 1.45rem; }
+}
+
+/* ============================================================
+   動きを抑える設定（prefers-reduced-motion）— 演出を止めて、全部見えるように
+============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important; animation-iteration-count: 1 !important;
+    animation-delay: 0ms !important;
+    transition-duration: .001ms !important; transition-delay: 0ms !important;
+  }
+  html { scroll-behavior: auto; }
+  .rv { opacity: 1; transform: none; }
+  .hero-img { animation: none; scale: 1; }
+  .hero-cue i { animation: none; opacity: .6; }
+  .jump { transition: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- 飾りのしるし（ふたつの輪）。ここ1か所を変えると、上のバーと印に反映されます -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="yui-mark" viewBox="0 0 48 32">
+    <circle cx="18" cy="16" r="12" fill="none" stroke="currentColor" stroke-width="1.6"/>
+    <circle cx="30" cy="16" r="12" fill="none" stroke="var(--gold)" stroke-width="1.6"/>
+  </symbol>
+</svg>
+
+<header class="topbar" id="topbar">
+  <!-- EDIT: 左上のしるし。文字は消しても構いません -->
+  <div class="mark"><svg aria-hidden="true"><use href="#yui-mark"/></svg><span>Yui</span></div>
+  <button type="button" class="theme-btn" id="themeToggle" aria-label="夜のテーマに切り替え">
+    <span class="t-blanc">白</span><span class="slash">/</span><span class="t-noir">夜</span>
+  </button>
+</header>
+
+<main>
+
+<!-- ============================================================
+  HERO — 表紙
+============================================================ -->
+<section class="hero" id="top">
+  <div class="hero-media" aria-hidden="true">
+    <!-- EDIT: 表紙の写真。assets/hero.jpg（縦長 1600×2000 程度）に差し替えてください。
+         ファイルが無い場合は、上の :root の --hero1〜--hero3 のグラデーションが出ます。
+         ※ 写真は必ず、写っているご本人と撮影者（カメラマン）の許諾を得たものをお使いください -->
+    <img class="hero-img" src="assets/hero.jpg" alt="" fetchpriority="high">
+  </div>
+  <div class="hero-frame" aria-hidden="true"></div>
+
+  <div class="hero-inner">
+    <p class="hero-label">Wedding Invitation</p>
+
+    <!-- EDIT: ローマ字のお名前（例: TARO / HANAKO） -->
+    <h1 class="hero-latin">
+      <span>NAME</span>
+      <span class="amp">&amp;</span>
+      <span>NAME</span>
+    </h1>
+
+    <!-- EDIT: 漢字のお名前 -->
+    <p class="hero-kanji">◯◯　◯◯</p>
+
+    <!-- EDIT: 挙式日。曜日もここで直します -->
+    <p class="hero-date">2027.◯.◯</p>
+    <p class="hero-week">◯曜日</p>
+
+    <!-- EDIT: カウントダウン。data-when を「年-月-日T時:分+09:00」の形式で書き換えてください。
+         例: data-when="2027-06-12T11:00+09:00"
+         ・+09:00 は日本時間の意味です。この書き方なら、海外のゲストのスマホでも正しく出ます
+         ・日時が過ぎると自動で「ありがとうございました」に変わります
+         ・カウントダウンが不要なら、この <div> ごと削除してください -->
+    <div class="countdown" id="countdown" data-when="2027-06-12T11:00+09:00" hidden>
+      <p class="cd-label">当日まで</p>
+      <p class="cd-row" id="cdRow" aria-live="off"></p>
+    </div>
+  </div>
+
+  <p class="hero-cue" aria-hidden="true"><i></i>Scroll</p>
+</section>
+
+<!-- ============================================================
+  ごあいさつ
+============================================================ -->
+<section id="greeting">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="eyebrow">Greeting</p>
+      <h2 class="h2">ごあいさつ</h2>
+    </div>
+
+    <!-- EDIT: ごあいさつの本文。長くせず、手紙のように短く。
+         ゲストの名前は入れず、みなさまへの一通として書くのがおすすめです -->
+    <div class="letter rv">
+      <p>謹啓　◯◯の候、皆様にはますますご健勝のこととお慶び申し上げます。</p>
+      <p>このたび　私たちは結婚式を挙げることとなりました。<br>
+        つきましては　日頃お世話になっております皆様に　私たちの門出を見守っていただきたく
+        ささやかながら小宴を催したいと存じます。</p>
+      <p>ご多用中まことに恐縮ではございますが　ぜひご出席いただきたく　ご案内申し上げます。<span style="letter-spacing:.1em">　謹白</span></p>
+      <div class="letter-sign">
+        <p class="who">
+          2027年◯月吉日<br>
+          <b>◯◯　◯◯</b>　<b>◯◯　◯◯</b>
+        </p>
+        <!-- EDIT: 印の文字（一文字がきれいです） -->
+        <span class="seal" aria-hidden="true">結</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap"><div class="divider" aria-hidden="true"><i></i></div></div>
+
+<!-- ============================================================
+  日時
+============================================================ -->
+<section id="when">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="eyebrow">Date</p>
+      <h2 class="h2">日時</h2>
+      <!-- EDIT: 日付の一行 -->
+      <p class="lead">2027年◯月◯日（◯）</p>
+    </div>
+
+    <!-- EDIT: 受付・挙式・披露宴の時刻 -->
+    <dl class="when-list rv">
+      <div class="when-row">
+        <dt>受付<small>Reception desk</small></dt>
+        <dd>◯◯:◯◯</dd>
+      </div>
+      <div class="when-row">
+        <dt>挙式<small>Ceremony</small></dt>
+        <dd>◯◯:◯◯</dd>
+      </div>
+      <div class="when-row">
+        <dt>披露宴<small>Party</small></dt>
+        <dd>◯◯:◯◯</dd>
+      </div>
+    </dl>
+
+    <!-- EDIT: 時間についての補足 -->
+    <p class="when-note rv">挙式にご参列いただく方は、◯◯:◯◯ までに◯階の◯◯にお集まりください。<br>
+      ◯◯:◯◯ 頃のお開きを予定しております。</p>
+  </div>
+</section>
+
+<!-- ============================================================
+  当日の流れ
+============================================================ -->
+<section id="timeline">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="eyebrow">Timeline</p>
+      <h2 class="h2">当日の流れ</h2>
+    </div>
+
+    <!-- EDIT: 当日の流れ。項目を増やすときは <div class="tl-item"> ごとコピーしてください。
+         主役の時間には class に is-main を足すと、点がピンクになります -->
+    <div class="tl rv">
+      <div class="tl-item">
+        <p class="tl-time">◯◯:◯◯</p>
+        <div class="tl-body">
+          <h3>受付</h3>
+          <p>◯階 ◯◯ホール前にて。お荷物はクロークをご利用ください。</p>
+        </div>
+      </div>
+      <div class="tl-item is-main">
+        <p class="tl-time">◯◯:◯◯</p>
+        <div class="tl-body">
+          <h3>挙式</h3>
+          <p>◯◯にて、◯◯分ほどの人前式を行います。</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <p class="tl-time">◯◯:◯◯</p>
+        <div class="tl-body">
+          <h3>写真・歓談</h3>
+          <p>集合写真のあと、◯◯でお飲み物をご用意しております。</p>
+        </div>
+      </div>
+      <div class="tl-item is-main">
+        <p class="tl-time">◯◯:◯◯</p>
+        <div class="tl-body">
+          <h3>披露宴</h3>
+          <p>◯階 ◯◯の間にて。お食事とご歓談のお時間です。</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <p class="tl-time">◯◯:◯◯</p>
+        <div class="tl-body">
+          <h3>お開き</h3>
+          <p>お見送りのあと、送迎バスは◯◯:◯◯ に出発いたします。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap"><div class="divider" aria-hidden="true"><i></i></div></div>
+
+<!-- ============================================================
+  会場
+============================================================ -->
+<section id="venue">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="eyebrow">Access</p>
+      <h2 class="h2">会場</h2>
+    </div>
+
+    <div class="rv">
+      <!-- EDIT: 会場名（実在する会場名は、正式名称を正確にご記載ください） -->
+      <p class="venue-name">◯◯◯◯</p>
+      <p class="venue-sub">◯◯◯◯ ◯◯◯◯</p>
+
+      <!-- EDIT: 住所・電話・最寄駅・駐車場 -->
+      <table class="venue-table">
+        <tbody>
+          <tr><th>住所</th><td>〒◯◯◯-◯◯◯◯<br>◯◯県◯◯市◯◯町◯-◯-◯</td></tr>
+          <tr><th>電話</th><td><a href="tel:00-0000-0000">◯◯-◯◯◯◯-◯◯◯◯</a></td></tr>
+          <tr><th>最寄駅</th><td>◯◯線「◯◯駅」◯番出口より徒歩◯分<br>◯◯線「◯◯駅」より徒歩◯分</td></tr>
+          <tr><th>駐車場</th><td>◯◯台（無料・予約不要／要予約）</td></tr>
+        </tbody>
+      </table>
+
+      <!-- EDIT: 地図。Google マップの埋め込みに差し替える場合は、下の .map を丸ごと
+           <iframe src="…" style="width:100%;aspect-ratio:4/3;border:0" loading="lazy"
+             referrerpolicy="no-referrer-when-downgrade" title="会場の地図"></iframe>
+           に置き換えてください（Google マップ → 共有 → 地図を埋め込む でコードが取れます） -->
+      <div class="map">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+          <path d="M12 21s7-6.1 7-11a7 7 0 1 0-14 0c0 4.9 7 11 7 11z"/><circle cx="12" cy="10" r="2.4"/>
+        </svg>
+        <p>ここに地図が入ります<br>（Google マップの埋め込みに<br>差し替えてください）</p>
+      </div>
+
+      <!-- EDIT: 地図アプリで開くリンク。query= のあとを会場名か住所に差し替えてください -->
+      <a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=%E2%97%AF%E2%97%AF%E2%97%AF%E2%97%AF" target="_blank" rel="noopener">
+        地図アプリで開く
+        <span aria-hidden="true">↗</span>
+      </a>
+
+      <!-- EDIT: 送迎バス。無い場合は、この段落ごと削除してください -->
+      <p class="bus"><b>送迎バスについて</b><br>
+        ◯◯駅 ◯◯口から、◯◯:◯◯ / ◯◯:◯◯ の2便を運行いたします。<br>
+        お帰りは、お開きのあと◯◯:◯◯ に会場前より出発します。ご利用の方は、出欠フォームのメッセージ欄にその旨をお書き添えください。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+  ドレスコード
+============================================================ -->
+<section id="dress">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="eyebrow">Dress code</p>
+      <h2 class="h2">ドレスコード</h2>
+    </div>
+
+    <div class="rv">
+      <!-- EDIT: ドレスコードの一言。堅すぎない言い方がおすすめです -->
+      <p class="dress-text">あたたかい色を、ひとつ。<br>
+        きまりはありません。お好きな装いでお越しください。</p>
+
+      <!-- EDIT: 色見本。i の style="background:…" を好きな色に差し替えてください -->
+      <div class="swatches">
+        <div class="swatch"><i style="background:#e8d5cd" aria-hidden="true"></i><span>◯◯（色名）</span></div>
+        <div class="swatch"><i style="background:#c9a9a6" aria-hidden="true"></i><span>◯◯（色名）</span></div>
+        <div class="swatch"><i style="background:#a8a394" aria-hidden="true"></i><span>◯◯（色名）</span></div>
+      </div>
+
+      <!-- EDIT: 補足（白い服のお願い、足元の注意など） -->
+      <p class="dress-note">会場は◯◯のため、足元はヒールでも歩きやすい造りです。<br>
+        白いお召し物は新婦と重なりますので、お避けいただけますと幸いです。</p>
+    </div>
+  </div>
+</section>
+
+<div class="wrap"><div class="divider" aria-hidden="true"><i></i></div></div>
+
+<!-- ============================================================
+  ふたりについて
+============================================================ -->
+<section id="about">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="eyebrow">About us</p>
+      <h2 class="h2">ふたりについて</h2>
+    </div>
+
+    <div class="about-cards">
+      <!-- EDIT: 新郎のカード。写真は assets/groom.jpg（無ければ淡い枠が出ます） -->
+      <article class="p-card rv">
+        <div class="p-photo">
+          <span class="ph">Photo</span>
+          <img src="assets/groom.jpg" alt="">
+        </div>
+        <div class="p-body">
+          <p class="p-role">Groom</p>
+          <p class="p-name">◯◯　◯◯</p>
+          <p class="p-latin">NAME</p>
+          <dl class="p-list">
+            <div><dt>生年月日</dt><dd>◯◯◯◯年◯月◯日</dd></div>
+            <div><dt>出身</dt><dd>◯◯県◯◯市</dd></div>
+            <div><dt>好きなもの</dt><dd>◯◯、◯◯</dd></div>
+          </dl>
+        </div>
+      </article>
+
+      <!-- EDIT: 新婦のカード。写真は assets/bride.jpg -->
+      <article class="p-card rv">
+        <div class="p-photo">
+          <span class="ph">Photo</span>
+          <img src="assets/bride.jpg" alt="">
+        </div>
+        <div class="p-body">
+          <p class="p-role">Bride</p>
+          <p class="p-name">◯◯　◯◯</p>
+          <p class="p-latin">NAME</p>
+          <dl class="p-list">
+            <div><dt>生年月日</dt><dd>◯◯◯◯年◯月◯日</dd></div>
+            <div><dt>出身</dt><dd>◯◯県◯◯市</dd></div>
+            <div><dt>好きなもの</dt><dd>◯◯、◯◯</dd></div>
+          </dl>
+        </div>
+      </article>
+    </div>
+
+    <!-- EDIT: 出会いの話。3〜4行くらいがちょうどよい長さです -->
+    <p class="story rv"><b>ふたりのこと</b>
+      ◯◯◯◯年、◯◯で出会いました。はじめは◯◯の話ばかりしていたのに、
+      気がつけば休みの日はいつも一緒に◯◯へ出かけるようになっていました。
+      ◯年の交際を経て、これからは同じ名字で暮らしていきます。
+      当日は、そんな私たちの話も少しだけお聞かせできればと思っています。</p>
+  </div>
+</section>
+
+<!-- ============================================================
+  出欠のご返信（RSVP）
+
+  ▼ 個人情報のあつかいについて（おふたりへ・重要）
+  このフォームには、ゲストの お名前 / ふりがな / メールアドレス /
+  同伴者 / 食物アレルギー / メッセージ が届きます。
+  食物アレルギーは、特に慎重なあつかいが必要な情報です。
+  ・送信先アドレスは、おふたり専用のものを使ってください。
+    そのアドレスや受信箱の画面を、SNS・ブログ等の公開の場に載せないでください
+  ・回答を、ご本人の許可なく他のゲストや第三者に見せないでください
+    （席次や引出物の手配で会場に共有するときは、必要な範囲だけにしてください）
+  ・挙式と手配がすべて済んだら、受信メールと控え（表計算ファイル等）は削除してください
+  ・このページ自体は、入力内容をブラウザにもサーバーにも保存しません
+============================================================ -->
+<section class="rsvp" id="rsvp">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="eyebrow">R.S.V.P.</p>
+      <h2 class="h2">出欠のご返信</h2>
+      <p class="lead">お手数ですが、下記のフォームよりご返信をお願いいたします。<br>
+        ご欠席の場合も、お手数ですがご一報いただけますと幸いです。</p>
+    </div>
+
+    <!-- EDIT: 回答期限 -->
+    <div class="deadline rv">
+      <span>ご返信の期限</span>
+      <strong>2027.◯.◯</strong>
+      <em>（◯曜日）までにお願いいたします</em>
+    </div>
+
+    <form id="rsvpForm" class="rv">
+      <fieldset class="field">
+        <legend>ご出欠<span class="req">必須</span></legend>
+        <div class="choices">
+          <label class="choice">
+            <input type="radio" name="attend" value="ご出席" required>
+            <i aria-hidden="true"></i>ご出席
+          </label>
+          <label class="choice">
+            <input type="radio" name="attend" value="ご欠席">
+            <i aria-hidden="true"></i>ご欠席
+          </label>
+        </div>
+      </fieldset>
+
+      <div class="field">
+        <label class="f-label" for="rsvp-name">お名前<span class="req">必須</span></label>
+        <input class="input" type="text" id="rsvp-name" name="name" autocomplete="name" inputmode="text" placeholder="◯◯　◯◯" required>
+      </div>
+
+      <div class="field">
+        <label class="f-label" for="rsvp-kana">ふりがな<span class="req">必須</span></label>
+        <input class="input" type="text" id="rsvp-kana" name="kana" autocomplete="off" inputmode="text" placeholder="まるまる　まるまる" required>
+      </div>
+
+      <div class="field">
+        <label class="f-label" for="rsvp-email">ご連絡先（メールアドレス）<span class="req">必須</span></label>
+        <input class="input" type="email" id="rsvp-email" name="email" autocomplete="email" inputmode="email" placeholder="your@example.com" required>
+        <p class="f-help">受付状況のご連絡に使わせていただきます。式が終わりましたら削除いたします。</p>
+      </div>
+
+      <div class="field">
+        <label class="f-label" for="rsvp-guests">ご同伴者<span class="opt">任意</span></label>
+        <!-- EDIT: 同伴者の選択肢。お子様連れの案内をする場合はここに足してください -->
+        <select class="select" id="rsvp-guests" name="guests">
+          <option value="なし">同伴者なし（ご本人のみ）</option>
+          <option value="1名">同伴者あり・1名</option>
+          <option value="2名">同伴者あり・2名</option>
+          <option value="3名">同伴者あり・3名</option>
+          <option value="4名以上">同伴者あり・4名以上</option>
+        </select>
+        <p class="f-help">ご同伴の方のお名前は、下のメッセージ欄にお書き添えください。</p>
+      </div>
+
+      <div class="field">
+        <label class="f-label" for="rsvp-allergy">アレルギー・苦手なもの<span class="opt">任意</span></label>
+        <textarea class="textarea" id="rsvp-allergy" name="allergy" rows="2" placeholder="例：えび・かに、そば　など"></textarea>
+        <p class="f-help">お料理の内容を調整いたします。差し支えのない範囲でお知らせください。</p>
+      </div>
+
+      <div class="field">
+        <label class="f-label" for="rsvp-message">メッセージ<span class="opt">任意</span></label>
+        <textarea class="textarea" id="rsvp-message" name="message" rows="4" placeholder="当日お会いできるのを楽しみにしています。"></textarea>
+      </div>
+
+      <!-- 迷惑メール対策の空欄です。目には見えません。触らないでください -->
+      <input type="text" name="_honey" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;opacity:0;" aria-hidden="true">
+
+      <button type="submit" class="submit" id="rsvpBtn">ご返信を送信する</button>
+
+      <p class="form-err" id="rsvpError" role="alert" hidden>
+        うまく送信できませんでした。お手数ですが、
+        <a href="#" id="rsvpMailto">メールで送る</a>
+        か、下のお問い合わせ先までご連絡ください。
+      </p>
+
+      <p class="privacy">いただいた内容は、当日のご案内とお料理の手配にのみ使用し、式の終了後に削除いたします。</p>
+    </form>
+
+    <!-- 送信が終わると、フォームと入れ替わりでここが出ます -->
+    <div class="thanks" id="rsvpThanks" tabindex="-1" hidden>
+      <span class="ring" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12.5l5.2 5L20 7"/></svg>
+      </span>
+      <h3>ご返信をお受けしました</h3>
+      <!-- EDIT: お礼の言葉 -->
+      <p>お忙しいなか、ありがとうございます。<br>
+        当日、お会いできるのを楽しみにしております。</p>
+      <p class="sig">◯◯ &amp; ◯◯</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+  お問い合わせ
+============================================================ -->
+<section id="contact">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="eyebrow">Contact</p>
+      <h2 class="h2">お問い合わせ</h2>
+      <p class="lead">ご不明な点は、お気軽にご連絡ください。</p>
+    </div>
+
+    <!-- EDIT: 連絡先。電話番号を載せたくない場合は、その行ごと削除してください -->
+    <dl class="contact-box rv">
+      <div class="row"><dt>新郎</dt><dd>◯◯　◯◯　<a href="tel:000-0000-0000">◯◯◯-◯◯◯◯-◯◯◯◯</a></dd></div>
+      <div class="row"><dt>新婦</dt><dd>◯◯　◯◯　<a href="tel:000-0000-0000">◯◯◯-◯◯◯◯-◯◯◯◯</a></dd></div>
+      <div class="row"><dt>メール</dt><dd><a href="mailto:◯◯◯◯@example.com">◯◯◯◯@example.com</a></dd></div>
+    </dl>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <p class="f-latin">NAME &amp; NAME</p>
+  <p class="f-date">2027.◯.◯</p>
+  <p class="f-thanks">最後までご覧いただき、ありがとうございました。</p>
+  <!-- EDIT: 配布元へのリンク。公開時に不要であれば、この1行を削除してください -->
+  <p class="f-credit">YUI Template v1.0 — <a href="https://idatsuka.com/store.html">IDATSUKA</a></p>
+</footer>
+
+<!-- スマホで、下に出てくる返信ボタン -->
+<a class="jump" id="jump" href="#rsvp">出欠のご返信へ<span aria-hidden="true">↓</span></a>
+
+<script>
+/* ============================================================
+   1. テーマ切替（白 blanc / 夜 noir。選択はブラウザに保存されます）
+============================================================ */
+(function () {
+  var root = document.documentElement, key = 'yui-theme';
+  var btn = document.getElementById('themeToggle'), meta = document.getElementById('themeColor');
+  /* EDIT: スマホのアドレスバーの色。上の :root / [data-theme="noir"] の --bg と揃えてください */
+  var BAR = { blanc: '#fdfaf7', noir: '#1a1614' };
+  function sync() {
+    var t = root.getAttribute('data-theme') === 'noir' ? 'noir' : 'blanc';
+    if (meta) meta.setAttribute('content', BAR[t]);
+    if (!btn) return;
+    btn.setAttribute('aria-label', t === 'noir' ? '白のテーマに切り替え' : '夜のテーマに切り替え');
+    btn.querySelector('.t-blanc').classList.toggle('off', t !== 'blanc');
+    btn.querySelector('.t-noir').classList.toggle('off', t !== 'noir');
+  }
+  sync();
+  if (btn) btn.addEventListener('click', function () {
+    var next = root.getAttribute('data-theme') === 'noir' ? 'blanc' : 'noir';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem(key, next); } catch (e) {}
+    sync();
+  });
+})();
+
+/* ============================================================
+   2. カウントダウン
+   HERO の data-when="2027-06-12T11:00+09:00" だけを見ています。
+   ・+09:00（時差）を明示して読むので、ゲストの端末が海外時刻でもズレません
+   ・1分に1回だけ更新します（静かなページなので、秒は数えません）
+   ・日時を過ぎたら「ありがとうございました」に変わります
+   ・属性が無い／読めない書き方のときは、黙って非表示にします
+============================================================ */
+(function () {
+  var el = document.getElementById('countdown');
+  if (!el) return;
+  var row = document.getElementById('cdRow');
+  var raw = (el.getAttribute('data-when') || '').trim();
+
+  /* 「2027-06-12T11:00+09:00」を、時差ごと読み取ります。
+     時差を書かなかった場合は日本時間（+09:00）として扱います */
+  function parse(s) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})[T ](\d{2}):(\d{2})(?::(\d{2}))?(Z|[+-]\d{2}:?\d{2})?$/.exec(s);
+    if (!m) return null;
+    var off = 9 * 60;                        /* 既定は日本時間 */
+    if (m[7] && m[7] !== 'Z') {
+      var t = m[7].replace(':', '');
+      off = (t[0] === '-' ? -1 : 1) * (parseInt(t.slice(1, 3), 10) * 60 + parseInt(t.slice(3, 5), 10));
+    } else if (m[7] === 'Z') { off = 0; }
+    var ms = Date.UTC(+m[1], +m[2] - 1, +m[3], +m[4], +m[5], +(m[6] || 0)) - off * 60000;
+    return isFinite(ms) ? ms : null;
+  }
+
+  var target = parse(raw);
+  if (target === null) { el.hidden = true; return; }   /* 読めなければ黙って隠す */
+  el.hidden = false;
+
+  function render() {
+    var diff = target - Date.now();
+    if (diff <= 0) {
+      /* EDIT: 当日を過ぎたあとに出る言葉 */
+      el.innerHTML = '<p class="cd-done">ありがとうございました</p>';
+      return false;
+    }
+    var mins = Math.floor(diff / 60000);
+    var d = Math.floor(mins / 1440), h = Math.floor((mins % 1440) / 60), m = mins % 60;
+    row.innerHTML =
+      '<span class="cd-unit"><span class="cd-num">' + d + '</span><span class="cd-suf">日</span></span>' +
+      '<span class="cd-unit"><span class="cd-num">' + h + '</span><span class="cd-suf">時間</span></span>' +
+      '<span class="cd-unit"><span class="cd-num">' + m + '</span><span class="cd-suf">分</span></span>';
+    return true;
+  }
+
+  /* 分が変わる瞬間に合わせて更新し、そのあとは1分ごと */
+  function tick() {
+    if (!render()) return;
+    setTimeout(function () { if (render()) setInterval(render, 60000); }, 60000 - (Date.now() % 60000) + 50);
+  }
+  tick();
+})();
+
+/* ============================================================
+   3. 出欠フォーム（FormSubmit で送信します）
+
+   EDIT: ここの1行だけ、おふたりの受信用メールアドレスに書き換えてください。
+   はじめの1通は FormSubmit から確認メールが届きます。
+   そのメールのリンクを一度クリックすると、以降そのまま届くようになります。
+   （このアドレスは、お問い合わせ欄・送信できなかったときのメール送信先にも使われます）
+============================================================ */
+var RSVP_TO = '◯◯◯◯@example.com';
+
+(function () {
+  var form = document.getElementById('rsvpForm');
+  if (!form) return;
+  var btn = document.getElementById('rsvpBtn');
+  var err = document.getElementById('rsvpError');
+  var mailtoLink = document.getElementById('rsvpMailto');
+  var thanks = document.getElementById('rsvpThanks');
+  var label = btn.textContent;
+
+  function val(name) {
+    var f = form.elements[name];
+    return f ? String(f.value || '').trim() : '';
+  }
+
+  /* 送信できなかったときのための、内容を入れたメールの下書き */
+  function buildMailto() {
+    var body = [
+      'ご出欠：' + val('attend'),
+      'お名前：' + val('name'),
+      'ふりがな：' + val('kana'),
+      'ご連絡先：' + val('email'),
+      'ご同伴者：' + val('guests'),
+      'アレルギー・苦手なもの：' + val('allergy'),
+      'メッセージ：' + val('message')
+    ].join('\n');
+    return 'mailto:' + RSVP_TO +
+      '?subject=' + encodeURIComponent('出欠のご返信（' + (val('name') || 'お名前') + '）') +
+      '&body=' + encodeURIComponent(body);
+  }
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    /* 空欄のまま送れないように、ブラウザの標準チェックを使います */
+    if (!form.reportValidity()) return;
+    if (form.elements._honey && form.elements._honey.value) return;   /* 迷惑メール対策 */
+
+    btn.disabled = true; btn.textContent = '送信しています…';
+    err.hidden = true;
+
+    try {
+      var res = await fetch('https://formsubmit.co/ajax/' + RSVP_TO, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({
+          ご出欠: val('attend'),
+          お名前: val('name'),
+          ふりがな: val('kana'),
+          ご連絡先: val('email'),
+          ご同伴者: val('guests'),
+          'アレルギー・苦手なもの': val('allergy'),
+          メッセージ: val('message'),
+          _subject: '【出欠のご返信】' + val('attend') + ' — ' + val('name'),
+          _replyto: val('email'),
+          _template: 'table',
+          _captcha: 'false'
+        })
+      });
+      var data = await res.json().catch(function () { return {}; });
+      if (!res.ok || !(data.success === 'true' || data.success === true)) throw new Error('send failed');
+
+      /* 成功したら、フォームと入れ替わりでお礼を出します（ページは読み込み直しません） */
+      form.hidden = true;
+      thanks.hidden = false;
+      thanks.focus();
+      thanks.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    } catch (_) {
+      mailtoLink.setAttribute('href', buildMailto());
+      err.hidden = false;
+      btn.disabled = false; btn.textContent = label;
+    }
+  });
+})();
+
+/* ============================================================
+   4. 写真が無いときは、グラデーションだけを残します
+      （画像切れのアイコンを出さないため）
+============================================================ */
+(function () {
+  document.querySelectorAll('.hero-img, .p-photo img').forEach(function (img) {
+    function drop() { if (img.parentNode) img.parentNode.removeChild(img); }
+    img.addEventListener('error', drop);
+    if (img.complete && img.naturalWidth === 0) drop();
+  });
+})();
+
+/* ============================================================
+   5. スクロールの演出（現れかた・上のバー・下の返信ボタン）
+============================================================ */
+(function () {
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var items = document.querySelectorAll('.rv');
+  if (reduce || !('IntersectionObserver' in window)) {
+    items.forEach(function (el) { el.classList.add('on'); });
+  } else {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e, i) {
+        if (!e.isIntersecting) return;
+        var el = e.target;
+        el.style.transitionDelay = Math.min(i * 90, 270) + 'ms';
+        el.classList.add('on');
+        io.unobserve(el);
+      });
+    }, { threshold: .12, rootMargin: '0px 0px -8% 0px' });
+    items.forEach(function (el) { io.observe(el); });
+  }
+
+  var bar = document.getElementById('topbar'), jump = document.getElementById('jump');
+  var hero = document.getElementById('top'), rsvp = document.getElementById('rsvp');
+  var ticking = false;
+  function update() {
+    ticking = false;
+    bar.classList.toggle('scrolled', window.scrollY > 24);
+    if (!jump || !hero || !rsvp) return;
+    var passedHero = window.scrollY > hero.offsetHeight * .72;
+    var r = rsvp.getBoundingClientRect();
+    var rsvpVisible = r.top < window.innerHeight && r.bottom > 0;
+    jump.classList.toggle('on', passedHero && !rsvpVisible);
+  }
+  window.addEventListener('scroll', function () {
+    if (!ticking) { ticking = true; requestAnimationFrame(update); }
+  }, { passive: true });
+  window.addEventListener('resize', update, { passive: true });
+  update();
+})();
+</script>
+</body>
+</html>
