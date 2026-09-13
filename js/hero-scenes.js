@@ -35,18 +35,73 @@
     c.fillRect(0, 0, 32, 32);
     return s;
   }
-  var sprite = makeSprite([
-    [0, 'rgba(255,255,255,1)'],
-    [.25, 'rgba(199,231,244,.85)'],
-    [.6, 'rgba(159,214,236,.25)'],
-    [1, 'rgba(159,214,236,0)']
-  ]);
-  var spriteWhite = makeSprite([
-    [0, 'rgba(255,255,255,1)'],
-    [.3, 'rgba(255,255,255,.6)'],
-    [.7, 'rgba(226,240,248,.16)'],
-    [1, 'rgba(226,240,248,0)']
-  ]);
+  /* ══════════════════════════════════════════
+     Palette
+
+     Every scene here is additive light: strokes pile towards white on a black
+     ground. Run that on paper and it disappears — white plus light is still
+     white. So the light theme draws the same geometry the other way round:
+     'multiply' instead of 'lighter', ink instead of glow. Nothing below this
+     block knows which theme is on; it all reads PAL.
+     ══════════════════════════════════════════ */
+  var PAL = {};
+  var sprite, spriteWhite;
+
+  function readPalette() {
+    var light = document.documentElement.getAttribute('data-theme') === 'light';
+    PAL.light = light;
+    PAL.blend = light ? 'multiply' : 'lighter';
+
+    /* Line work, coolest to densest. The cold end has to be pushed much
+       further from the paper than its dark-theme twin is from the black:
+       these strokes land at alpha .05–.3, and a 3% grey on white is simply
+       not there, while a 3% grey on black reads as structure. */
+    PAL.inkDim = light ? 'rgba(104,124,140,1)' : 'rgba(140,168,186,1)';
+    PAL.inkCold = light ? 'rgba(116,128,141,1)' : 'rgba(58,63,71,1)';
+    PAL.ink = light ? 'rgba(29,109,142,1)' : 'rgba(159,214,236,1)';
+    PAL.inkHi = light ? 'rgba(16,72,96,1)' : 'rgba(205,234,246,1)';
+    PAL.inkHi2 = light ? 'rgba(14,66,88,1)' : 'rgba(214,238,247,1)';
+    PAL.inkMax = light ? 'rgba(10,26,34,1)' : 'rgba(255,255,255,1)';
+
+    /* soft fields */
+    PAL.wash = light ? 'rgba(29,109,142,.10)' : 'rgba(159,214,236,.09)';
+    PAL.wash2 = light ? 'rgba(29,109,142,.13)' : 'rgba(159,214,236,.12)';
+    PAL.washNil = light ? 'rgba(29,109,142,0)' : 'rgba(159,214,236,0)';
+
+    /* the wash that eats the previous frame in the trail scene, and the two
+       veils that keep the hero type and the bottom controls legible */
+    PAL.trail = light ? 'rgba(251,251,250,.26)' : 'rgba(6,6,7,.26)';
+    PAL.veil = light ? '251,251,250' : '6,6,7';
+
+    /* aurora curtains: ice, one restrained secondary tint, and the hot core */
+    PAL.curtainIce = light ? [29, 109, 142] : [159, 214, 236];
+    PAL.curtainTint = light ? [34, 104, 98] : [144, 206, 202];
+    PAL.curtainHot = light ? [12, 52, 70] : [236, 246, 251];
+
+    sprite = makeSprite(light ? [
+      [0, 'rgba(16,44,58,1)'],
+      [.25, 'rgba(29,109,142,.8)'],
+      [.6, 'rgba(29,109,142,.22)'],
+      [1, 'rgba(29,109,142,0)']
+    ] : [
+      [0, 'rgba(255,255,255,1)'],
+      [.25, 'rgba(199,231,244,.85)'],
+      [.6, 'rgba(159,214,236,.25)'],
+      [1, 'rgba(159,214,236,0)']
+    ]);
+    spriteWhite = makeSprite(light ? [
+      [0, 'rgba(18,19,22,1)'],
+      [.3, 'rgba(30,42,50,.6)'],
+      [.7, 'rgba(29,109,142,.16)'],
+      [1, 'rgba(29,109,142,0)']
+    ] : [
+      [0, 'rgba(255,255,255,1)'],
+      [.3, 'rgba(255,255,255,.6)'],
+      [.7, 'rgba(226,240,248,.16)'],
+      [1, 'rgba(226,240,248,0)']
+    ]);
+  }
+  readPalette();
 
   /* 2D simplex noise (Gustavson-style, seeded permutation) */
   var perm = new Uint8Array(512);
@@ -146,12 +201,12 @@
         var cosY = Math.cos(yaw), sinY = Math.sin(yaw);
         var i, w, p;
 
-        c.globalCompositeOperation = 'lighter';
+        c.globalCompositeOperation = PAL.blend;
 
         if (pIn) {
           var g = c.createRadialGradient(px, py, 0, px, py, FORCE_R * 1.4);
-          g.addColorStop(0, 'rgba(159,214,236,.09)');
-          g.addColorStop(1, 'rgba(159,214,236,0)');
+          g.addColorStop(0, PAL.wash);
+          g.addColorStop(1, PAL.washNil);
           c.fillStyle = g;
           c.fillRect(px - FORCE_R * 1.4, py - FORCE_R * 1.4, FORCE_R * 2.8, FORCE_R * 2.8);
         }
@@ -161,7 +216,7 @@
           var age = Math.max(0, t - w.t0);
           var wr = Math.max(0, age * .75);
           c.globalAlpha = Math.max(0, 1 - age / 1200) * .35;
-          c.strokeStyle = 'rgba(159,214,236,1)';
+          c.strokeStyle = PAL.ink;
           c.lineWidth = 1;
           c.beginPath(); c.arc(w.x, w.y, wr, 0, TAU); c.stroke();
         }
@@ -345,10 +400,10 @@
         // trails: translucent wash instead of a clear
         c.globalCompositeOperation = 'source-over';
         c.globalAlpha = 1;
-        c.fillStyle = 'rgba(6,6,7,.26)';
+        c.fillStyle = PAL.trail;
         c.fillRect(0, 0, w2, h2);
 
-        c.globalCompositeOperation = 'lighter';
+        c.globalCompositeOperation = PAL.blend;
         c.lineCap = 'round';
 
         // bucket the streaks so the whole field costs a handful of strokes
@@ -366,7 +421,7 @@
           var arr = buckets[bi];
           if (!arr.length) continue;
           c.globalAlpha = (bi + 1) / 5 * .66;
-          c.strokeStyle = bi >= 3 ? 'rgba(205,234,246,1)' : 'rgba(159,214,236,1)';
+          c.strokeStyle = bi >= 3 ? PAL.inkHi : PAL.ink;
           c.lineWidth = bi >= 3 ? 1.35 : .85;
           c.beginPath();
           for (i = 0; i < arr.length; i++) {
@@ -457,7 +512,7 @@
       draw: function (c, t) {
         var P = Pc;
         var i, j, a, b, dx, dy, d2, d, n;
-        c.globalCompositeOperation = 'lighter';
+        c.globalCompositeOperation = PAL.blend;
 
         // pulse rings
         for (i = 0; i < pulses.length; i++) {
@@ -465,7 +520,7 @@
           var age = Math.max(0, t - pu.t0);
           var pr = Math.max(0, age * .62);
           c.globalAlpha = Math.max(0, 1 - age / 1600) * .4;
-          c.strokeStyle = 'rgba(214,238,247,1)';
+          c.strokeStyle = PAL.inkHi2;
           c.lineWidth = 1;
           c.beginPath(); c.arc(pu.x, pu.y, pr, 0, TAU); c.stroke();
         }
@@ -498,8 +553,8 @@
             }
             var hot = Math.max(a.hot, b.hot);
             c.globalAlpha = Math.min(1, al + hot * .35 + flash * .9);
-            c.strokeStyle = flash > .12 ? 'rgba(255,255,255,1)'
-              : (hot > .15 ? 'rgba(159,214,236,1)' : 'rgba(140,168,186,1)');
+            c.strokeStyle = flash > .12 ? PAL.inkMax
+              : (hot > .15 ? PAL.ink : PAL.inkDim);
             c.lineWidth = flash > .12 ? 1.3 : 1;
             c.beginPath(); c.moveTo(a.x, a.y); c.lineTo(b.x, b.y); c.stroke();
           }
@@ -508,13 +563,13 @@
         // links to the cursor
         if (P.in) {
           var bg = c.createRadialGradient(P.x, P.y, 0, P.x, P.y, PULL_R);
-          bg.addColorStop(0, 'rgba(159,214,236,.12)');
-          bg.addColorStop(1, 'rgba(159,214,236,0)');
+          bg.addColorStop(0, PAL.wash2);
+          bg.addColorStop(1, PAL.washNil);
           c.globalAlpha = 1;
           c.fillStyle = bg;
           c.fillRect(P.x - PULL_R, P.y - PULL_R, PULL_R * 2, PULL_R * 2);
           c.lineWidth = 1.1;
-          c.strokeStyle = 'rgba(159,214,236,1)';
+          c.strokeStyle = PAL.ink;
           for (i = 0; i < nodes.length; i++) {
             n = nodes[i];
             dx = n.x - P.x; dy = n.y - P.y;
@@ -579,9 +634,9 @@
       c.fillRect(0, 0, 32, 160);
       return s;
     }
-    var spIce = curtainSprite(159, 214, 236);
-    var spTint = curtainSprite(144, 206, 202);   // one restrained secondary tint
-    var spHot = curtainSprite(236, 246, 251);
+    var spIce = curtainSprite(PAL.curtainIce[0], PAL.curtainIce[1], PAL.curtainIce[2]);
+    var spTint = curtainSprite(PAL.curtainTint[0], PAL.curtainTint[1], PAL.curtainTint[2]);   // one restrained secondary tint
+    var spHot = curtainSprite(PAL.curtainHot[0], PAL.curtainHot[1], PAL.curtainHot[2]);
 
     for (var L = 0; L < LAYERS; L++) {
       curtains.push({
@@ -621,7 +676,7 @@
       },
       draw: function (c, t) {
         var P = Pc;
-        c.globalCompositeOperation = 'lighter';
+        c.globalCompositeOperation = PAL.blend;
         var spanX = w2 * 1.3, x0 = -w2 * .15;
         var stepX = spanX / PER;
         var sw = Math.max(5, stepX * 1.7);      // soft-edged strokes, still striated
@@ -804,7 +859,7 @@
       },
       draw: function (c, t) {
         var i, j, p, q;
-        c.globalCompositeOperation = 'lighter';
+        c.globalCompositeOperation = PAL.blend;
 
         // structural hairlines along the grid, brightening where lifted.
         // bucketed so the whole grid costs a handful of strokes.
@@ -822,7 +877,7 @@
           if (!arr.length) continue;
           var hot = bi >= 3;
           c.globalAlpha = BUCKET_A[bi];
-          c.strokeStyle = hot ? 'rgba(159,214,236,1)' : 'rgba(58,63,71,1)';
+          c.strokeStyle = hot ? PAL.ink : PAL.inkCold;
           c.lineWidth = hot ? 1.1 : 1;
           c.beginPath();
           for (i = 0; i < arr.length; i += 2) {
@@ -1066,9 +1121,9 @@
     c.translate(cx, cy);
     c.scale(1, ry / rx);
     var g = c.createRadialGradient(0, 0, 0, 0, 0, rx);
-    g.addColorStop(0, 'rgba(6,6,7,' + strength.toFixed(3) + ')');
-    g.addColorStop(.5, 'rgba(6,6,7,' + (strength * .78).toFixed(3) + ')');
-    g.addColorStop(1, 'rgba(6,6,7,0)');
+    g.addColorStop(0, 'rgba(' + PAL.veil + ',' + strength.toFixed(3) + ')');
+    g.addColorStop(.5, 'rgba(' + PAL.veil + ',' + (strength * .78).toFixed(3) + ')');
+    g.addColorStop(1, 'rgba(' + PAL.veil + ',0)');
     c.fillStyle = g;
     c.beginPath(); c.arc(0, 0, rx, 0, TAU); c.fill();
     c.restore();
@@ -1084,9 +1139,9 @@
     c.globalCompositeOperation = 'source-over';
     c.globalAlpha = 1;
     var g = c.createLinearGradient(0, top, 0, H);
-    g.addColorStop(0, 'rgba(6,6,7,0)');
-    g.addColorStop(.55, 'rgba(6,6,7,' + (strength * .55).toFixed(3) + ')');
-    g.addColorStop(1, 'rgba(6,6,7,' + strength.toFixed(3) + ')');
+    g.addColorStop(0, 'rgba(' + PAL.veil + ',0)');
+    g.addColorStop(.55, 'rgba(' + PAL.veil + ',' + (strength * .55).toFixed(3) + ')');
+    g.addColorStop(1, 'rgba(' + PAL.veil + ',' + strength.toFixed(3) + ')');
     c.fillStyle = g;
     c.fillRect(0, top, W, H - top);
     c.restore();
@@ -1183,6 +1238,19 @@
   cur = getScene(curIdx);
   cur.resize(W, H);
   updateHint();
+
+  /* ── theme ──
+     Sprites and curtain sheets are baked at build time, and the trail scene
+     keeps a painted surface, so a repaint is not enough: drop the instances
+     and let the same scene id come back in the other palette. */
+  window.addEventListener('themechange', function () {
+    readPalette();
+    for (var i = 0; i < instances.length; i++) instances[i] = null;
+    prev = null;
+    cur = getScene(curIdx);
+    cur.resize(W, H);
+    if (reduced) staticFrame();
+  });
 
   if (reduced) staticFrame();
   else requestAnimationFrame(frame);

@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- テーマ先読み: フォント/CSS より前に置く。ここより後ろだと、保留中の
+       スタイルシートを待たされて DOMContentLoaded ごと遅れる -->
+  <script>(function(){try{var t=localStorage.getItem("idatsuka-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   <title>Tokyo Underground — 東京の地下に流れるエネルギー — IDATSUKA</title>
   <meta name="description" content="金曜深夜の渋谷から始まる、東京のアンダーグラウンドカルチャー探訪。クラブの照明、フライヤーの芸術、音楽とタイポグラフィの関係について。">
   <meta property="og:title" content="Tokyo Underground — 東京の地下に流れるエネルギー — IDATSUKA">
@@ -31,7 +34,7 @@
   .article-cover::after {
     content: ''; position: absolute; inset: 0; pointer-events: none;
     background:
-      linear-gradient(180deg, rgba(6,6,7,.45) 0%, rgba(6,6,7,0) 26%, rgba(6,6,7,0) 58%, rgba(6,6,7,.96) 100%);
+      linear-gradient(180deg, rgba(var(--bg-rgb),.45) 0%, rgba(var(--bg-rgb),0) 26%, rgba(var(--bg-rgb),0) 58%, rgba(var(--bg-rgb),.96) 100%);
   }
   .article-cover-caption {
     position: absolute; left: 3rem; bottom: 1.3rem; z-index: 2;
@@ -43,7 +46,7 @@
   .article-keys { max-width: 640px; padding: 3rem 3rem 0; }
   .article-keys-inner {
     border: 1px solid var(--border); border-left: 1px solid var(--accent-soft);
-    background: linear-gradient(115deg, rgba(159,214,236,.045), rgba(159,214,236,0) 62%);
+    background: linear-gradient(115deg, rgba(var(--accent-rgb),.045), rgba(var(--accent-rgb),0) 62%);
     padding: 1.7rem 1.9rem 1.8rem;
   }
   .article-keys-label {
@@ -130,6 +133,16 @@
     <li><a href="blog.html" class="active">Blog</a></li>
     <li><a href="contact.html">Contact</a></li>
   </ul>
+  <button class="theme-toggle" id="themeToggle" type="button" aria-label="Light モードに切り替える">
+    <svg class="theme-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+      <g class="ti-sun">
+        <circle cx="10" cy="10" r="3.3" fill="currentColor"/>
+        <path d="M10 2.2v1.8M10 16v1.8M2.2 10h1.8M16 10h1.8M4.45 4.45l1.3 1.3M14.25 14.25l1.3 1.3M15.55 4.45l-1.3 1.3M5.75 14.25l-1.3 1.3" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+      </g>
+      <path class="ti-moon" fill="currentColor" d="M16.4 12.2A6.9 6.9 0 0 1 7.8 3.6 6.9 6.9 0 1 0 16.4 12.2Z"/>
+    </svg>
+    <span class="theme-label"><i class="tl-light">Light</i><i class="tl-dark">Dark</i></span>
+  </button>
   <button class="menu-toggle" id="menuToggle" aria-label="メニュー"><span></span><span></span><span></span></button>
 </nav>
 
@@ -229,6 +242,8 @@ var io = new IntersectionObserver(function (entries) {
 }, { threshold: 0.08 });
 document.querySelectorAll('.rv').forEach(function (el) { io.observe(el); });
 </script>
+
+<script src="js/theme.js" defer></script>
 
 <script src="js/motion.js" defer></script>
 </body>
