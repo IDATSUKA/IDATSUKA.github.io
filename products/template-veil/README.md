@@ -1,4 +1,4 @@
-# VEIL（ヴェール）— 没入型ブランドサイト テンプレート v1.0
+# VEIL（ヴェール）— 没入型ブランドサイト テンプレート v1.1
 
 by IDATSUKA — https://idatsuka.com
 
@@ -29,7 +29,7 @@ by IDATSUKA — https://idatsuka.com
 | 場所 | 内容 |
 | --- | --- |
 | `<title>` / `description` / `og:` / `canonical` | 屋号・業種・地域・公開URL |
-| `assets/hero.jpg` | 主役の写真（2400×1500 程度）。置かない場合はグラデーション |
+| `assets/hero.jpg` | 主役の写真（2400×1500 程度）。同梱の絵と差し替えてください |
 | HERO の `<h1 class="h1 display focus-pull">` | 見出し2行（読み込み時にぼけから合焦します） |
 | HERO の `.eyebrow` と `.hero-sub` | 小見出し（• のあと）と、1文の説明 |
 | `.nav-wordmark` の `VEIL`（ナビとフッターの2か所） | 自分の屋号・ロゴ文字 |
@@ -61,6 +61,24 @@ by IDATSUKA — https://idatsuka.com
 | `assets/hero.mp4` / `.webm` | HERO を動画にする場合 | 1920×1080 のループ素材 |
 | `assets/showcase.jpg` | SHOWCASE の大きい帯 | 2400×1200 程度 |
 | `assets/showcase-2.jpg` / `-3.jpg` | SHOWCASE の小さい帯2つ | 1400×900 程度 |
+
+**同梱している4枚について**
+
+`assets/` の4枚は、このテンプレートの4色（`--stage1`〜`--stage4`）だけで描いた抽象の絵です。
+写真ではありません。**自分の写真に差し替えることを前提にした下絵**として入れています。
+ファイル名を変えずに上書きすれば、それだけで差し替わります。
+
+差し替えずにこのまま公開しても構いません（著作権上の制約はありません）。
+
+**写真がテーマに沈むとき — `--media-wash`**
+
+写真の上には、テーマの地の色に合わせた膜が1枚かかります。暗い写真を昼（studio）テーマで
+使っても見出しが読めるのは、この膜のおかげです。
+
+| テーマ | 既定値 | 調整するとき |
+| --- | --- | --- |
+| 夜 cinema | `transparent` | 明るい写真で文字が読みにくいときだけ `rgba(10,11,13,.35)` などを入れる |
+| 昼 studio | `rgba(244,239,233,.74)` | 明るい写真に替えて「白すぎる」と感じたら `.40` くらいまで下げる |
 
 - 動画にする場合は、HERO の `<img class="stage-img">` を削除し、その下の `<video class="stage-video">` のコメントを外してください
 - 動画は `prefers-reduced-motion`（動きを抑える設定）のときは自動的に停止します

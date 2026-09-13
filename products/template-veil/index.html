@@ -116,6 +116,10 @@
   --hero-shadow: 0 2px 26px rgba(0,0,0,.55);
   /* 絵の上にかける膜（上下）。文字を読みやすくするためのものです */
   --hero-scrim: linear-gradient(180deg, rgba(10,11,13,.52) 0%, rgba(10,11,13,0) 26%, rgba(10,11,13,0) 44%, rgba(10,11,13,.82) 100%);
+  /* EDIT: 写真の上にかける「地の色」の膜。テーマの明るさに写真を寄せるためのもので、
+     文字が写真に沈むのを防ぎます。夜テーマは暗い写真を前提にしているので 0 のまま。
+     明るい写真を使って文字が読みにくいときだけ、rgba(10,11,13,.35) などを入れてください */
+  --media-wash: transparent;
 
   /* EDIT: assets/hero.jpg を置かないときに表示される「夕暮れ」のグラデーション。
      4色を変えるだけで、絵が無くても成立する画面になります */
@@ -158,6 +162,9 @@
   --hero-fg: #1c1a18;
   --hero-shadow: 0 2px 22px rgba(255,255,255,.6);
   --hero-scrim: linear-gradient(180deg, rgba(244,239,233,.44) 0%, rgba(244,239,233,0) 24%, rgba(244,239,233,0) 44%, rgba(244,239,233,.7) 100%);
+  /* EDIT: 昼テーマは暗い写真でも見出しが読めるように、クリームの膜を強めにかけます。
+     明るい写真に差し替えて「白すぎる」と感じたら .40 くらいまで下げてください */
+  --media-wash: rgba(244,239,233,.74);
 
   --stage1: #fbf7f2;  --stage2: #ecdfd0;  --stage3: #d4b699;  --stage4: #b5855f;
   --glow-color: rgba(238,150,95,.42);
@@ -395,6 +402,12 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
 }
 /* 画像が無いとき（404）は JS が .stage-img を外し、グラデーションだけが残ります */
+
+/* テーマの地に写真を寄せる膜。写真の上・灯りの下に入ります（→ --media-wash） */
+.stage-media::after, .band-media::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: var(--media-wash);
+}
 
 /* 灯りが点っていく層。3〜5個の暖かい円が順に明るくなり、しばらく灯って、また消えます */
 .stage-glow { position: absolute; inset: 0; mix-blend-mode: var(--glow-blend); pointer-events: none; }
@@ -1072,7 +1085,7 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
     <div class="foot-bottom">
       <!-- EDIT: 著作権表記 -->
       <p>&copy; <span id="year">2026</span> ◯◯◯◯</p>
-      <p>VEIL Template v1.0 — 個人・商用利用可／再販不可</p>
+      <p>VEIL Template v1.1 — 個人・商用利用可／再販不可</p>
       <!-- EDIT: 配布元へのリンク。公開時に不要であれば、この1行を削除してください -->
       <p><a class="foot-store" href="https://idatsuka.com/store.html">← Store に戻る</a></p>
     </div>
