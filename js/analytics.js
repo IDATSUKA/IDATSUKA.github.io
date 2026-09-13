@@ -1,16 +1,12 @@
 /* IDATSUKA — access measurement
  *
- * ────────────────────────────────────────────────────────────
- *  SETUP: paste the site token below, once. That is the whole job.
- * ────────────────────────────────────────────────────────────
+ * Live since 2026-09-13. Figures: https://dash.cloudflare.com
+ * → Analytics & Logs → Web Analytics → idatsuka.com
  *
- *  1. https://dash.cloudflare.com → Analytics & Logs → Web Analytics
- *  2. "Add a site" → idatsuka.com
- *  3. It shows a snippet containing  "token": "xxxxxxxx…"
- *  4. Copy just that token string into TOKEN below and push.
- *
- * Until the token is filled in, this file does nothing at all — no request,
- * no cookie, no console noise. Nothing to undo if it is left empty.
+ * The token is not a secret. It ships in the page source of every site that
+ * uses Web Analytics, and on its own it grants nothing — it only labels the
+ * page views so Cloudflare files them under this site. Emptying TOKEN turns
+ * measurement off completely: no request, no cookie, nothing to undo.
  *
  * Why Cloudflare Web Analytics: no cookies and no cross-site identifiers, so
  * no consent banner is required; it does not need the site to be proxied
@@ -23,7 +19,7 @@
 (function () {
   'use strict';
 
-  var TOKEN = '';   // ← paste the Cloudflare Web Analytics site token here
+  var TOKEN = '72122194810b460e9b3fbba7f39b9340';   // idatsuka.com — Cloudflare Web Analytics
 
   if (!TOKEN) return;
 
@@ -36,8 +32,10 @@
   var h = location.hostname;
   if (h === 'localhost' || h === '127.0.0.1' || h.endsWith('.local')) return;
 
+  /* type="module" is what Cloudflare's current snippet uses; module scripts
+     are deferred by definition, so this still cannot block the first paint. */
   var s = document.createElement('script');
-  s.defer = true;
+  s.type = 'module';
   s.src = 'https://static.cloudflareinsights.com/beacon.min.js';
   s.setAttribute('data-cf-beacon', JSON.stringify({ token: TOKEN }));
   document.head.appendChild(s);
