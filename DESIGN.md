@@ -171,8 +171,20 @@ idatsuka.com と、そこで販売するテンプレート製品のデザイン�
 3. 本文セクション（`.label` で番号を振る）
 4. `.about-cta`（次の行動への導線）
 5. `<footer>`（`© 2025 IDATSUKA` ＋ 同じ6リンク）
-6. `<head>`: `title` / `description` / `og:title` / `og:description` / `canonical` / SVG ファビコン ＋ テーマ先読みの1行
-7. 末尾に `js/theme.js`、`menuToggle` の開閉と `.rv` の交差監視
+6. `<head>`: `title` / `description` / `canonical` / SVG ファビコン ＋ テーマ先読みの1行、
+   および OGP 一式 — `og:title` / `og:description` / `og:type` / `og:url` / `og:site_name` /
+   `og:locale` / `og:image`（**1200×630 の JPEG**。SVG はリンクカードに出ません） /
+   `og:image:width` / `og:image:height` / `og:image:alt` / `twitter:card`
+7. 末尾に `js/theme.js`、`js/analytics.js`、`menuToggle` の開閉と `.rv` の交差監視
+
+**ページを増やしたら、同じコミットで3つ更新する**
+
+1. `img/og/<ページ名>.jpg` を作る（`node tools/og-cards.js <ページ名>` → 手順は `tools/og-cards.md`）
+2. `tools/og-cards.js` の `PAGES` に行を足す
+3. `sitemap.xml` に `<url>` を足す
+
+**アクセス解析**: `js/analytics.js` の `TOKEN` に Cloudflare Web Analytics のサイトトークンを
+入れると計測が始まります。空のままなら何もしません（リクエストもクッキーも発生しない）。
 
 ---
 
@@ -259,6 +271,7 @@ idatsuka.com と、そこで販売するテンプレート製品のデザイン�
 - [ ] `prefers-reduced-motion` で全要素が見える
 - [ ] ナビ／フッターの6項目と `.active` が正しい
 - [ ] `title` / `description` / `og:` / `canonical` を書き換えた
+- [ ] リンクカード（`img/og/*.jpg`）を作り直し、`sitemap.xml` に載せた
 - [ ] 架空の内容に `.spec-note` かプレースホルダーが付いている
 - [ ] 新しい色を HEX 直書きしていない（トークン経由）
 - [ ] テンプレートなら zip を作り直し、Store のカード・版数・決済リンクを更新した

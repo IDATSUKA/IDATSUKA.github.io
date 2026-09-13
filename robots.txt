@@ -1,0 +1,8 @@
+# idatsuka.com
+User-agent: *
+Allow: /
+
+# 配布物そのものは検索結果に出さない（ページ経由で来てほしい）
+Disallow: /products/*.zip$
+
+Sitemap: https://idatsuka.com/sitemap.xml
