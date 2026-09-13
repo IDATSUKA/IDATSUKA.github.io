@@ -8,7 +8,9 @@ Space Grotesk・Zen Kaku Gothic New・Space Mono / Michroma由来のワードマ
 フィルムグレイン / アンビエントなグロー。背景は `js/hero-scenes.js` の5シーン
 （Orbit Ring・Curl Flow・Plexus・Aurora・Lattice）から起こしています。
 
-合計サイズ **約15MB**（`ads` 780KB / `storyboard` 768KB / `cm` 12MB / `src` 1.4MB）。
+合計サイズ **約23MB**（`ads` 780KB / `storyboard` 768KB / `cm` 12MB / `src` 1.4MB / `clips` 7.7MB）。
+
+**`clips/` は投稿用の短い動画**（テンプレートの動き・サイトの明暗切替）。静止画では伝わらない部分だけを入れてあります。詳細と投稿文の案は `clips/README.md`。
 
 ---
 
