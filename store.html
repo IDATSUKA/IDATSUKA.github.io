@@ -253,6 +253,21 @@
         </div>
       </div>
 
+
+      <!-- SAJI Setup Service (差し替え代行) -->
+      <div class="skill-item rv" style="display:flex;flex-direction:column;gap:.6rem;">
+        <p class="work-card-cat" style="font-family:var(--mono);font-size:.58rem;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);">Service · Setup</p>
+        <p class="skill-item-name" style="font-size:1.1rem;">飲食サイト差し替え代行（SAJI）</p>
+        <p class="skill-item-tools" style="flex:1;">
+          SAJIテンプレートへの<strong>文言差し替え代行サービス</strong>です（テンプレ本体の販売ではありません）。店名・品書き・営業時間／定休など、ヒアリング内容をもとに差し替え済みHTMLを納品します。素材受領から<strong>5営業日</strong>。大規模なデザイン改修・新規デザインは含みません。購入後にヒアリング案内をお送りします。
+        </p>
+        <p style="font-family:var(--mono);font-size:.85rem;color:var(--fg);margin:.4rem 0;">¥9,800 <span style="font-size:.62rem;color:var(--muted);">（サービス / 素材受領から5営業日）</span></p>
+        <div style="display:flex;gap:.8rem;flex-wrap:wrap;margin-top:.4rem;">
+          <a href="products/template-saji/index.html" class="btn" target="_blank" rel="noopener">SAJI Demo</a>
+          <a href="#" class="btn buy-btn" data-product="saji-setup">申し込む ¥9,800</a>
+        </div>
+      </div>
+
       <!-- Custom order -->
       <div class="skill-item rv" style="display:flex;flex-direction:column;gap:.6rem;">
         <p class="work-card-cat" style="font-family:var(--mono);font-size:.58rem;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);">Custom Order</p>
@@ -331,6 +346,7 @@ const PAY_LINKS = {
   'template-koma': 'https://buy.stripe.com/fZuaEYb918FZcsB1Oa2wU0c',
   'template-utage': 'https://buy.stripe.com/4gM5kE7WP9K30JTeAW2wU0d',
   'support': 'https://buy.stripe.com/cNifZield09t3W564q2wU01'
+  'saji-setup': 'https://buy.stripe.com/fZufZi90TcWfcsB2Se2wU0e',
 };
 document.querySelectorAll('.buy-btn').forEach(btn => {
   const url = PAY_LINKS[btn.dataset.product];
