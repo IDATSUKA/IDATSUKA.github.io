@@ -80,11 +80,12 @@
     <aside class="rv">
       <span class="label">01 — Info</span>
 
+      <!-- EDIT: info@idatsuka.com は受信設定（MX）ができるまで載せない。
+           載せると、届かないメールを送らせることになる。受信できるようになったら
+           ここに <div class="contact-info-item">…mailto…</div> を戻す -->
       <div class="contact-info-item">
-        <p class="contact-info-label">Email</p>
-        <p class="contact-info-value">
-          <a href="mailto:info@idatsuka.com">info@idatsuka.com</a>
-        </p>
+        <p class="contact-info-label">Message</p>
+        <p class="contact-info-value">右のフォームから</p>
       </div>
 
       <div class="contact-info-item">
@@ -137,15 +138,16 @@
           <textarea class="form-textarea" id="message" name="message" placeholder="プロジェクトの内容、ご予算、スケジュールなどをご記入ください。" required></textarea>
         </div>
 
-        <input type="text" name="_honey" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;opacity:0;" aria-hidden="true">
+        <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;opacity:0;" aria-hidden="true">
         <button type="submit" class="btn-filled" id="sendBtn">Send Message</button>
-        <p class="form-msg" id="formError">送信できませんでした。メールアプリで送る場合は <a href="mailto:info@idatsuka.com" style="color:var(--accent);">info@idatsuka.com</a> へ。</p>
+        <p class="form-msg" id="formError" role="alert">送信できませんでした。時間をおいてもう一度お試しいただくか、<a href="https://x.com/idatsuka" target="_blank" rel="noopener" style="color:var(--accent);">X（@idatsuka）</a>からご連絡ください。</p>
+        <p class="form-msg" id="formOff" role="status">現在、フォームの送信先を準備しています。お急ぎの場合は <a href="https://x.com/idatsuka" target="_blank" rel="noopener" style="color:var(--accent);">X（@idatsuka）</a> からご連絡ください。</p>
       </form>
 
       <div class="form-success" id="successMsg">
         <div class="form-success-icon">&check;</div>
         <h3>メッセージを送信しました</h3>
-        <p>2〜3営業日以内に info@idatsuka.com からご連絡いたします。</p>
+        <p>2〜3営業日以内に、ご入力のメールアドレス宛てにご連絡いたします。</p>
       </div>
     </div>
 
@@ -180,7 +182,7 @@
 </main>
 
 <footer>
-  <p>&copy; 2025 IDATSUKA</p>
+  <p>&copy; <span data-year>2026</span> IDATSUKA</p>
   <ul class="footer-links">
     <li><a href="about.html">Profile</a></li>
     <li><a href="play.html">Play</a></li>
@@ -196,38 +198,62 @@ document.getElementById('menuToggle').addEventListener('click', function() {
   this.classList.toggle('open');
   document.getElementById('mobileMenu').classList.toggle('open');
 });
-// Sends via FormSubmit (delivers to info@idatsuka.com). On failure the
-// visitor is offered the plain mailto link instead.
-document.getElementById('contactForm').addEventListener('submit', async function(e) {
-  e.preventDefault();
-  var form = this;
+/* Contact form → Web3Forms (https://web3forms.com).
+ *
+ * FORM_KEY is an access key, not an address. Web3Forms delivers to whatever
+ * inbox the key was registered with, so the real address never appears in
+ * this page or in the repository's history. The key is safe to publish — it
+ * can only ever send mail to that one inbox.
+ *
+ * While FORM_KEY is empty the form says so plainly and sends nothing. A form
+ * that looks like it works and quietly drops every message is the worst
+ * state a contact page can be in; this one was in it until 2026-09-25. */
+var FORM_KEY = '';
+
+(function () {
+  var form = document.getElementById('contactForm');
   var btn = document.getElementById('sendBtn');
   var err = document.getElementById('formError');
-  if (form.elements._honey && form.elements._honey.value) return;
-  var name = document.getElementById('name').value.trim();
-  var email = document.getElementById('email').value.trim();
-  var category = document.getElementById('category').value || 'General';
-  var message = document.getElementById('message').value.trim();
-  btn.disabled = true; btn.textContent = 'Sending…'; err.style.display = 'none';
-  try {
-    var res = await fetch('https://formsubmit.co/ajax/info@idatsuka.com', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify({
-        name: name, email: email, category: category, message: message,
-        _subject: '[IDATSUKA] ' + category + ' — ' + name,
-        _replyto: email, _template: 'table', _captcha: 'false'
-      })
-    });
-    var data = await res.json().catch(function() { return {}; });
-    if (!res.ok || !(data.success === 'true' || data.success === true)) throw new Error('send failed');
-    form.style.display = 'none';
-    document.getElementById('successMsg').style.display = 'block';
-  } catch (_) {
-    err.style.display = 'block';
-    btn.disabled = false; btn.textContent = 'Send Message';
+  var off = document.getElementById('formOff');
+
+  if (!FORM_KEY) {
+    btn.disabled = true;
+    btn.setAttribute('aria-disabled', 'true');
+    off.style.display = 'block';
+    return;
   }
-});
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    if (form.elements.botcheck && form.elements.botcheck.checked) return;
+    var name = form.elements.name.value.trim();
+    var email = form.elements.email.value.trim();
+    var category = form.elements.category.value || 'General';
+    var message = form.elements.message.value.trim();
+
+    btn.disabled = true; btn.textContent = 'Sending…'; err.style.display = 'none';
+    try {
+      var res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({
+          access_key: FORM_KEY,
+          subject: '[IDATSUKA] ' + category + ' — ' + name,
+          from_name: 'idatsuka.com',
+          name: name, email: email, replyto: email,
+          category: category, message: message,
+        }),
+      });
+      var data = await res.json().catch(function () { return {}; });
+      if (!res.ok || data.success !== true) throw new Error(data.message || 'send failed');
+      form.style.display = 'none';
+      document.getElementById('successMsg').style.display = 'block';
+    } catch (_) {
+      err.style.display = 'block';
+      btn.disabled = false; btn.textContent = 'Send Message';
+    }
+  });
+})();
 const io = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
 }, { threshold: 0.1 });
