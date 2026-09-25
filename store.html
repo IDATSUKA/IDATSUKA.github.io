@@ -271,8 +271,8 @@
       </div>
 
 
-      <!-- SAJI Setup Service (差し替え代行) -->
-      <div class="skill-item rv" style="display:flex;flex-direction:column;gap:.6rem;">
+      <!-- SAJI Setup Service (差し替え代行) — 飲食の絞り込みで SAJI と並んで出る。件数には数えない -->
+      <div class="skill-item rv" data-use="shop" data-kind="service" style="display:flex;flex-direction:column;gap:.6rem;">
         <p class="work-card-cat" style="font-family:var(--mono);font-size:.58rem;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);">Service · Setup</p>
         <p class="skill-item-name" style="font-size:1.1rem;">飲食サイト差し替え代行（SAJI）</p>
         <p class="skill-item-tools" style="flex:1;">
@@ -285,8 +285,8 @@
         </div>
       </div>
 
-      <!-- Custom order -->
-      <div class="skill-item rv" style="display:flex;flex-direction:column;gap:.6rem;">
+      <!-- Custom order — data-use を付けない。どの絞り込みでも最後に残る「合うものが無ければ」の受け皿 -->
+      <div class="skill-item rv" data-kind="service" style="display:flex;flex-direction:column;gap:.6rem;">
         <p class="work-card-cat" style="font-family:var(--mono);font-size:.58rem;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);">Custom Order</p>
         <p class="skill-item-name" style="font-size:1.1rem;">オーダーメイド制作</p>
         <p class="skill-item-tools" style="flex:1;">
@@ -352,12 +352,16 @@ document.querySelectorAll('.rv').forEach(el => io.observe(el));
 ============================================================ */
 /* 用途フィルタ。件数はボタンに焼き込まず、ここで数え直す（足し忘れ防止） */
 (function () {
+  /* [data-use] cards are filtered. Services carry data-kind="service": they
+     follow the filter but are not counted as templates. A card with no
+     data-use (Custom order) is never hidden. */
   var cards = document.querySelectorAll('.products-grid [data-use]');
+  var TPL = ':not([data-kind="service"])';
   var btns = document.querySelectorAll('.store-filter .filter-btn');
   var live = document.getElementById('storeFilterLive');
   btns.forEach(function (b) {
     var u = b.dataset.use;
-    var n = u === 'all' ? cards.length : document.querySelectorAll('.products-grid [data-use="' + u + '"]').length;
+    var n = document.querySelectorAll('.products-grid [data-use' + (u === 'all' ? '' : '="' + u + '"') + ']' + TPL).length;
     b.querySelector('span').textContent = n;
     b.addEventListener('click', function () {
       btns.forEach(function (x) { x.classList.toggle('active', x === b); x.setAttribute('aria-pressed', String(x === b)); });
@@ -365,7 +369,7 @@ document.querySelectorAll('.rv').forEach(el => io.observe(el));
       cards.forEach(function (c) {
         var on = u === 'all' || c.dataset.use === u;
         c.hidden = !on;
-        if (on) { shown++; c.classList.add('on'); }
+        if (on) { c.classList.add('on'); if (c.dataset.kind !== 'service') shown++; }
       });
       live.textContent = shown + '件のテンプレートを表示しています';
     });
