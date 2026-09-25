@@ -28,6 +28,13 @@
   <style>
     .products-grid { grid-template-columns: repeat(2, 1fr); }
     @media (max-width: 700px) { .products-grid { grid-template-columns: 1fr; } }
+    .store-filter { display: flex; flex-wrap: wrap; gap: .4rem 1.6rem; margin: -.4rem 0 2rem; }
+    .store-filter .filter-btn span { color: var(--dim); margin-left: .3em; }
+    .store-filter .filter-btn.active span { color: var(--accent); }
+    /* the cards carry an inline display:flex, which beats the UA [hidden] rule */
+    .products-grid > [hidden] { display: none !important; }
+    .store-filter-live { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+    @media (max-width: 480px) { .store-filter { gap: .2rem 1.1rem; } .store-filter .filter-btn { padding: .55rem 0; } }
   </style>
 </head>
 <body>
@@ -73,10 +80,20 @@
 <section style="border-bottom:1px solid var(--border);">
   <div class="container">
     <span class="label rv">01 — Products</span>
+    <!-- 用途で絞り込む。data-use は各カードの div に付いている。
+         新しいテンプレートを足したら、どれかの用途を付けること（付け忘れると「すべて」でしか出ない） -->
+    <div class="store-filter" role="group" aria-label="用途で絞り込む">
+      <button type="button" class="filter-btn active" data-use="all" aria-pressed="true">すべて <span>11</span></button>
+      <button type="button" class="filter-btn" data-use="folio" aria-pressed="false">個人・作品集 <span>2</span></button>
+      <button type="button" class="filter-btn" data-use="brand" aria-pressed="false">商品・ブランド <span>3</span></button>
+      <button type="button" class="filter-btn" data-use="shop" aria-pressed="false">店舗・医院 <span>3</span></button>
+      <button type="button" class="filter-btn" data-use="event" aria-pressed="false">イベント・告知 <span>3</span></button>
+    </div>
+    <p class="store-filter-live" aria-live="polite" id="storeFilterLive"></p>
     <div class="skills-grid products-grid">
 
       <!-- ZEN Template -->
-      <div class="skill-item rv" style="display:flex;flex-direction:column;gap:.6rem;">
+      <div class="skill-item rv" data-use="folio" style="display:flex;flex-direction:column;gap:.6rem;">
         <a href="products/template-zen/index.html" class="work-card-thumb" target="_blank" rel="noopener" style="margin-bottom:.4rem;"><img src="img/store-zen.svg" alt="ZEN template preview"></a>
         <p class="work-card-cat" style="font-family:var(--mono);font-size:.58rem;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);">HTML Template · v1.1</p>
         <p class="skill-item-name" style="font-size:1.1rem;">ZEN — Minimal Portfolio Template</p>
@@ -93,7 +110,7 @@
 
 
       <!-- RAY Template -->
-      <div class="skill-item rv" style="display:flex;flex-direction:column;gap:.6rem;">
+      <div class="skill-item rv" data-use="brand" style="display:flex;flex-direction:column;gap:.6rem;">
         <a href="products/template-ray/index.html" class="work-card-thumb" target="_blank" rel="noopener" style="margin-bottom:.4rem;"><img src="img/store-ray.svg" alt="RAY template preview"></a>
         <p class="work-card-cat" style="font-family:var(--mono);font-size:.58rem;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);">HTML Template · v1.1</p>
         <p class="skill-item-name" style="font-size:1.1rem;">RAY — Minimal Landing Page Template</p>
@@ -110,7 +127,7 @@
 
 
       <!-- PULSE Template -->
-      <div class="skill-item rv" style="display:flex;flex-direction:column;gap:.6rem;">
+      <div class="skill-item rv" data-use="brand" style="display:flex;flex-direction:column;gap:.6rem;">
         <a href="products/template-pulse/index.html" class="work-card-thumb" target="_blank" rel="noopener" style="margin-bottom:.4rem;"><img src="img/store-pulse.svg" alt="PULSE template preview"></a>
         <p class="work-card-cat" style="font-family:var(--mono);font-size:.58rem;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);">HTML Template · v1.2</p>
         <p class="skill-item-name" style="font-size:1.1rem;">PULSE — Luxury Motion Landing Template</p>
@@ -126,7 +143,7 @@
       </div>
 
       <!-- NOREN Template -->
-      <div class="skill-item rv" style="display:flex;flex-direction:column;gap:.6rem;">
+      <div class="skill-item rv" data-use="shop" style="display:flex;flex-direction:column;gap:.6rem;">
         <a href="products/template-noren/index.html" class="work-card-thumb" target="_blank" rel="noopener" style="margin-bottom:.4rem;"><img src="img/store-noren.svg" alt="NOREN template preview"></a>
         <p class="work-card-cat" style="font-family:var(--mono);font-size:.58rem;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);">HTML Template · v1.1 · New</p>
         <p class="skill-item-name" style="font-size:1.1rem;">NOREN（暖簾）— 老舗のためのWebサイトテンプレート</p>
@@ -142,7 +159,7 @@
       </div>
 
       <!-- KIRA Template -->
-      <div class="skill-item rv" style="display:flex;flex-direction:column;gap:.6rem;">
+      <div class="skill-item rv" data-use="event" style="display:flex;flex-direction:column;gap:.6rem;">
         <a href="products/template-kira/index.html" class="work-card-thumb" target="_blank" rel="noopener" style="margin-bottom:.4rem;"><img src="img/store-kira.jpg" alt="KIRA template preview"></a>
         <p class="work-card-cat" style="font-family:var(--mono);font-size:.58rem;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);">HTML Template · v2.0 · New</p>
         <p class="skill-item-name" style="font-size:1.1rem;">KIRA（キラ）— 劇場版アニメ・作品公式サイトテンプレート</p>
@@ -158,7 +175,7 @@
       </div>
 
       <!-- VEIL Template -->
-      <div class="skill-item rv" style="display:flex;flex-direction:column;gap:.6rem;">
+      <div class="skill-item rv" data-use="brand" style="display:flex;flex-direction:column;gap:.6rem;">
         <a href="products/template-veil/index.html" class="work-card-thumb" target="_blank" rel="noopener" style="margin-bottom:.4rem;"><img src="img/store-veil.jpg" alt="VEIL template preview"></a>
         <p class="work-card-cat" style="font-family:var(--mono);font-size:.58rem;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);">HTML Template · v1.2 · New</p>
         <p class="skill-item-name" style="font-size:1.1rem;">VEIL（ヴェール）— 写真を主役にするブランドサイトテンプレート</p>
@@ -174,7 +191,7 @@
       </div>
 
       <!-- SAJI Template -->
-      <div class="skill-item rv" style="display:flex;flex-direction:column;gap:.6rem;">
+      <div class="skill-item rv" data-use="shop" style="display:flex;flex-direction:column;gap:.6rem;">
         <a href="products/template-saji/index.html" class="work-card-thumb" target="_blank" rel="noopener" style="margin-bottom:.4rem;"><img src="img/store-saji.jpg" alt="SAJI template preview"></a>
         <p class="work-card-cat" style="font-family:var(--mono);font-size:.58rem;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);">HTML Template · v1.0 · New</p>
         <p class="skill-item-name" style="font-size:1.1rem;">SAJI（匙）— 飲食店のためのWebサイトテンプレート</p>
@@ -190,7 +207,7 @@
       </div>
 
       <!-- KARTE Template -->
-      <div class="skill-item rv" style="display:flex;flex-direction:column;gap:.6rem;">
+      <div class="skill-item rv" data-use="shop" style="display:flex;flex-direction:column;gap:.6rem;">
         <a href="products/template-karte/index.html" class="work-card-thumb" target="_blank" rel="noopener" style="margin-bottom:.4rem;"><img src="img/store-karte.jpg" alt="KARTE template preview"></a>
         <p class="work-card-cat" style="font-family:var(--mono);font-size:.58rem;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);">HTML Template · v1.0 · New</p>
         <p class="skill-item-name" style="font-size:1.1rem;">KARTE（カルテ）— クリニック・医院のためのWebサイトテンプレート</p>
@@ -206,7 +223,7 @@
       </div>
 
       <!-- YUI Template -->
-      <div class="skill-item rv" style="display:flex;flex-direction:column;gap:.6rem;">
+      <div class="skill-item rv" data-use="event" style="display:flex;flex-direction:column;gap:.6rem;">
         <a href="products/template-yui/index.html" class="work-card-thumb" target="_blank" rel="noopener" style="margin-bottom:.4rem;"><img src="img/store-yui.jpg" alt="YUI template preview"></a>
         <p class="work-card-cat" style="font-family:var(--mono);font-size:.58rem;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);">HTML Template · v1.0 · New</p>
         <p class="skill-item-name" style="font-size:1.1rem;">YUI（結）— 結婚式のWeb招待状テンプレート</p>
@@ -222,7 +239,7 @@
       </div>
 
       <!-- KOMA Template -->
-      <div class="skill-item rv" style="display:flex;flex-direction:column;gap:.6rem;">
+      <div class="skill-item rv" data-use="folio" style="display:flex;flex-direction:column;gap:.6rem;">
         <a href="products/template-koma/index.html" class="work-card-thumb" target="_blank" rel="noopener" style="margin-bottom:.4rem;"><img src="img/store-koma.jpg" alt="KOMA template preview"></a>
         <p class="work-card-cat" style="font-family:var(--mono);font-size:.58rem;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);">HTML Template · v1.0 · New</p>
         <p class="skill-item-name" style="font-size:1.1rem;">KOMA（コマ）— 写真家のためのギャラリーテンプレート</p>
@@ -238,7 +255,7 @@
       </div>
 
       <!-- UTAGE Template -->
-      <div class="skill-item rv" style="display:flex;flex-direction:column;gap:.6rem;">
+      <div class="skill-item rv" data-use="event" style="display:flex;flex-direction:column;gap:.6rem;">
         <a href="products/template-utage/index.html" class="work-card-thumb" target="_blank" rel="noopener" style="margin-bottom:.4rem;"><img src="img/store-utage.jpg" alt="UTAGE template preview"></a>
         <p class="work-card-cat" style="font-family:var(--mono);font-size:.58rem;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);">HTML Template · v1.0 · New</p>
         <p class="skill-item-name" style="font-size:1.1rem;">UTAGE（宴）— イベント・ライブのためのWebサイトテンプレート</p>
@@ -306,7 +323,7 @@
 </div>
 
 <footer>
-  <p>&copy; 2025 IDATSUKA</p>
+  <p>&copy; <span data-year>2026</span> IDATSUKA</p>
   <ul class="footer-links">
     <li><a href="about.html">Profile</a></li>
     <li><a href="play.html">Play</a></li>
@@ -333,6 +350,28 @@ document.querySelectorAll('.rv').forEach(el => io.observe(el));
    そのURLを下に貼るだけで購入ボタンが有効になります。
    （手順は リポジトリの MONETIZATION.md 参照）
 ============================================================ */
+/* 用途フィルタ。件数はボタンに焼き込まず、ここで数え直す（足し忘れ防止） */
+(function () {
+  var cards = document.querySelectorAll('.products-grid [data-use]');
+  var btns = document.querySelectorAll('.store-filter .filter-btn');
+  var live = document.getElementById('storeFilterLive');
+  btns.forEach(function (b) {
+    var u = b.dataset.use;
+    var n = u === 'all' ? cards.length : document.querySelectorAll('.products-grid [data-use="' + u + '"]').length;
+    b.querySelector('span').textContent = n;
+    b.addEventListener('click', function () {
+      btns.forEach(function (x) { x.classList.toggle('active', x === b); x.setAttribute('aria-pressed', String(x === b)); });
+      var shown = 0;
+      cards.forEach(function (c) {
+        var on = u === 'all' || c.dataset.use === u;
+        c.hidden = !on;
+        if (on) { shown++; c.classList.add('on'); }
+      });
+      live.textContent = shown + '件のテンプレートを表示しています';
+    });
+  });
+})();
+
 const PAY_LINKS = {
   'template-zen': 'https://buy.stripe.com/3cIeVeb9109tcsB64q2wU00',
   'template-ray': 'https://buy.stripe.com/bJe3cwfph4pJeAJ64q2wU03',

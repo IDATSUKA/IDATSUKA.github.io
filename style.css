@@ -18,7 +18,7 @@
   --fg-rgb:  244,245,247;
   --fg-dim:  #c3c8d0;
   --muted:   #70767f;
-  --dim:     #3a3f47;
+  --dim:     #5c626b;      /* 3.3:1 — the weakest tier, matched to the light theme */
   --accent:  #9fd6ec;
   --accent-rgb: 159,214,236;
   --accent-hi: #b8e4f5;     /* filled-button hover */

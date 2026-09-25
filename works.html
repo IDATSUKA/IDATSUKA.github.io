@@ -25,6 +25,21 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Zen+Kaku+Gothic+New:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+<style>
+  .works-shipped { padding: 0 3rem; margin-top: 3.2rem; }
+  .works-shipped .works-grid { margin-top: 0; }
+  .works-section-head { display: flex; align-items: baseline; gap: 2rem; flex-wrap: wrap;
+    padding: 0 0 1.4rem; }
+  .works-section-head .label { margin-bottom: 0; }
+  .works-section-desc { font-size: .8rem; color: var(--muted); line-height: 1.8; }
+  .works-section-desc a { color: var(--accent); }
+  .works-section-desc a + a { margin-left: .2em; }
+  .works-section-head--spec { padding: 4.6rem 3rem 1.4rem; border-bottom: 1px solid var(--border); }
+  @media (max-width: 900px) {
+    .works-shipped { padding: 0 1.5rem; }
+    .works-section-head--spec { padding: 3.4rem 1.5rem 1.2rem; }
+  }
+</style>
 </head>
 <body>
 
@@ -62,8 +77,88 @@
 <header class="page-header">
   <span class="label">Portfolio</span>
   <h1>Works.</h1>
-  <p class="page-header-desc">UI/UX、ブランディング、Webデザイン、モーション。これまでに手がけたプロジェクトの一覧です。</p>
+  <p class="page-header-desc">公開して、いま実際に動いている制作物。その下に、架空の案件で設計の考え方を示した Spec Works を置いています。</p>
 </header>
+
+<!-- 実物。テンプレートとゲームは公開中で、誰でも触れる。架空の事例より強い証拠なので先に置く -->
+<section class="works-shipped" aria-labelledby="shippedTitle">
+  <div class="works-section-head">
+    <span class="label" id="shippedTitle">01 — Shipped</span>
+    <p class="works-section-desc">公開中の制作物。テンプレート11本とゲーム5本から抜粋しています。<a href="store.html">テンプレート一覧</a> / <a href="games.html">ゲーム一覧</a></p>
+  </div>
+  <div class="works-grid">
+    <a href="products/template-veil/index.html" class="work-card rv" target="_blank" rel="noopener">
+      <div class="work-card-thumb"><img src="img/store-veil.jpg" alt="VEIL" loading="lazy"></div>
+      <p class="work-card-cat">Shipped · HTML Template</p>
+      <h2 class="work-card-title">VEIL</h2>
+      <p class="work-card-desc">写真を主役にするブランドサイト。1枚の写真を、夜と昼の2テーマで別の表情に見せる。</p>
+      <div class="work-card-meta">
+        <span class="work-card-year">2026</span>
+        <span class="work-card-arrow">&rarr;</span>
+      </div>
+    </a>
+
+    <a href="products/template-noren/index.html" class="work-card rv" target="_blank" rel="noopener">
+      <div class="work-card-thumb"><img src="img/store-noren.svg" alt="NOREN" loading="lazy"></div>
+      <p class="work-card-cat">Shipped · HTML Template</p>
+      <h2 class="work-card-title">NOREN</h2>
+      <p class="work-card-desc">老舗のためのサイト。暖簾は布として計算し、ときどき風が通る。</p>
+      <div class="work-card-meta">
+        <span class="work-card-year">2026</span>
+        <span class="work-card-arrow">&rarr;</span>
+      </div>
+    </a>
+
+    <a href="products/template-kira/index.html" class="work-card rv" target="_blank" rel="noopener">
+      <div class="work-card-thumb"><img src="img/store-kira.jpg" alt="KIRA" loading="lazy"></div>
+      <p class="work-card-cat">Shipped · HTML Template</p>
+      <h2 class="work-card-title">KIRA</h2>
+      <p class="work-card-desc">劇場アニメの公式サイトの型。キービジュアルと上映情報を一枚に。</p>
+      <div class="work-card-meta">
+        <span class="work-card-year">2026</span>
+        <span class="work-card-arrow">&rarr;</span>
+      </div>
+    </a>
+
+    <a href="products/template-koma/index.html" class="work-card rv" target="_blank" rel="noopener">
+      <div class="work-card-thumb"><img src="img/store-koma.jpg" alt="KOMA" loading="lazy"></div>
+      <p class="work-card-cat">Shipped · HTML Template</p>
+      <h2 class="work-card-title">KOMA</h2>
+      <p class="work-card-desc">写真ギャラリー。ライトボックスそのものが製品。</p>
+      <div class="work-card-meta">
+        <span class="work-card-year">2026</span>
+        <span class="work-card-arrow">&rarr;</span>
+      </div>
+    </a>
+
+    <a href="game-signal.html" class="work-card rv">
+      <div class="work-card-thumb"><img src="img/game-signal.svg" alt="Signal" loading="lazy"></div>
+      <p class="work-card-cat">Shipped · Browser Game</p>
+      <h2 class="work-card-title">Signal</h2>
+      <p class="work-card-desc">光と音の順番を覚えて返す記憶ゲーム。ブラウザだけで動く。</p>
+      <div class="work-card-meta">
+        <span class="work-card-year">2026</span>
+        <span class="work-card-arrow">&rarr;</span>
+      </div>
+    </a>
+
+    <a href="game-void-runner.html" class="work-card rv">
+      <div class="work-card-thumb"><img src="img/game-void-runner.svg" alt="Void Runner" loading="lazy"></div>
+      <p class="work-card-cat">Shipped · Browser Game</p>
+      <h2 class="work-card-title">Void Runner</h2>
+      <p class="work-card-desc">手続き生成で地形が変わり続けるエンドレスランナー。</p>
+      <div class="work-card-meta">
+        <span class="work-card-year">2026</span>
+        <span class="work-card-arrow">&rarr;</span>
+      </div>
+    </a>
+  </div>
+</section>
+
+<div class="works-section-head works-section-head--spec">
+  <span class="label">02 — Spec Works</span>
+  <p class="works-section-desc">依頼を想定して設計した案件。</p>
+</div>
 
 <div class="filter-bar">
   <button class="filter-btn active" data-filter="all">All</button>
@@ -154,7 +249,7 @@
 </main>
 
 <footer>
-  <p>&copy; 2025 IDATSUKA</p>
+  <p>&copy; <span data-year>2026</span> IDATSUKA</p>
   <ul class="footer-links">
     <li><a href="about.html">Profile</a></li>
     <li><a href="play.html">Play</a></li>
@@ -177,7 +272,7 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     const filter = btn.getAttribute('data-filter');
-    document.querySelectorAll('.work-card').forEach(card => {
+    document.querySelectorAll('.works-page-list .work-card').forEach(card => {
       if (filter === 'all' || card.getAttribute('data-category') === filter) {
         card.style.display = '';
         card.style.opacity = '0';

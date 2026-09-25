@@ -41,6 +41,14 @@
     btn.addEventListener('click', function () { apply(isLight() ? 'dark' : 'light', true); });
   }
 
+  /* The footer year. The markup carries a real year so it reads right with
+     scripts off; this keeps it right after New Year without anyone having to
+     remember 29 files. It said 2025 for nine months of 2026. */
+  var year = String(new Date().getFullYear());
+  document.querySelectorAll('[data-year]').forEach(function (el) {
+    if (el.textContent !== year) el.textContent = year;
+  });
+
   /* another tab flipped it — keep the two windows telling the same story */
   window.addEventListener('storage', function (e) {
     if (e.key !== KEY || !e.newValue) return;

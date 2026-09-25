@@ -7,9 +7,9 @@
        スタイルシートを待たされて DOMContentLoaded ごと遅れる -->
   <script>(function(){try{var t=localStorage.getItem("idatsuka-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
   <title>Ranking — IDATSUKA</title>
-  <meta name="description" content="IDATSUKA ゲームランキング。Void Runner, Signal, Orbit, Stack のハイスコアを競おう。">
+  <meta name="description" content="IDATSUKA のゲーム Void Runner / Signal / Orbit / Stack のハイスコア。">
   <meta property="og:title" content="Ranking — IDATSUKA">
-  <meta property="og:description" content="IDATSUKA ゲームランキング。Void Runner, Signal, Orbit, Stack のハイスコアを競おう。">
+  <meta property="og:description" content="IDATSUKA のゲーム Void Runner / Signal / Orbit / Stack のハイスコア。">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://idatsuka.com/ranking.html">
   <meta property="og:site_name" content="IDATSUKA">
@@ -223,7 +223,7 @@
 <header class="page-header">
   <span class="label">Leaderboard</span>
   <h1>Ranking.</h1>
-  <p class="page-header-desc">ゲームのハイスコアランキング。<br>名前を登録してスコアを競おう。OS・国・地域・友達で絞り込みできます。</p>
+  <p class="page-header-desc" id="rankDesc">ゲームのハイスコア。</p>
 </header>
 
 <div class="ranking-tabs">
@@ -322,7 +322,7 @@
 </div>
 
 <footer>
-  <p>&copy; 2025 IDATSUKA</p>
+  <p>&copy; <span data-year>2026</span> IDATSUKA</p>
   <ul class="footer-links">
     <li><a href="about.html">Profile</a></li>
     <li><a href="play.html">Play</a></li>
@@ -349,6 +349,20 @@ document.getElementById('menuToggle').addEventListener('click', function() {
   const online = Leaderboard.isFirebaseActive();
   const modeNote = document.getElementById('modeNote');
   modeNote.textContent = online ? 'Online Ranking' : 'Local Ranking — この端末のみ';
+
+  /* Without the shared database, every score here was set on this device.
+     The page must not read as a contest between players while that is true,
+     and filters by OS, country, region and friends have only one device's
+     scores to sort — they would look like features and show nothing. */
+  var rankDesc = document.getElementById('rankDesc');
+  if (online) {
+    rankDesc.innerHTML = 'ゲームのハイスコアランキング。<br>名前を登録してスコアを競おう。OS・国・地域・友達で絞り込みできます。';
+  } else {
+    rankDesc.innerHTML = 'この端末で遊んだときのハイスコアです。<br>記録はこのブラウザの中にだけ保存され、ほかの人の記録とは比べられません。';
+    document.querySelector('.page-header .label').textContent = 'Your Records';
+    document.getElementById('filterRow').hidden = true;
+    document.getElementById('friendsPanel').hidden = true;
+  }
 
   var games = ['void-runner', 'signal', 'orbit', 'stack'];
   var tabs = document.querySelectorAll('.ranking-tab');
