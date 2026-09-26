@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>OpenSky — 15s</title>
+<!-- OpenSky 15s spot. Pure function of time: window.__R.seek(t). ?play for realtime, ?t=6.2 for a still. -->
+<link rel="stylesheet" href="fonts/fonts.css">
+<style>
+:root{ --ink:#f4ecdc; --amber:#e3b476; --mincho:'Shippori Mincho B1',serif; --serif:'Cormorant Garamond',serif; --sans:'Jost',sans-serif; }
+html,body{margin:0;width:1920px;height:1080px;overflow:hidden;background:#000}
+#stage{position:absolute;inset:0;overflow:hidden;background:#000;color:var(--ink)}
+canvas{position:absolute;left:0;top:0}
+.layer{position:absolute;inset:0;pointer-events:none}
+.v{position:absolute;writing-mode:vertical-rl;font-family:var(--mincho);font-weight:500;font-size:52px;letter-spacing:.34em;line-height:1;
+  white-space:nowrap;text-shadow:0 0 24px rgba(0,0,0,.55),0 0 2px rgba(0,0,0,.4)}
+.v span,.h span{display:inline-block}
+.h{position:absolute;left:0;width:1920px;text-align:center;font-family:var(--mincho);font-weight:500;white-space:nowrap;
+  text-shadow:0 0 30px rgba(0,0,0,.6)}
+.lbl{position:absolute;font-family:var(--sans);font-weight:400;font-size:15px;letter-spacing:.5em;color:var(--amber);white-space:nowrap;
+  text-shadow:0 0 12px rgba(0,0,0,.6)}
+.lbl i{display:inline-block;height:1px;background:var(--amber);vertical-align:5px;margin-right:22px}
+#note{position:absolute;right:56px;bottom:40px;font-family:var(--mincho);font-size:15px;letter-spacing:.12em;color:rgba(244,236,220,.55)}
+#logo{position:absolute;left:0;top:486px;width:1920px;text-align:center;font-family:var(--serif);font-weight:500;font-size:132px;letter-spacing:.05em;line-height:1}
+#logo span{display:inline-block}
+#tag{position:absolute;left:0;top:660px;width:1920px;text-align:center;font-family:var(--mincho);font-weight:500;font-size:40px;letter-spacing:.5em;text-indent:.5em}
+#tag span{display:inline-block}
+#loc{position:absolute;left:0;top:748px;width:1920px;text-align:center;font-family:var(--sans);font-size:15px;letter-spacing:.55em;color:var(--amber)}
+#loc b{font-family:var(--mincho);font-weight:500;font-size:19px;letter-spacing:.3em;color:var(--ink);margin-right:30px}
+#grain{opacity:.055;mix-blend-mode:screen}
+#vig{background:radial-gradient(ellipse 80% 80% at 50% 48%,rgba(0,0,0,0) 50%,rgba(0,0,0,.5) 100%)}
+</style>
+</head>
+<body>
+<div id="stage">
+  <canvas id="cv" width="1920" height="1080"></canvas>
+  <div id="txt" class="layer">
+    <div id="t1" class="v" style="left:1500px;top:250px"></div>
+    <div id="l1" class="lbl" style="left:140px;top:930px"><i></i>01 — LIGHT</div>
+    <div id="t2" class="v" style="left:250px;top:112px;letter-spacing:.22em"></div>
+    <div id="l2" class="lbl" style="left:140px;top:930px"><i></i>02 — TEXTURE</div>
+    <div id="t3" class="v" style="left:250px;top:190px"></div>
+    <div id="l3" class="lbl" style="left:140px;top:930px"><i></i>03 — WINDOW</div>
+    <div id="t4" class="h" style="top:300px;font-size:58px;letter-spacing:.3em;text-indent:.3em"></div>
+    <div id="l4" class="lbl" style="left:140px;top:930px"><i></i>04 — CITY</div>
+    <div id="logo"></div>
+    <div id="tag"></div>
+    <div id="loc"><b>東京都渋谷区</b>SHIBUYA, TOKYO</div>
+  </div>
+  <canvas id="grain" width="1920" height="1080"></canvas>
+  <div id="vig" class="layer"></div>
+  <div id="note">※画像はイメージです。</div>
+</div>
+<script>
+(() => {
+'use strict';
+const W = 1920, H = 1080, CX = 960, CY = 540, TAU = Math.PI * 2;
+const $ = id => document.getElementById(id);
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const seg = (t, a, b) => clamp((t - a) / (b - a));
+const lerp = (a, b, k) => a + (b - a) * k;
+const E = {
+  outExpo: x => x >= 1 ? 1 : 1 - Math.pow(2, -10 * x),
+  inOutCubic: x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2,
+  inOutQuint: x => x < .5 ? 16 * x ** 5 : 1 - Math.pow(-2 * x + 2, 5) / 2,
+  outCubic: x => 1 - Math.pow(1 - x, 3),
+  inOutSine: x => -(Math.cos(Math.PI * x) - 1) / 2,
+  inCubic: x => x * x * x,
+};
+function rng(seed) { return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+
+const cv = $('cv'), g = cv.getContext('2d');
+g.imageSmoothingQuality = 'high';
+const IMG = {};
+const load = (k, src) => new Promise(res => { const i = new Image(); i.onload = () => { IMG[k] = i; res(); }; i.src = src; });
+
+// ---------- copy ----------
+const COPY = {
+  t1: '光を、素材に。',
+  t2: '手ざわりまで、設計する。',
+  t3: '夜に、ひらく窓。',
+  t4: '見上げるための、街をつくる。',
+  tag: '夜空を開放した街',
+};
+for (const k of ['t1', 't2', 't3', 't4', 'tag']) $(k).innerHTML = [...COPY[k]].map(c => `<span>${c}</span>`).join('');
+$('logo').innerHTML = [...'OpenSky'].map(c => `<span>${c}</span>`).join('');
+
+// ---------- scenes ----------
+// each: image, [start,end], camera(t) → {zoom, fx, fy, ox, oy, blur}
+const CUT = [0, 3.3, 6.4, 9.4];
+const OPEN = .95; // aperture duration
+const SCENES = [
+  { img: 'wall', a: 0.0, b: 3.3 + OPEN, cam: t => { const k = seg(t, 0, 4.2); return { zoom: lerp(1.0, 1.075, E.inOutSine(k)), fx: lerp(740, 820, k), fy: 470 }; } },
+  { img: 'vase', a: 3.3, b: 6.4 + OPEN, cam: t => { const k = seg(t, 3.3, 7.3); return { zoom: lerp(1.03, 1.1, E.inOutSine(k)), fx: lerp(900, 960, k), fy: 560, blur: 11 * (1 - E.outCubic(seg(t, 3.5, 5.0))) }; } },
+  { img: 'studio', a: 6.4, b: 9.4 + OPEN, cam: t => { const k = seg(t, 6.4, 10.3); return { zoom: 1.08, fx: lerp(700, 830, E.inOutSine(k)), fy: 520 }; } },
+  { img: 'city', a: 9.4, b: 15, cam: t => { const k = seg(t, 9.4, 12.2), tilt = E.inOutQuint(seg(t, 10.95, 12.75)); return { zoom: lerp(1.0, 1.06, E.inOutSine(k)), fx: 768, fy: 600, oy: tilt * 1250, free: true }; } },
+];
+function camRect(sc, c) {
+  const s = 1.25 * c.zoom, dw = 1536 * s, dh = 1024 * s;
+  let x = CX - c.fx * s + (c.ox || 0), y = CY - c.fy * s;
+  x = clamp(x, W - dw, 0); y = clamp(y, H - dh, 0);
+  y += (c.oy || 0);
+  return { x, y, w: dw, h: dh, s };
+}
+function drawScene(sc, t) {
+  const c = sc.cam(t), r = camRect(sc, c);
+  if (sc.img === 'city') drawSkyAbove(t, r);
+  g.save();
+  if (c.blur > .05) g.filter = `blur(${c.blur.toFixed(2)}px)`;
+  g.drawImage(IMG[sc.img], r.x, r.y, r.w, r.h);
+  g.restore();
+  FX[sc.img] && FX[sc.img](t, r);
+}
+
+// ---------- effects per scene ----------
+const MOTES = []; { const r = rng(11); for (let i = 0; i < 160; i++) MOTES.push({ x: r() * W, y: r() * H, s: .6 + r() * 1.8, p: r() * TAU, v: 6 + r() * 14 }); }
+const FX = {
+  wall(t, r) {
+    // a second, slower sun band sweeping along the existing beam
+    const nx = Math.cos(-.52 + Math.PI / 2), ny = Math.sin(-.52 + Math.PI / 2);
+    const k = seg(t, 0, 4.3), off = lerp(-420, 260, E.inOutSine(k));
+    const cx = CX + nx * off, cy = CY + ny * off;
+    const gr = g.createLinearGradient(cx - nx * 260, cy - ny * 260, cx + nx * 260, cy + ny * 260);
+    gr.addColorStop(0, 'rgba(255,170,80,0)'); gr.addColorStop(.5, 'rgba(255,170,90,.20)'); gr.addColorStop(1, 'rgba(255,170,80,0)');
+    g.save(); g.globalCompositeOperation = 'screen'; g.fillStyle = gr; g.fillRect(0, 0, W, H);
+    // dust in the light
+    for (const m of MOTES) {
+      const x = (m.x + t * m.v * .6) % W, y = (m.y - t * m.v + H * 4) % H + Math.sin(t * .9 + m.p) * 6;
+      const d = Math.abs((x - cx) * nx + (y - cy) * ny), lit = Math.exp(-(d * d) / (2 * 150 * 150));
+      const a = lit * (.35 + .35 * Math.sin(t * 2 + m.p) ** 2);
+      if (a < .02) continue;
+      g.fillStyle = `rgba(255,214,160,${a.toFixed(3)})`; g.beginPath(); g.arc(x, y, m.s, 0, TAU); g.fill();
+    }
+    g.restore();
+  },
+  studio(t, r) {
+    const lx = r.x + 868 * r.s, ly = r.y + 372 * r.s, p = .85 + .15 * Math.sin(t * 3.1) * Math.sin(t * 1.7);
+    const gr = g.createRadialGradient(lx, ly, 0, lx, ly, 420);
+    gr.addColorStop(0, `rgba(255,180,100,${.26 * p})`); gr.addColorStop(1, 'rgba(255,180,100,0)');
+    g.save(); g.globalCompositeOperation = 'screen'; g.fillStyle = gr; g.fillRect(0, 0, W, H); g.restore();
+  },
+  city(t, r) { drawStars(t, r); },
+};
+
+// ---------- sky & stars ----------
+let SKY = [14, 20, 40], skyMask = null;
+const STARS = []; { const r = rng(21); for (let i = 0; i < 1100; i++) STARS.push({ x: r() * W, y: -1500 + r() * 2300, m: Math.pow(r(), 3.2), p: r() * TAU, f: 1 + r() * 3, warm: r() < .15 }); }
+function buildSky() {
+  const oc = document.createElement('canvas'); oc.width = 1536; oc.height = 1024;
+  const o = oc.getContext('2d'); o.drawImage(IMG.city, 0, 0);
+  const img = o.getImageData(0, 0, 1536, 1024), d = img.data;
+  let sr = 0, sg = 0, sb = 0, n = 0;
+  for (let y = 0; y < 6; y++) for (let x = 0; x < 1536; x += 4) { const i = (y * 1536 + x) * 4; sr += d[i]; sg += d[i + 1]; sb += d[i + 2]; n++; }
+  SKY = [sr / n, sg / n, sb / n].map(Math.round);
+  for (let y = 0; y < 1024; y++) for (let x = 0; x < 1536; x++) {
+    const i = (y * 1536 + x) * 4, R = d[i], G = d[i + 1], B = d[i + 2], lum = .3 * R + .6 * G + .1 * B;
+    let a = clamp((B - R - 2) / 14) * clamp((70 - lum) / 30) * clamp((640 - y) / 120);
+    d[i] = d[i + 1] = d[i + 2] = 255; d[i + 3] = a * 255;
+  }
+  o.putImageData(img, 0, 0);
+  skyMask = oc;
+}
+const starC = document.createElement('canvas'); starC.width = W; starC.height = H; const sg = starC.getContext('2d');
+const maskC = document.createElement('canvas'); maskC.width = W; maskC.height = H; const mg = maskC.getContext('2d');
+function drawSkyAbove(t, r) {
+  if (r.y <= 0) return;
+  const top = r.y + 2;
+  const gr = g.createLinearGradient(0, top - 1400, 0, top);
+  gr.addColorStop(0, 'rgb(3,4,10)'); gr.addColorStop(.55, 'rgb(7,10,24)'); gr.addColorStop(1, `rgb(${SKY})`);
+  g.fillStyle = gr; g.fillRect(0, 0, W, top);
+}
+function drawStars(t, r) {
+  const vis = E.outCubic(seg(t, 10.5, 12.0));
+  if (vis <= 0) return;
+  sg.clearRect(0, 0, W, H);
+  for (const s of STARS) {
+    const y = s.y + r.y * .96 + 380, x = s.x;
+    if (y < -10 || y > H + 10) continue;
+    const tw = .55 + .45 * Math.sin(t * s.f + s.p);
+    const a = (.18 + .82 * s.m) * tw * vis, rad = .6 + s.m * 1.6;
+    sg.fillStyle = s.warm ? `rgba(255,214,170,${a})` : `rgba(220,230,255,${a})`;
+    sg.beginPath(); sg.arc(x, y, rad, 0, TAU); sg.fill();
+    if (s.m > .8) { // glints, only on the brightest few
+      sg.fillStyle = `rgba(230,236,255,${a * .22})`;
+      sg.fillRect(x - rad * 6, y - .5, rad * 12, 1); sg.fillRect(x - .5, y - rad * 6, 1, rad * 12);
+    }
+  }
+  // meteor
+  const mk = seg(t, 13.35, 13.95);
+  if (mk > 0 && mk < 1) {
+    const x = lerp(1480, 1060, E.outCubic(mk)), y = lerp(150, 330, E.outCubic(mk)), a = Math.sin(mk * Math.PI);
+    const gr = sg.createLinearGradient(x, y, x + 260, y - 112);
+    gr.addColorStop(0, `rgba(255,240,220,${a})`); gr.addColorStop(1, 'rgba(255,240,220,0)');
+    sg.strokeStyle = gr; sg.lineWidth = 1.6; sg.beginPath(); sg.moveTo(x, y); sg.lineTo(x + 260, y - 112); sg.stroke();
+  }
+  // mask: open sky above the image + sky pixels inside the image
+  mg.clearRect(0, 0, W, H); mg.fillStyle = '#fff';
+  if (r.y > 0) mg.fillRect(0, 0, W, r.y + 3);
+  mg.drawImage(skyMask, r.x, r.y, r.w, r.h);
+  sg.globalCompositeOperation = 'destination-in'; sg.drawImage(maskC, 0, 0); sg.globalCompositeOperation = 'source-over';
+  g.save(); g.globalCompositeOperation = 'screen'; g.drawImage(starC, 0, 0); g.restore();
+}
+
+// ---------- aperture ----------
+function aperture(t, a, draw) {
+  const k = seg(t, a, a + OPEN);
+  if (k <= 0) return false;
+  const e = E.inOutCubic(k), h = e * H, y0 = CY - h / 2;
+  g.save(); g.beginPath(); g.rect(0, y0, W, h); g.clip(); draw(); g.restore();
+  if (k < 1) {
+    const la = Math.sin(k * Math.PI) * .9;
+    for (const y of [y0, y0 + h]) {
+      const gr = g.createLinearGradient(0, 0, W, 0);
+      gr.addColorStop(0, 'rgba(240,194,122,0)'); gr.addColorStop(.5, `rgba(255,214,150,${la})`); gr.addColorStop(1, 'rgba(240,194,122,0)');
+      g.fillStyle = gr; g.fillRect(0, y - .75, W, 1.5);
+      g.fillStyle = `rgba(255,190,110,${la * .12})`; g.fillRect(0, y - 10, W, 20);
+    }
+  }
+  return true;
+}
+
+// ---------- logo mark ----------
+function mark(t, x, y) {
+  const draw = E.inOutCubic(seg(t, 12.45, 13.2)), open = E.inOutCubic(seg(t, 13.05, 13.65)), R = 46;
+  if (draw <= 0) return;
+  g.save(); g.strokeStyle = 'rgba(244,236,220,.95)'; g.lineWidth = 1.6; g.lineCap = 'round';
+  const gap = open * 13;
+  // upper arc lifts: the sky opening
+  g.beginPath(); g.arc(x, y - gap, R, Math.PI, Math.PI + Math.PI * draw); g.stroke();
+  g.beginPath(); g.arc(x, y + gap, R, 0, Math.PI * draw); g.stroke();
+  // horizon line + star
+  if (open > 0) {
+    g.fillStyle = `rgba(227,180,118,${open})`; g.fillRect(x - R * open * 1.4, y - .75, R * 2 * open * 1.4, 1.5);
+    const sy = y - gap - R * .42 * open, sr = 3.2 * open;
+    const gr = g.createRadialGradient(x, sy, 0, x, sy, 22); gr.addColorStop(0, `rgba(255,220,160,${.55 * open})`); gr.addColorStop(1, 'rgba(255,220,160,0)');
+    g.fillStyle = gr; g.fillRect(x - 22, sy - 22, 44, 44);
+    g.fillStyle = `rgba(255,236,200,${open})`; g.beginPath(); g.arc(x, sy, sr, 0, TAU); g.fill();
+  }
+  g.restore();
+}
+
+// ---------- text choreography ----------
+function chars(id, t, a, b, { stagger = .075, dur = .7, rise = 14, out = .35 } = {}) {
+  const el = $(id), sp = el.children;
+  const on = t >= a - .01 && t < b + out + .05; el.style.display = on ? '' : 'none'; if (!on) return;
+  const ko = E.inCubic(seg(t, b, b + out));
+  for (let i = 0; i < sp.length; i++) {
+    const k = E.outCubic(seg(t, a + i * stagger, a + i * stagger + dur));
+    sp[i].style.opacity = (k * (1 - ko)).toFixed(3);
+    sp[i].style.filter = `blur(${((1 - k) * 8 + ko * 6).toFixed(2)}px)`;
+    sp[i].style.transform = `translate(0,${((1 - k) * -rise - ko * 10).toFixed(2)}px)`;
+  }
+}
+function label(id, t, a, b) {
+  const el = $(id), on = t >= a && t < b + .4; el.style.display = on ? '' : 'none'; if (!on) return;
+  const k = E.outExpo(seg(t, a, a + .9)), ko = seg(t, b, b + .3);
+  el.style.opacity = (Math.min(1, k * 1.4) * (1 - ko)).toFixed(3);
+  el.firstElementChild.style.width = (k * 64).toFixed(1) + 'px';
+  el.style.letterSpacing = `${lerp(.8, .5, k).toFixed(3)}em`;
+}
+
+// ---------- grain ----------
+const grainFrames = []; { const gc = $('grain').getContext('2d'), r = rng(3); for (let f = 0; f < 4; f++) { const im = gc.createImageData(W, H), d = im.data; for (let i = 0; i < d.length; i += 4) { d[i] = d[i + 1] = d[i + 2] = r() * 255; d[i + 3] = 255; } grainFrames.push(im); } }
+let lastGrain = -1;
+
+// =====================================================================
+function seek(t) {
+  t = clamp(t, 0, 15);
+  g.setTransform(1, 0, 0, 1, 0, 0); g.globalCompositeOperation = 'source-over'; g.filter = 'none';
+  g.fillStyle = '#000'; g.fillRect(0, 0, W, H);
+
+  // scenes, each revealed through the aperture over the previous one
+  for (const sc of SCENES) {
+    if (t < sc.a || t >= sc.b) continue;
+    if (sc.a === 0) aperture(t, 0.0, () => drawScene(sc, t));
+    else if (!aperture(t, sc.a, () => drawScene(sc, t))) {}
+  }
+
+  // end card glow over the open sky
+  const endK = E.outCubic(seg(t, 12.3, 13.6));
+  if (endK > 0) {
+    const gr = g.createLinearGradient(0, H, 0, H - 520);
+    gr.addColorStop(0, `rgba(96,40,72,${.55 * endK})`); gr.addColorStop(.45, `rgba(40,22,54,${.3 * endK})`); gr.addColorStop(1, 'rgba(0,0,0,0)');
+    g.fillStyle = gr; g.fillRect(0, H - 520, W, 520);
+  }
+  mark(t, CX, 380);
+
+  // text
+  chars('t1', t, .75, 2.85);
+  chars('t2', t, 4.05, 5.95, { stagger: .06 });
+  chars('t3', t, 7.15, 8.95);
+  chars('t4', t, 9.95, 10.9, { stagger: .045, dur: .6, rise: 0, out: .45 });
+  $('t4').style.transform = `translateY(${(E.inOutQuint(seg(t, 10.95, 12.75)) * 700).toFixed(1)}px)`;
+  label('l1', t, .9, 2.9); label('l2', t, 4.2, 6.0); label('l3', t, 7.3, 9.0); label('l4', t, 10.1, 10.95);
+  // logo
+  const lg = $('logo');
+  [...lg.children].forEach((s, i) => {
+    const k = E.outCubic(seg(t, 13.0 + i * .07, 13.0 + i * .07 + .9));
+    s.style.opacity = k.toFixed(3); s.style.filter = `blur(${((1 - k) * 10).toFixed(2)}px)`;
+    s.style.transform = `translateY(${((1 - k) * 18).toFixed(2)}px)`;
+  });
+  lg.style.letterSpacing = `${lerp(.16, .05, E.outCubic(seg(t, 13.0, 14.4))).toFixed(3)}em`;
+  chars('tag', t, 13.55, 99, { stagger: .07, dur: .7, rise: 8 });
+  const lc = E.outCubic(seg(t, 14.05, 14.75));
+  $('loc').style.opacity = lc.toFixed(3); $('loc').style.transform = `translateY(${((1 - lc) * 8).toFixed(1)}px)`;
+  $('note').style.opacity = t > 12.8 ? 1 - seg(t, 12.8, 13.1) * .0 : 1;
+
+  const gf = Math.floor(t * 30) % grainFrames.length;
+  if (gf !== lastGrain) { $('grain').getContext('2d').putImageData(grainFrames[gf], 0, 0); lastGrain = gf; }
+}
+
+const ready = (async () => {
+  await Promise.all([load('wall', 'img/wall.webp'), load('vase', 'img/vase.webp'), load('studio', 'img/studio.webp'), load('city', 'img/city.webp')]);
+  await document.fonts.ready;
+  const all = Object.values(COPY).join('') + '東京都渋谷区※画像はイメージです。';
+  await Promise.all([document.fonts.load('500 52px "Shippori Mincho B1"', all), document.fonts.load('500 132px "Cormorant Garamond"'), document.fonts.load('400 15px Jost')]);
+  buildSky();
+  seek(0);
+  return true;
+})();
+window.__R = { seek, ready, duration: 15 };
+if (location.search.includes('play')) ready.then(() => { const t0 = performance.now(); const f = () => { seek(((performance.now() - t0) / 1000) % 15); requestAnimationFrame(f); }; f(); });
+else { const m = location.search.match(/t=([\d.]+)/); if (m) ready.then(() => seek(parseFloat(m[1]))); }
+})();
+</script>
+</body>
+</html>
