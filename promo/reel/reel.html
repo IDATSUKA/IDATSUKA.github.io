@@ -1,0 +1,840 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>Motion Reel</title>
+<!-- 15.000s motion reel. Every frame is a pure function of time: window.__R.seek(t). -->
+<link rel="stylesheet" href="fonts/fonts.css">
+<style>
+:root{
+  --bg:#060607; --fg:#f4f5f7; --ice:#9fd6ec; --sig:#ff5a36; --muted:#70767f; --dim:#5c626b;
+  --display:'Archivo',sans-serif; --grot:'Space Grotesk',sans-serif; --mono:'Space Mono',monospace;
+  --jp:'Zen Kaku Gothic New',sans-serif;
+}
+html,body{margin:0;width:1920px;height:1080px;overflow:hidden;background:var(--bg)}
+*{box-sizing:border-box}
+#stage{position:absolute;inset:0;overflow:hidden;background:var(--bg);color:var(--fg)}
+#world{position:absolute;inset:0;transform-origin:960px 540px}
+canvas{position:absolute;left:0;top:0}
+.layer{position:absolute;inset:0;pointer-events:none}
+.mono{font-family:var(--mono);text-transform:uppercase}
+.jp{font-family:var(--jp)}
+
+/* 02 TYPE */
+#inv{background:var(--fg)}
+.mask{position:absolute;left:0;width:1920px;overflow:hidden}
+.word{position:absolute;left:0;width:1920px;text-align:center;white-space:nowrap;
+  font-family:var(--display);font-size:250px;line-height:1;letter-spacing:-.01em}
+.word span{display:inline-block;will-change:transform}
+#sub1{position:absolute;left:0;width:1920px;top:640px;text-align:center;font-size:30px;font-weight:500;
+  letter-spacing:.08em;color:#c3c8d0}
+#tread{position:absolute;font-size:14px;letter-spacing:.18em;color:var(--ice)}
+
+/* 03 FORM */
+#formL{position:absolute;left:140px;top:420px;width:620px}
+#shapeName{height:78px;overflow:hidden;position:relative}
+#shapeName div{position:absolute;left:0;top:0;font-family:var(--display);font-weight:900;font-size:78px;line-height:78px;
+  font-variation-settings:"wdth" 62;letter-spacing:.01em}
+#formula{margin-top:22px;font-size:17px;letter-spacing:.06em;color:#c3c8d0;text-transform:none;white-space:nowrap}
+#formMeta{margin-top:12px;font-size:14px;letter-spacing:.2em;color:var(--ice)}
+#formR{position:absolute;right:140px;top:420px;text-align:right;font-size:14px;letter-spacing:.22em;line-height:34px;color:var(--dim)}
+#formR .on{color:var(--fg)}
+#formR .on::before{content:'';display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--sig);margin-right:14px;vertical-align:1px}
+
+/* 04 FLOW */
+#flowCap{position:absolute;left:140px;top:830px;font-size:15px;letter-spacing:.18em;color:var(--ice);text-transform:none}
+
+/* 05 SYSTEM */
+#statLbl{position:absolute;left:140px;top:352px;height:24px;overflow:hidden;width:700px}
+#statLbl div{position:absolute;left:0;top:0;font-size:18px;letter-spacing:.3em;color:var(--ice);white-space:nowrap}
+#statLbl .jp{font-size:18px;letter-spacing:.12em;color:#c3c8d0;margin-left:18px;text-transform:none}
+#statNum{position:absolute;left:128px;top:390px;height:250px;display:flex}
+.slot{width:150px;height:250px;overflow:hidden;position:relative}
+.slot.pt{width:70px}
+.slot div{position:absolute;left:0;top:0;width:100%;font-family:var(--grot);font-weight:600;font-size:250px;line-height:250px;letter-spacing:-.02em}
+#statFoot{position:absolute;left:140px;top:676px;font-size:13px;letter-spacing:.3em;color:var(--dim)}
+#statBar{position:absolute;left:140px;top:716px;width:640px;height:2px;background:rgba(255,255,255,.08)}
+#statBar i{position:absolute;left:0;top:0;height:2px;background:var(--ice)}
+
+/* 06 STATEMENT */
+#s5bg{position:absolute;inset:0}
+.big{position:absolute;left:0;top:0;width:1920px;height:1080px;display:flex;align-items:center;justify-content:center;
+  font-family:var(--display);font-size:260px;line-height:1;white-space:nowrap;letter-spacing:-.005em}
+.big span{display:inline-block}
+.chip{position:absolute;font-family:var(--mono);font-size:24px;font-weight:700;letter-spacing:.06em;color:#060607;white-space:nowrap;text-transform:none}
+
+/* END */
+#endWrap{position:absolute;left:0;top:0;width:1920px;height:1080px}
+#endMask{position:absolute;left:0;top:340px;width:1920px;height:252px;overflow:hidden}
+#endWord{position:absolute;left:0;top:0;width:1920px;text-align:center;font-family:var(--grot);font-weight:500;font-size:236px;
+  line-height:252px;letter-spacing:-.035em;white-space:nowrap}
+#endWord span{display:inline-block}
+#e1{position:absolute;left:0;width:1920px;top:652px;text-align:center;font-size:17px;letter-spacing:.5em;color:var(--ice)}
+#e2{position:absolute;left:0;width:1920px;top:698px;text-align:center;font-size:34px;font-weight:500;letter-spacing:.14em}
+#e2 span{display:inline-block}
+#e3{position:absolute;left:0;width:1920px;top:778px;text-align:center;font-size:14px;letter-spacing:.34em;color:#8a9099}
+
+/* chrome */
+#flash{background:#fff;opacity:0}
+#grain{opacity:.05;mix-blend-mode:screen}
+#vig{background:radial-gradient(ellipse 75% 75% at 50% 50%,rgba(0,0,0,0) 55%,rgba(0,0,0,.55) 100%)}
+#hud{color:var(--hudc,#c3c8d0);font-family:var(--mono);font-size:15px;letter-spacing:.24em;text-transform:uppercase}
+#hud .c{position:absolute;width:26px;height:26px;border-color:var(--hudc,#c3c8d0);border-style:solid;border-width:0;opacity:.7}
+#hud .tl{left:44px;top:44px;border-left-width:1px;border-top-width:1px}
+#hud .tr{right:44px;top:44px;border-right-width:1px;border-top-width:1px}
+#hud .bl{left:44px;bottom:44px;border-left-width:1px;border-bottom-width:1px}
+#hud .br{right:44px;bottom:44px;border-right-width:1px;border-bottom-width:1px}
+#hud .t{position:absolute;white-space:nowrap}
+#hTL{left:88px;top:52px}
+#hTR{right:88px;top:52px}
+#hBL{left:88px;bottom:52px;height:18px;overflow:hidden;width:520px}
+#hBL div{position:absolute;left:0;top:0}
+#hBL .jp{letter-spacing:.1em;margin-left:10px;font-size:13px}
+#hBR{right:88px;bottom:52px}
+#hBar{position:absolute;left:720px;bottom:58px;width:480px;height:1px;background:rgba(195,200,208,.18)}
+#hBar i{position:absolute;left:0;top:0;height:1px;background:var(--hudc,#c3c8d0)}
+#hBar b{position:absolute;top:-3px;width:1px;height:7px;background:rgba(195,200,208,.45)}
+#hBar em{position:absolute;top:-3px;width:7px;height:7px;margin-left:-3px;border-radius:50%;background:var(--sig)}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="world">
+    <div id="inv" class="layer"></div>
+    <canvas id="cv" width="1920" height="1080"></canvas>
+
+    <div id="L1" class="layer">
+      <div id="words"></div>
+      <div id="sub1" class="jp"></div>
+      <div id="tread" class="mono"></div>
+    </div>
+
+    <div id="L2" class="layer">
+      <div id="formL">
+        <div id="shapeName"><div id="sn0"></div><div id="sn1"></div></div>
+        <div id="formula" class="mono"></div>
+        <div id="formMeta" class="mono"></div>
+      </div>
+      <div id="formR" class="mono"></div>
+    </div>
+
+    <div id="L3" class="layer"><div id="flowCap" class="mono"></div></div>
+
+    <div id="L4" class="layer">
+      <div id="statLbl"><div id="sl0"></div><div id="sl1"></div></div>
+      <div id="statNum"></div>
+      <div id="statFoot" class="mono"></div>
+      <div id="statBar"><i></i></div>
+    </div>
+
+    <div id="L5" class="layer">
+      <div id="s5bg"></div>
+      <div id="s5a"></div>
+      <div id="s5b" class="big"></div>
+      <div id="s5c" class="big"></div>
+      <div id="chips"></div>
+    </div>
+
+    <div id="L6" class="layer">
+      <div id="endWrap">
+        <div id="endMask"><div id="endWord"></div></div>
+        <div id="e1" class="mono">Motion Reel — 2026</div>
+        <div id="e2" class="jp"></div>
+        <div id="e3" class="mono">Every frame rendered from code · 1920×1080 · 60 fps · 0 keyframes</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="flash" class="layer"></div>
+  <canvas id="grain" width="1920" height="1080"></canvas>
+  <div id="vig" class="layer"></div>
+  <div id="hud" class="layer">
+    <div class="c tl"></div><div class="c tr"></div><div class="c bl"></div><div class="c br"></div>
+    <div id="hTL" class="t">Claude — Motion Reel</div>
+    <div id="hTR" class="t"></div>
+    <div id="hBL" class="t"><div id="hb0"></div><div id="hb1"></div></div>
+    <div id="hBR" class="t">1920×1080 · 60 fps · f(t)</div>
+    <div id="hBar"><i></i></div>
+  </div>
+</div>
+
+<script>
+(() => {
+'use strict';
+const W = 1920, H = 1080, CX = 960, CY = 540;
+const $ = id => document.getElementById(id);
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const seg = (t, a, b) => clamp((t - a) / (b - a));
+const lerp = (a, b, k) => a + (b - a) * k;
+const TAU = Math.PI * 2;
+const E = {
+  outExpo: x => x >= 1 ? 1 : 1 - Math.pow(2, -10 * x),
+  inExpo: x => x <= 0 ? 0 : Math.pow(2, 10 * x - 10),
+  inOutExpo: x => x <= 0 ? 0 : x >= 1 ? 1 : x < .5 ? Math.pow(2, 20 * x - 10) / 2 : (2 - Math.pow(2, -20 * x + 10)) / 2,
+  outCubic: x => 1 - Math.pow(1 - x, 3),
+  inCubic: x => x * x * x,
+  inOutCubic: x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2,
+  outQuint: x => 1 - Math.pow(1 - x, 5),
+  outBack: x => { const c1 = 1.9, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); },
+};
+function rng(seed) {
+  return () => {
+    seed |= 0; seed = seed + 0x6D2B79F5 | 0;
+    let t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+const hash = n => { const r = rng(n * 9973 + 17); return r(); };
+
+// ---------- palette ----------
+const ICE = [159, 214, 236], SIG = [255, 90, 54], FG = [244, 245, 247], BG = [6, 6, 7];
+const rgba = (c, a) => `rgba(${c[0]},${c[1]},${c[2]},${a})`;
+
+// ---------- timeline (beats at 120 bpm) ----------
+const HITS = [1.5, 2.75, 4.0, 6.5, 9.0, 11.5, 12.0, 12.5, 13.05];
+const SECTIONS = [
+  [0.0, '01 / 06 — Origin', '起点'],
+  [1.5, '02 / 06 — Type', '文字'],
+  [4.0, '03 / 06 — Form', '形'],
+  [6.5, '04 / 06 — Flow', '流れ'],
+  [9.0, '05 / 06 — System', '体系'],
+  [11.5, '06 / 06 — Statement', '結論'],
+];
+
+// ---------- perlin ----------
+const PERM = new Uint8Array(512);
+{ const r = rng(7), p = [...Array(256).keys()];
+  for (let i = 255; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [p[i], p[j]] = [p[j], p[i]]; }
+  for (let i = 0; i < 512; i++) PERM[i] = p[i & 255]; }
+const fade = t => t * t * t * (t * (t * 6 - 15) + 10);
+function grad(h, x, y, z) { h &= 15; const u = h < 8 ? x : y, v = h < 4 ? y : (h === 12 || h === 14 ? x : z); return ((h & 1) ? -u : u) + ((h & 2) ? -v : v); }
+function noise(x, y, z) {
+  let X = Math.floor(x), Y = Math.floor(y), Z = Math.floor(z);
+  x -= X; y -= Y; z -= Z; X &= 255; Y &= 255; Z &= 255;
+  const u = fade(x), v = fade(y), w = fade(z), P = PERM;
+  const A = P[X] + Y, AA = P[A] + Z, AB = P[A + 1] + Z, B = P[X + 1] + Y, BA = P[B] + Z, BB = P[B + 1] + Z;
+  return lerp(
+    lerp(lerp(grad(P[AA], x, y, z), grad(P[BA], x - 1, y, z), u), lerp(grad(P[AB], x, y - 1, z), grad(P[BB], x - 1, y - 1, z), u), v),
+    lerp(lerp(grad(P[AA + 1], x, y, z - 1), grad(P[BA + 1], x - 1, y, z - 1), u), lerp(grad(P[AB + 1], x, y - 1, z - 1), grad(P[BB + 1], x - 1, y - 1, z - 1), u), v), w);
+}
+
+// ---------- canvas ----------
+const cv = $('cv'), g = cv.getContext('2d');
+
+function dot(x, y, r, sx = 1, sy = 1, glow = 1) {
+  if (glow > 0) {
+    const R = r * 7;
+    const gr = g.createRadialGradient(x, y, 0, x, y, R);
+    gr.addColorStop(0, rgba(SIG, .38 * glow)); gr.addColorStop(.35, rgba(SIG, .10 * glow)); gr.addColorStop(1, rgba(SIG, 0));
+    g.fillStyle = gr; g.fillRect(x - R, y - R, R * 2, R * 2);
+  }
+  g.fillStyle = rgba(SIG, 1);
+  g.beginPath(); g.ellipse(x, y, Math.max(.01, r * sx), Math.max(.01, r * sy), 0, 0, TAU); g.fill();
+}
+const beatPulse = t => 1 + .07 * Math.pow(.5 + .5 * Math.cos(TAU * t * 2), 6);
+
+// =====================================================================
+// 3D FORMS
+// =====================================================================
+const N = 5832; // 18^3
+const SH = [new Float32Array(N * 3), new Float32Array(N * 3), new Float32Array(N * 3), new Float32Array(N * 3)];
+const EQ = new Float32Array(N * 3);
+const PR = new Float32Array(N); // per-point random
+{
+  const r = rng(42);
+  for (let i = 0; i < N; i++) PR[i] = r();
+  const ga = Math.PI * (3 - Math.sqrt(5));
+  for (let i = 0; i < N; i++) {
+    // sphere (fibonacci)
+    const y = 1 - (i + .5) / N * 2, rr = Math.sqrt(1 - y * y), th = ga * i;
+    SH[0].set([Math.cos(th) * rr, y, Math.sin(th) * rr], i * 3);
+    EQ.set([Math.cos(th), 0, Math.sin(th)], i * 3);
+    // torus 81 x 72
+    const a = Math.floor(i / 72), b = i % 72, u = TAU * a / 81, v = TAU * b / 72, R = .78, rt = .3;
+    SH[1].set([(R + rt * Math.cos(v)) * Math.cos(u), rt * Math.sin(v), (R + rt * Math.cos(v)) * Math.sin(u)], i * 3);
+    // lattice 18^3
+    const gi = i % 18, gj = Math.floor(i / 18) % 18, gk = Math.floor(i / 324);
+    SH[2].set([(gi / 17 - .5) * 1.34, (gj / 17 - .5) * 1.34, (gk / 17 - .5) * 1.34], i * 3);
+    // double helix + rungs
+    const k = i / N;
+    if (PR[i] < .86) {
+      const s = i & 1, yy = (k * 2 - 1) * 1.15, ang = yy * 5.4 + s * Math.PI, jt = (r() - .5) * .07;
+      SH[3].set([Math.cos(ang) * (.5 + jt), yy + (r() - .5) * .02, Math.sin(ang) * (.5 + jt)], i * 3);
+    } else {
+      const rung = Math.floor(r() * 44), yy = (rung / 43 * 2 - 1) * 1.15, ang = yy * 5.4, l = r() * 2 - 1;
+      SH[3].set([Math.cos(ang) * .5 * l, yy, Math.sin(ang) * .5 * l], i * 3);
+    }
+  }
+}
+const MORPHS = [{ s: 1, t: 4.95 }, { s: 3, t: 5.75 }];
+const FORM_INFO = [
+  ['SPHERE', 'p = (cos φ · sin θ,  cos θ,  sin φ · sin θ)'],
+  ['TORUS', 'p = ((R + r cos v) cos u,  r sin v,  …)'],
+  ['LATTICE', 'p = (i, j, k) / 17 − ½'],
+  ['HELIX', 'p = (cos 5.4y,  y,  sin 5.4y)'],
+];
+const P3 = new Float32Array(N * 3), PS = new Float32Array(N * 3); // world, screen(x,y,persp)
+
+function formRot(t) {
+  let yaw = t * .75, pitch = .42 + .12 * Math.sin(t * 1.3);
+  for (const m of MORPHS) yaw += 1.35 * E.outExpo(seg(t, m.t, m.t + 1.1));
+  return [yaw, pitch];
+}
+function computeForm(t) {
+  const [yaw, pitch] = formRot(t), cy = Math.cos(yaw), sy = Math.sin(yaw), cp = Math.cos(pitch), sp = Math.sin(pitch);
+  const D = 3.3, S = 330 * (1 + .04 * E.outExpo(seg(t, 4.0, 6.5)));
+  for (let i = 0; i < N; i++) {
+    const o = i * 3;
+    const d0 = (SH[0][o + 1] + 1) * .5 * .22;
+    const w0 = E.outExpo(seg(t, 4.1 + d0, 4.62 + d0));
+    let x = lerp(EQ[o], SH[0][o], w0), y = lerp(EQ[o + 1], SH[0][o + 1], w0), z = lerp(EQ[o + 2], SH[0][o + 2], w0);
+    let prev = 0;
+    for (const m of MORPHS) {
+      const src = SH[prev], dl = ((src[o + 1] + 1.2) / 2.4) * .14 + PR[i] * .04;
+      const w = E.inOutExpo(seg(t, m.t - .06 + dl, m.t + .34 + dl));
+      if (w > 0) { const d = SH[m.s]; x = lerp(x, d[o], w); y = lerp(y, d[o + 1], w); z = lerp(z, d[o + 2], w); }
+      prev = m.s;
+    }
+    P3[o] = x; P3[o + 1] = y; P3[o + 2] = z;
+    const X = x * cy + z * sy, Z = -x * sy + z * cy;
+    const Y2 = y * cp - Z * sp, Z2 = y * sp + Z * cp;
+    const pz = D / (D + Z2);
+    PS[o] = CX + X * pz * S; PS[o + 1] = CY - Y2 * pz * S; PS[o + 2] = pz;
+  }
+}
+
+// =====================================================================
+// FLOW (precomputed curl-noise advection, deterministic)
+// =====================================================================
+const FT0 = 6.5, FT1 = 9.0, FS = 240, FSTEPS = Math.round((FT1 - FT0) * FS);
+let FLOW = null, TGT = null;
+function curl(x, y, t, out) {
+  const s = .0021, e = .015, nx = x * s, ny = y * s, nz = t * .35;
+  const dy = (noise(nx, ny + e, nz) - noise(nx, ny - e, nz)) / (2 * e);
+  const dx = (noise(nx + e, ny, nz) - noise(nx - e, ny, nz)) / (2 * e);
+  out[0] = dy; out[1] = -dx;
+}
+function buildFlow() {
+  computeForm(FT0);
+  FLOW = new Float32Array((FSTEPS + 1) * N * 2);
+  const vx0 = new Float32Array(N), vy0 = new Float32Array(N), px = new Float32Array(N), py = new Float32Array(N);
+  const r = rng(99), c = [0, 0];
+  for (let i = 0; i < N; i++) {
+    px[i] = PS[i * 3]; py[i] = PS[i * 3 + 1];
+    let dx = px[i] - CX, dy = py[i] - CY; const l = Math.hypot(dx, dy) || 1;
+    const a = Math.atan2(dy, dx) + (r() - .5) * .9, m = 700 + Math.pow(r(), 1.6) * 2300;
+    vx0[i] = Math.cos(a) * m; vy0[i] = Math.sin(a) * m;
+  }
+  const dt = 1 / FS;
+  for (let k = 0; k <= FSTEPS; k++) {
+    const base = k * N * 2, t = FT0 + k * dt, damp = Math.exp(-(t - FT0) * 3.4), spd = 330 * E.outCubic(seg(t, FT0, FT0 + .6));
+    for (let i = 0; i < N; i++) {
+      FLOW[base + i * 2] = px[i]; FLOW[base + i * 2 + 1] = py[i];
+      curl(px[i], py[i], t, c);
+      let vx = vx0[i] * damp + c[0] * spd, vy = vy0[i] * damp + c[1] * spd;
+      const ox = Math.max(0, Math.abs(px[i] - CX) - 860), oy = Math.max(0, Math.abs(py[i] - CY) - 470);
+      vx -= Math.sign(px[i] - CX) * ox * 6; vy -= Math.sign(py[i] - CY) * oy * 6;
+      px[i] += vx * dt; py[i] += vy * dt;
+    }
+  }
+}
+function flowAt(i, t, out) {
+  const f = clamp((t - FT0) * FS, 0, FSTEPS), k = Math.floor(f), a = f - k, k2 = Math.min(FSTEPS, k + 1);
+  const o1 = k * N * 2 + i * 2, o2 = k2 * N * 2 + i * 2;
+  out[0] = lerp(FLOW[o1], FLOW[o2], a); out[1] = lerp(FLOW[o1 + 1], FLOW[o2 + 1], a);
+}
+function buildTargets() {
+  const oc = document.createElement('canvas'); oc.width = W; oc.height = H;
+  const o = oc.getContext('2d');
+  o.fillStyle = '#fff'; o.textAlign = 'center'; o.textBaseline = 'alphabetic';
+  o.font = '700 560px "Space Grotesk"';
+  o.fillText('f(t)', CX, 735);
+  const d = o.getImageData(0, 0, W, H).data, pts = [];
+  for (let y = 0; y < H; y += 2) for (let x = 0; x < W; x += 2) if (d[(y * W + x) * 4] > 128) pts.push(x, y);
+  const r = rng(5); TGT = new Float32Array(N * 2);
+  const M = pts.length / 2;
+  for (let i = 0; i < N; i++) { const j = Math.floor(r() * M); TGT[i * 2] = pts[j * 2] + (r() - .5) * 2; TGT[i * 2 + 1] = pts[j * 2 + 1] + (r() - .5) * 2; }
+}
+const fa = [0, 0];
+function flowPos(i, t, out) {
+  flowAt(i, t, out);
+  const d = PR[i] * .32, w = E.inOutCubic(seg(t, 7.8 + d, 8.5 + d));
+  if (w > 0) {
+    const jx = Math.sin(t * 7 + i) * 1.2 * (1 - w * .6), jy = Math.cos(t * 6 + i * 1.7) * 1.2 * (1 - w * .6);
+    out[0] = lerp(out[0], TGT[i * 2] + jx, w); out[1] = lerp(out[1], TGT[i * 2 + 1] + jy, w);
+  }
+  return w;
+}
+
+// =====================================================================
+// DOM builders
+// =====================================================================
+const WORDS = [
+  { s: 'EVERY', a: 1.56, b: 2.0 },
+  { s: 'FRAME', a: 2.0, b: 2.5 },
+  { s: 'IS A', a: 2.5, b: 2.75 },
+  { s: 'FUNCTION', a: 2.75, b: 3.25 },
+  { s: 'OF TIME', a: 3.25, b: 3.82 },
+];
+const BASE = 596, CAPH = 182;
+const wordEls = [];
+for (const w of WORDS) {
+  const m = document.createElement('div'); m.className = 'mask';
+  m.style.top = (BASE - CAPH - 40) + 'px'; m.style.height = (CAPH + 40 - 14) + 'px';
+  const d = document.createElement('div'); d.className = 'word';
+  d.style.top = '0px';
+  d.innerHTML = [...w.s].map(ch => `<span>${ch === ' ' ? '&nbsp;' : ch}</span>`).join('');
+  m.appendChild(d); $('words').appendChild(m);
+  wordEls.push({ m, d, spans: [...d.children] });
+}
+const SUB1 = 'すべてのフレームは、時間の関数。';
+const E2 = '動きは、設計できる。';
+$('e2').innerHTML = [...E2].map(c => `<span>${c}</span>`).join('');
+$('endWord').innerHTML = [...'Claude'].map(c => `<span>${c}</span>`).join('') + '<i id="bl6" style="display:inline-block;width:0;height:0"></i>';
+$('formR').innerHTML = [0, 1, 3].map(i => `<div>${FORM_INFO[i][0]}</div>`).join('');
+
+// stats
+const STATS = [
+  { t: 9.0, v: '15.000', en: 'Seconds', jp: '秒' },
+  { t: 9.5, v: '900', en: 'Frames', jp: 'フレーム' },
+  { t: 10.0, v: '5832', en: 'Particles', jp: '粒子' },
+  { t: 10.5, v: '1', en: 'HTML file', jp: '一枚のファイル' },
+  { t: 11.0, v: '0', en: 'Keyframes', jp: 'キーフレーム' },
+];
+const SLOTS = 6, slotEls = [];
+for (let i = 0; i < SLOTS; i++) {
+  const s = document.createElement('div'); s.className = 'slot';
+  const a = document.createElement('div'), b = document.createElement('div'), c = document.createElement('div');
+  s.append(a, b, c); $('statNum').appendChild(s); slotEls.push({ s, a, b, c });
+}
+// statements
+const STA = 'NO TIMELINE.', STB = 'NO PLUGINS.', STC = 'JUST MATH.';
+const BANDS = 7;
+for (let i = 0; i < BANDS; i++) {
+  const d = document.createElement('div'); d.className = 'big'; d.textContent = STA;
+  d.style.clipPath = `inset(${(i / BANDS) * 100 * .30 + 35 - .15}% 0 ${100 - ((i + 1) / BANDS) * 100 * .30 - 35 - .15}% 0)`;
+  $('s5a').appendChild(d);
+}
+$('s5b').innerHTML = [...STB].map(c => `<span>${c === ' ' ? '&nbsp;' : c}</span>`).join('');
+$('s5c').innerHTML = [...STC].map(c => `<span>${c === ' ' ? '&nbsp;' : c}</span>`).join('');
+const CHIPS = ['sin(t)', 'cos(θ)', 'e^(−kt)', 'lerp(a, b, t)', 'ease(t)³', '∂ψ/∂y', 'noise(x, y, t)', 't / 15', 'atan2(y, x)', 'φ = π(3 − √5)', 'x·cos θ − z·sin θ', 'D / (D + z)'];
+const chipEls = CHIPS.map((c, i) => { const d = document.createElement('div'); d.className = 'chip'; d.textContent = c; $('chips').appendChild(d); return d; });
+
+// grain
+const grainFrames = [];
+{
+  const gc = $('grain').getContext('2d'), r = rng(3);
+  for (let f = 0; f < 6; f++) {
+    const img = gc.createImageData(W, H), d = img.data;
+    for (let i = 0; i < d.length; i += 4) { const v = r() * 255; d[i] = d[i + 1] = d[i + 2] = v; d[i + 3] = 255; }
+    grainFrames.push(img);
+  }
+}
+let lastGrain = -1;
+
+// HUD bar ticks
+for (const s of SECTIONS) { const b = document.createElement('b'); b.style.left = (s[0] / 15 * 480) + 'px'; $('hBar').appendChild(b); }
+const hBarDot = document.createElement('em'); $('hBar').appendChild(hBarDot);
+
+// ---------- helpers ----------
+function show(el, on) { el.style.display = on ? '' : 'none'; }
+function sectionAt(t) { let s = 0; for (let i = 0; i < SECTIONS.length; i++) if (t >= SECTIONS[i][0]) s = i; return s; }
+function rollPair(t, times, render, elA, elB, dur = .28, H = 1) {
+  // slot-roll between successive labels. times: array of change times.
+  let idx = -1; for (let i = 0; i < times.length; i++) if (t >= times[i]) idx = i;
+  const k = idx >= 0 ? E.outExpo(seg(t, times[idx], times[idx] + dur)) : 1;
+  elA.innerHTML = idx > 0 ? render(idx - 1) : ''; elB.innerHTML = idx >= 0 ? render(idx) : '';
+  elA.style.transform = `translateY(${-k * 100 * H}%)`; elB.style.transform = `translateY(${(1 - k) * 100 * H}%)`;
+}
+const tc = t => { const f = Math.floor(t * 60 + 1e-6), s = Math.floor(f / 60), ff = f % 60; return `TC 00:00:${String(s).padStart(2, '0')}:${String(ff).padStart(2, '0')}`; };
+
+// =====================================================================
+// SEEK
+// =====================================================================
+function seek(t) {
+  t = clamp(t, 0, 15);
+  g.setTransform(1, 0, 0, 1, 0, 0);
+  g.clearRect(0, 0, W, H);
+  g.globalCompositeOperation = 'source-over';
+
+  // camera punch + rgb split
+  let punch = 0, split = 0;
+  for (const h of HITS) if (t >= h) { const e = Math.exp(-(t - h) * 11); punch += e; split += Math.exp(-(t - h) * 22); }
+  const rot = Math.sin(t * 37) * .12 * split;
+  $('world').style.transform = `scale(${1 + .022 * punch}) rotate(${rot}deg)`;
+  const sp = (split * 9).toFixed(2);
+  const shadow = split > .02 ? `${-sp}px 0 rgba(255,60,80,.55), ${sp}px 0 rgba(90,210,255,.55)` : 'none';
+
+  // flash
+  let fl = 0;
+  for (const [h, a] of [[4.0, .18], [6.5, .42], [9.0, .3], [13.05, .16]]) if (t >= h) fl += a * Math.exp(-(t - h) * 26);
+  $('flash').style.opacity = fl.toFixed(3);
+
+  // ---------------- 01 ORIGIN + dot choreography ----------------
+  let dotX = CX, dotY = CY, dotR = 9 * beatPulse(t), dsx = 1, dsy = 1, dotOn = true;
+  if (t < 1.5) {
+    for (const tb of [.5, 1.0]) {
+      const k = seg(t, tb, tb + 1.0);
+      if (k > 0 && k < 1) { g.strokeStyle = rgba(ICE, .55 * (1 - k)); g.lineWidth = 1; g.beginPath(); g.arc(CX, CY, 10 + E.outExpo(k) * 300, 0, TAU); g.stroke(); }
+    }
+    // anticipation → drop → squash
+    const up = E.outCubic(seg(t, 1.1, 1.3)), down = E.inExpo(seg(t, 1.3, 1.47));
+    dotY = CY - 18 * up + (BASE - CY + 18) * down;
+    dsx = 1 + .25 * up * (1 - down) - .25 * down * (1 - seg(t, 1.47, 1.5)) + .7 * seg(t, 1.47, 1.5);
+    dsy = 1 / dsx;
+  }
+
+  // ---------------- 02 TYPE ----------------
+  const in1 = t >= 1.5 && t < 4.15;
+  show($('L1'), in1);
+  let invK = 0;
+  if (t >= 2.75 && t < 3.3) {
+    const a = E.outExpo(seg(t, 2.75, 2.86)), b = E.inExpo(seg(t, 3.16, 3.27));
+    $('inv').style.clipPath = `inset(${(1 - a) * 100}% 0 ${b * 100}% 0)`; show($('inv'), true); invK = a * (1 - b);
+  } else show($('inv'), false);
+  if (in1) {
+    const inverted = t >= 2.8 && t < 3.22;
+    // baseline
+    const ext = E.outExpo(seg(t, 1.5, 1.85)), ret = E.inOutExpo(seg(t, 3.52, 3.8));
+    // period position after "OF TIME"
+    const last = wordEls[4].spans[wordEls[4].spans.length - 1];
+    let pX = 1300;
+    let x0 = lerp(CX, 250, ext), x1 = lerp(CX, 1670, ext);
+    // words
+    WORDS.forEach((w, wi) => {
+      const el = wordEls[wi], on = t >= w.a - .01 && t < w.b + .35;
+      show(el.m, on); if (!on) return;
+      const n = el.spans.length;
+      const lw = E.outExpo(seg(t, w.a, w.a + .5));
+      const wd = lerp(125, wi === 3 ? 72 : 88, lw), wg = lerp(300, 860, E.outCubic(seg(t, w.a, w.a + .3)));
+      el.d.style.fontVariationSettings = `"wdth" ${wd.toFixed(1)}, "wght" ${wg.toFixed(0)}`;
+      el.d.style.color = inverted ? '#060607' : '#f4f5f7';
+      el.d.style.textShadow = shadow;
+      el.spans.forEach((s, i) => {
+        const ki = E.outExpo(seg(t, w.a + i * .022, w.a + i * .022 + .34));
+        let ko;
+        if (wi === 4) ko = -E.inExpo(seg(t, 3.78 + i * .012, 3.78 + i * .012 + .22)) * -1; // drops down
+        else ko = E.inExpo(seg(t, w.b - .05 + i * .012, w.b - .05 + i * .012 + .18));
+        const y = (1 - ki) * 115 - (wi === 4 ? -ko * 115 : ko * 115);
+        s.style.transform = `translateY(${y}%)`;
+      });
+      el.d.style.top = (CAPH + 40 - 14 - 250 * .915) + 'px';
+    });
+    if (t >= 3.4) { const r = last.getBoundingClientRect(); pX = r.right + 30; }
+    if (t >= 3.52) { x0 = lerp(250, pX, ret); x1 = lerp(1670, pX, ret); }
+    // ruler ticks
+    const tickA = E.outExpo(seg(t, 1.6, 2.2)) * (1 - E.inExpo(seg(t, 3.45, 3.6)));
+    if (tickA > 0) {
+      g.fillStyle = rgba(inverted ? BG : [195, 200, 208], .45 * tickA);
+      for (let i = 0; i <= 28; i++) {
+        const x = 250 + i * (1420 / 28), k = seg(t, 1.6 + i * .012, 1.9 + i * .012);
+        if (k <= 0) continue;
+        const hh = (i % 7 === 0 ? 16 : 7) * E.outExpo(k);
+        g.fillRect(x - .5, BASE + 8, 1, hh);
+      }
+    }
+    // line
+    if (t >= 1.5 && t < 3.82) {
+      g.fillStyle = rgba(SIG, 1);
+      g.fillRect(x0, BASE - 1.5, Math.max(0, x1 - x0), 3);
+    }
+    // readout
+    const tr = $('tread');
+    const ra = E.outExpo(seg(t, 1.7, 2.0)) * (1 - seg(t, 3.45, 3.55));
+    tr.style.opacity = ra; tr.style.left = (1670 - 190) + 'px'; tr.style.top = (BASE + 22) + 'px';
+    tr.style.color = inverted ? '#060607' : '';
+    tr.textContent = `t = ${t.toFixed(3)} s`;
+    // subtitle typing
+    const n = Math.floor(clamp((t - 1.75) / 1.35) * SUB1.length);
+    const sa = 1 - E.inExpo(seg(t, 3.55, 3.75));
+    const sub = $('sub1');
+    sub.style.opacity = sa;
+    sub.style.color = inverted ? '#060607' : '';
+    sub.innerHTML = SUB1.slice(0, n) + (n < SUB1.length && t > 1.75 ? '<span style="display:inline-block;width:14px;height:30px;background:#ff5a36;vertical-align:-4px;margin-left:4px"></span>' : '');
+    // dot
+    if (t >= 1.5) {
+      const k = E.inOutExpo(seg(t, 3.84, 4.12));
+      if (t < 3.52) { dotX = CX; dotY = BASE; dotOn = t < 1.56; dsx = 1; dsy = 1; }
+      else { dotOn = t >= 3.72; dotX = lerp(pX, CX, k); dotY = lerp(BASE, CY, k) - Math.sin(k * Math.PI) * 120; }
+    }
+    // squash on line birth
+    if (t >= 1.5 && t < 1.56) { dsx = 3.2; dsy = .45; }
+  }
+
+  // ---------------- 03 FORM ----------------
+  const in2 = t >= 4.0 && t < 6.5;
+  show($('L2'), in2);
+  if (in2) {
+    const ring = E.outExpo(seg(t, 4.0, 4.3)), ringFade = 1 - seg(t, 4.3, 4.7);
+    if (ringFade > 0) { g.strokeStyle = rgba(SIG, ringFade); g.lineWidth = 2; g.beginPath(); g.arc(CX, CY, 9 + ring * 320, 0, TAU); g.stroke(); }
+    computeForm(t);
+    g.globalCompositeOperation = 'lighter';
+    const vis = seg(t, 4.08, 4.2);
+    for (let i = 0; i < N; i++) {
+      const o = i * 3, pz = PS[o + 2], a = clamp((pz - .72) * 1.9) * .75 * vis + .06;
+      const s = 1.1 + (pz - .7) * 3.2;
+      g.fillStyle = PR[i] < .012 ? rgba(SIG, .95) : PR[i] > .93 ? rgba(FG, a) : rgba(ICE, a);
+      g.fillRect(PS[o] - s / 2, PS[o + 1] - s / 2, s, s);
+    }
+    g.globalCompositeOperation = 'source-over';
+    // orbit + axis gizmo
+    const [yaw, pitch] = formRot(t);
+    g.strokeStyle = rgba(ICE, .16 * seg(t, 4.3, 4.7)); g.lineWidth = 1;
+    g.beginPath(); g.ellipse(CX, CY, 470, 470 * Math.abs(Math.sin(pitch)) + 10, 0, 0, TAU); g.stroke();
+    // label
+    const idx = t < 4.95 ? 0 : t < 5.75 ? 1 : 3;
+    const la = E.outExpo(seg(t, 4.25, 4.6)) * (1 - E.inExpo(seg(t, 6.3, 6.45)));
+    $('formL').style.opacity = la; $('formR').style.opacity = la;
+    $('formL').style.transform = `translateX(${(1 - la) * -30}px)`;
+    rollPair(t, [4.15, 4.95, 5.75], i => FORM_INFO[[0, 1, 3][i]][0], $('sn0'), $('sn1'));
+    const ft = FORM_INFO[idx][1], chg = [4.15, 4.95, 0, 5.75][idx];
+    $('formula').textContent = ft.slice(0, Math.floor(clamp((t - chg) / .35) * ft.length));
+    const deg = ((yaw * 180 / Math.PI) % 360).toFixed(1).padStart(5, '0');
+    $('formMeta').textContent = `n = 5,832   θ = ${deg}°`;
+    [...$('formR').children].forEach((d, i) => d.className = [0, 1, 3][i] === idx ? 'on' : '');
+    dotOn = t < 4.12;
+    if (dotOn) { dotX = CX; dotY = CY; }
+    // nucleus
+    dot(CX, CY, 5 * (1 + .3 * Math.sin(t * 9)), 1, 1, .6);
+  }
+
+  // ---------------- 04 FLOW ----------------
+  const in3 = t >= 6.5 && t < 9.0;
+  show($('L3'), in3);
+  if (in3 && FLOW) {
+    const lag = .055, pa = [0, 0], pb = [0, 0];
+    g.globalCompositeOperation = 'lighter';
+    g.lineCap = 'round';
+    const groups = [[rgba(ICE, .55), 1.3], [rgba(FG, .6), 1.3], [rgba(SIG, .95), 1.8]];
+    for (let gi = 0; gi < 3; gi++) {
+      g.strokeStyle = groups[gi][0]; g.lineWidth = groups[gi][1];
+      g.beginPath();
+      for (let i = 0; i < N; i++) {
+        const grp = PR[i] < .012 ? 2 : PR[i] > .93 ? 1 : 0;
+        if (grp !== gi) continue;
+        const w = flowPos(i, t, pa);
+        flowPos(i, Math.max(FT0, t - lag), pb);
+        if (Math.abs(pa[0] - pb[0]) + Math.abs(pa[1] - pb[1]) < .6) { g.moveTo(pa[0] - .7, pa[1]); g.lineTo(pa[0] + .7, pa[1]); }
+        else { g.moveTo(pb[0], pb[1]); g.lineTo(pa[0], pa[1]); }
+      }
+      g.stroke();
+    }
+    if (t > 7.8) {
+      for (let i = 0; i < N; i++) {
+        const w = flowPos(i, t, pa); if (w < .5) continue;
+        const s = 2.6 * (w - .5) * 2;
+        g.fillStyle = PR[i] < .012 ? rgba(SIG, 1) : rgba(PR[i] > .93 ? FG : ICE, .85);
+        g.fillRect(pa[0] - s / 2, pa[1] - s / 2, s, s);
+      }
+    }
+    g.globalCompositeOperation = 'source-over';
+    const ca = E.outExpo(seg(t, 6.7, 7.0)) * (1 - seg(t, 8.8, 8.95));
+    $('flowCap').style.opacity = ca;
+    const cap = t < 7.8 ? 'v = curl ψ(x, y, t)   ·   5,832 particles' : 'lim → f(t)';
+    $('flowCap').textContent = cap;
+    dotOn = false;
+  }
+
+  // ---------------- 05 SYSTEM ----------------
+  const in4 = t >= 9.0 && t < 11.52;
+  show($('L4'), in4);
+  if (in4) {
+    const SX = 1420, SYy = 540;
+    const m1 = E.inOutExpo(seg(t, 9.92, 10.2)), m2 = E.inOutExpo(seg(t, 10.68, 10.95));
+    // divider
+    const dv = E.outExpo(seg(t, 9.0, 9.35)) * (1 - E.inExpo(seg(t, 11.25, 11.45)));
+    g.fillStyle = rgba([195, 200, 208], .18); g.fillRect(880, 540 - 470 * dv, 1, 940 * dv);
+    let best = 1e9, bi = -1;
+    for (let r = 0; r < 14; r++) for (let c = 0; c < 24; c++) {
+      const x = 40 + c * 80, y = 540 + (r - 6.5) * 80;
+      if (x < 920) continue;
+      const d = Math.hypot(x - SX, y - SYy);
+      if (d < best) { best = d; bi = r * 24 + c; }
+    }
+    for (let r = 0; r < 14; r++) for (let c = 0; c < 24; c++) {
+      const x = 40 + c * 80, y = 540 + (r - 6.5) * 80;
+      if (x < 920) continue;
+      const d = Math.hypot(x - SX, y - SYy);
+      const intro = E.outBack(seg(t, 9.0 + d * .00045, 9.3 + d * .00045));
+      const outro = 1 - E.inExpo(seg(t, 11.2 + (1 - d / 900) * .18, 11.4 + (1 - d / 900) * .18));
+      const sc = intro * outro; if (sc <= 0) continue;
+      const wA = .5 + .5 * Math.sin(d * .02 - (t - 9) * 9);
+      const wB = .5 + .5 * Math.sin((x + y) * .012 - (t - 9) * 8);
+      const chk = ((r + c) & 1) ? 1 : 0, beat = Math.pow(.5 + .5 * Math.cos(TAU * (t - 10.75) * 2), 3);
+      const wC = chk ? beat : 1 - beat;
+      // mode A: rotating bars, B: squares, C: circles
+      let ww = 56, hh = 4, rad = 1.5, th = wA * Math.PI / 2, lum = Math.pow(wA, 5);
+      ww = lerp(ww, 12 + 44 * wB, m1); hh = lerp(hh, 12 + 44 * wB, m1); rad = lerp(rad, 0, m1);
+      th = lerp(th, wB * Math.PI / 4, m1); lum = lerp(lum, Math.pow(wB, 5), m1);
+      const cs = 10 + 42 * wC;
+      ww = lerp(ww, cs, m2); hh = lerp(hh, cs, m2); rad = lerp(rad, cs / 2, m2); th = lerp(th, 0, m2); lum = lerp(lum, wC * wC, m2);
+      const isSig = (r * 24 + c) === bi;
+      g.save(); g.translate(x, y); g.rotate(th); g.scale(sc, sc);
+      g.fillStyle = isSig ? rgba(SIG, 1) : `rgba(${Math.round(lerp(58, ICE[0], lum))},${Math.round(lerp(62, ICE[1], lum))},${Math.round(lerp(70, ICE[2], lum))},1)`;
+      g.beginPath(); g.roundRect(-ww / 2, -hh / 2, ww, hh, Math.min(rad, ww / 2, hh / 2)); g.fill();
+      g.restore();
+    }
+    // stats
+    let si = -1; for (let i = 0; i < STATS.length; i++) if (t >= STATS[i].t) si = i;
+    const cur = STATS[si], prev = si > 0 ? STATS[si - 1].v : '';
+    const outK = seg(t, 11.22, 11.46);
+    for (let i = 0; i < SLOTS; i++) {
+      const se = slotEls[i], c0 = prev[i] || '', c1 = cur.v[i] || '';
+      se.s.className = 'slot' + ((c1 === '.' || (!c1 && c0 === '.')) ? ' pt' : '');
+      se.s.style.display = (c0 || c1) ? '' : 'none';
+      const st = cur.t + i * .035, k = c0 === c1 ? 1 : E.outExpo(seg(t, st, st + .32));
+      const mid = String(Math.floor(hash(i * 31 + si * 7 + Math.floor(t * 30)) * 10));
+      se.a.textContent = c0; se.b.textContent = k < .85 && c1 !== '.' && c0 !== '.' ? mid : ''; se.c.textContent = c1;
+      const off = k * 2; // strip of 3 rows, translate up by off rows
+      const ko = E.inExpo(clamp((outK - i * .06) / .6));
+      se.a.style.transform = `translateY(${(0 - off) * 100}%)`;
+      se.b.style.transform = `translateY(${(1 - off) * 100}%)`;
+      se.c.style.transform = `translateY(${(2 - off - ko) * 100}%)`;
+      se.c.style.color = si === 4 ? '#ff5a36' : '#f4f5f7';
+      se.b.style.color = se.a.style.color = '#70767f';
+    }
+    rollPair(t, STATS.map(s => s.t), i => `${STATS[i].en}<span class="jp">${STATS[i].jp}</span>`, $('sl0'), $('sl1'));
+    $('statLbl').className = 'mono';
+    $('statFoot').textContent = `${String(si + 1).padStart(2, '0')} / 05  ·  specs of this video`;
+    $('statBar').firstElementChild.style.width = (E.outExpo(seg(t, 9.0, 11.2)) * 640).toFixed(1) + 'px';
+    const la = E.outExpo(seg(t, 9.05, 9.3)) * (1 - E.inExpo(seg(t, 11.3, 11.48)));
+    $('statLbl').style.opacity = $('statFoot').style.opacity = $('statBar').style.opacity = la;
+    dotOn = false;
+  }
+
+  // ---------------- 06 STATEMENT ----------------
+  const in5 = t >= 11.5 && t < 13.12;
+  show($('L5'), in5);
+  if (in5) {
+    const A = t < 12.0, B = t >= 12.0 && t < 12.5, C = t >= 12.5;
+    const bg = $('s5bg');
+    bg.style.background = A ? '#060607' : B ? '#f4f5f7' : '#ff5a36';
+    show($('s5a'), A); show($('s5b'), B); show($('s5c'), C); show($('chips'), C);
+    if (A) {
+      [...$('s5a').children].forEach((d, i) => {
+        const k = E.outExpo(seg(t, 11.5 + i * .012, 11.5 + i * .012 + .2));
+        const dir = i & 1 ? 1 : -1;
+        const ko = E.inExpo(seg(t, 11.9 + i * .008, 11.99 + i * .008));
+        d.style.transform = `translateX(${dir * (1 - k) * 1400 - dir * ko * 1400}px)`;
+        d.style.fontVariationSettings = `"wdth" ${lerp(110, 70, E.outExpo(seg(t, 11.5, 11.7))).toFixed(1)}, "wght" 900`;
+        d.style.color = '#f4f5f7'; d.style.textShadow = shadow;
+      });
+    }
+    if (B) {
+      const el = $('s5b'); el.style.color = '#060607';
+      el.style.fontVariationSettings = `"wdth" 76, "wght" 900`;
+      [...el.children].forEach((s, i) => {
+        const k = E.outBack(seg(t, 12.0 + i * .014, 12.0 + i * .014 + .24));
+        const ko = E.inExpo(seg(t, 12.42, 12.5));
+        s.style.transform = `translateY(${(1 - k) * -420 + ko * 60}px) rotate(${(1 - k) * -24}deg)`;
+        s.style.opacity = 1 - ko;
+      });
+    }
+    if (C) {
+      const el = $('s5c'); el.style.color = '#060607';
+      const k = E.outExpo(seg(t, 12.5, 12.85));
+      el.style.fontVariationSettings = `"wdth" ${lerp(62, 96, k).toFixed(1)}, "wght" ${lerp(500, 900, k).toFixed(0)}`;
+      el.style.letterSpacing = `${lerp(.25, -.01, k).toFixed(3)}em`;
+      [...el.children].forEach((s, i) => { s.style.transform = ''; });
+      // collapse into the dot
+      const col = E.inOutExpo(seg(t, 12.78, 13.08));
+      const R = lerp(1200, 9, col);
+      $('L5').style.clipPath = col > 0 ? `circle(${R.toFixed(1)}px at 960px 540px)` : 'none';
+      el.style.transform = `scale(${lerp(1, .02, col)})`;
+      chipEls.forEach((c, i) => {
+        const a = (i / CHIPS.length + hash(i + 3) * .05) * TAU, r0 = 170 + hash(i + 11) * 60, kk = E.outExpo(seg(t, 12.52 + i * .012, 12.95));
+        const r = r0 + kk * (140 + hash(i + 23) * 120);
+        c.style.left = (CX + Math.cos(a) * r * 1.95 - 90) + 'px'; c.style.top = (CY + Math.sin(a) * r * 1.2 - 12) + 'px';
+        c.style.opacity = (seg(t, 12.52 + i * .012, 12.6 + i * .012) * .85).toFixed(2);
+        c.style.transform = `scale(${1 - col})`;
+      });
+    } else $('L5').style.clipPath = 'none';
+    dotOn = false;
+  } else $('L5').style.clipPath = 'none';
+
+  // ---------------- END ----------------
+  const in6 = t >= 13.0;
+  show($('L6'), in6);
+  if (t >= 13.08 && t < 15.0) {
+    const ww = $('endWord'), sp6 = [...ww.children].filter(e => e.tagName === 'SPAN');
+    sp6.forEach((s, i) => {
+      const k = E.outExpo(seg(t, 13.12 + i * .045, 13.12 + i * .045 + .5));
+      const ko = E.inExpo(seg(t, 14.3 + i * .025, 14.3 + i * .025 + .26));
+      s.style.transform = `translateY(${(1 - k) * 105 + ko * 105}%)`;
+    });
+    ww.style.textShadow = shadow;
+    // period position: right after 'e', on baseline
+    const lr = sp6[sp6.length - 1].getBoundingClientRect();
+    const wr = $('world').getBoundingClientRect();
+    const sc = wr.width / W;
+    const blr = $('bl6').getBoundingClientRect();
+    const px = (lr.right - wr.left) / sc + 22, py = (blr.bottom - wr.top) / sc - 12;
+    const go = E.inOutExpo(seg(t, 13.12, 13.52)), back = E.inOutExpo(seg(t, 14.42, 14.86));
+    dotOn = true;
+    dotX = lerp(lerp(CX, px, go), CX, back);
+    dotY = lerp(lerp(CY, py, go), CY, back) - Math.sin(go * Math.PI) * 140 * (1 - back) - Math.sin(back * Math.PI) * 90;
+    const land = seg(t, 13.52, 13.62);
+    if (land > 0 && land < 1) { const q = Math.sin(land * Math.PI) * .45; dsx = 1 + q; dsy = 1 - q; }
+    const lineIn = (at, dur = .5) => E.outExpo(seg(t, at, at + dur));
+    const lineOut = (at) => E.inExpo(seg(t, at, at + .2));
+    const e1 = $('e1'), e3 = $('e3');
+    const k1 = lineIn(13.5, .6), o1 = lineOut(14.22);
+    e1.style.opacity = k1 * (1 - o1); e1.style.letterSpacing = `${lerp(1.2, .5, k1).toFixed(3)}em`; e1.style.transform = `translateY(${o1 * 20}px)`;
+    [...$('e2').children].forEach((s, i) => {
+      const k = lineIn(13.6 + i * .03, .45), o = lineOut(14.24 + i * .01);
+      s.style.opacity = k * (1 - o); s.style.transform = `translateY(${(1 - k) * 24 + o * 20}px)`;
+    });
+    const k3 = lineIn(13.85, .5), o3 = lineOut(14.26);
+    e3.style.opacity = k3 * (1 - o3); e3.style.transform = `translateY(${(1 - k3) * 10 + o3 * 20}px)`;
+  } else if (t >= 13.0) {
+    [...$('endWord').querySelectorAll('span')].forEach(s => s.style.transform = 'translateY(105%)');
+    ['e1', 'e3'].forEach(id => $(id).style.opacity = 0);
+    [...$('e2').children].forEach(s => s.style.opacity = 0);
+    dotOn = t >= 13.06;
+  }
+
+  // ---------------- dot ----------------
+  if (dotOn) dot(dotX, dotY, dotR, dsx, dsy, 1);
+
+  // ---------------- HUD ----------------
+  const hudA = E.outCubic(seg(t, .12, .55)) * (1 - E.inCubic(seg(t, 14.4, 14.85)));
+  const hud = $('hud');
+  hud.style.opacity = hudA.toFixed(3);
+  const lightBg = (t >= 2.78 && t < 3.24) || (t >= 12.0 && t < 12.5) || (t >= 12.5 && t < 12.9);
+  hud.style.setProperty('--hudc', lightBg ? '#060607' : '#c3c8d0');
+  $('vig').style.opacity = lightBg ? .18 : 1;
+  $('hTR').textContent = tc(t);
+  rollPair(t, SECTIONS.map(s => s[0]), i => `${SECTIONS[i][1]}<span class="jp">${SECTIONS[i][2]}</span>`, $('hb0'), $('hb1'), .3);
+  $('hBar').firstElementChild.style.width = (t / 15 * 480).toFixed(2) + 'px';
+  hBarDot.style.left = (t / 15 * 480).toFixed(2) + 'px';
+
+  // grain
+  const gf = Math.floor(t * 60) % grainFrames.length;
+  if (gf !== lastGrain) { $('grain').getContext('2d').putImageData(grainFrames[gf], 0, 0); lastGrain = gf; }
+}
+
+const ready = (async () => {
+  await document.fonts.ready;
+  await Promise.all([
+    document.fonts.load('900 250px Archivo'), document.fonts.load('700 560px "Space Grotesk"'),
+    document.fonts.load('500 236px "Space Grotesk"'), document.fonts.load('600 250px "Space Grotesk"'),
+    document.fonts.load('400 14px "Space Mono"'), document.fonts.load('500 30px "Zen Kaku Gothic New"', SUB1 + E2),
+  ]);
+  buildTargets();
+  buildFlow();
+  seek(0);
+  return true;
+})();
+window.__R = { seek, ready, duration: 15 };
+
+// live preview when opened directly (?play)
+if (location.search.includes('play')) {
+  ready.then(() => { const t0 = performance.now(); const loop = () => { seek(((performance.now() - t0) / 1000) % 15); requestAnimationFrame(loop); }; loop(); });
+} else {
+  const m = location.search.match(/t=([\d.]+)/); if (m) ready.then(() => seek(parseFloat(m[1])));
+}
+})();
+</script>
+</body>
+</html>

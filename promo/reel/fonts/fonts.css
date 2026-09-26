@@ -1,0 +1,57 @@
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
+  font-display: block;
+  src: url(Archivo-100-900.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: block;
+  src: url(SpaceGrotesk-300-700.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Space Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url(SpaceMono-400.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Space Mono';
+  font-style: normal;
+  font-weight: 700;
+  font-display: block;
+  src: url(SpaceMono-700.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Zen Kaku Gothic New';
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url(ZenKakuGothicNew-400.woff2) format('woff2');
+  unicode-range: U+3001-3002, U+3044, U+304d-304e, U+3059-305a, U+3066-3067, U+306e-3070, U+3078-3079, U+308b-308c, U+3099, U+30a1, U+30a4, U+30ad-30ae, U+30bb-30bc, U+30d5-30d6, U+30e0, U+30eb-30ed, U+30fc, U+4e00, U+4f53, U+52d5, U+5b50, U+5b57, U+5f62, U+6570, U+6587, U+6642, U+679a, U+6d41, U+70b9, U+79d2, U+7c92, U+7cfb, U+7d50, U+8a08, U+8a2d, U+8ad6, U+8d77, U+9593, U+95a2;
+}
+@font-face {
+  font-family: 'Zen Kaku Gothic New';
+  font-style: normal;
+  font-weight: 500;
+  font-display: block;
+  src: url(ZenKakuGothicNew-500.woff2) format('woff2');
+  unicode-range: U+3001-3002, U+3044, U+304d-304e, U+3059-305a, U+3066-3067, U+306e-3070, U+3078-3079, U+308b-308c, U+3099, U+30a1, U+30a4, U+30ad-30ae, U+30bb-30bc, U+30d5-30d6, U+30e0, U+30eb-30ed, U+30fc, U+4e00, U+4f53, U+52d5, U+5b50, U+5b57, U+5f62, U+6570, U+6587, U+6642, U+679a, U+6d41, U+70b9, U+79d2, U+7c92, U+7cfb, U+7d50, U+8a08, U+8a2d, U+8ad6, U+8d77, U+9593, U+95a2;
+}
+@font-face {
+  font-family: 'Zen Kaku Gothic New';
+  font-style: normal;
+  font-weight: 700;
+  font-display: block;
+  src: url(ZenKakuGothicNew-700.woff2) format('woff2');
+  unicode-range: U+3001-3002, U+3044, U+304d-304e, U+3059-305a, U+3066-3067, U+306e-3070, U+3078-3079, U+308b-308c, U+3099, U+30a1, U+30a4, U+30ad-30ae, U+30bb-30bc, U+30d5-30d6, U+30e0, U+30eb-30ed, U+30fc, U+4e00, U+4f53, U+52d5, U+5b50, U+5b57, U+5f62, U+6570, U+6587, U+6642, U+679a, U+6d41, U+70b9, U+79d2, U+7c92, U+7cfb, U+7d50, U+8a08, U+8a2d, U+8ad6, U+8d77, U+9593, U+95a2;
+}
