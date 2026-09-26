@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>OpenSky — 60s</title>
+<!-- OpenSky 60s film. Pure function of time: window.__R.seek(t). ?play for realtime, ?t=24.5 for a still.
+     Edit the SHOTS / TEXT tables below to re-time or re-write. -->
+<link rel="stylesheet" href="fonts/fonts.css">
+<style>
+:root{ --ink:#f4ecdc; --amber:#e3b476; --mincho:'Shippori Mincho B1',serif; --serif:'Cormorant Garamond',serif; --sans:'Jost',sans-serif; }
+html,body{margin:0;width:1920px;height:1080px;overflow:hidden;background:#000}
+#stage{position:absolute;inset:0;overflow:hidden;background:#000;color:var(--ink)}
+canvas{position:absolute;left:0;top:0}
+.layer{position:absolute;inset:0;pointer-events:none}
+.tx{position:absolute;font-family:var(--mincho);font-weight:500;white-space:nowrap;line-height:1;
+  text-shadow:0 0 26px rgba(0,0,0,.6),0 0 2px rgba(0,0,0,.45);display:none}
+.tx span{display:inline-block}
+.v{writing-mode:vertical-rl;font-size:52px;letter-spacing:.3em}
+.v2{flex-direction:row-reverse;align-items:flex-start;gap:30px;font-size:42px;letter-spacing:.24em}
+.v2 .col{writing-mode:vertical-rl}
+.h{left:0;width:1920px;text-align:center;font-size:46px;letter-spacing:.32em;text-indent:.32em}
+.lbl{position:absolute;left:140px;top:930px;font-family:var(--sans);font-weight:400;font-size:15px;letter-spacing:.5em;color:var(--amber);
+  white-space:nowrap;text-shadow:0 0 12px rgba(0,0,0,.6);display:none}
+.lbl i{display:inline-block;height:1px;background:var(--amber);vertical-align:5px;margin-right:22px}
+#note{position:absolute;right:56px;bottom:40px;font-family:var(--mincho);font-size:15px;letter-spacing:.12em;color:rgba(244,236,220,.55)}
+#logo{position:absolute;left:0;top:486px;width:1920px;text-align:center;font-family:var(--serif);font-weight:500;font-size:132px;letter-spacing:.05em;line-height:1}
+#logo span{display:inline-block}
+#tag{position:absolute;left:0;top:660px;width:1920px;text-align:center;font-family:var(--mincho);font-weight:500;font-size:40px;letter-spacing:.5em;text-indent:.5em}
+#tag span{display:inline-block}
+#loc{position:absolute;left:0;top:748px;width:1920px;text-align:center;font-family:var(--sans);font-size:15px;letter-spacing:.55em;color:var(--amber);opacity:0}
+#loc b{font-family:var(--mincho);font-weight:500;font-size:19px;letter-spacing:.3em;color:var(--ink);margin-right:30px}
+#grain{opacity:.055;mix-blend-mode:screen}
+#vig{background:radial-gradient(ellipse 80% 80% at 50% 48%,rgba(0,0,0,0) 50%,rgba(0,0,0,.5) 100%)}
+</style>
+</head>
+<body>
+<div id="stage">
+  <canvas id="cv" width="1920" height="1080"></canvas>
+  <div id="txt" class="layer">
+    <div id="lbl1" class="lbl"><i></i>01 — LIGHT</div>
+    <div id="lbl2" class="lbl"><i></i>02 — TEXTURE</div>
+    <div id="lbl3" class="lbl"><i></i>03 — WINDOW</div>
+    <div id="lbl4" class="lbl"><i></i>04 — CITY</div>
+    <div id="logo"></div>
+    <div id="tag"></div>
+    <div id="loc"><b>東京都渋谷区</b>SHIBUYA, TOKYO</div>
+  </div>
+  <canvas id="grain" width="1920" height="1080"></canvas>
+  <div id="vig" class="layer"></div>
+  <div id="note">※画像はイメージです。</div>
+</div>
+<script>
+(() => {
+'use strict';
+const W = 1920, H = 1080, CX = 960, CY = 540, TAU = Math.PI * 2, DUR = 60;
+const $ = id => document.getElementById(id);
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const seg = (t, a, b) => clamp((t - a) / (b - a));
+const lerp = (a, b, k) => a + (b - a) * k;
+const E = {
+  outExpo: x => x >= 1 ? 1 : 1 - Math.pow(2, -10 * x),
+  inOutCubic: x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2,
+  inOutQuint: x => x < .5 ? 16 * x ** 5 : 1 - Math.pow(-2 * x + 2, 5) / 2,
+  outCubic: x => 1 - Math.pow(1 - x, 3),
+  inOutSine: x => -(Math.cos(Math.PI * x) - 1) / 2,
+  inCubic: x => x * x * x,
+};
+function rng(seed) { return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+
+const cv = $('cv'), g = cv.getContext('2d');
+g.imageSmoothingQuality = 'high';
+const IMG = {};
+const load = (k, src) => new Promise(res => { const i = new Image(); i.onload = () => { IMG[k] = i; res(); }; i.src = src; });
+
+// =====================================================================
+// SHOTS — enter: 'aperture' (chapter change, the sky-light slit) or 'dissolve' (second setup on the same image)
+// cam(k, t): k = 0..1 across the shot → { zoom, fx, fy, ox, oy, blur }
+// =====================================================================
+const OPEN = 1.05, DIS = 1.1;
+const TILT_A = 51.0, TILT_B = 53.2;
+const SHOTS = [
+  // 01 LIGHT
+  { img: 'wall', a: 5.6, b: 12.7, enter: 'aperture', cam: k => ({ zoom: lerp(1.0, 1.08, E.inOutSine(k)), fx: lerp(730, 820, k), fy: 470 }) },
+  { img: 'wall', a: 11.6, b: 17.9, enter: 'dissolve', cam: k => ({ zoom: lerp(1.42, 1.5, k), fx: lerp(1120, 1290, E.inOutSine(k)), fy: lerp(420, 330, E.inOutSine(k)) }) },
+  // 02 TEXTURE
+  { img: 'vase', a: 16.8, b: 23.7, enter: 'aperture', cam: (k, t) => ({ zoom: lerp(1.03, 1.1, E.inOutSine(k)), fx: lerp(900, 960, k), fy: 560, blur: 11 * (1 - E.outCubic(seg(t, 17.0, 18.8))) }) },
+  { img: 'vase', a: 22.6, b: 29.5, enter: 'dissolve', cam: k => ({ zoom: lerp(1.5, 1.42, k), fx: lerp(520, 1010, E.inOutSine(k)), fy: lerp(690, 600, E.inOutSine(k)) }) },
+  // 03 WINDOW
+  { img: 'studio', a: 28.4, b: 35.3, enter: 'aperture', cam: k => ({ zoom: 1.08, fx: lerp(690, 830, E.inOutSine(k)), fy: 520 }) },
+  { img: 'studio', a: 34.2, b: 41.1, enter: 'dissolve', cam: k => ({ zoom: lerp(1.2, 1.5, E.inOutSine(k)), fx: lerp(1180, 1330, E.inOutSine(k)), fy: lerp(500, 450, k) }) },
+  // 04 CITY
+  { img: 'city', a: 40.0, b: 46.9, enter: 'aperture', cam: k => ({ zoom: lerp(1.0, 1.07, E.inOutSine(k)), fx: 768, fy: 600 }) },
+  { img: 'city', a: 45.8, b: 50.9, enter: 'dissolve', cam: k => ({ zoom: 1.45, fx: lerp(1060, 880, E.inOutSine(k)), fy: lerp(830, 800, k) }) },
+  { img: 'city', a: 49.8, b: DUR, enter: 'dissolve', sky: true, cam: (k, t) => ({ zoom: lerp(1.0, 1.04, seg(t, 49.8, 53)), fx: 768, fy: 600, oy: E.inOutQuint(seg(t, TILT_A, TILT_B)) * 1250 }) },
+];
+
+// TEXT — id, class, style, copy ('\n' = new column/line), in, out
+const TEXT = [
+  ['p1', 'h', 'top:420px', '都市の夜は、明るすぎる。', 0.9, 2.95],
+  ['p2', 'h', 'top:420px', '見上げても、星が見えない。', 3.25, 5.2],
+  ['c1a', 'v', 'left:1500px;top:250px', '光を、素材に。', 7.0, 10.9],
+  ['c1b', 'v2', 'left:230px;top:200px', '必要な場所に、\n必要なだけの光を。', 12.6, 16.1],
+  ['c2a', 'v', 'left:250px;top:112px;letter-spacing:.22em', '手ざわりまで、設計する。', 18.1, 22.0],
+  ['c2b', 'v2', 'left:190px;top:110px', '時間とともに、\n美しくなる素材を。', 23.6, 27.9],
+  ['c3a', 'v', 'left:250px;top:190px', '夜に、ひらく窓。', 29.7, 33.6],
+  ['c3b', 'v2', 'left:1500px;top:130px', '部屋の灯りを落とすと、\n空が近づく。', 35.2, 39.4],
+  ['c4a', 'h', 'top:300px;font-size:56px', '見上げるための、街をつくる。', 41.3, 44.9],
+  ['c4b', 'v2', 'left:1520px;top:170px', '足もとには、灯りを。\n頭上には、星を。', 46.6, 49.7],
+  ['s1', 'h', 'top:380px', '光を設計すると、', 53.4, 56.0],
+  ['s2', 'h', 'top:470px;font-size:58px', '夜空が、かえってくる。', 54.3, 56.0],
+];
+const LABELS = [['lbl1', 7.1, 16.3], ['lbl2', 18.2, 28.0], ['lbl3', 29.8, 39.5], ['lbl4', 41.4, 49.9]];
+
+// build text DOM
+for (const [id, cls, style, copy] of TEXT) {
+  const d = document.createElement('div'); d.id = id; d.className = 'tx ' + cls; d.style.cssText += style;
+  const cols = copy.split('\n'), spans = line => [...line].map(c => `<span>${c}</span>`).join('');
+  if (cls === 'v2') { d.dataset.disp = 'flex'; d.innerHTML = cols.map((l, i) => `<div class="col" style="padding-top:${(i * 1.25).toFixed(2)}em">${spans(l)}</div>`).join(''); }
+  else d.innerHTML = cols.map(spans).join('<br>');
+  $('txt').appendChild(d);
+}
+$('tag').innerHTML = [...'夜空を開放した街'].map(c => `<span>${c}</span>`).join('');
+$('logo').innerHTML = [...'OpenSky'].map(c => `<span>${c}</span>`).join('');
+
+function camRect(c) {
+  const s = 1.25 * c.zoom, dw = 1536 * s, dh = 1024 * s;
+  let x = CX - c.fx * s + (c.ox || 0), y = CY - c.fy * s;
+  x = clamp(x, W - dw, 0); y = clamp(y, H - dh, 0);
+  y += (c.oy || 0);
+  return { x, y, w: dw, h: dh, s };
+}
+function drawShot(sh, t) {
+  const k = seg(t, sh.a, sh.b), c = sh.cam(k, t), r = camRect(c);
+  if (sh.sky) drawSkyAbove(r);
+  g.save();
+  if (c.blur > .05) g.filter = `blur(${c.blur.toFixed(2)}px)`;
+  g.drawImage(IMG[sh.img], r.x, r.y, r.w, r.h);
+  g.restore();
+  FX[sh.img] && FX[sh.img](t, r, sh);
+}
+
+// ---------- effects ----------
+const MOTES = []; { const r = rng(11); for (let i = 0; i < 200; i++) MOTES.push({ x: r() * W, y: r() * H, s: .6 + r() * 1.8, p: r() * TAU, v: 6 + r() * 14 }); }
+const FX = {
+  wall(t, r, sh) {
+    const nx = Math.cos(-.52 + Math.PI / 2), ny = Math.sin(-.52 + Math.PI / 2);
+    const off = lerp(-420, 300, E.inOutSine(seg(t, sh.a, sh.b)));
+    const cx = CX + nx * off, cy = CY + ny * off;
+    const gr = g.createLinearGradient(cx - nx * 260, cy - ny * 260, cx + nx * 260, cy + ny * 260);
+    gr.addColorStop(0, 'rgba(255,170,80,0)'); gr.addColorStop(.5, 'rgba(255,170,90,.18)'); gr.addColorStop(1, 'rgba(255,170,80,0)');
+    g.save(); g.globalCompositeOperation = 'screen'; g.fillStyle = gr; g.fillRect(0, 0, W, H);
+    for (const m of MOTES) {
+      const x = (m.x + t * m.v * .6) % W, y = (m.y - t * m.v + H * 40) % H + Math.sin(t * .9 + m.p) * 6;
+      const d = Math.abs((x - cx) * nx + (y - cy) * ny), lit = Math.exp(-(d * d) / (2 * 160 * 160));
+      const a = lit * (.35 + .35 * Math.sin(t * 2 + m.p) ** 2);
+      if (a < .02) continue;
+      g.fillStyle = `rgba(255,214,160,${a.toFixed(3)})`; g.beginPath(); g.arc(x, y, m.s, 0, TAU); g.fill();
+    }
+    g.restore();
+  },
+  studio(t, r) {
+    const lx = r.x + 868 * r.s, ly = r.y + 372 * r.s, p = .85 + .15 * Math.sin(t * 3.1) * Math.sin(t * 1.7);
+    const gr = g.createRadialGradient(lx, ly, 0, lx, ly, 420 * r.s / 1.35);
+    gr.addColorStop(0, `rgba(255,180,100,${.26 * p})`); gr.addColorStop(1, 'rgba(255,180,100,0)');
+    g.save(); g.globalCompositeOperation = 'screen'; g.fillStyle = gr; g.fillRect(0, 0, W, H); g.restore();
+  },
+  city(t, r, sh) { if (sh.sky) drawStars(t, r); else rainGlints(t, r); },
+};
+// tiny sparkles on the wet road: rain still falling
+const DROPS = []; { const r = rng(31); for (let i = 0; i < 90; i++) DROPS.push({ u: 380 + r() * 1150, v: 820 + r() * 200, p: r() * 4, f: .7 + r() * .8 }); }
+function rainGlints(t, r) {
+  g.save(); g.globalCompositeOperation = 'screen';
+  for (const d of DROPS) {
+    const ph = ((t * d.f + d.p) % 1.6) / 1.6; if (ph > .35) continue;
+    const x = r.x + d.u * r.s, y = r.y + d.v * r.s, k = ph / .35, rad = (2 + k * 14) * r.s / 1.25;
+    g.strokeStyle = `rgba(255,205,140,${(.35 * (1 - k)).toFixed(3)})`; g.lineWidth = 1;
+    g.beginPath(); g.ellipse(x, y, rad, rad * .28, 0, 0, TAU); g.stroke();
+  }
+  g.restore();
+}
+
+// ---------- sky & stars ----------
+let SKY = [14, 20, 40], skyMask = null;
+const STARS = []; { const r = rng(21); for (let i = 0; i < 1100; i++) STARS.push({ x: r() * W, y: -1500 + r() * 2300, m: Math.pow(r(), 3.2), p: r() * TAU, f: 1 + r() * 3, warm: r() < .15 }); }
+function buildSky() {
+  const oc = document.createElement('canvas'); oc.width = 1536; oc.height = 1024;
+  const o = oc.getContext('2d'); o.drawImage(IMG.city, 0, 0);
+  const img = o.getImageData(0, 0, 1536, 1024), d = img.data;
+  let sr = 0, sg = 0, sb = 0, n = 0;
+  for (let y = 0; y < 6; y++) for (let x = 0; x < 1536; x += 4) { const i = (y * 1536 + x) * 4; sr += d[i]; sg += d[i + 1]; sb += d[i + 2]; n++; }
+  SKY = [sr / n, sg / n, sb / n].map(Math.round);
+  for (let y = 0; y < 1024; y++) for (let x = 0; x < 1536; x++) {
+    const i = (y * 1536 + x) * 4, R = d[i], G = d[i + 1], B = d[i + 2], lum = .3 * R + .6 * G + .1 * B;
+    const a = clamp((B - R - 2) / 14) * clamp((70 - lum) / 30) * clamp((640 - y) / 120);
+    d[i] = d[i + 1] = d[i + 2] = 255; d[i + 3] = a * 255;
+  }
+  o.putImageData(img, 0, 0); skyMask = oc;
+}
+const starC = document.createElement('canvas'); starC.width = W; starC.height = H; const sg = starC.getContext('2d');
+const maskC = document.createElement('canvas'); maskC.width = W; maskC.height = H; const mg = maskC.getContext('2d');
+function drawSkyAbove(r) {
+  if (r.y <= 0) return;
+  const top = r.y + 2, gr = g.createLinearGradient(0, top - 1400, 0, top);
+  gr.addColorStop(0, 'rgb(3,4,10)'); gr.addColorStop(.55, 'rgb(7,10,24)'); gr.addColorStop(1, `rgb(${SKY})`);
+  g.fillStyle = gr; g.fillRect(0, 0, W, top);
+}
+function drawStars(t, r) {
+  const vis = E.outCubic(seg(t, 50.2, 52.0));
+  if (vis <= 0) return;
+  sg.clearRect(0, 0, W, H);
+  for (const s of STARS) {
+    const y = s.y + r.y * .96 + 380, x = s.x;
+    if (y < -10 || y > H + 10) continue;
+    const tw = .55 + .45 * Math.sin(t * s.f + s.p), a = (.18 + .82 * s.m) * tw * vis, rad = .6 + s.m * 1.6;
+    sg.fillStyle = s.warm ? `rgba(255,214,170,${a})` : `rgba(220,230,255,${a})`;
+    sg.beginPath(); sg.arc(x, y, rad, 0, TAU); sg.fill();
+    if (s.m > .8) { sg.fillStyle = `rgba(230,236,255,${a * .22})`; sg.fillRect(x - rad * 6, y - .5, rad * 12, 1); sg.fillRect(x - .5, y - rad * 6, 1, rad * 12); }
+  }
+  for (const [m0, x0, y0] of [[54.9, 1500, 140], [57.9, 620, 110]]) { // meteors
+    const mk = seg(t, m0, m0 + .6); if (mk <= 0 || mk >= 1) continue;
+    const x = lerp(x0, x0 - 420, E.outCubic(mk)), y = lerp(y0, y0 + 180, E.outCubic(mk)), a = Math.sin(mk * Math.PI);
+    const gr = sg.createLinearGradient(x, y, x + 260, y - 112);
+    gr.addColorStop(0, `rgba(255,240,220,${a})`); gr.addColorStop(1, 'rgba(255,240,220,0)');
+    sg.strokeStyle = gr; sg.lineWidth = 1.6; sg.beginPath(); sg.moveTo(x, y); sg.lineTo(x + 260, y - 112); sg.stroke();
+  }
+  mg.clearRect(0, 0, W, H); mg.fillStyle = '#fff';
+  if (r.y > 0) mg.fillRect(0, 0, W, r.y + 3);
+  mg.drawImage(skyMask, r.x, r.y, r.w, r.h);
+  sg.globalCompositeOperation = 'destination-in'; sg.drawImage(maskC, 0, 0); sg.globalCompositeOperation = 'source-over';
+  g.save(); g.globalCompositeOperation = 'screen'; g.drawImage(starC, 0, 0); g.restore();
+}
+
+// ---------- transitions ----------
+function slitLines(y0, h, la) {
+  for (const y of [y0, y0 + h]) {
+    const gr = g.createLinearGradient(0, 0, W, 0);
+    gr.addColorStop(0, 'rgba(240,194,122,0)'); gr.addColorStop(.5, `rgba(255,214,150,${la})`); gr.addColorStop(1, 'rgba(240,194,122,0)');
+    g.fillStyle = gr; g.fillRect(0, y - .75, W, 1.5);
+    g.fillStyle = `rgba(255,190,110,${la * .12})`; g.fillRect(0, y - 10, W, 20);
+  }
+}
+function aperture(t, a, draw) {
+  const k = seg(t, a, a + OPEN);
+  const e = E.inOutCubic(k), h = Math.max(1.5, e * H), y0 = CY - h / 2;
+  g.save(); g.beginPath(); g.rect(0, y0, W, h); g.clip(); draw(); g.restore();
+  if (k < 1) slitLines(y0, h, Math.min(1, Math.sin(k * Math.PI) * 1.4) * .9);
+}
+// prologue: the single line of light that later becomes the first aperture
+function prologue(t) {
+  if (t >= 6.7) return;
+  const draw = E.inOutCubic(seg(t, .2, 2.2)), fade = 1 - seg(t, 5.6, 6.6);
+  const w = draw * 1700, br = .75 + .25 * Math.sin(t * 1.6);
+  if (w <= 0) return;
+  const gr = g.createLinearGradient(CX - w / 2, 0, CX + w / 2, 0);
+  gr.addColorStop(0, 'rgba(255,214,150,0)'); gr.addColorStop(.5, `rgba(255,220,160,${.9 * br * fade})`); gr.addColorStop(1, 'rgba(255,214,150,0)');
+  g.fillStyle = gr; g.fillRect(CX - w / 2, CY - .75, w, 1.5);
+  const gl = g.createLinearGradient(0, CY - 60, 0, CY + 60);
+  gl.addColorStop(0, 'rgba(255,180,100,0)'); gl.addColorStop(.5, `rgba(255,180,100,${.10 * br * fade * draw})`); gl.addColorStop(1, 'rgba(255,180,100,0)');
+  g.fillStyle = gl; g.fillRect(0, CY - 60, W, 120);
+}
+
+// ---------- logo mark ----------
+const MARK_A = 56.5;
+function mark(t, x, y) {
+  const draw = E.inOutCubic(seg(t, MARK_A, MARK_A + .8)), open = E.inOutCubic(seg(t, MARK_A + .6, MARK_A + 1.25)), R = 46;
+  if (draw <= 0) return;
+  g.save(); g.strokeStyle = 'rgba(244,236,220,.95)'; g.lineWidth = 1.6; g.lineCap = 'round';
+  const gap = open * 13;
+  g.beginPath(); g.arc(x, y - gap, R, Math.PI, Math.PI + Math.PI * draw); g.stroke();
+  g.beginPath(); g.arc(x, y + gap, R, 0, Math.PI * draw); g.stroke();
+  if (open > 0) {
+    g.fillStyle = `rgba(227,180,118,${open})`; g.fillRect(x - R * open * 1.4, y - .75, R * 2 * open * 1.4, 1.5);
+    const sy = y - gap - R * .42 * open, sr = 3.2 * open;
+    const gr = g.createRadialGradient(x, sy, 0, x, sy, 22); gr.addColorStop(0, `rgba(255,220,160,${.55 * open})`); gr.addColorStop(1, 'rgba(255,220,160,0)');
+    g.fillStyle = gr; g.fillRect(x - 22, sy - 22, 44, 44);
+    g.fillStyle = `rgba(255,236,200,${open})`; g.beginPath(); g.arc(x, sy, sr, 0, TAU); g.fill();
+  }
+  g.restore();
+}
+
+// ---------- text choreography ----------
+function chars(el, t, a, b, { stagger = .075, dur = .75, rise = 14, out = .45 } = {}) {
+  const on = t >= a - .01 && t < b + out + .05; el.style.display = on ? (el.dataset.disp || 'block') : 'none'; if (!on) return;
+  const sp = el.querySelectorAll('span'), ko = E.inCubic(seg(t, b, b + out));
+  const vert = el.classList.contains('v') || el.classList.contains('v2');
+  for (let i = 0; i < sp.length; i++) {
+    const k = E.outCubic(seg(t, a + i * stagger, a + i * stagger + dur));
+    sp[i].style.opacity = (k * (1 - ko)).toFixed(3);
+    sp[i].style.filter = `blur(${((1 - k) * 8 + ko * 6).toFixed(2)}px)`;
+    sp[i].style.transform = vert ? `translate(0,${((1 - k) * -rise - ko * 10).toFixed(2)}px)` : `translate(0,${((1 - k) * 10 - ko * 8).toFixed(2)}px)`;
+  }
+}
+function label(el, t, a, b) {
+  const on = t >= a && t < b + .4; el.style.display = on ? 'block' : 'none'; if (!on) return;
+  const k = E.outExpo(seg(t, a, a + .9)), ko = seg(t, b, b + .35);
+  el.style.opacity = (Math.min(1, k * 1.4) * (1 - ko)).toFixed(3);
+  el.firstElementChild.style.width = (k * 64).toFixed(1) + 'px';
+  el.style.letterSpacing = `${lerp(.8, .5, k).toFixed(3)}em`;
+}
+
+// ---------- grain ----------
+const grainFrames = []; { const gc = $('grain').getContext('2d'), r = rng(3); for (let f = 0; f < 4; f++) { const im = gc.createImageData(W, H), d = im.data; for (let i = 0; i < d.length; i += 4) { d[i] = d[i + 1] = d[i + 2] = r() * 255; d[i + 3] = 255; } grainFrames.push(im); } }
+let lastGrain = -1;
+
+// =====================================================================
+function seek(t) {
+  t = clamp(t, 0, DUR);
+  g.setTransform(1, 0, 0, 1, 0, 0); g.globalCompositeOperation = 'source-over'; g.filter = 'none'; g.globalAlpha = 1;
+  g.fillStyle = '#000'; g.fillRect(0, 0, W, H);
+
+  prologue(t);
+  for (const sh of SHOTS) {
+    if (t < sh.a || t >= sh.b) continue;
+    if (sh.enter === 'aperture') aperture(t, sh.a, () => drawShot(sh, t));
+    else {
+      const k = E.inOutSine(seg(t, sh.a, sh.a + DIS));
+      g.save(); g.globalAlpha = k; drawShot(sh, t); g.restore();
+    }
+  }
+
+  // end: warm city glow rising under the open sky
+  const endK = E.outCubic(seg(t, 53.0, 55.5));
+  if (endK > 0) {
+    const gr = g.createLinearGradient(0, H, 0, H - 520);
+    gr.addColorStop(0, `rgba(96,40,72,${.55 * endK})`); gr.addColorStop(.45, `rgba(40,22,54,${.3 * endK})`); gr.addColorStop(1, 'rgba(0,0,0,0)');
+    g.fillStyle = gr; g.fillRect(0, H - 520, W, 520);
+  }
+  mark(t, CX, 380);
+
+  for (const [id, cls, , , a, b] of TEXT) {
+    const tr = id.startsWith('s') ? { stagger: .07, dur: .9, out: .5 } : cls === 'h' ? { stagger: .06, dur: .8 } : {};
+    chars($(id), t, a, b, tr);
+  }
+  $('c4a').style.transform = ''; // horizontal sky copy leaves before the tilt
+  for (const [id, a, b] of LABELS) label($(id), t, a, b);
+
+  const lg = $('logo');
+  [...lg.children].forEach((s, i) => {
+    const k = E.outCubic(seg(t, MARK_A + .55 + i * .07, MARK_A + .55 + i * .07 + .9));
+    s.style.opacity = k.toFixed(3); s.style.filter = `blur(${((1 - k) * 10).toFixed(2)}px)`;
+    s.style.transform = `translateY(${((1 - k) * 18).toFixed(2)}px)`;
+  });
+  lg.style.letterSpacing = `${lerp(.16, .05, E.outCubic(seg(t, MARK_A + .55, MARK_A + 2.4))).toFixed(3)}em`;
+  chars($('tag'), t, MARK_A + 1.1, 999, { stagger: .07, dur: .7, rise: 8 });
+  const lc = E.outCubic(seg(t, MARK_A + 1.7, MARK_A + 2.4));
+  $('loc').style.opacity = lc.toFixed(3); $('loc').style.transform = `translateY(${((1 - lc) * 8).toFixed(1)}px)`;
+
+  const gf = Math.floor(t * 30) % grainFrames.length;
+  if (gf !== lastGrain) { $('grain').getContext('2d').putImageData(grainFrames[gf], 0, 0); lastGrain = gf; }
+}
+
+const ready = (async () => {
+  await Promise.all([load('wall', 'img/wall.webp'), load('vase', 'img/vase.webp'), load('studio', 'img/studio.webp'), load('city', 'img/city.webp')]);
+  await document.fonts.ready;
+  const all = TEXT.map(x => x[3]).join('') + '夜空を開放した街東京都渋谷区※画像はイメージです。';
+  await Promise.all([document.fonts.load('500 52px "Shippori Mincho B1"', all), document.fonts.load('500 132px "Cormorant Garamond"'), document.fonts.load('400 15px Jost')]);
+  buildSky();
+  seek(0);
+  return true;
+})();
+window.__R = { seek, ready, duration: DUR };
+if (location.search.includes('play')) ready.then(() => { const t0 = performance.now(); const f = () => { seek(((performance.now() - t0) / 1000) % DUR); requestAnimationFrame(f); }; f(); });
+else { const m = location.search.match(/t=([\d.]+)/); if (m) ready.then(() => seek(parseFloat(m[1]))); }
+})();
+</script>
+</body>
+</html>

@@ -19,8 +19,9 @@ const server = http.createServer((q, s) => {
   catch { s.writeHead(404); s.end(); }
 }).listen(0, '127.0.0.1');
 await new Promise(r => server.once('listening', r));
-const url = `http://127.0.0.1:${server.address().port}/opensky.html`;
-const out = process.env.OUT || path.join(dir, 'out');
+const PAGE = process.env.PAGE || 'opensky.html'; // PAGE=opensky-60.html for the 60s film
+const url = `http://127.0.0.1:${server.address().port}/${PAGE}`;
+const out = process.env.OUT || path.join(dir, (process.env.PAGE || '').includes('60') ? 'out60' : 'out');
 const [mode, ...args] = process.argv.slice(2);
 
 async function open(browser) {
@@ -42,7 +43,8 @@ if (mode === 'stills') {
   }
 } else if (mode === 'frames') {
   const fps = parseInt(args[0] || '180'), workers = parseInt(args[1] || '4');
-  const total = fps * 15, fdir = path.join(out, 'frames');
+  const dur = await (await open(browser)).evaluate(() => window.__R.duration);
+  const total = Math.round(fps * dur), fdir = path.join(out, 'frames');
   // optional partial re-render: FROM=<frame> TO=<frame>
   mkdirSync(fdir, { recursive: true });
   let next = parseInt(process.env.FROM || '0'), done = 0; const t0 = Date.now();
