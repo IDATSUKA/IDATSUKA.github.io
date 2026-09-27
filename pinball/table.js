@@ -46,7 +46,6 @@
     walls: [
       { pts: [[262, 300], [200, 300], [192, 371], [182, 420], [252, 716]], t: 12 }, // orbit channel cap + outer rail + wire
       { pts: [[108, 750], [250, 712]], t: 12 },                              // seals the far-left channel
-      { pts: [[214, 560], [258, 574]], t: 8 },                               // hands the wire onto the standup (no pocket)
       { pts: [[108, 750], [108, 1040]], t: 12 },                             // left outlane outer wall
       { pts: [[160, 768], [160, 935], [183, 952], [345, 986]], t: 12 },     // left rail + inlane guide
       { pts: [[256, 426], [254, 371], [262, 300], [288, 238], [354, 152], [450, 110],
@@ -84,8 +83,8 @@
       { c: [608, 498], a: -0.30, bank: 1 }, { c: [654, 484], a: -0.30, bank: 1 },
     ],
     targetSize: [44, 42],
-    // gold-triangle standup targets
-    standups: [
+    // gold-triangle arrow inserts (flush, lit) pointing at the orbit / ramp
+    arrows: [
       [[258, 572], [324, 584], [306, 664], [268, 644]],
       [[796, 572], [730, 584], [748, 664], [786, 644]],
     ],
@@ -153,9 +152,10 @@
   }
   T.PATHS = {
     // plunger: up the lane, round the top-right corner, along the top orbit and
-    // down the left orbit, released into the upper-left playfield
+    // down the left orbit. The orbit lane ends right over the scoop, so a soft
+    // plunge drops into it (skill shot) and a hard one runs on past it
     plunge: mkPath([[945, 150], [945, 92], [936, 60], [906, 44], [846, 38], [744, 42], [640, 52],
-      [540, 64], [444, 80], [364, 110], [304, 156], [262, 218], [238, 290], [228, 362], [226, 420], [228, 470]], 'plunge'),
+      [540, 64], [444, 80], [364, 110], [304, 156], [262, 218], [238, 290], [228, 362], [226, 420], [234, 470], [244, 500]], 'plunge'),
     // left orbit (shot up from the right flipper): around the top, down the
     // right-hand wire into the right inlane
     orbit: mkPath([[226, 420], [228, 362], [238, 290], [262, 218], [304, 156], [364, 110], [444, 80],
@@ -232,16 +232,8 @@
     });
     st.push.apply(st, targets);
 
-    // standup targets (gold triangles)
-    const standups = G.standups.map((poly, i) => {
-      const vs = poly.map(p => P(p[0], p[1]));
-      const c = Vertices.centre(vs);
-      const b = Bodies.fromVertices(c.x, c.y, [vs], Object.assign({}, SO, { restitution: 0.45, label: 'stand' + i }));
-      Body.setPosition(b, { x: b.position.x + (c.x - Vertices.centre(b.vertices).x), y: b.position.y + (c.y - Vertices.centre(b.vertices).y) });
-      b.plugin = { cd: 0, fl: 0, c };
-      return b;
-    });
-    st.push.apply(st, standups);
+    // the gold triangles are flush arrow inserts (lamps), not targets
+    const standups = [];
 
     // plunger head (the floor the lane ball rests on)
     const plungerHead = Bodies.rectangle(px(G.laneX), T.PH_Y, L(44), L(24), Object.assign({}, SO, { friction: 0.2, restitution: 0.02 }));
@@ -362,7 +354,14 @@
     // the bat turns up to ~17° per substep, so take the normal at the moment
     // of contact, not at the end of the sweep
     const frac = a.n <= rad ? 0 : Math.min(1, (a.n - rad) / (a.n - e.n));
-    const c = side(th0 + (th1 - th0) * frac);
+    // a ball struck near the pivot rides the rubber round with the bat before
+    // it leaves (so it goes more up the middle); one struck at the tip leaves
+    // at once, across the table. This is what makes flip timing aim the shot.
+    const thHit = th0 + (th1 - th0) * frac, thUp = f.restAng + f.up;
+    const u = Math.max(0, Math.min(1, a.t / f.len));
+    let thOut = thHit + Math.sign(f.w) * (1 - u) * 0.62;
+    if (Math.sign(f.w) * (thOut - thUp) > 0) thOut = thUp;
+    const c = side(thOut);
     const vs = f.w * Math.max(0, c.t) * sg;  // surface speed along the leading normal
     const vn = b.velocity.x * c.nx + b.velocity.y * c.ny;
     if (vn >= vs) return;                     // already leaving faster than the bat
@@ -446,7 +445,7 @@
   T.pathAt = pathAt;
   T.startGuide = function (tb, b, name, speed) {
     b.plugin.guide = { name, s: 0, v: Math.max(1.5, speed) };
-    b.collisionFilter = { category: 1, mask: 0 };
+    b.collisionFilter = { group: 0, category: 1, mask: 0 };
   };
   // returns 'exit' when the ball leaves the end, 'back' when it rolls back out
   T.stepGuide = function (tb, b) {
@@ -464,7 +463,7 @@
       const e = pathAt(path, path.len), sp = Math.max(2, Math.min(gd.v, 12));
       Body.setPosition(b, { x: e.x, y: e.y });
       Body.setVelocity(b, { x: e.tx * sp, y: e.ty * sp });
-      b.collisionFilter = { category: 1, mask: 0xFFFF };
+      b.collisionFilter = { group: 0, category: 1, mask: 0xFFFF };
       b.plugin.guide = null;
       return 'exit';
     }
@@ -472,7 +471,7 @@
       const e = pathAt(path, 0), sp = Math.max(1.5, Math.min(-gd.v, 10));
       Body.setPosition(b, { x: e.x, y: e.y });
       Body.setVelocity(b, { x: -e.tx * sp, y: -e.ty * sp });
-      b.collisionFilter = { category: 1, mask: 0xFFFF };
+      b.collisionFilter = { group: 0, category: 1, mask: 0xFFFF };
       b.plugin.guide = null;
       return 'back';
     }
@@ -581,7 +580,9 @@
 
       // scoop: a slow-enough ball over the hole drops in
       const sc = P(G.scoop[0], G.scoop[1]);
-      if (!(ball.plugin.scoopCd > 0) && Math.hypot(bx - sc.x, by - sc.y) < L(G.scoopR) && Math.hypot(v.x, v.y) < 7) { cb('scoop', 0, ball); continue; }
+      // (a ball fresh out of the orbit lane is rolling straight at it: a bit more speed still drops)
+      const capV = pl.laneExit > 0 ? 8.6 : 7;
+      if (!(pl.scoopCd > 0) && Math.hypot(bx - sc.x, by - sc.y) < L(G.scoopR) && Math.hypot(v.x, v.y) < capV) { cb('scoop', 0, ball); continue; }
 
       // orbit / ramp entrances
       for (const k of ['orbit', 'ramp']) {
@@ -601,6 +602,7 @@
   //   bumper sling target standup mode rollover | launch plungeExit
   //   orbit orbitExit orbitBack | ramp rampExit rampBack | scoop scoopEject | drain
   T.STEP_MS = 1000 / 120;
+  T.EJECT = r => ({ x: 3.8 + r * 0.4, y: -6.3 - r * 0.5 });   // scoop kick: up over the rollover into the pops
   T.SCOOP_HOLD = 110;                              // substeps a ball is held in the scoop
   T.sim = function (tb, balls, emit, opts) {
     const { Engine, Body } = tb.M;
@@ -612,11 +614,11 @@
         if (--pl.held.t <= 0) {
           const sc = P(G.scoop[0], G.scoop[1]);
           pl.held = null;
-          b.collisionFilter = { category: 1, mask: 0xFFFF };
-          // kicked out across the bank toward the centre of the playfield,
-          // clear of the standup below the hole
-          Body.setPosition(b, { x: sc.x + L(10), y: sc.y });
-          Body.setVelocity(b, { x: 7.2 + Math.random() * 0.8, y: -0.6 + Math.random() * 0.8 });
+          b.collisionFilter = { group: 0, category: 1, mask: 0xFFFF };
+          // the kicker fires it up out of the hole, over the rollover and
+          // into the pop bumpers
+          Body.setPosition(b, { x: sc.x + L(6), y: sc.y - L(6) });
+          Body.setVelocity(b, T.EJECT(Math.random()));
           pl.scoopCd = 90;
           emit('scoopEject', 0, b);
         } else {
@@ -626,10 +628,11 @@
         continue;
       }
       if (pl.scoopCd > 0) pl.scoopCd--;
+      if (pl.laneExit > 0) pl.laneExit--;
       if (pl.guide) {
         const name = pl.guide.name, r = T.stepGuide(tb, b);
-        if (r === 'exit') emit(name + 'Exit', 0, b);
-        else if (r === 'back') emit(name + 'Back', 0, b);
+        if (r === 'exit') { if (name === 'plunge') b.plugin.laneExit = 40; emit(name + 'Exit', 0, b); }
+        else if (r === 'back') { if (name === 'plunge') b.plugin.inLane = true; emit(name + 'Back', 0, b); }
       }
     }
     T.scan(tb, balls, (type, d, pos) => {
@@ -642,7 +645,7 @@
         emit(type, d, b);
       } else if (type === 'scoop') {
         const b = pos; b.plugin.held = { t: opts.scoopHold || T.SCOOP_HOLD };
-        b.collisionFilter = { category: 1, mask: 0 };
+        b.collisionFilter = { group: 0, category: 1, mask: 0 };
         emit('scoop', 0, b);
       } else emit(type, d, pos);
     });
@@ -668,7 +671,7 @@
   // helpers for the game
   T.dropTarget = function (t, down) {
     t.plugin.dropped = down;
-    t.collisionFilter = { category: 4, mask: down ? 0 : 1 };
+    t.collisionFilter = { group: 0, category: 4, mask: down ? 0 : 1 };
   };
 
   return T;

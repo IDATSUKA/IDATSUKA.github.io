@@ -1,11 +1,14 @@
-/* AURORA PINBALL — service worker: precache everything for offline play. */
-const VERSION = 'aurora-v7';
+/* AURORA PINBALL — service worker.
+   Network-first for everything, so a new version shows up on the next launch;
+   the cache is only the offline fallback. */
+const VERSION = 'aurora-v8';
 const ASSETS = [
   './',
   './index.html',
   './classic.html',
   './view3d.html',
   './table.js',
+  './table-classic.js',
   './scene3d.js',
   './matter.min.js',
   './three.module.min.js',
@@ -36,19 +39,15 @@ self.addEventListener('activate', e => {
   );
 });
 
-// cache-first, falling back to network (and refresh cache in background)
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
   e.respondWith(
-    caches.match(e.request, { ignoreSearch: true }).then(hit => {
-      const fetched = fetch(e.request).then(res => {
-        if (res && res.ok) {
-          const copy = res.clone();
-          caches.open(VERSION).then(c => c.put(e.request, copy));
-        }
-        return res;
-      }).catch(() => hit);
-      return hit || fetched;
-    })
+    fetch(e.request).then(res => {
+      if (res && res.ok) {
+        const copy = res.clone();
+        caches.open(VERSION).then(c => c.put(e.request, copy));
+      }
+      return res;
+    }).catch(() => caches.match(e.request, { ignoreSearch: true }))
   );
 });
