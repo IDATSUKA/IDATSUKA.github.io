@@ -1,112 +1,121 @@
-// Extract operating objects from the reference photo as transparent sprites,
-// and produce a clean board (photo with moving parts erased).
+// Builds the board + moving-part sprites from the reference render.
+//
+//   REF=/path/to/reference.png node build-assets.cjs
+//
+// The reference photo itself is not kept in the repository; only the derived
+// images are. All cut-out geometry comes from table.js (T.G), so the sprites
+// always line up with the physics.
 const { createCanvas, loadImage } = require('@napi-rs/canvas');
 const fs = require('fs');
-const OUT = '/home/user/IDATSUKA.github.io/pinball';
+const path = require('path');
+const T = require('./table.js');
+const G = T.G, SP = G.sprites;
+const OUT = __dirname;
+const REF = process.env.REF;
+if (!REF) { console.error('set REF=/path/to/reference.png'); process.exit(1); }
 
-// object geometry in PHOTO pixels (measured from the reference)
-const FLIP_L = { piv:[340,1011], tip:[450,1035], r:16 };
-const FLIP_R = { piv:[618,1011], tip:[508,1035], r:16 };
-const BUMPS  = [ [538,246], [426,319], [649,327] ]; const BR_PH = 60;
-const PLUNGE = { x0:950, x1:1015, y0:995, y1:1345 };
+// tapered flipper mask = union of circles from pivot (r1) to tip (r2),
+// plus the same shape shifted down to include the flipper's visible side face
+function flipperMask(ctx, f, ox, oy, pad) {
+  const [sx, sy] = SP.flipSide;
+  ctx.beginPath();
+  for (const [dx, dy] of [[0, 0], [sx, sy], [sx * 0.5, sy * 0.5], [sx * 0.25, sy * 0.25], [sx * 0.75, sy * 0.75]]) {
+    for (let i = 0; i <= 48; i++) {
+      const u = i / 48;
+      const cx = f.piv[0] + (f.tip[0] - f.piv[0]) * u + dx - ox;
+      const cy = f.piv[1] + (f.tip[1] - f.piv[1]) * u + dy - oy;
+      const r = f.r1 + (f.r2 - f.r1) * u + pad;
+      ctx.moveTo(cx + r, cy); ctx.arc(cx, cy, r, 0, Math.PI * 2);
+    }
+  }
+}
+
+// diffusion (Laplace) inpainting of a masked region. Only the surrounding
+// light playfield pixels are used as boundary values; dark trim (apron edge,
+// inlane guide) is solved over rather than smeared into the fill.
+function inpaint(ctx, x0, y0, w, h, maskFn, iters) {
+  const id = ctx.getImageData(x0, y0, w, h), d = id.data;
+  const m = new Uint8Array(w * h), free = new Uint8Array(w * h);
+  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+    const i = y * w + x, luma = 0.3 * d[i * 4] + 0.59 * d[i * 4 + 1] + 0.11 * d[i * 4 + 2];
+    m[i] = maskFn(x0 + x, y0 + y) ? 1 : 0;
+    free[i] = m[i] || luma < 150 ? 1 : 0;
+  }
+  const ch = [0, 1, 2].map(c => { const a = new Float32Array(w * h); for (let i = 0; i < w * h; i++) a[i] = d[i * 4 + c]; return a; });
+  for (const a of ch) {
+    let s = 0, n = 0;
+    for (let i = 0; i < w * h; i++) if (!free[i]) { s += a[i]; n++; }
+    for (let i = 0; i < w * h; i++) if (free[i]) a[i] = n ? s / n : 200;
+  }
+  for (let it = 0; it < iters; it++) {
+    for (const a of ch) {
+      for (let y = 1; y < h - 1; y++) for (let x = 1; x < w - 1; x++) {
+        const i = y * w + x; if (!free[i]) continue;
+        a[i] = (a[i - 1] + a[i + 1] + a[i - w] + a[i + w]) * 0.25;
+      }
+    }
+  }
+  for (let i = 0; i < w * h; i++) if (m[i]) {
+    const n = (Math.random() - 0.5) * 6;                 // a little grain so it isn't plastic
+    for (let c = 0; c < 3; c++) d[i * 4 + c] = Math.max(0, Math.min(255, ch[c][i] + n));
+  }
+  ctx.putImageData(id, x0, y0);
+}
 
 (async () => {
-  const img = await loadImage(OUT + '/reference.png');
+  const img = await loadImage(REF);
   const W = img.width, H = img.height;
+  if (W !== T.PHOTO_W || H !== T.PHOTO_H) throw new Error('unexpected reference size ' + W + 'x' + H);
 
-  // sample average colour of a small patch (for inpainting)
-  function sample(px, py, n){
-    const c = createCanvas(n, n), x = c.getContext('2d');
-    x.drawImage(img, px-n/2, py-n/2, n, n, 0, 0, n, n);
-    const d = x.getImageData(0,0,n,n).data; let r=0,g=0,b=0,k=0;
-    for (let i=0;i<d.length;i+=4){ r+=d[i]; g+=d[i+1]; b+=d[i+2]; k++; }
-    return [r/k|0, g/k|0, b/k|0];
-  }
-
-  // capsule path helper
-  function capsule(ctx, a, b, r){
-    const dx=b[0]-a[0], dy=b[1]-a[1], len=Math.hypot(dx,dy), nx=-dy/len*r, ny=dx/len*r;
-    const ang=Math.atan2(dy,dx);
-    ctx.beginPath();
-    ctx.arc(a[0],a[1],r,ang+Math.PI/2,ang-Math.PI/2);
-    ctx.arc(b[0],b[1],r,ang-Math.PI/2,ang+Math.PI/2);
-    ctx.closePath();
-  }
-
-  // ── board: copy photo, erase flippers + plunger ──
-  const bd = createCanvas(W,H), b = bd.getContext('2d');
-  b.drawImage(img,0,0);
-  // erase flippers with sampled cream
-  // erase flippers: fill rest area with clean cream sampled from the funnel,
-  // plus a faint socket outline (only briefly visible when a flipper is raised)
-  [[FLIP_L,[380,952]], [FLIP_R,[610,952]]].forEach(([f,sp])=>{
-    const col = sample(sp[0], sp[1], 20);
-    b.save(); capsule(b, f.piv, f.tip, f.r+12); b.clip();
-    b.fillStyle = `rgb(${col[0]},${col[1]},${col[2]})`; b.fillRect(0,0,W,H);
-    for(let i=0;i<2000;i++){const rx=f.piv[0]-140+Math.random()*280, ry=f.piv[1]-45+Math.random()*100;
-      b.fillStyle=`rgba(120,104,62,${Math.random()*0.04})`; b.fillRect(rx,ry,1.4,1.4);}
-    b.restore();
-    // socket shadow
-    b.save(); capsule(b, f.piv, f.tip, f.r+4); b.strokeStyle='rgba(40,34,20,0.28)'; b.lineWidth=3; b.stroke(); b.restore();
+  // ── board: photo with the flippers + plunger rod removed ──
+  const bd = createCanvas(W, H), b = bd.getContext('2d');
+  b.drawImage(img, 0, 0);
+  const mcv = createCanvas(W, H), mx = mcv.getContext('2d');
+  mx.fillStyle = '#fff';
+  [G.flipL, G.flipR].forEach(f => { flipperMask(mx, f, 0, 0, 4.5); mx.fill(); });
+  const md = mx.getImageData(0, 0, W, H).data;
+  const inMask = (x, y) => md[(y * W + x) * 4 + 3] > 20;
+  [G.flipL, G.flipR].forEach(f => {
+    const xs = [f.piv[0], f.tip[0]], ys = [f.piv[1], f.tip[1]];
+    const x0 = Math.min(...xs) - 50, y0 = Math.min(...ys) - 45;
+    const x1 = Math.max(...xs) + 55, y1 = Math.max(...ys) + 60;
+    inpaint(b, x0, y0, x1 - x0, y1 - y0, inMask, 900);
   });
-  // erase plunger lane assembly with sampled dark lane colour
-  {
-    const col = sample(PLUNGE.x0-6, (PLUNGE.y0+PLUNGE.y1)/2, 8);
-    b.save(); b.beginPath(); b.rect(PLUNGE.x0, PLUNGE.y0, PLUNGE.x1-PLUNGE.x0, PLUNGE.y1-PLUNGE.y0); b.clip();
-    b.fillStyle=`rgb(${col[0]},${col[1]},${col[2]})`; b.fillRect(0,0,W,H);
-    for(let i=0;i<3000;i++){const rx=PLUNGE.x0+Math.random()*(PLUNGE.x1-PLUNGE.x0), ry=PLUNGE.y0+Math.random()*(PLUNGE.y1-PLUNGE.y0);
-      b.fillStyle=`rgba(255,255,255,${Math.random()*0.03})`; b.fillRect(rx,ry,1,1);}
-    b.restore();
-  }
-  fs.writeFileSync(OUT+'/board.png', bd.toBuffer('image/png'));
+  // plunger: the rod's vacated top is refilled with the empty lane just above it
+  const pr = SP.plunger;
+  b.drawImage(img, pr.x + 14, pr.y - 60, 44, 60, pr.x + 14, pr.y, 44, 60);
+  fs.writeFileSync(path.join(OUT, 'board.png'), bd.toBuffer('image/png'));
 
-  // ── flipper sprites (square, pivot-centred, tapered bat mask) ──
-  function cutFlipper(f, name){
-    const len = Math.hypot(f.tip[0]-f.piv[0], f.tip[1]-f.piv[1]);
-    const S = Math.ceil((len + f.r + 10) * 2); const c = S/2;
-    const cv = createCanvas(S,S), x = cv.getContext('2d');
-    x.drawImage(img, f.piv[0]-c, f.piv[1]-c, S, S, 0,0,S,S);
-    const tipL = [c + (f.tip[0]-f.piv[0]), c + (f.tip[1]-f.piv[1])];
-    // tighter tapered-bat mask (excludes the flipper's cast shadow / neighbours)
-    const r1 = f.r - 1, r2 = f.r * 0.55, N = 40;
+  // ── flipper sprites (square, centred on the pivot) ──
+  const S = SP.flipS;
+  [['flipperL', G.flipL], ['flipperR', G.flipR]].forEach(([name, f]) => {
+    const cv = createCanvas(S, S), x = cv.getContext('2d');
+    const ox = f.piv[0] - S / 2, oy = f.piv[1] - S / 2;
+    x.drawImage(img, ox, oy, S, S, 0, 0, S, S);
     x.globalCompositeOperation = 'destination-in';
-    x.beginPath();
-    for (let i=0;i<=N;i++){
-      const u=i/N, cx=c+(tipL[0]-c)*u, cy=c+(tipL[1]-c)*u, r=r1+(r2-r1)*u;
-      x.moveTo(cx+r, cy); x.arc(cx, cy, r, 0, Math.PI*2);
-    }
-    x.fillStyle='#fff'; x.fill();
-    fs.writeFileSync(OUT+'/'+name+'.png', cv.toBuffer('image/png'));
-    return { S, restAng: Math.atan2(f.tip[1]-f.piv[1], f.tip[0]-f.piv[0]) };
-  }
-  const mL = cutFlipper(FLIP_L,'flipperL');
-  const mR = cutFlipper(FLIP_R,'flipperR');
-
-  // ── bumper cap sprites (circle mask) ──
-  BUMPS.forEach((p,i)=>{
-    const S = (BR_PH+6)*2, c=S/2;
-    const cv=createCanvas(S,S), x=cv.getContext('2d');
-    x.drawImage(img, p[0]-c, p[1]-c, S,S, 0,0,S,S);
-    x.globalCompositeOperation='destination-in';
-    x.beginPath(); x.arc(c,c,BR_PH,0,7); x.fillStyle='#fff'; x.fill();
-    fs.writeFileSync(OUT+'/bump'+i+'.png', cv.toBuffer('image/png'));
+    flipperMask(x, f, ox, oy, 3); x.fillStyle = '#fff'; x.fill();
+    fs.writeFileSync(path.join(OUT, name + '.png'), cv.toBuffer('image/png'));
   });
 
-  // ── plunger sprite (the moving rod+spring+knob) ──
+  // ── plunger sprite: rod + spring + knob only (lane walls stay on the board) ──
   {
-    const pw=PLUNGE.x1-PLUNGE.x0, ph=PLUNGE.y1-PLUNGE.y0;
-    const cv=createCanvas(pw,ph), x=cv.getContext('2d');
-    x.drawImage(img, PLUNGE.x0, PLUNGE.y0, pw, ph, 0,0,pw,ph);
-    fs.writeFileSync(OUT+'/plunger.png', cv.toBuffer('image/png'));
+    const cv = createCanvas(pr.w, pr.h), x = cv.getContext('2d');
+    x.drawImage(img, pr.x, pr.y, pr.w, pr.h, 0, 0, pr.w, pr.h);
+    x.globalCompositeOperation = 'destination-in';
+    x.beginPath();                                      // assembly outline (photo px, relative)
+    const poly = [[16, 8], [44, 8], [46, 90], [44, 215], [78, 220], [80, 318], [90, 322], [90, 408], [32, 408], [32, 322], [36, 318], [34, 220], [30, 90], [16, 40]];
+    poly.forEach(([px, py], i) => i ? x.lineTo(px, py) : x.moveTo(px, py));
+    x.closePath(); x.fillStyle = '#fff'; x.fill();
+    fs.writeFileSync(path.join(OUT, 'plunger.png'), cv.toBuffer('image/png'));
   }
 
-  const meta = {
-    k: 390/W, IMG_Y: 230,
-    flipL: { piv:[FLIP_L.piv[0],FLIP_L.piv[1]], S:mL.S, restAng:mL.restAng },
-    flipR: { piv:[FLIP_R.piv[0],FLIP_R.piv[1]], S:mR.S, restAng:mR.restAng },
-    bumps: BUMPS.map(p=>({c:p, S:(BR_PH+6)*2})),
-    plunger: { x0:PLUNGE.x0, y0:PLUNGE.y0, w:PLUNGE.x1-PLUNGE.x0, h:PLUNGE.y1-PLUNGE.y0 },
-  };
-  fs.writeFileSync(OUT+'/sprites.json', JSON.stringify(meta,null,1));
-  console.log('assets built. flip restAng L=',mL.restAng.toFixed(3),'R=',mR.restAng.toFixed(3),'flipS',mL.S);
-})();
+  // ── pop-bumper caps (animated down/up on each hit) ──
+  SP.caps.forEach((cp, i) => {
+    const s = cp.r * 2 + 4, cv = createCanvas(s, s), x = cv.getContext('2d');
+    x.drawImage(img, cp.c[0] - s / 2, cp.c[1] - s / 2, s, s, 0, 0, s, s);
+    x.globalCompositeOperation = 'destination-in';
+    x.beginPath(); x.ellipse(s / 2, s / 2, cp.r, cp.r * 0.86, 0, 0, Math.PI * 2); x.fillStyle = '#fff'; x.fill();
+    fs.writeFileSync(path.join(OUT, 'bump' + i + '.png'), cv.toBuffer('image/png'));
+  });
+  console.log('assets built');
+})().catch(e => { console.error(e); process.exit(1); });
