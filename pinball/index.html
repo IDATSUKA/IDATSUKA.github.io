@@ -173,6 +173,10 @@ const sfx = {
   start:    () => seq([N.C5, N.E5, N.G5, N.C6], 0.08, 'triangle', 0.14),
   over:     () => seq([N.C5, N.G4, N.E4, N.C4], 0.2, 'triangle', 0.15),
   select:   () => tone(1320, 1320, 0.05, 'square', 0.08),
+  railStop: () => { noise(0.04, 0.5, 2800, 3); tone(1760, 1700, 0.09, 'triangle', 0.08); },
+  charge:   () => { tone(70, 520, 1.05, 'sawtooth', 0.05); tone(140, 1040, 1.05, 'square', 0.02); noise(1.0, 0.12, 300, 2, 'bandpass', 0, 2600); },
+  railFire: () => { noise(0.09, 0.9, 700, 0.8, 'lowpass'); tone(130, 45, 0.16, 'sine', 0.7); tone(2200, 300, 0.12, 'square', 0.05); },
+  lockHold: () => { tone(98, 98, 0.5, 'sine', 0.35); seq([N.G4, N.D5, N.G5], 0.09, 'square', 0.1, 0.05); },
 };
 
 // ════════════════════════════════════════════
@@ -425,13 +429,42 @@ function autoLaunch(b){
 }
 function plRelease(){ plVel = -0.32; }
 function removeBall(b){ const i = balls.indexOf(b); if (i >= 0) balls.splice(i, 1); tb.removeBall(b); }
+const parked = b => !!(b.plugin.guide && b.plugin.guide.parked);
+const activeBalls = () => balls.filter(b => !parked(b));
+
+// ── the right wire rail: it ends in a closed loop, not an exit ─────────
+// A ball that rides it down stops at the loop. A lock holds it there
+// (visible, like a real physical lock); otherwise the rail's magnet charges
+// up and fires it off the end of the wire into the right inlane.
+let railFx = null;           // { t0, dur } while charging
+let railBursts = [];         // release flashes
+function railArrive(b){
+  sfx.railStop(); flashLamp('rail', 0.8);
+  if (!gm || state !== 'play' || gm.b.tilted){ later(500, railRelease); return; }
+  if (majorShot('orbit', b) === 'lock'){ b.plugin.locked = true; sfx.lockHold(); return; }
+  railCharge(1100);
+}
+function railCharge(ms){
+  railFx = { t0: clock, dur: ms };
+  sfx.charge();
+  later(ms, railRelease);
+}
+function railRelease(){
+  const b = T.releaseRail(tb); if (!b) return;
+  if (b.plugin.locked && gm) gm.locked = Math.max(0, gm.locked - 1);
+  b.plugin.locked = false;
+  railFx = null;
+  const p = { x: b.position.x, y: b.position.y };
+  railBursts.push({ x: p.x, y: p.y, t0: now() });
+  sfx.railFire(); flashLamp('rail', 1); shake = Math.max(shake, 0.25);
+}
 
 // ── game flow ───────────────────────────────────────
 function startGame(){
   balls.slice().forEach(removeBall);
   tb.targets.forEach(t => { T.dropTarget(t, false); t.plugin.sink = 0; t.plugin.fl = 0; });
   timers = []; clearScenes();
-  gm = newGame(); gm.b = newBallState();
+  gm = newGame(); gm.b = newBallState(); railFx = null; railBursts = [];
   state = 'play'; giTarget = 1; lastScore = 0;
   LF.on = RF.on = false;
   sfx.start();
@@ -453,11 +486,13 @@ function onDrain(b){
     serveBall(true);
     return;
   }
-  if (balls.length > 0){
-    if (gm.mb && balls.length <= 1) endMultiball();
-    return;
+  if (gm.mb){
+    if (balls.length <= 1) endMultiball();
+    if (balls.length) return;
   }
-  endBall();
+  if (activeBalls().length) return;
+  if (tb.rail.some(x => !x.plugin.locked)) return;        // on its way back off the wire
+  endBall();                                             // locked balls stay locked
 }
 function endMultiball(){
   gm.mb = false; gm.superLit = false; gm.jpCount = 0;
@@ -512,6 +547,7 @@ function gameOver(){
 }
 function finishGame(){
   state = 'over'; giTarget = 0.5; sfx.over();
+  for (let i = 0; i < tb.rail.length; i++) later(600 + i * 700, railRelease);   // eject the locked balls
   const matchN = (Math.random() * 10 | 0) * 10, mine = Math.floor(lastScore / 10) % 10 * 10;
   show(sText('GAME OVER', 'SCORE ' + fmt(lastScore), {}), 2600, 4);
   show((e) => {
@@ -582,7 +618,7 @@ function lightMode(){
   show(sText('MODE IS LIT', MODES[gm.ladder].name + ' AT SCOOP', { flash: true }), 1600, 2);
   return true;
 }
-function majorShot(kind){
+function majorShot(kind, ball){
   const B = gm.b;
   B.shots++;
   const combo = gm.lastShot && gm.lastShot !== kind && clock - gm.lastShotAt < 3500;
@@ -599,14 +635,18 @@ function majorShot(kind){
     return;
   }
   if (gm.lockLit){
+    if (kind !== 'orbit' || !ball){ show(sText('LOCK IS LIT', 'SHOOT THE ORBIT', {}), 1200, 2); return; }
     gm.locked++;
     sfx.lock(); flashFx = 0.4;
-    if (gm.locked >= 2){ show(sText('BALL 2 LOCKED', '', { flash: true }), 1000, 3); later(900, startMultiball); }
-    else show(sText('BALL 1 LOCKED', 'SHOOT AGAIN FOR MULTIBALL', { flash: true }), 1800, 3);
-    return;
+    if (gm.locked >= 2){ show(sText('BALL 2 LOCKED', 'MULTIBALL', { flash: true }), 1400, 3); later(1200, startMultiball); }
+    else {
+      show(sText('BALL 1 LOCKED', 'SHOOT THE ORBIT AGAIN', { flash: true }), 1800, 3);
+      later(1000, () => { if (state === 'play'){ gm.b.skill = true; serveBall(false); } });
+    }
+    return 'lock';
   }
   gm.lockWords = Math.min(3, gm.lockWords + 1);
-  if (gm.lockWords >= 3){ gm.lockLit = true; sfx.lockLit(); show(sText('LOCK IS LIT', 'SHOOT RAMP OR ORBIT', { border: true }), 1800, 3); }
+  if (gm.lockWords >= 3){ gm.lockLit = true; sfx.lockLit(); show(sText('LOCK IS LIT', 'SHOOT THE ORBIT', { border: true }), 1800, 3); }
   else { sfx.word(); show(sText(LOCK_WORDS[gm.lockWords - 1], kind === 'ramp' ? 'RAMP ' + fmt(25000) : 'ORBIT ' + fmt(20000), {}), 1200, 2); }
 }
 function startMultiball(){
@@ -614,8 +654,12 @@ function startMultiball(){
   gm.b.saveUntil = clock + 15000;
   sfx.mball(); flashFx = 1; lampShow('chase', 3000);
   show(sText('MULTIBALL', 'ALL SHOTS LIGHT JACKPOT', { inv: true, border: true, zoom: true }), 2600, 4);
-  later(600, () => serveBall(true));
-  later(2000, () => serveBall(true));
+  // the locked balls are fired off the rail one by one, the trough tops up to three
+  const held = tb.rail.length;
+  railCharge(900);
+  for (let i = 1; i < held; i++) later(900 + i * 650, railRelease);
+  const need = Math.max(0, 3 - balls.length);
+  for (let i = 0; i < need; i++) later(1500 + i * 1300, () => serveBall(true));
 }
 function scoopAward(b){
   const B = gm.b;
@@ -671,7 +715,7 @@ function tilt(){
 
 // ── switch events from the physics ──────────────────
 function onEv(type, d, pos){
-  if (!gm || state !== 'play'){ if (type === 'drain') onDrain(pos); return; }
+  if (!gm || state !== 'play'){ if (type === 'drain') onDrain(pos); else if (type === 'orbitPark') railArrive(pos); return; }
   const B = gm.b;
   if (B.skill && !['launch', 'plungeExit', 'plungeBack', 'scoop', 'mode', 'drain'].includes(type)) B.skill = false;
   switch (type){
@@ -708,7 +752,7 @@ function onEv(type, d, pos){
   case 'orbit': sfx.orbit(); break;
   case 'ramp': sfx.ramp(); break;
   case 'orbitBack': case 'rampBack': sfx.reject(); break;
-  case 'orbitExit': sfx.shot(); flashLamp('orb', 1); flashLamp('su0', 1); majorShot('orbit'); break;
+  case 'orbitPark': sfx.shot(); flashLamp('orb', 1); flashLamp('su0', 1); railArrive(pos); break;
   case 'rampExit': sfx.shot(); flashLamp('ramp', 1); flashLamp('su1', 1); majorShot('ramp'); break;
   case 'scoop': scoopAward(pos); break;
   case 'scoopEject': sfx.kick(); break;
@@ -800,7 +844,7 @@ function pDown(id, x, y){
   if (state === 'bonus'){ timers.forEach(t => { t.at = Math.min(t.at, clock + 120); }); return; }   // flipper skips the bonus count
   if (y > BAND_Y + 8 && x > W * 0.3 && x < W * 0.7){ touches.set(id, { role: 'nudge', sy: y, used: false }); return; }
   const lb = plungerReady();
-  const inPlay = balls.some(b => !b.plugin.inLane);
+  const inPlay = activeBalls().some(b => !b.plugin.inLane);
   if (lb && x > W / 2 && (!inPlay || (x > T.PR - 16 && y > P(0, 900).y))){
     touches.set(id, { role: 'plunger', sy: y, t0: now(), dragged: false }); pulling = true; pull = 0; sfx.pull(); return;
   }
@@ -899,6 +943,7 @@ lamp('ramp', P(752, 470), PL(80), COL.orange, { rx: 0.8 });
 lamp('orb', P(226, 440), PL(66), COL.orange, { rx: 0.7 });
 G.sprites.caps.forEach((cp, i) => lamp('b' + i, P(cp.c[0], cp.c[1] + 20), PL(120), COL.white, { rx: 1.2 }));
 lamp('logo', P(530, 165), PL(150), COL.gold, { rx: 2 });
+lamp('rail', P(826, 690), PL(62), COL.cyan);
 const LAMP_IDS = Object.keys(LAMP);
 function flashLamp(id, v){ if (LAMP[id]) LAMP[id].fl = Math.max(LAMP[id].fl, v); }
 let show_ = null;
@@ -924,7 +969,8 @@ function setLampStates(t){
   S('sc', scoopHot ? 3 : 0, (gm.mb && gm.superLit) ? COL.red : COL.white); S('ro', scoopHot ? 2 : 0);
   // arrow inserts: left points at the orbit, right at the ramp
   const mr = gm.modeRun ? gm.modeRun.i : -1;
-  const shot = mine => gm.mb ? 3 : gm.lockLit ? 3 : mr === mine ? 3 : gm.lockWords < 3 ? 2 : 0;
+  const shot = mine => gm.mb ? 3 : gm.lockLit ? (mine === 2 ? 3 : 0) : mr === mine ? 3 : gm.lockWords < 3 ? 2 : 0;
+  S('rail', tb.rail.some(b => b.plugin.locked) ? 1 : 0);
   S('su0', shot(2), gm.mb ? COL.red : COL.gold); S('su1', shot(3), gm.mb ? COL.red : COL.gold);
   const sp = clock < gm.superPopsUntil;
   for (let i = 0; i < 3; i++) S('b' + i, sp ? 2 : 0);
@@ -948,6 +994,11 @@ function updateLamps(t, dt){
       else if (sh.kind === 'chase') v = Math.sin(e * 0.012 + (L.x + L.y) * 0.05) > 0.4 ? 1 : 0;
       else if (sh.kind === 'bank0' && (id[0] === 'a' && id[1] === '0')) v = blink(e, 80) ? 1 : 0;
       else if (sh.kind === 'bank1' && (id[0] === 'a' && id[1] === '1')) v = blink(e, 80) ? 1 : 0;
+    }
+    if (railFx && !L.dark){                       // ORBIT / LIGHT / LOCK chase while the magnet charges
+      const e = clock - railFx.t0;
+      if (id[0] === 'w') v = Math.max(v, ((e / 80 | 0) % 3) === +id[1] ? 1 : 0);
+      if (id === 'rail') v = Math.max(v, blink(e, Math.max(40, 160 - e * 0.12)) ? 1 : 0.2);
     }
     v = Math.max(v, L.fl);
     L.fl = Math.max(0, L.fl - dt / 260);
@@ -1037,7 +1088,32 @@ function drawCaps(){
     g.drawImage(spr.img, c.x - s * k / 2, c.y - s * k / 2 + down * 1.3, s * k, s * k);
   });
 }
+// the bat's outline (tapered capsule) at its current angle, grown and offset
+function flipPath(f, grow, dx, dy){
+  const a = f.restAng + f.body.angle, ux = Math.cos(a), uy = Math.sin(a);
+  const px = f.pivX + dx, py = f.y + dy;
+  g.beginPath();
+  g.arc(px, py, f.r1 + grow, a + Math.PI / 2, a + Math.PI * 1.5);
+  g.arc(px + ux * f.len, py + uy * f.len, f.r2 + grow, a - Math.PI / 2, a + Math.PI / 2);
+  g.closePath();
+}
+// Only the cream cap is a photo sprite. The black body under it (with its
+// cream band) is extruded straight down the screen and the cast shadow falls
+// down-table, so both stay put in the world while the bat swings.
 function drawFlipper(f, name){
+  const B = G.sprites.flipBody, rim = PL(B.rim), h = PL(B.h), band = PL(B.band);
+  const lift = f.body.angle ? 1 : 0;
+  g.fillStyle = '#000';
+  [[0, 0.26], [1.4, 0.13], [2.8, 0.07]].forEach(([k, al]) => {
+    g.globalAlpha = al; flipPath(f, rim + k, PL(6), h + PL(10) + lift); g.fill();
+  });
+  g.globalAlpha = 1;
+  g.fillStyle = '#2b2824'; flipPath(f, rim, 0, h); g.fill();          // rubber edge at the foot
+  g.fillStyle = '#131211';
+  for (let dy = h - 0.8; dy > band; dy -= 0.9){ flipPath(f, rim, 0, dy); g.fill(); }
+  flipPath(f, rim - 0.2, 0, band); g.strokeStyle = 'rgba(222,212,190,0.85)'; g.lineWidth = 0.8; g.stroke();
+  for (let dy = band - 0.9; dy > 0; dy -= 0.9){ flipPath(f, rim, 0, dy); g.fill(); }
+  flipPath(f, rim, 0, 0); g.fill();
   if (!ready(name)) return;
   const s = G.sprites.flipS * T.IMG_K;
   g.save(); g.translate(f.pivX, f.y); g.rotate(f.body.angle);
@@ -1052,8 +1128,8 @@ function drawPlunger(){
 function drawBall(b){
   const pl = b.plugin, R = T.BALL_R;
   let { x, y } = b.position;
-  let k = 1, sh = 1;
-  if (pl.guide && pl.guide.name === 'ramp'){ k = 1.1; sh = 2.6; }     // up on the clear ramp
+  const up = T.raised(b);                                           // on a wire / the clear ramp
+  let k = 1 + up * 0.1, sh = 1 + up * 1.8;
   if (pl.held){ k = 0.84; sh = 0; }                                 // sunk in the scoop
   // shadow (key light is above the far end of the table)
   if (sh){
@@ -1068,6 +1144,42 @@ function drawBall(b){
   g.globalAlpha = 1;
   g.drawImage(ballSpr, x - R * k, y - R * k, R * 2 * k, R * 2 * k);
   if (pl.held){ g.globalAlpha = 0.35; g.fillStyle = '#000'; g.beginPath(); g.arc(x, y, R * k, 0, TAU); g.fill(); g.globalAlpha = 1; }
+}
+
+// the rail's magnet: charging ring + arcs around the ball at the dead end,
+// then a flash as it fires the ball off the wire
+const RAIL_END = P(826, 682);
+function drawRailFx(){
+  g.globalCompositeOperation = 'lighter';
+  if (railFx){
+    const e = Math.min(1, Math.max(0, (clock - railFx.t0) / railFx.dur));
+    const f = 0.5 + 0.5 * Math.sin(e * e * 46);
+    const c = RAIL_END, R = T.BALL_R;
+    glowAt({ x: c.x, y: c.y, r: PL(36 + 50 * e), rx: 1, col: COL.cyan }, (0.25 + 0.75 * f) * (0.35 + 0.65 * e));
+    g.globalAlpha = 0.35 + 0.6 * e; g.strokeStyle = '#a8e4ff'; g.lineWidth = 0.7 + e;
+    g.beginPath(); g.arc(c.x, c.y, R * (2.6 - 1.3 * e), 0, TAU); g.stroke();
+    // little arcs jumping from the wire to the ball
+    g.lineWidth = 0.6; g.strokeStyle = '#dff4ff';
+    for (let i = 0; i < 2 + e * 4; i++){
+      const a = Math.random() * TAU, r0 = R * 1.05, r1 = R * (1.6 + Math.random() * 0.8);
+      g.globalAlpha = 0.5 + Math.random() * 0.5;
+      g.beginPath(); g.moveTo(c.x + Math.cos(a) * r0, c.y + Math.sin(a) * r0);
+      const steps = 3;
+      for (let k = 1; k <= steps; k++){
+        const rr = r0 + (r1 - r0) * k / steps, aa = a + (Math.random() - 0.5) * 0.5;
+        g.lineTo(c.x + Math.cos(aa) * rr, c.y + Math.sin(aa) * rr);
+      }
+      g.stroke();
+    }
+  }
+  railBursts = railBursts.filter(bu => now() - bu.t0 < 480);
+  for (const bu of railBursts){
+    const e = (now() - bu.t0) / 480;
+    glowAt({ x: bu.x, y: bu.y, r: PL(60 + 140 * e), rx: 1, col: [200, 235, 255] }, 1 - e);
+    g.globalAlpha = (1 - e) * 0.9; g.strokeStyle = '#e8f7ff'; g.lineWidth = 1.4 * (1 - e) + 0.3;
+    g.beginPath(); g.arc(bu.x, bu.y, T.BALL_R * (1.2 + 4 * e), 0, TAU); g.stroke();
+  }
+  g.globalAlpha = 1; g.globalCompositeOperation = 'source-over';
 }
 
 function drawBackbox(t){
@@ -1157,7 +1269,7 @@ function drawAttractCard(t){
     ['右側を長押し or 下へドラッグ', 'プランジャー'],
     ['中央下を上にスワイプ', 'ナッジ（やりすぎるとTILT）'],
     ['弱めに打ってスクープへ', 'スキルショット'],
-    ['オービット/ランプ ×3 → ロック ×2', 'マルチボール'],
+    ['ORBIT/LIGHT点灯 → オービットでロック×2', 'マルチボール'],
     ['ドロップターゲット全消し', 'モード点灯 → スクープで開始'],
     ['左右インレーン両方点灯', 'ボーナス倍率アップ'],
   ];
@@ -1194,6 +1306,7 @@ function draw(t, dt){
   drawPlunger();
   drawFlipper(LF, 'flipperL'); drawFlipper(RF, 'flipperR');
   balls.forEach(drawBall);
+  drawRailFx();
   if (flashFx > 0){
     // flashers light the playfield, not the cabinet walls
     g.globalCompositeOperation = 'lighter';

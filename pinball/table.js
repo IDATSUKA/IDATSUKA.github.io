@@ -102,7 +102,14 @@
     // sprite cut-outs (photo px) shared by build-assets.cjs and the game
     sprites: {
       flipS: 300,                                  // square flipper sprite, centred on the pivot
-      flipSide: [2, 23],                           // the flipper's side face shows below its cap
+      // the photo's flipper is a cream cap on a black body that stands ~24 px
+      // proud of the playfield. Only the cap is a sprite; the body, its cream
+      // band and the cast shadow are drawn live so they stay "below" the cap
+      // whatever angle the bat is at.
+      flipBody: { rim: 6, h: 24, band: 17 },
+      // dark apron / inlane-guide edges under each flipper (kept when the
+      // flipper is erased from the board): points on the edge line
+      flipApron: [[[300, 1045], [400, 1125]], [[760, 1012], [640, 1108]]],
       plunger: { x: 912, y: 975, w: 100, h: 410 },
       caps: [{ c: [531, 238], r: 58 }, { c: [404, 314], r: 60 }, { c: [650, 316], r: 58 }],
     },
@@ -144,11 +151,16 @@
     out.push(pts[pts.length - 1]);
     return out;
   }
-  function mkPath(photoPts, name) {
+  // o.raisedFrom: control-point index from which the path runs on an
+  // elevated wire / ramp (drawn higher, with a longer shadow);
+  // o.park: the path ends in a closed wire loop, the ball stops there
+  function mkPath(photoPts, name, o) {
     const pts = catmull(photoPts, 8).map(([x, y]) => [px(x), py(y)]);
     const cum = [0];
     for (let i = 1; i < pts.length; i++) cum.push(cum[i - 1] + Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]));
-    return { name, pts, cum, len: cum[cum.length - 1] };
+    o = o || {};
+    return { name, pts, cum, len: cum[cum.length - 1], park: !!o.park,
+      raisedFrom: o.raisedFrom == null ? Infinity : cum[o.raisedFrom * 8] };
   }
   T.PATHS = {
     // plunger: up the lane, round the top-right corner, along the top orbit and
@@ -156,16 +168,21 @@
     // plunge drops into it (skill shot) and a hard one runs on past it
     plunge: mkPath([[945, 150], [945, 92], [936, 60], [906, 44], [846, 38], [744, 42], [640, 52],
       [540, 64], [444, 80], [364, 110], [304, 156], [262, 218], [238, 290], [228, 362], [226, 420], [234, 470], [244, 500]], 'plunge'),
-    // left orbit (shot up from the right flipper): around the top, down the
-    // right-hand wire into the right inlane
+    // left orbit (shot up from the right flipper): round the top arch, into
+    // the wire habitrail at its top loop, down its S-curve to the closed
+    // loop at the bottom. The wire has no exit, so the ball parks there until
+    // the game releases it (T.releaseRail) down the 'drop' path.
     orbit: mkPath([[226, 420], [228, 362], [238, 290], [262, 218], [304, 156], [364, 110], [444, 80],
-      [540, 64], [640, 52], [744, 44], [836, 58], [880, 108], [890, 200], [884, 320], [872, 440],
-      [860, 560], [846, 660], [836, 740], [836, 790]], 'orbit'),
+      [540, 64], [600, 72], [655, 100], [706, 120], [752, 146], [780, 184], [790, 226], [778, 266],
+      [754, 302], [734, 340], [732, 382], [748, 426], [778, 468], [810, 506], [838, 552], [852, 604],
+      [848, 648], [826, 682]], 'orbit', { raisedFrom: 9, park: true }),
+    // released from the end of the wire: falls into the right inlane
+    drop: mkPath([[826, 682], [831, 708], [837, 740], [840, 772]], 'drop', { raisedFrom: 0 }),
     // clear ramp (shot up from the left flipper): up the S-ramp, over the top
     // and back down the left wire into the left inlane
     ramp: mkPath([[766, 488], [786, 420], [806, 330], [798, 240], [812, 150], [846, 76], [800, 40],
       [700, 46], [590, 60], [480, 74], [380, 104], [300, 160], [248, 250], [214, 380], [196, 520],
-      [196, 640], [204, 740], [210, 792]], 'ramp'),
+      [196, 640], [204, 740], [210, 792]], 'ramp', { raisedFrom: 1 }),
   };
   // entrance boxes (screen) and minimum entry speed for a guided shot
   T.MOUTHS = {
@@ -280,7 +297,7 @@
     const tb = {
       M: Matter, eng, world: eng.world,
       bumps, posts, slings, targets, standups, plungerHead, LF, RF, wallSegs,
-      modeCd: [0, 0, 0, 0, 0], rollCd: 0,
+      modeCd: [0, 0, 0, 0, 0], rollCd: 0, rail: [],
     };
     // compatibility aliases for older callers
     tb.slingL = slings[0]; tb.slingR = slings[1];
@@ -295,7 +312,7 @@
       World.add(eng.world, b);
       return b;
     };
-    tb.removeBall = function (b) { World.remove(eng.world, b); };
+    tb.removeBall = function (b) { T.forget(tb, b); World.remove(eng.world, b); };
     return tb;
   };
 
@@ -447,10 +464,34 @@
     b.plugin.guide = { name, s: 0, v: Math.max(1.5, speed) };
     b.collisionFilter = { group: 0, category: 1, mask: 0 };
   };
-  // returns 'exit' when the ball leaves the end, 'back' when it rolls back out
+  // balls waiting at the dead end of the wire, front first
+  T.RAIL_GAP = 2 * T.BALL_R + 0.4;
+  T.releaseRail = function (tb) {
+    const b = tb.rail.shift(); if (!b) return null;
+    T.startGuide(tb, b, 'drop', 1.2);
+    tb.rail.forEach(q => { q.plugin.guide.parked = false; q.plugin.guide.v = 0.6; });   // the next rolls up
+    return b;
+  };
+  T.forget = function (tb, b) { const i = tb.rail.indexOf(b); if (i >= 0) tb.rail.splice(i, 1); };
+  // how far up the ball is (0 = on the playfield, 1 = on a wire/ramp)
+  T.raised = function (b) {
+    const gd = b.plugin.guide; if (!gd) return 0;
+    const path = T.PATHS[gd.name];
+    if (gd.name === 'drop') return Math.max(0, 1 - gd.s / path.len);
+    if (gd.s < path.raisedFrom) return 0;
+    const up = Math.min(1, (gd.s - path.raisedFrom) / L(40));
+    return path.park ? up : Math.min(up, (path.len - gd.s) / L(50));     // runs back down to the floor
+  };
+  // returns 'exit' when the ball leaves the end, 'back' when it rolls back
+  // out, 'park' when it first comes to rest at a closed end
   T.stepGuide = function (tb, b) {
     const { Body } = tb.M;
     const gd = b.plugin.guide, path = T.PATHS[gd.name];
+    if (gd.parked) {
+      const p = pathAt(path, gd.s);
+      Body.setPosition(b, { x: p.x, y: p.y }); Body.setVelocity(b, { x: 0, y: 0 });
+      return null;
+    }
     const here = pathAt(path, gd.s);
     // gd.v is in Matter velocity units; per 120 Hz substep the ball moves v/2 px
     // and gravity along the path adds g·ty. dv = g·ty is right in both
@@ -459,6 +500,16 @@
     gd.v += T.GRAVITY * (1000 / 120 / T.VUNIT) * here.ty;
     gd.v *= 0.9994;
     gd.s += gd.v * 0.5;
+    if (path.park) {
+      const k = tb.rail.indexOf(b), stop = path.len - (k >= 0 ? k : tb.rail.length) * T.RAIL_GAP;
+      if (gd.s >= stop) {
+        gd.s = stop; gd.v = 0; gd.parked = true;
+        const p = pathAt(path, gd.s);
+        Body.setPosition(b, { x: p.x, y: p.y }); Body.setVelocity(b, { x: 0, y: 0 });
+        if (k < 0) { tb.rail.push(b); return 'park'; }
+        return null;
+      }
+    }
     if (gd.s >= path.len) {
       const e = pathAt(path, path.len), sp = Math.max(2, Math.min(gd.v, 12));
       Body.setPosition(b, { x: e.x, y: e.y });
@@ -600,7 +651,7 @@
   // Handles mechanics only; scoring/lamps/sound live in the game via emit():
   //   emit(type, data, ball) with type in
   //   bumper sling target standup mode rollover | launch plungeExit
-  //   orbit orbitExit orbitBack | ramp rampExit rampBack | scoop scoopEject | drain
+  //   orbit orbitPark orbitBack | drop dropExit | ramp rampExit rampBack | scoop scoopEject | drain
   T.STEP_MS = 1000 / 120;
   T.EJECT = r => ({ x: 3.8 + r * 0.4, y: -6.3 - r * 0.5 });   // scoop kick: up over the rollover into the pops
   T.SCOOP_HOLD = 110;                              // substeps a ball is held in the scoop
@@ -633,6 +684,7 @@
         const name = pl.guide.name, r = T.stepGuide(tb, b);
         if (r === 'exit') { if (name === 'plunge') b.plugin.laneExit = 40; emit(name + 'Exit', 0, b); }
         else if (r === 'back') { if (name === 'plunge') b.plugin.inLane = true; emit(name + 'Back', 0, b); }
+        else if (r === 'park') emit(name + 'Park', 0, b);
       }
     }
     T.scan(tb, balls, (type, d, pos) => {

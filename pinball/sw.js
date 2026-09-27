@@ -1,7 +1,7 @@
 /* AURORA PINBALL — service worker.
    Network-first for everything, so a new version shows up on the next launch;
    the cache is only the offline fallback. */
-const VERSION = 'aurora-v8';
+const VERSION = 'aurora-v9';
 const ASSETS = [
   './',
   './index.html',
