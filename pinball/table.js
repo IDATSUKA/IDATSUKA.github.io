@@ -46,6 +46,9 @@
     walls: [
       { pts: [[262, 300], [200, 300], [192, 371], [182, 420], [252, 716]], t: 12 }, // orbit channel cap + outer rail + wire
       { pts: [[108, 750], [250, 712]], t: 12 },                              // seals the far-left channel
+      { pts: [[226, 596], [272, 624]], t: 6 },                               // rubber from the wire onto the post (no V-pocket)
+      { pts: [[385, 455], [357, 466]], t: 6 },                               // bank housing -> outer bank posts (no V-pockets)
+      { pts: [[669, 455], [697, 466]], t: 6 },
       { pts: [[108, 750], [108, 1040]], t: 12 },                             // left outlane outer wall
       { pts: [[160, 768], [160, 935], [183, 952], [345, 986]], t: 12 },     // left rail + inlane guide
       { pts: [[256, 426], [254, 371], [262, 300], [288, 238], [354, 152], [450, 110],
@@ -62,8 +65,10 @@
       [160, 768, 9], [872, 768, 9],              // rail tops
       [270, 386, 13],                            // orbit post
       [415, 221, 10], [655, 223, 10],
-      [437, 425, 11], [617, 425, 11],
-      [361, 470, 9], [693, 470, 9],
+      // bank posts: slim enough that a ball can't wedge between a post and the
+      // top of a drop-target bank (a 37 px gap for a 38 px ball was a trap)
+      [437, 425, 6], [617, 425, 6],
+      [361, 470, 6], [693, 470, 6],
       [264, 636, 11], [790, 636, 11],
     ],
     // pop bumpers: footprint ellipse (the base ring as seen in the photo)
@@ -112,6 +117,9 @@
       flipApron: [[[300, 1045], [400, 1125]], [[760, 1012], [640, 1108]]],
       plunger: { x: 912, y: 975, w: 100, h: 410 },
       caps: [{ c: [531, 238], r: 58 }, { c: [404, 314], r: 60 }, { c: [650, 316], r: 58 }],
+      // the clear ramp's end cap: the plunged ball runs through the top
+      // channel underneath it, so its plastic edges are drawn over that ball
+      rampCap: { x: 770, y: 20, w: 150, h: 110, poly: [[776, 26], [884, 28], [917, 57], [918, 128], [896, 128], [874, 70], [776, 62]] },
     },
   };
 
@@ -166,8 +174,8 @@
     // plunger: up the lane, round the top-right corner, along the top orbit and
     // down the left orbit. The orbit lane ends right over the scoop, so a soft
     // plunge drops into it (skill shot) and a hard one runs on past it
-    plunge: mkPath([[945, 150], [945, 92], [936, 60], [906, 44], [846, 38], [744, 42], [640, 52],
-      [540, 64], [444, 80], [364, 110], [304, 156], [262, 218], [238, 290], [228, 362], [226, 420], [234, 470], [244, 500]], 'plunge'),
+    plunge: mkPath([[945, 150], [945, 92], [936, 60], [906, 46], [846, 46], [744, 60], [640, 70],
+      [540, 76], [444, 88], [364, 110], [304, 156], [262, 218], [238, 290], [228, 362], [226, 420], [234, 470], [244, 500]], 'plunge'),
     // left orbit (shot up from the right flipper): round the top arch, into
     // the wire habitrail at its top loop, down its S-curve to the closed
     // loop at the bottom. The wire has no exit, so the ball parks there until
@@ -178,11 +186,12 @@
       [848, 648], [826, 682]], 'orbit', { raisedFrom: 9, park: true }),
     // released from the end of the wire: falls into the right inlane
     drop: mkPath([[826, 682], [831, 708], [837, 740], [840, 772]], 'drop', { raisedFrom: 0 }),
-    // clear ramp (shot up from the left flipper): up the S-ramp, over the top
-    // and back down the left wire into the left inlane
-    ramp: mkPath([[766, 488], [786, 420], [806, 330], [798, 240], [812, 150], [846, 76], [800, 40],
-      [700, 46], [590, 60], [480, 74], [380, 104], [300, 160], [248, 250], [214, 380], [196, 520],
-      [196, 640], [204, 740], [210, 792]], 'ramp', { raisedFrom: 1 }),
+    // clear ramp (shot up from the left flipper): up the clear S-ramp to the
+    // cap at the top right, round its U-turn and down the outer right wire
+    // into the same closed loop the S-wire ends in
+    ramp: mkPath([[766, 488], [786, 420], [806, 330], [800, 250], [812, 160], [846, 90], [884, 70],
+      [902, 108], [900, 190], [902, 280], [902, 380], [900, 470], [896, 560], [892, 630], [874, 670],
+      [850, 688], [826, 684]], 'ramp', { raisedFrom: 1, park: true }),
   };
   // entrance boxes (screen) and minimum entry speed for a guided shot
   T.MOUTHS = {
@@ -651,7 +660,7 @@
   // Handles mechanics only; scoring/lamps/sound live in the game via emit():
   //   emit(type, data, ball) with type in
   //   bumper sling target standup mode rollover | launch plungeExit
-  //   orbit orbitPark orbitBack | drop dropExit | ramp rampExit rampBack | scoop scoopEject | drain
+  //   orbit orbitPark orbitBack | ramp rampPark rampBack | drop dropExit | scoop scoopEject | drain
   T.STEP_MS = 1000 / 120;
   T.EJECT = r => ({ x: 3.8 + r * 0.4, y: -6.3 - r * 0.5 });   // scoop kick: up over the rollover into the pops
   T.SCOOP_HOLD = 110;                              // substeps a ball is held in the scoop

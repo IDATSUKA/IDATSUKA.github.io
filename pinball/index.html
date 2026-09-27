@@ -101,7 +101,7 @@ function tone(f0, f1, dur, type, vol, delay){
 function noise(dur, vol, fc, q, ftype, delay, fc1){
   const a = audio(); if (!a) return;
   const t0 = a.currentTime + (delay || 0);
-  const s = a.createBufferSource(); s.buffer = NB;
+  const s = a.createBufferSource(); s.buffer = NB; s.loop = true;      // long sweeps outlast the 1 s buffer
   const f = a.createBiquadFilter(); f.type = ftype || 'bandpass'; f.Q.value = q || 1;
   f.frequency.setValueAtTime(fc, t0); if (fc1) f.frequency.exponentialRampToValueAtTime(fc1, t0 + dur);
   const gn = a.createGain();
@@ -345,19 +345,27 @@ const PH0 = { x: tb.plungerHead.position.x, y: tb.plungerHead.position.y };
 const now = () => performance.now();
 
 const MODES = [
-  { name: 'INITIATE',  goal: 'POP BUMPERS',  need: 12, ev: 'bumper',  each: 5000,  done: 75000,  secs: 30 },
+  { name: 'INITIATE',  goal: 'POP BUMPERS',  need: 10, ev: 'bumper',  each: 5000,  done: 75000,  secs: 30 },
   { name: 'ASSEMBLE',  goal: 'DROP TARGETS', need: 4,  ev: 'target',  each: 15000, done: 125000, secs: 35 },
   { name: 'CALIBRATE', goal: 'ORBIT SHOTS',  need: 2,  ev: 'orbit',   each: 40000, done: 175000, secs: 40 },
   { name: 'INNOVATE',  goal: 'RAMP SHOTS',   need: 2,  ev: 'ramp',    each: 50000, done: 250000, secs: 40 },
   { name: 'ELEVATE',   goal: 'SHOOT SCOOP',  need: 1,  ev: 'scoop',   each: 0,     done: 500000, secs: 45 },
 ];
 const LOCK_WORDS = ['ORBIT', 'LIGHT', 'LOCK'];
-const BALLS_PER_GAME = 3, SAVE_MS = 10000, REPLAY_AT = 2500000;
-const HS_KEY = 'aurora_hs3';
+const BALLS_PER_GAME = 3, SAVE_MS = 10000, REPLAY_AT = 8000000;
+const HS_KEY = 'aurora_hs4';
 const HS_DEFAULT = [
-  { n: 'AUR', s: 4000000 }, { n: 'IDA', s: 2500000 }, { n: 'SYS', s: 1500000 }, { n: 'VEC', s: 1000000 }, { n: 'ORB', s: 500000 },
+  { n: 'AUR', s: 20000000 }, { n: 'IDA', s: 12000000 }, { n: 'SYS', s: 8000000 }, { n: 'VEC', s: 5000000 }, { n: 'ORB', s: 2500000 },
 ];
-function loadHS(){ try { const a = JSON.parse(store.get(HS_KEY, '')); if (Array.isArray(a) && a.length) return a.slice(0, 5); } catch (e){} return HS_DEFAULT.map(x => Object.assign({}, x)); }
+function loadHS(){
+  const read = k => { try { const a = JSON.parse(store.get(k, '')); return Array.isArray(a) ? a : null; } catch (e){ return null; } };
+  const cur = read(HS_KEY); if (cur && cur.length) return cur.slice(0, 5);
+  // first run of this version: keep the player's own entries from the old
+  // table, drop its too-easy factory defaults
+  const oldDefaults = new Set(['AUR', 'IDA', 'SYS', 'VEC', 'ORB']);
+  const mine = (read('aurora_hs3') || []).filter(h => h && !oldDefaults.has(h.n) && h.s > 0);
+  return HS_DEFAULT.map(x => Object.assign({}, x)).concat(mine).sort((a, b) => b.s - a.s).slice(0, 5);
+}
 let hiscores = loadHS();
 let credits = +store.get('aurora_credits', '0') || 0;
 
@@ -438,10 +446,10 @@ const activeBalls = () => balls.filter(b => !parked(b));
 // up and fires it off the end of the wire into the right inlane.
 let railFx = null;           // { t0, dur } while charging
 let railBursts = [];         // release flashes
-function railArrive(b){
+function railArrive(b, kind){
   sfx.railStop(); flashLamp('rail', 0.8);
   if (!gm || state !== 'play' || gm.b.tilted){ later(500, railRelease); return; }
-  if (majorShot('orbit', b) === 'lock'){ b.plugin.locked = true; sfx.lockHold(); return; }
+  if (majorShot(kind || 'orbit', b) === 'lock'){ b.plugin.locked = true; sfx.lockHold(); return; }
   railCharge(1100);
 }
 function railCharge(ms){
@@ -635,18 +643,18 @@ function majorShot(kind, ball){
     return;
   }
   if (gm.lockLit){
-    if (kind !== 'orbit' || !ball){ show(sText('LOCK IS LIT', 'SHOOT THE ORBIT', {}), 1200, 2); return; }
+    if (!ball){ show(sText('LOCK IS LIT', 'SHOOT RAMP OR ORBIT', {}), 1200, 2); return; }
     gm.locked++;
     sfx.lock(); flashFx = 0.4;
     if (gm.locked >= 2){ show(sText('BALL 2 LOCKED', 'MULTIBALL', { flash: true }), 1400, 3); later(1200, startMultiball); }
     else {
-      show(sText('BALL 1 LOCKED', 'SHOOT THE ORBIT AGAIN', { flash: true }), 1800, 3);
+      show(sText('BALL 1 LOCKED', 'SHOOT RAMP OR ORBIT AGAIN', { flash: true }), 1800, 3);
       later(1000, () => { if (state === 'play'){ gm.b.skill = true; serveBall(false); } });
     }
     return 'lock';
   }
   gm.lockWords = Math.min(3, gm.lockWords + 1);
-  if (gm.lockWords >= 3){ gm.lockLit = true; sfx.lockLit(); show(sText('LOCK IS LIT', 'SHOOT THE ORBIT', { border: true }), 1800, 3); }
+  if (gm.lockWords >= 3){ gm.lockLit = true; sfx.lockLit(); show(sText('LOCK IS LIT', 'SHOOT RAMP OR ORBIT', { border: true }), 1800, 3); }
   else { sfx.word(); show(sText(LOCK_WORDS[gm.lockWords - 1], kind === 'ramp' ? 'RAMP ' + fmt(25000) : 'ORBIT ' + fmt(20000), {}), 1200, 2); }
 }
 function startMultiball(){
@@ -659,7 +667,7 @@ function startMultiball(){
   railCharge(900);
   for (let i = 1; i < held; i++) later(900 + i * 650, railRelease);
   const need = Math.max(0, 3 - balls.length);
-  for (let i = 0; i < need; i++) later(1500 + i * 1300, () => serveBall(true));
+  for (let i = 0; i < need; i++) later(1500 + i * 1300, () => { if (state === 'play') serveBall(true); });
 }
 function scoopAward(b){
   const B = gm.b;
@@ -715,7 +723,7 @@ function tilt(){
 
 // ── switch events from the physics ──────────────────
 function onEv(type, d, pos){
-  if (!gm || state !== 'play'){ if (type === 'drain') onDrain(pos); else if (type === 'orbitPark') railArrive(pos); return; }
+  if (!gm || state !== 'play'){ if (type === 'drain') onDrain(pos); else if (type === 'orbitPark' || type === 'rampPark') railArrive(pos); return; }
   const B = gm.b;
   if (B.skill && !['launch', 'plungeExit', 'plungeBack', 'scoop', 'mode', 'drain'].includes(type)) B.skill = false;
   switch (type){
@@ -753,7 +761,7 @@ function onEv(type, d, pos){
   case 'ramp': sfx.ramp(); break;
   case 'orbitBack': case 'rampBack': sfx.reject(); break;
   case 'orbitPark': sfx.shot(); flashLamp('orb', 1); flashLamp('su0', 1); railArrive(pos); break;
-  case 'rampExit': sfx.shot(); flashLamp('ramp', 1); flashLamp('su1', 1); majorShot('ramp'); break;
+  case 'rampPark': sfx.shot(); flashLamp('ramp', 1); flashLamp('su1', 1); railArrive(pos, 'ramp'); break;
   case 'scoop': scoopAward(pos); break;
   case 'scoopEject': sfx.kick(); break;
   case 'drain': onDrain(pos); break;
@@ -804,7 +812,8 @@ function physStep(){
   clock += STEP;
   if (timers.length){
     const due = timers.filter(t => t.at <= clock); timers = timers.filter(t => t.at > clock);
-    due.forEach(t => t.fn());
+    // one misbehaving delayed event must never stop the machine
+    due.forEach(t => { try { t.fn(); } catch (e){ console.error(e); } });
   }
   // plunger rod: the lane ball rides down with it while pulled, springs back on release
   if (pulling) plVis += (pull - plVis) * 0.25;
@@ -819,6 +828,13 @@ function physStep(){
   if (gm && state === 'play'){
     const B = gm.b;
     B.bob = Math.max(0, B.bob - STEP / 1000 * 0.9);
+    // like a real machine, mode timers and ball save stand still while no
+    // ball is loose (held in the scoop, parked on the rail, waiting in the lane)
+    const loose = balls.some(x => !x.plugin.held && !x.plugin.inLane && !parked(x));
+    if (!loose){
+      if (gm.modeRun) gm.modeRun.end += STEP;
+      if (clock < B.saveUntil) B.saveUntil += STEP;
+    }
     if (gm.modeRun && clock > gm.modeRun.end) modeEnd(false);
   }
 }
@@ -880,6 +896,17 @@ cv.addEventListener('mousedown', e => { const p = lpos(e); pDown('m', p.x, p.y);
 cv.addEventListener('mousemove', e => { if (e.buttons) { const p = lpos(e); pMove('m', p.x, p.y); } });
 cv.addEventListener('mouseup', () => pUp('m'));
 document.addEventListener('gesturestart', e => e.preventDefault());
+// leaving the app: let go of everything and hush; coming back resumes
+function releaseAll(){
+  for (const [id, t] of [...touches.entries()]){ if (t.role === 'plunger') pull = 0; pUp(id); }   // an interrupted pull doesn't fire
+  flip(LF, false); flip(RF, false);
+  if (kbPull){ kbPull = 0; pulling = false; pull = 0; plRelease(); }
+}
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden){ releaseAll(); if (AC && AC.state === 'running') AC.suspend(); }
+  else if (AC && !muted) AC.resume();
+});
+window.addEventListener('blur', releaseAll);
 let kbPull = 0;
 document.addEventListener('keydown', e => {
   if (e.repeat) return;
@@ -969,7 +996,7 @@ function setLampStates(t){
   S('sc', scoopHot ? 3 : 0, (gm.mb && gm.superLit) ? COL.red : COL.white); S('ro', scoopHot ? 2 : 0);
   // arrow inserts: left points at the orbit, right at the ramp
   const mr = gm.modeRun ? gm.modeRun.i : -1;
-  const shot = mine => gm.mb ? 3 : gm.lockLit ? (mine === 2 ? 3 : 0) : mr === mine ? 3 : gm.lockWords < 3 ? 2 : 0;
+  const shot = mine => gm.mb ? 3 : gm.lockLit ? 3 : mr === mine ? 3 : gm.lockWords < 3 ? 2 : 0;
   S('rail', tb.rail.some(b => b.plugin.locked) ? 1 : 0);
   S('su0', shot(2), gm.mb ? COL.red : COL.gold); S('su1', shot(3), gm.mb ? COL.red : COL.gold);
   const sp = clock < gm.superPopsUntil;
@@ -1011,7 +1038,7 @@ function updateLamps(t, dt){
 // SPRITES
 // ════════════════════════════════════════════
 const SPR = {};
-['board', 'flipperL', 'flipperR', 'plunger', 'bump0', 'bump1', 'bump2'].forEach(n => {
+['board', 'flipperL', 'flipperR', 'plunger', 'bump0', 'bump1', 'bump2', 'rampcap'].forEach(n => {
   if (typeof Image === 'undefined') return;
   const im = new Image(); const rec = { img: im, ready: false };
   im.onload = () => { rec.ready = true; }; im.src = n + '.png'; SPR[n] = rec;
@@ -1240,7 +1267,7 @@ function drawCabinetFront(t){
   g.fillStyle = lg; g.fillRect(0, y0, W, 12);
   g.fillStyle = '#0a0a0b'; g.fillRect(0, y0 + 12, W, H - y0 - 12);
   // flipper buttons
-  const by = y0 + 50;
+  const by = y0 + 42;
   [[26, LF.on], [W - 26, RF.on]].forEach(([x, on]) => {
     g.fillStyle = on ? '#e8c060' : '#6b5526'; g.beginPath(); g.roundRect(x - 9, by - 20, 18, 40, 7); g.fill();
     if (on){ g.globalCompositeOperation = 'lighter'; g.globalAlpha = 0.5; g.drawImage(glowSprite(COL.gold), x - 24, by - 30, 48, 60); g.globalAlpha = 1; g.globalCompositeOperation = 'source-over'; }
@@ -1254,7 +1281,7 @@ function drawCabinetFront(t){
   g.fillStyle = 'rgba(170,150,100,0.6)'; g.font = '8px "Helvetica Neue",Arial,sans-serif';
   const hint = state === 'play' ? (plungerReady() ? '右側を長押し / 下へドラッグ → 離して発射' : '中央下を上にスワイプ: ナッジ') :
     state === 'entry' ? '左右: 文字選択  ·  中央: 決定' : 'タップでスタート';
-  g.fillText(hint, W / 2, by + 26);
+  g.fillText(hint, W / 2, by + 22);          // clear of the iPhone home indicator
 }
 function drawAttractCard(t){
   // instruction card over the lower playfield while the game is idle
@@ -1269,7 +1296,7 @@ function drawAttractCard(t){
     ['右側を長押し or 下へドラッグ', 'プランジャー'],
     ['中央下を上にスワイプ', 'ナッジ（やりすぎるとTILT）'],
     ['弱めに打ってスクープへ', 'スキルショット'],
-    ['ORBIT/LIGHT点灯 → オービットでロック×2', 'マルチボール'],
+    ['ORBIT/LIGHT/LOCK点灯 → ロック×2', 'マルチボール'],
     ['ドロップターゲット全消し', 'モード点灯 → スクープで開始'],
     ['左右インレーン両方点灯', 'ボーナス倍率アップ'],
   ];
@@ -1305,7 +1332,11 @@ function draw(t, dt){
   drawCaps();
   drawPlunger();
   drawFlipper(LF, 'flipperL'); drawFlipper(RF, 'flipperR');
-  balls.forEach(drawBall);
+  // balls on the playfield / in the channels first, then the clear plastic
+  // they pass beneath, then balls riding up on wires and the ramp
+  balls.forEach(b => { if (!T.raised(b)) drawBall(b); });
+  if (ready('rampcap')){ const rc = G.sprites.rampCap, p = P(rc.x, rc.y); g.drawImage(SPR.rampcap.img, p.x, p.y, PL(rc.w), PL(rc.h)); }
+  balls.forEach(b => { if (T.raised(b)) drawBall(b); });
   drawRailFx();
   if (flashFx > 0){
     // flashers light the playfield, not the cabinet walls
@@ -1385,7 +1416,10 @@ function frame(ts){
   rollUpdate();
   draw(ts, dt);
 }
-function loop(ts){ frame(ts); requestAnimationFrame(loop); }
+function loop(ts){
+  try { frame(ts); } catch (e){ console.error(e); }
+  requestAnimationFrame(loop);
+}
 resize();
 buildBall();
 window.addEventListener('resize', resize);

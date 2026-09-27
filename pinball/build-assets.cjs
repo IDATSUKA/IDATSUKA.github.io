@@ -150,5 +150,21 @@ function solve(a, free, w, h, iters) {
     x.beginPath(); x.ellipse(s / 2, s / 2, cp.r, cp.r * 0.86, 0, 0, Math.PI * 2); x.fillStyle = '#fff'; x.fill();
     fs.writeFileSync(path.join(OUT, 'bump' + i + '.png'), cv.toBuffer('image/png'));
   });
+  // ── clear ramp cap: only its bright plastic edges (alpha from brightness) ──
+  {
+    const rc = SP.rampCap, cv = createCanvas(rc.w, rc.h), x = cv.getContext('2d');
+    x.drawImage(img, rc.x, rc.y, rc.w, rc.h, 0, 0, rc.w, rc.h);
+    const id = x.getImageData(0, 0, rc.w, rc.h), d = id.data;
+    const pm = createCanvas(rc.w, rc.h), pmx = pm.getContext('2d');
+    pmx.beginPath(); rc.poly.forEach(([px, py], i) => i ? pmx.lineTo(px - rc.x, py - rc.y) : pmx.moveTo(px - rc.x, py - rc.y));
+    pmx.closePath(); pmx.fillStyle = '#fff'; pmx.fill();
+    const md2 = pmx.getImageData(0, 0, rc.w, rc.h).data;
+    for (let i = 0; i < rc.w * rc.h; i++) {
+      const l = 0.3 * d[i * 4] + 0.59 * d[i * 4 + 1] + 0.11 * d[i * 4 + 2];
+      d[i * 4 + 3] = Math.round(Math.max(0, Math.min(1, (l - 55) / 110)) * 235 * (md2[i * 4 + 3] / 255));
+    }
+    x.putImageData(id, 0, 0);
+    fs.writeFileSync(path.join(OUT, 'rampcap.png'), cv.toBuffer('image/png'));
+  }
   console.log('assets built');
 })().catch(e => { console.error(e); process.exit(1); });
