@@ -1,3 +1,8 @@
 mix.wav
 _temp_score.wav
 __pycache__/
+# raw 効果音ラボ files stay local (public repo = redistribution); only the mixed films are committed
+sfx/*.wav
+sfx/*.mp3
+sfx/*.ogg
+sfx/*.m4a
