@@ -10,6 +10,8 @@ Space Grotesk・Zen Kaku Gothic New・Space Mono / Michroma由来のワードマ
 
 合計サイズ **約23MB**（`ads` 780KB / `storyboard` 768KB / `cm` 12MB / `src` 1.4MB / `clips` 7.7MB）。
 
+**`kt/` はキネティックタイポ版の15秒CM**（白・黒・アイスの斜めワイプ、番号付きの3カット、手書き文字、90 BPMのBGM付き。16:9と9:16）と、画像1枚から動画を生成するためのブランドボード。詳細は `kt/README.md`。
+
 **`clips/` は投稿用の短い動画**（テンプレートの動き・サイトの明暗切替）。静止画では伝わらない部分だけを入れてあります。詳細と投稿文の案は `clips/README.md`。
 
 ---

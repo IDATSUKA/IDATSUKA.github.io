@@ -10,6 +10,19 @@ Learned from a reference: a 15.08s, 2560×1440, 24fps brand film for a fictional
 Noto Sans JP Bold + red handwritten script accents). Full shot-by-shot timeline in
 `reference-gyaru.md` next to this file. Below is the reusable grammar.
 
+**The whole reference film was generated from ONE image** — a brand board (hero, logo,
+palette, typography, phone mockup, service cards 01–03, UI parts, tags, CTA band, footer).
+The image-to-video model (Higgsfield) treated each board module as a shot and invented the
+motion. So there are two production routes:
+
+- **Route B — one board → i2v.** Fast and photographic, but the model redraws every glyph:
+  small Japanese text comes out garbled. Make the board's copy large, few words per module,
+  and lay modules out in film order (top-left = opening, bottom = end card).
+- **Route A — code-rendered** (Canvas/HTML, deterministic `seek(t)`). Text is always correct.
+  Use it for the final, or to patch any i2v shot whose text broke.
+
+Worked example of both routes for this site: `promo/kt/` (`kt.html` = route A, `board.html` → `board.png` = route B).
+
 ## 1. Structure (15s = 4 acts)
 
 | Act | Time | Job | Reference |
@@ -57,7 +70,7 @@ The last ~2s are a **static hold** on the end card (copy + logo + red arrow). Ne
 ## 6. Pitfalls seen in the reference (AI-generated video)
 
 Generated frames garbled Japanese text — 「考えここと」, 「コーンミーション設計」, chips like 「ブランディグ」, 「デンタル」, and type overlapping props (megaphone over 「キャンペーン」).
-**Therefore: never let the video model render copy.** Generate plates/clips *without text*, then composite all typography in HTML/Canvas (as `promo/cm/cm.html` does) or in an editor. Keep text in a safe area clear of the subject's props.
+**Therefore: for the final cut, do not let the video model draw small copy.** Either use route A, or use route B and replace or overlay every shot whose text broke. Generate plates/clips *without text* when compositing, and keep text in a safe area clear of the subject's props.
 
 ## 7. How to apply in this repo
 

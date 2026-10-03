@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>IDATSUKA — Brand Board</title>
+<style>
+/* One-image input for image-to-video (Higgsfield etc.), laid out like the
+   reference board: every module here is meant to become one shot.
+   Render 944×1666 @2x → board.png. Text is kept large on purpose. */
+@font-face { font-family: ZKG; font-weight: 500; src: url(assets/fonts/zkg-500.woff2) format('woff2'); }
+@font-face { font-family: ZKG; font-weight: 700; src: url(assets/fonts/zkg-700.woff2) format('woff2'); }
+@font-face { font-family: ZKG; font-weight: 900; src: url(assets/fonts/zkg-900.woff2) format('woff2'); }
+@font-face { font-family: SG;  font-weight: 700; src: url(assets/fonts/sg-700.woff2) format('woff2'); }
+@font-face { font-family: SM;  font-weight: 400; src: url(assets/fonts/sm-400.woff2) format('woff2'); }
+@font-face { font-family: CV;  font-weight: 700; src: url(assets/fonts/cv-700.woff2) format('woff2'); }
+:root { --ink:#060607; --ink2:#0b0c0e; --ink3:#121317; --fg:#f4f5f7; --dim:#c3c8d0; --muted:#70767f; --ice:#9fd6ec; --steel:#1d6d8e; --line:rgba(244,245,247,.09); }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 944px; height: 1666px; background: #000; overflow: hidden; }
+body { font-family: ZKG, sans-serif; color: var(--fg); padding: 12px; display: grid; gap: 12px;
+  grid-template-columns: 286px 342px 280px; grid-template-rows: 440px 586px 168px 434px; }
+.c { background: var(--ink2); border: 1px solid var(--line); border-radius: 14px; position: relative; overflow: hidden; }
+.lbl { font-family: SM; font-size: 10px; letter-spacing: .24em; text-transform: uppercase; color: var(--muted); }
+.script { font-family: CV; font-weight: 700; color: var(--ice); line-height: 1; white-space: nowrap; }
+.hd { font-weight: 900; line-height: 1.22; letter-spacing: .02em; }
+.mono { font-family: SM; letter-spacing: .2em; text-transform: uppercase; }
+.btn { display: inline-flex; align-items: center; gap: 14px; font-weight: 700; font-size: 11px; padding: 12px 18px; border-radius: 4px; }
+.btn.ice { background: var(--ice); color: var(--ink); }
+.btn.line { border: 1px solid rgba(244,245,247,.35); }
+.br { position: absolute; width: 22px; height: 22px; border: 0 solid var(--ice); }
+
+/* hero (spans 2 cols) */
+#hero { grid-column: 1 / 3; grid-row: 1; background: var(--ink); }
+#hero .plate { position: absolute; right: -70px; top: 0; height: 100%; opacity: .95; }
+#hero nav { position: absolute; left: 22px; right: 22px; top: 20px; display: flex; align-items: center; gap: 22px; font-family: SM; font-size: 9px; letter-spacing: .18em; color: var(--dim); }
+#hero nav img { width: 120px; margin-right: auto; }
+#hero .hd { position: absolute; left: 22px; top: 96px; font-size: 64px; }
+#hero p { position: absolute; left: 24px; top: 270px; font-size: 13px; line-height: 2; color: var(--dim); font-weight: 500; }
+#hero .btn { position: absolute; left: 24px; top: 362px; }
+#hero .script { position: absolute; left: 352px; top: 120px; font-size: 28px; transform: rotate(-10deg); line-height: 1.15; }
+
+/* identity */
+#id { grid-column: 3; grid-row: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px; }
+#id .ring { width: 120px; height: 120px; border-radius: 50%; border: 2px solid var(--ice); display: grid; place-items: center; box-shadow: 0 0 40px rgba(159,214,236,.25); }
+#id .ring i { width: 16px; height: 16px; border-radius: 50%; background: var(--ice); }
+#id img { width: 210px; }
+#id .tag { font-weight: 900; font-size: 22px; letter-spacing: .08em; }
+
+/* typography */
+#type { grid-column: 1; grid-row: 2; padding: 22px; }
+#type .hd { font-size: 34px; margin: 16px 0 12px; }
+#type .s { font-size: 12px; color: var(--dim); line-height: 1.9; font-weight: 500; }
+#type hr { border: 0; border-top: 1px solid var(--line); margin: 20px 0; }
+#type .row { margin-bottom: 16px; }
+#type .row b { display: block; font-size: 10px; color: var(--muted); font-family: SM; font-weight: 400; margin-bottom: 6px; }
+#type .row span { font-size: 15px; }
+#type .script { position: absolute; right: 18px; bottom: 26px; font-size: 40px; transform: rotate(-10deg); }
+
+/* phone */
+#phoneC { grid-column: 2; grid-row: 2 / 4; background: transparent; border: 0; overflow: visible; display: grid; place-items: center; }
+#phone { width: 300px; height: 620px; border-radius: 46px; background: #16181c; padding: 10px; box-shadow: 0 0 0 2px #2a2d33, 0 30px 70px rgba(0,0,0,.7); position: relative; }
+#phone .scr { width: 100%; height: 100%; border-radius: 38px; overflow: hidden; position: relative; background: var(--ink); }
+#phone .scr img { width: 100%; position: absolute; top: -40px; }
+#phone .isl { position: absolute; left: 50%; top: 10px; width: 90px; height: 26px; border-radius: 14px; background: #000; transform: translateX(-50%); z-index: 2; }
+#phone .script { position: absolute; left: -40px; top: 200px; font-size: 54px; transform: rotate(-10deg); z-index: 3; text-shadow: 0 4px 20px rgba(0,0,0,.8); }
+
+/* palette */
+#pal { grid-column: 3; grid-row: 2; padding: 20px; }
+#pal .sw { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin: 14px 0 26px; }
+#pal .sw div { height: 50px; border-radius: 4px; border: 1px solid var(--line); }
+#pal .sw small { display: block; font-family: SM; font-size: 8px; color: var(--muted); margin-top: 6px; }
+.svc { display: flex; gap: 12px; align-items: center; border: 1px solid var(--line); border-radius: 10px; padding: 12px; margin-top: 10px; background: var(--ink); }
+.svc .n { font-family: SG; font-weight: 700; font-size: 30px; width: 46px; }
+.svc .n.a { color: var(--ice); }
+.svc .t { font-weight: 900; font-size: 14px; line-height: 1.6; flex: 1; white-space: nowrap; }
+.svc .t small { font-size: 9px; color: var(--muted); font-weight: 400; }
+.svc img { width: 64px; height: 56px; object-fit: cover; border-radius: 6px; }
+
+/* UI + chips */
+#ui { grid-column: 1; grid-row: 3 / 5; padding: 20px; }
+#ui .btns { display: flex; gap: 8px; margin: 14px 0 16px; }
+#ui .in { border: 1px solid rgba(244,245,247,.2); border-radius: 4px; padding: 11px 12px; font-size: 11px; color: var(--muted); margin-bottom: 8px; }
+#ui .tg { display: flex; align-items: center; justify-content: space-between; font-size: 11px; color: var(--dim); margin: 12px 0 22px; }
+#ui .tg i { width: 36px; height: 20px; border-radius: 10px; background: var(--ice); position: relative; }
+#ui .tg i::after { content: ''; position: absolute; right: 3px; top: 3px; width: 14px; height: 14px; border-radius: 50%; background: var(--ink); }
+.chips { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 12px; }
+.chip { font-weight: 700; font-size: 11px; padding: 7px 13px; border-radius: 999px; border: 1px solid rgba(244,245,247,.25); color: var(--dim); }
+.chip.on { background: var(--ice); color: var(--ink); border-color: var(--ice); }
+.chip.ink { background: var(--fg); color: var(--ink); border-color: var(--fg); }
+#ui .rk { margin-top: 22px; font-family: SM; font-size: 11px; }
+#ui .rk div { display: flex; justify-content: space-between; padding: 9px 0; border-top: 1px solid var(--line); color: var(--dim); }
+#ui .rk div b { font-family: SG; color: var(--fg); }
+#ui .rk div:first-child b { color: var(--ice); }
+#ui .note { font-size: 8px; color: var(--muted); margin-top: 8px; }
+
+/* gallery tile */
+#gal { grid-column: 3; grid-row: 3; }
+#gal img { width: 100%; height: 100%; object-fit: cover; }
+#gal .br.tl { left: 10px; top: 10px; border-left-width: 2px; border-top-width: 2px; }
+#gal .br.brr { right: 10px; bottom: 10px; border-right-width: 2px; border-bottom-width: 2px; }
+
+/* CTA band */
+#cta { grid-column: 2 / 4; grid-row: 4; background: var(--ice); color: var(--ink); border: 0; display: grid; grid-template-rows: 1fr auto; }
+#cta .top { position: relative; padding: 34px 30px; }
+#cta .hd { font-size: 46px; }
+#cta p { font-weight: 700; font-size: 15px; margin: 16px 0 22px; }
+#cta .btn { background: var(--ink); color: var(--fg); }
+#cta .slab { position: absolute; right: -80px; top: -40px; width: 240px; height: 360px; background: var(--ink); transform: skewX(-22deg); }
+#cta .plate { position: absolute; right: -20px; top: 0; height: 100%; mix-blend-mode: screen; opacity: .9; }
+#cta .script { position: absolute; right: 50px; top: 150px; font-size: 56px; color: var(--fg); transform: rotate(-10deg); }
+#cta footer { background: var(--ink); color: var(--dim); padding: 18px 30px; display: flex; align-items: center; gap: 24px; font-family: SM; font-size: 9px; letter-spacing: .16em; }
+#cta footer img { width: 110px; margin-right: auto; }
+</style>
+</head>
+<body>
+  <section class="c" id="hero">
+    <img class="plate" src="../src/plates/ring-1080x1080.jpg" alt="">
+    <nav><img src="../../img/logo.svg" alt="IDATSUKA"><span>GAMES</span><span>RANKING</span><span>STORE</span><span>BLOG</span></nav>
+    <h1 class="hd">その5分、<br>まだ退屈<span style="color:var(--ice)">?</span></h1>
+    <p>ブラウザひとつで、<br>遊べて、競えて、作れる。</p>
+    <span class="btn ice">GAMESを見る →</span>
+    <div class="script">Click<br>→ Play<br>→ Rank.</div>
+  </section>
+
+  <section class="c" id="id">
+    <div class="ring"><i></i></div>
+    <img src="../../img/logo.svg" alt="IDATSUKA">
+    <div class="tag">完璧より、夢中を。</div>
+  </section>
+
+  <section class="c" id="type">
+    <p class="lbl">Typography</p>
+    <h2 class="hd">遊ぶ。競う。<br>作る。</h2>
+    <p class="s">Zen Kaku Gothic New / Space Grotesk / Space Mono</p>
+    <hr>
+    <div class="row"><b>ZEN KAKU GOTHIC NEW 900</b><span class="hd">遊ぶことを、本気で。</span></div>
+    <div class="row"><b>SPACE GROTESK 700</b><span style="font-family:SG;font-weight:700;font-size:22px">01 02 03 48,210</span></div>
+    <div class="row"><b>SPACE MONO</b><span class="mono" style="font-size:12px">idatsuka.com</span></div>
+    <div class="script">Just Play.</div>
+  </section>
+
+  <section class="c" id="phoneC">
+    <div id="phone"><div class="scr"><i class="isl"></i><img src="assets/phone-games.jpg" alt=""></div><div class="script">Nice Run!</div></div>
+  </section>
+
+  <section class="c" id="pal">
+    <p class="lbl">Color Palette</p>
+    <div class="sw">
+      <div style="background:#060607"><small style="margin-top:58px">#060607</small></div>
+      <div style="background:#f4f5f7"><small style="margin-top:58px">#F4F5F7</small></div>
+      <div style="background:#9fd6ec"><small style="margin-top:58px">#9FD6EC</small></div>
+      <div style="background:#1d6d8e"><small style="margin-top:58px">#1D6D8E</small></div>
+      <div style="background:#121317"><small style="margin-top:58px">#121317</small></div>
+    </div>
+    <p class="lbl" style="margin-top:30px">Service</p>
+    <div class="svc"><span class="n">01</span><span class="t">ゲーム<br><small class="mono">Games</small></span><img src="../../img/game-orbit.svg" alt=""></div>
+    <div class="svc"><span class="n a">02</span><span class="t">ランキング<br><small class="mono">Ranking</small></span><img src="../../img/game-stack.svg" alt=""></div>
+    <div class="svc"><span class="n">03</span><span class="t">テンプレート<br><small class="mono">Templates</small></span><img src="../../img/store-veil.jpg" alt=""></div>
+  </section>
+
+  <section class="c" id="ui">
+    <p class="lbl">UI Components</p>
+    <div class="btns"><span class="btn ice">PLAY →</span><span class="btn line">STORE →</span></div>
+    <div class="in">フレンドコードを入力</div>
+    <div class="tg">ライトテーマ<i></i></div>
+    <p class="lbl">Tags / Chips</p>
+    <div class="chips"><span class="chip ink">ゲーム</span><span class="chip on">ランキング</span><span class="chip">テンプレート</span><span class="chip">アート</span><span class="chip">ブログ</span><span class="chip">ブラウザ</span></div>
+    <div class="rk"><div><span>01 NOVA</span><b>48,210</b></div><div><span>02 kuro_77</span><b>41,980</b></div><div><span>03 haru.</span><b>39,455</b></div></div>
+    <p class="note">※ ランキング表示はサンプル（架空の名前・スコア）です</p>
+  </section>
+
+  <section class="c" id="gal"><img src="../../img/game-void-runner.svg" alt=""><i class="br tl"></i><i class="br brr"></i></section>
+
+  <section class="c" id="cta">
+    <div class="top">
+      <div class="slab"></div>
+      <h2 class="hd">今日の5分、<br>どう遊ぶ?</h2>
+      <p>一度、遊んでみよう。</p>
+      <span class="btn">idatsuka.com →</span>
+      <div class="script">Let's Play</div>
+    </div>
+    <footer><img src="../../img/logo.svg" alt="IDATSUKA"><span>GAMES</span><span>RANKING</span><span>STORE</span><span>© IDATSUKA</span></footer>
+  </section>
+</body>
+</html>
