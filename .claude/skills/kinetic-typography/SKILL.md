@@ -76,8 +76,8 @@ Generated frames garbled Japanese text — 「考えここと」, 「コーン�
 
 | Layer | Source | Notes |
 |---|---|---|
-| Narration | **Gemini** (TTS) | Japanese VO from the copy lines; time each line to start on a cut |
-| BGM | **Gemini** (music generation) | Ask for the film's BPM (e.g. 90 BPM) and length (15s) so cuts stay on the beat |
+| Narration | **Gemini TTS** | Japanese VO from the copy lines; time each line to start on a cut |
+| BGM / music | **Gemini music** | Ask for the film's BPM (e.g. 90 BPM) and length (15s) so cuts stay on the beat |
 | Sound effects | **効果音ラボ** (soundeffect-lab.info) | Whooshes for slash wipes, clicks/ticks on cuts, a hit on the end card. Check its terms before shipping |
 
 Do not synthesize placeholder audio (like `promo/kt/src/score.py`) when these are available. The user generates the files; leave clear cue sheets (time, line or effect, source) and mix the files in with ffmpeg once supplied.
