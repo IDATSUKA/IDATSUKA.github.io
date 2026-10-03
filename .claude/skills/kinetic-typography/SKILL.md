@@ -72,6 +72,16 @@ The last ~2s are a **static hold** on the end card (copy + logo + red arrow). Ne
 Generated frames garbled Japanese text — 「考えここと」, 「コーンミーション設計」, chips like 「ブランディグ」, 「デンタル」, and type overlapping props (megaphone over 「キャンペーン」).
 **Therefore: for the final cut, do not let the video model draw small copy.** Either use route A, or use route B and replace or overlay every shot whose text broke. Generate plates/clips *without text* when compositing, and keep text in a safe area clear of the subject's props.
 
+## 7. Audio sources (user's standing choice)
+
+| Layer | Source | Notes |
+|---|---|---|
+| Narration | **Gemini** (TTS) | Japanese VO from the copy lines; time each line to start on a cut |
+| BGM | **Gemini** (music generation) | Ask for the film's BPM (e.g. 90 BPM) and length (15s) so cuts stay on the beat |
+| Sound effects | **効果音ラボ** (soundeffect-lab.info) | Whooshes for slash wipes, clicks/ticks on cuts, a hit on the end card. Check its terms before shipping |
+
+Do not synthesize placeholder audio (like `promo/kt/src/score.py`) when these are available. The user generates the files; leave clear cue sheets (time, line or effect, source) and mix the files in with ffmpeg once supplied.
+
 ## 7. How to apply in this repo
 
 1. Write the copy first: hook / promise / 3 proofs / tagline / question / CTA (each ≤ 14 chars per line). `copy-jp` agent for the words.
