@@ -1,0 +1,42 @@
+{
+  "duration": 15.0,
+  "bpm": 90,
+  "loudness_lufs": -14,
+
+  "vo": {
+    "tool": "Gemini TTS",
+    "model": "gemini-3.8-flash-tts",
+    "voice": "Sulafat",
+    "language": "ja-JP",
+    "direction": "高級ブランドのCMナレーション。落ち着いた低めの声で、ゆっくり、息を含ませて、上品に。語尾は置くように静かに。間を大切に。",
+    "gain_db": 0,
+    "lines": [
+      { "id": "vo1", "at": 1.42,  "text": "その五分、まだ退屈？" },
+      { "id": "vo2", "at": 10.05, "text": "完璧より、夢中を。" },
+      { "id": "vo3", "at": 13.45, "text": "一度、遊んでみよう。" }
+    ]
+  },
+
+  "bgm": {
+    "tool": "Gemini music",
+    "model": "lyria-3-clip-preview",
+    "file": "bgm.wav",
+    "offset": 0.0,
+    "gain_db": -3,
+    "prompt": "15-second instrumental for a luxury brand film. 90 BPM, A minor. Minimal and elegant: soft felt piano motif, warm analog sub bass, airy string pad, restrained crisp percussion with a quiet kick on every beat. Structure: 0-1.3s near silence with a single piano note; 1.3s pulse begins softly; 4.7s gentle lift as percussion fills in; 10.0s a breath (drums drop out, piano and pad only); 11.3s pulse returns; 13.33s one deep resolving hit, then a long reverb tail to 15s. No vocals, no risers, no EDM drops. Calm, precise, expensive, cinematic. Like a high-end watch or design studio commercial."
+  },
+
+  "sfx": {
+    "tool": "効果音ラボ (soundeffect-lab.info)",
+    "cues": [
+      { "at": 0.06,  "name": "shimmer", "gain_db": -18, "search": "キラッ / 光る（短く上品なもの）", "why": "冒頭のアイスの細線が伸びる" },
+      { "at": 3.08,  "name": "whoosh",  "gain_db": -13, "search": "シュッ / 風を切る（素早く通り過ぎる）", "why": "白→黒のスラッシュワイプ（3.33秒で画面を覆う）" },
+      { "at": 4.667, "name": "tick",    "gain_db": -20, "search": "カーソル移動 / 小さな決定音", "why": "01 のフレームが入る" },
+      { "at": 6.0,   "name": "tick",    "gain_db": -20, "search": "（同上）", "why": "02 に切り替わる" },
+      { "at": 7.333, "name": "tick",    "gain_db": -20, "search": "（同上）", "why": "03 に切り替わる" },
+      { "at": 8.667, "name": "swish",   "gain_db": -18, "search": "スワイプ / 紙をめくる（軽いもの）", "why": "スマホがせり上がる" },
+      { "at": 11.08, "name": "whoosh",  "gain_db": -13, "search": "（2つ目と同じ素材）", "why": "白→黒のスラッシュワイプ（11.33秒）" },
+      { "at": 13.333,"name": "hit",     "gain_db": -12, "search": "余韻のある低い単音 / ピアノ・鐘の一打", "why": "エンドカード" }
+    ]
+  }
+}

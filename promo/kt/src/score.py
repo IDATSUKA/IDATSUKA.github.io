@@ -1,5 +1,5 @@
-"""90 BPM soundtrack for kt.html — every hit sits on the same beat grid as the cuts.
-python3 score.py out.wav   (numpy only; deterministic)"""
+"""TEMPORARY 90 BPM score for kt.html (placeholder until the Gemini music BGM is in audio/bgm.wav).
+Every hit sits on the same beat grid as the cuts. python3 score.py out.wav   (numpy only; deterministic)"""
 import sys, wave, numpy as np
 SR, DUR, B = 48000, 15.0, 2 / 3
 N = int(SR * DUR); t = np.arange(N) / SR
@@ -43,7 +43,7 @@ def tone(f, d, a=.01, dec=.5, parts=(1, .5, .25)):
 # drums: kick on every beat until the end card, hats on the off-beat
 for b in range(20):
     at = b * B
-    if b in (14,):  # breath before the tagline lands
+    if b in (15, 16):  # breath under the tagline
         continue
     add(kick(), at, .9)
     add(hat(), at + B / 2, .22, pan=.3)
@@ -61,9 +61,9 @@ for at, chord in [(0, [220, 261.6, 329.6, 493.9]), (8 * B, [174.6, 220, 261.6, 3
         add(tone(f, d, a=.4, dec=4, parts=(1, .2)), at, .045, pan=(j - 1.5) * .3)
 
 # ticks on every cut, whooshes into the slash wipes
-for c in [B/2, 2*B, 3*B, 4*B, 5*B, 6*B, 8*B, 10*B, 12*B, 14*B, 15*B, 17*B]:
+for c in [2*B, 4*B, 5*B, 7*B, 9*B, 11*B, 13*B, 15*B, 17*B]:
     add(tick(), c, .12)
-for w in [3 * B, 15 * B, 17 * B]:
+for w in [5 * B, 17 * B]:
     s = whoosh(); add(s, w - len(s) / SR * .8, .35)
 
 # end card: one hit, then let it ring

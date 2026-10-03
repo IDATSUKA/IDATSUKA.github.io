@@ -67,6 +67,19 @@ The last ~2s are a **static hold** on the end card (copy + logo + red arrow). Ne
 - Photo subject stays on the right half; copy on the left half. On red plates, white copy; on white, black copy.
 - One motif repeats across all acts (the logo face / sunglasses) so the film reads as one identity.
 
+## 5b. Premium finish (上品・高級) — what changed v1 → v2 in `promo/kt`
+
+- **Fewer, longer shots.** 14 cuts → 11; most shots hold 2 beats. Let the end card breathe 1.7s.
+- **Type roles.** Mincho (Zen Old Mincho) for emotional lines, gothic for facts, italic serif (Cormorant Garamond) for the English aside. A handwriting font reads casual — avoid it for luxury.
+- **Wide tracking** (.06–.14em) on Japanese headlines, lighter weights (500–700, not 900).
+- **Colour as a point, not a field.** Accent only as a 1px hairline, a period, a number. No big flat accent slabs.
+- **One transition, repeated.** An ink slab with a glowing 1px accent edge. Everything else is a cut or a crossfade.
+- **Blur-to-sharp reveals** (blur 10px → 0 with the rise) instead of pops; ease-in-out quint for write-ons.
+- **Continuity.** Numbered proofs share one frame; only the content and the rolling number change.
+- **Quiet HUD.** 13px mono corners (brand / shot index / URL) at 50% opacity — reads as a studio reel.
+- **Finish.** Fine grain (≈5%), soft vignette on dark only, slow 3–9% push-ins on plates.
+- **Audio.** Sparse VO (3 lines), BGM ducked under VO, a breath where the tagline lands, −14 LUFS / −1.5 dBTP.
+
 ## 6. Pitfalls seen in the reference (AI-generated video)
 
 Generated frames garbled Japanese text — 「考えここと」, 「コーンミーション設計」, chips like 「ブランディグ」, 「デンタル」, and type overlapping props (megaphone over 「キャンペーン」).
@@ -80,7 +93,7 @@ Generated frames garbled Japanese text — 「考えここと」, 「コーン�
 | BGM / music | **Gemini music** | Ask for the film's BPM (e.g. 90 BPM) and length (15s) so cuts stay on the beat |
 | Sound effects | **効果音ラボ** (soundeffect-lab.info) | Whooshes for slash wipes, clicks/ticks on cuts, a hit on the end card. Check its terms before shipping |
 
-Do not synthesize placeholder audio (like `promo/kt/src/score.py`) when these are available. The user generates the files; leave clear cue sheets (time, line or effect, source) and mix the files in with ffmpeg once supplied.
+Do not synthesize placeholder audio (like `promo/kt/src/score.py`) when these are available. Pipeline: `promo/kt/audio/` — `cues.json` (script, music brief, SFX times) → `gen_vo.py` (Gemini TTS, `GEMINI_API_KEY`) / `gen_bgm.py` (Gemini music, Lyria) / SFX files dropped in `sfx/` → `mix.py` (ducking, loudness, remux into both films). 効果音ラボ (soundeffect-lab.info) must be allowed in the environment's network settings to fetch from here; otherwise the user downloads the files.
 
 ## 7. How to apply in this repo
 

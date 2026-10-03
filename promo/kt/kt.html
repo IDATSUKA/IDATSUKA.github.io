@@ -2,383 +2,319 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>IDATSUKA — 15s Kinetic CM</title>
+<title>IDATSUKA — 15s Film</title>
 <style>
 /* ════════════════════════════════════════════════════════════
-   IDATSUKA — 15.000 s kinetic-typography CM
-   Grammar: .claude/skills/kinetic-typography (beat grid, slash
-   wipes, numbered proofs, script write-ons, hold on end card).
+   IDATSUKA — 15.000 s kinetic-typography film (v2, premium cut)
+   Grammar: .claude/skills/kinetic-typography. 90 BPM →
+   1 beat = 0.667 s = 16 frames @ 24 fps. 11 shots, held longer.
+   Mincho for feeling, gothic for fact, italic serif for the
+   human aside, ice only as a hairline or a single point.
    Every frame is a pure function of t → __KT.seek(t).
-   90 BPM → 1 beat = 0.667 s = 16 frames @ 24 fps.
    ?ar=v → 1080×1920 re-laid-out vertical version.
    ════════════════════════════════════════════════════════════ */
+@font-face { font-family: ZOM; font-weight: 500; src: url(assets/fonts/zom-500.woff2) format('woff2'); }
+@font-face { font-family: ZOM; font-weight: 700; src: url(assets/fonts/zom-700.woff2) format('woff2'); }
+@font-face { font-family: ZKG; font-weight: 400; src: url(assets/fonts/zkg-400.woff2) format('woff2'); }
 @font-face { font-family: ZKG; font-weight: 500; src: url(assets/fonts/zkg-500.woff2) format('woff2'); }
 @font-face { font-family: ZKG; font-weight: 700; src: url(assets/fonts/zkg-700.woff2) format('woff2'); }
-@font-face { font-family: ZKG; font-weight: 900; src: url(assets/fonts/zkg-900.woff2) format('woff2'); }
 @font-face { font-family: SG;  font-weight: 500; src: url(assets/fonts/sg-500.woff2) format('woff2'); }
-@font-face { font-family: SG;  font-weight: 700; src: url(assets/fonts/sg-700.woff2) format('woff2'); }
 @font-face { font-family: SM;  font-weight: 400; src: url(assets/fonts/sm-400.woff2) format('woff2'); }
-@font-face { font-family: SM;  font-weight: 700; src: url(assets/fonts/sm-700.woff2) format('woff2'); }
-@font-face { font-family: CV;  font-weight: 700; src: url(assets/fonts/cv-700.woff2) format('woff2'); }
+@font-face { font-family: CG;  font-style: italic; font-weight: 500; src: url(assets/fonts/cg-500i.woff2) format('woff2'); }
 
 :root {
-  /* tokens copied from style.css (dark + light themes) */
-  --ink: #060607;      /* dark --bg */
-  --ink2: #0b0c0e;
-  --ink3: #121317;
-  --paper: #fbfbfa;    /* light --bg */
-  --paper2: #ecedea;
-  --fg: #f4f5f7;
-  --fg-dim: #c3c8d0;
-  --muted: #70767f;
-  --ice: #9fd6ec;      /* dark --accent */
-  --steel: #1d6d8e;    /* light --accent */
-  --on-ice: #0a0c0e;
-  --text-ink: #121316; /* light --fg */
-  --W: 1920px; --H: 1080px;
+  --ink: #060607; --ink2: #0b0c0e; --ink3: #121317;
+  --paper: #fbfbfa; --paper2: #f3f3f1;
+  --fg: #f4f5f7; --fg-dim: #c3c8d0; --muted: #70767f; --dim: #5c626b;
+  --ice: #9fd6ec; --steel: #1d6d8e; --text-ink: #121316; --muted-l: #666c74;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { background: #000; overflow: hidden; }
-body { font-family: ZKG, SG, sans-serif; -webkit-font-smoothing: antialiased; }
-.stage { position: relative; width: var(--W); height: var(--H); overflow: hidden; background: var(--ink); }
-body.v { --W: 1080px; --H: 1920px; }
+body { font-family: ZKG, sans-serif; -webkit-font-smoothing: antialiased; }
+.stage { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: var(--ink); }
+body.v .stage { width: 1080px; height: 1920px; }
 
 .shot { position: absolute; inset: 0; display: none; overflow: hidden; }
 .shot.on { display: block; }
-.fill { position: absolute; inset: 0; }
-.plate { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .dark { background: var(--ink); color: var(--fg); }
 .light { background: var(--paper); color: var(--text-ink); }
-.ice { background: var(--ice); color: var(--on-ice); }
+.plate { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.glow { position: absolute; width: 1400px; height: 900px; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(closest-side, rgba(159,214,236,.10), rgba(159,214,236,0)); }
 
-/* type */
-.hd { font-weight: 900; letter-spacing: .02em; line-height: 1.22; white-space: nowrap; }
-.hd .ln { display: block; overflow: hidden; padding: .04em 0 .06em; }
-.hd .ln > span { display: inline-block; }
+/* type roles */
+.min { font-family: ZOM; font-weight: 700; letter-spacing: .06em; line-height: 1.32; white-space: nowrap; }
+.got { font-family: ZKG; font-weight: 700; letter-spacing: .08em; line-height: 1.3; white-space: nowrap; }
+.ita { font-family: CG; font-style: italic; font-weight: 500; line-height: 1; white-space: nowrap; letter-spacing: -.01em; }
+.mono { font-family: SM; font-size: 15px; letter-spacing: .36em; text-transform: uppercase; }
+.ln { display: block; overflow: hidden; padding: .06em 0 .1em; }
+.ln > span { display: inline-block; will-change: transform, filter, opacity; }
 .ch { display: inline-block; }
-.acc-ice { color: var(--ice); }
-.acc-steel { color: var(--steel); }
-.mono { font-family: SM, monospace; font-weight: 400; letter-spacing: .32em; text-transform: uppercase; }
-.script { font-family: CV, cursive; font-weight: 700; white-space: nowrap; line-height: 1; }
-.rule { height: 4px; background: var(--steel); transform-origin: 0 50%; }
+.ice { color: var(--ice); } .steel { color: var(--steel); }
+.hair { height: 1px; background: var(--ice); transform-origin: 0 50%; }
 svg.stroke path { fill: none; stroke-linecap: round; stroke-linejoin: round; }
 
-/* film grain + vignette, always on */
-#grain { position: absolute; inset: -10%; z-index: 80; pointer-events: none; opacity: .06; mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E"); }
+/* persistent HUD */
+#hud { position: absolute; inset: 0; z-index: 60; pointer-events: none; font-family: SM; font-size: 13px; letter-spacing: .34em; text-transform: uppercase; }
+#hud span { position: absolute; }
+#hud .tl { left: 64px; top: 52px; } #hud .tr { right: 64px; top: 52px; }
+#hud .bl { left: 64px; bottom: 50px; } #hud .br { right: 64px; bottom: 50px; }
+#hud .bl b { font-weight: 400; display: inline-block; min-width: 2.2em; }
 
-/* slash wipe bands */
-#wipe { position: absolute; inset: 0; z-index: 70; pointer-events: none; }
-#wipe .band { position: absolute; top: -40%; height: 180%; width: 150%; display: none; transform-origin: 0 0; }
+/* grain + vignette */
+#vig { position: absolute; inset: 0; z-index: 58; pointer-events: none;
+  background: radial-gradient(ellipse 80% 78% at 50% 50%, rgba(0,0,0,0) 55%, rgba(0,0,0,.42) 100%); }
+#grain { position: absolute; inset: -10%; z-index: 59; pointer-events: none; opacity: .05; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E"); }
 
-/* ── S1 logo ───────────────────────────── */
-#s1 .mark { position: absolute; left: 50%; top: 50%; width: 760px; transform: translate(-50%,-50%); }
-#s1 .dot { position: absolute; width: 26px; height: 26px; border-radius: 50%; background: var(--ice);
-  left: calc(50% + 400px); top: calc(50% + 60px); box-shadow: 0 0 40px rgba(159,214,236,.6); }
+/* slash wipe: an ink slab with an ice hairline on its leading edge */
+#wipe { position: absolute; inset: 0; z-index: 50; pointer-events: none; display: none; }
+#wipe .slab { position: absolute; top: -30%; height: 160%; background: var(--ink); }
+#wipe .edge { position: absolute; top: -30%; height: 160%; width: 2px; background: var(--ice); box-shadow: 0 0 24px rgba(159,214,236,.7); }
 
-/* ── S2 hook ───────────────────────────── */
-#s2 .hd { position: absolute; left: 160px; top: 50%; transform: translateY(-50%); font-size: 150px; color: var(--fg); }
-#s2 .shade { background: linear-gradient(90deg, rgba(6,6,7,.85) 0%, rgba(6,6,7,.2) 70%, rgba(6,6,7,0) 100%); }
+/* ── S1 open ─────────────────────────── */
+#s1 .mark { position: absolute; left: 50%; top: 50%; width: 560px; transform: translate(-50%,-50%); }
+#s1 .hair { position: absolute; left: 50%; top: calc(50% + 70px); width: 440px; margin-left: -220px; transform-origin: 50% 50%; }
+#s1 .mono { position: absolute; left: 0; right: 0; top: calc(50% + 104px); text-align: center; color: var(--muted); }
 
-/* ── S3 trio ───────────────────────────── */
-#s3 .wrap { position: absolute; left: 160px; top: 50%; transform: translateY(-50%); }
-#s3 .hd { font-size: 128px; }
-#s3 .rule { width: 1200px; margin-top: 30px; }
-#s3 .mono { font-size: 20px; color: var(--muted); margin-bottom: 34px; }
+/* ── S2 hook ─────────────────────────── */
+#s2 .shade { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(6,6,7,.86), rgba(6,6,7,.25) 62%, rgba(6,6,7,.05)); }
+#s2 .min { position: absolute; left: 180px; top: 50%; transform: translateY(-50%); font-size: 132px; }
 
-/* ── S4 ice plate + black slash ────────── */
-#s4 .slab { position: absolute; top: -20%; height: 140%; width: 900px; right: -480px; background: var(--ink); transform: skewX(-22deg); }
-#s4 .hd { position: absolute; left: 160px; top: 50%; transform: translateY(-50%); font-size: 92px; }
+/* ── S3 trio (paper) ─────────────────── */
+#s3 .wrap { position: absolute; left: 180px; top: 50%; transform: translateY(-50%); }
+#s3 .mono { color: var(--muted-l); margin-bottom: 40px; }
+#s3 .got { font-size: 104px; letter-spacing: .14em; }
+#s3 .rule { height: 2px; background: var(--steel); width: 1100px; margin-top: 44px; transform-origin: 0 50%; }
 
-/* ── S5 script "Just Play." ────────────── */
-#s5 .card { position: absolute; right: 150px; top: 50%; width: 760px; height: 470px; transform: translateY(-50%) rotate(4deg);
-  border-radius: 18px; overflow: hidden; box-shadow: 0 40px 90px rgba(0,0,0,.28); background: var(--ink); }
-#s5 .card img { width: 100%; height: 100%; object-fit: cover; }
-#s5 .script { position: absolute; left: 170px; top: 300px; font-size: 300px; color: var(--steel); transform: rotate(-6deg); }
-#s5 svg { position: absolute; left: 230px; top: 640px; width: 900px; height: 160px; }
-#s5 .mono { position: absolute; left: 170px; top: 200px; font-size: 20px; color: var(--muted); }
+/* ── S4 aside ────────────────────────── */
+#s4 .glow { left: 50%; top: 50%; margin: -450px 0 0 -700px; }
+#s4 .ita { position: absolute; left: 50%; top: 44%; transform: translate(-50%,-50%); font-size: 300px; }
+#s4 .sub { position: absolute; left: 0; right: 0; top: 66%; text-align: center; font-size: 30px; font-weight: 500; letter-spacing: .24em; color: var(--fg-dim); }
 
-/* ── S6 Click → Play → Rank ───────────── */
-#s6 .row { position: absolute; left: 50%; top: 50%; display: flex; align-items: center; gap: 96px; transform: translate(-50%,-50%); }
-#s6 .w { font-family: CV; font-weight: 700; font-size: 92px; color: var(--text-ink); }
-#s6 .arr { font-family: SG; font-weight: 500; font-size: 64px; color: var(--muted); }
-#s6 .big { color: var(--steel); display: inline-block; transform-origin: 50% 60%; }
-#s6 .cursor { position: absolute; width: 64px; height: 64px; }
-#s6 .ring { position: absolute; width: 160px; height: 160px; border-radius: 50%; border: 3px solid var(--steel); }
+/* ── S5–S7 proofs, one persistent frame ─ */
+#sp .frame { position: absolute; right: 150px; top: 50%; width: 900px; height: 580px; margin-top: -290px; }
+#sp .card { position: absolute; inset: 0; border-radius: 6px; overflow: hidden; background: var(--ink2);
+  box-shadow: 0 0 0 1px rgba(244,245,247,.07), 0 50px 120px rgba(0,0,0,.55); }
+#sp .layer { position: absolute; inset: 0; opacity: 0; }
+#sp .layer img.full { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+#sp .tick { position: absolute; width: 36px; height: 36px; border: 0 solid var(--ice); opacity: .9; }
+#sp .tick.a { left: -26px; top: -26px; border-left-width: 1px; border-top-width: 1px; }
+#sp .tick.b { right: -26px; top: -26px; border-right-width: 1px; border-top-width: 1px; }
+#sp .tick.c { left: -26px; bottom: -26px; border-left-width: 1px; border-bottom-width: 1px; }
+#sp .tick.d { right: -26px; bottom: -26px; border-right-width: 1px; border-bottom-width: 1px; }
+#sp .cap { position: absolute; left: 0; right: 0; bottom: -58px; display: flex; justify-content: space-between; color: var(--muted); font-size: 12px; }
+#sp .copy { position: absolute; left: 180px; top: 50%; transform: translateY(-50%); width: 640px; height: 420px; }
+#sp .num { position: absolute; left: 0; top: 0; height: 150px; overflow: hidden; font-family: SG; font-weight: 500; font-size: 150px; line-height: 150px; letter-spacing: -.02em; }
+#sp .num .roll { display: block; }
+#sp .num .roll span { display: block; height: 150px; }
+#sp .blk { position: absolute; left: 0; top: 190px; }
+#sp .blk .mono { color: var(--ice); margin-bottom: 26px; font-size: 14px; }
+#sp .blk .got { font-size: 54px; font-weight: 500; letter-spacing: .1em; }
+#sp .note { position: absolute; left: 180px; bottom: 112px; font-family: ZKG; font-size: 15px; letter-spacing: .08em; color: var(--dim); }
+/* leaderboard */
+#sp .lb { position: absolute; inset: 0; padding: 64px 76px; font-family: SM; color: var(--fg); }
+#sp .lb .tabs { display: flex; gap: 36px; font-size: 13px; letter-spacing: .26em; color: var(--muted); margin-bottom: 36px; text-transform: uppercase; }
+#sp .lb .tabs b { color: var(--ice); font-weight: 400; border-bottom: 1px solid var(--ice); padding-bottom: 10px; }
+#sp .lb .r { display: flex; align-items: center; height: 76px; border-top: 1px solid rgba(244,245,247,.07); font-size: 26px; }
+#sp .lb .r span:nth-child(1) { width: 96px; color: var(--muted); }
+#sp .lb .r span:nth-child(2) { flex: 1; letter-spacing: .04em; }
+#sp .lb .r span:nth-child(3) { font-family: SG; font-weight: 500; font-size: 32px; }
+#sp .lb .r:first-of-type span:nth-child(3) { color: var(--ice); }
+/* covers */
+#sp .cv { position: absolute; left: 50%; top: 52%; width: 270px; height: 380px; border-radius: 4px; overflow: hidden; box-shadow: 0 30px 70px rgba(0,0,0,.55); }
+#sp .cv img { width: 100%; height: 100%; object-fit: cover; }
 
-/* ── S7–S9 numbered proofs ─────────────── */
-.proof .copy { position: absolute; left: 140px; top: 50%; transform: translateY(-50%); }
-.proof .num { font-family: SG; font-weight: 700; font-size: 190px; line-height: .9; letter-spacing: -.02em; }
-.proof .eyebrow { font-size: 20px; color: var(--ice); margin: 26px 0 22px; }
-.proof .hd { font-size: 60px; }
-.proof .frame { position: absolute; right: 100px; top: 50%; width: 920px; height: 600px; transform: translateY(-50%); }
-.proof .card { position: absolute; inset: 0; border-radius: 10px; overflow: hidden; background: var(--ink2); }
-.proof .card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.proof .br { position: absolute; width: 70px; height: 70px; border: 0 solid var(--ice); }
-.proof .br.tl { left: -34px; top: -34px; border-left-width: 4px; border-top-width: 4px; }
-.proof .br.tr { right: -34px; top: -34px; border-right-width: 4px; border-top-width: 4px; }
-.proof .br.bl { left: -34px; bottom: -34px; border-left-width: 4px; border-bottom-width: 4px; }
-.proof .br.brr { right: -34px; bottom: -34px; border-right-width: 4px; border-bottom-width: 4px; }
-.proof .rec { position: absolute; right: 26px; top: 24px; display: flex; align-items: center; gap: 12px; font-size: 16px; color: var(--fg); z-index: 3; }
-.proof .rec i { width: 18px; height: 18px; border-radius: 50%; background: var(--ice); box-shadow: 0 0 18px rgba(159,214,236,.8); }
-.proof .note { position: absolute; left: 140px; bottom: 60px; font-size: 14px; letter-spacing: .08em; text-transform: none; color: var(--muted); }
+/* ── S8 phone ────────────────────────── */
+#s8 .glow { left: 55%; top: 50%; margin: -450px 0 0 -700px; }
+#s8 .phone { position: absolute; left: 50%; top: 50%; width: 400px; height: 820px; margin: -410px 0 0 -200px; border-radius: 62px; background: #15171b;
+  padding: 13px; box-shadow: 0 0 0 1px #2c2f35, 0 70px 140px rgba(0,0,0,.7); }
+#s8 .screen { position: relative; width: 100%; height: 100%; border-radius: 50px; overflow: hidden; background: var(--ink); }
+#s8 .screen img { position: absolute; left: 0; top: 0; width: 100%; }
+#s8 .island { position: absolute; left: 50%; top: 14px; width: 112px; height: 32px; border-radius: 18px; background: #000; transform: translateX(-50%); z-index: 2; }
+#s8 .copy { position: absolute; left: 180px; top: 50%; transform: translateY(-50%); }
+#s8 .copy .mono { color: var(--muted); margin-bottom: 34px; font-size: 14px; }
+#s8 .copy .min { font-size: 76px; }
+#s8 .ita { position: absolute; font-size: 130px; color: var(--ice); z-index: 3; }
 
-/* leaderboard mock (S8) */
-#s8 .card { background: var(--ink2); padding: 70px 80px; }
-#s8 .tabs { display: flex; gap: 40px; font-size: 16px; color: var(--muted); margin-bottom: 40px; }
-#s8 .tabs b { color: var(--ice); font-weight: 400; border-bottom: 2px solid var(--ice); padding-bottom: 10px; }
-#s8 .lb { font-family: SM; font-size: 30px; color: var(--fg); }
-#s8 .lb .r { display: flex; align-items: center; height: 82px; border-top: 1px solid rgba(244,245,247,.08); }
-#s8 .lb .r span:nth-child(1) { width: 110px; color: var(--muted); }
-#s8 .lb .r span:nth-child(2) { flex: 1; }
-#s8 .lb .r span:nth-child(3) { font-family: SG; font-weight: 700; font-size: 38px; }
-#s8 .lb .r:first-child span:nth-child(1), #s8 .lb .r:first-child span:nth-child(3) { color: var(--ice); }
+/* ── S9 tagline (paper) ──────────────── */
+#s9 .min { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); font-size: 150px; letter-spacing: .1em; }
 
-/* covers fan (S9) */
-#s9 .card { background: radial-gradient(ellipse at 50% 60%, #15171c, var(--ink2)); }
-#s9 .cv { position: absolute; left: 50%; top: 52%; width: 300px; height: 420px; border-radius: 8px; overflow: hidden;
-  box-shadow: 0 30px 60px rgba(0,0,0,.5); }
-#s9 .cv img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+/* ── S10 question ────────────────────── */
+#s10 .plate { left: 30%; }
+#s10 .shade { position: absolute; inset: 0; background: linear-gradient(90deg, var(--ink) 30%, rgba(6,6,7,.35) 62%, rgba(6,6,7,.1)); }
+#s10 .min { position: absolute; left: 180px; top: 50%; transform: translateY(-50%); font-size: 120px; }
+#s10 .ita { position: absolute; right: 200px; bottom: 190px; font-size: 190px; color: var(--ice); }
 
-/* ── S10 phone ─────────────────────────── */
-#s10 .phone { position: absolute; left: 50%; top: 50%; width: 420px; height: 860px; border-radius: 64px; background: #16181c;
-  padding: 14px; box-shadow: 0 0 0 2px #2a2d33, 0 60px 120px rgba(0,0,0,.6); }
-#s10 .screen { position: relative; width: 100%; height: 100%; border-radius: 52px; overflow: hidden; background: var(--ink); }
-#s10 .screen img { position: absolute; left: 0; top: 0; width: 100%; }
-#s10 .island { position: absolute; left: 50%; top: 14px; width: 120px; height: 34px; border-radius: 20px; background: #000; transform: translateX(-50%); z-index: 2; }
-#s10 .script { position: absolute; font-size: 150px; color: var(--ice); transform: rotate(-8deg); z-index: 3; text-shadow: 0 4px 30px rgba(0,0,0,.6); }
-#s10 .mono { position: absolute; font-size: 20px; color: var(--muted); }
-#s10 .hd { position: absolute; font-size: 74px; }
-
-/* ── S11 tagline ───────────────────────── */
-#s11 .hd { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); font-size: 140px; }
-
-/* ── S12 push-through + chips ─────────── */
-#s12 .slab { position: absolute; top: -20%; height: 140%; width: 1100px; right: -640px; background: var(--ice); transform: skewX(-22deg); }
-#s12 .hd { position: absolute; left: 160px; top: 50%; transform: translateY(-50%); font-size: 108px; }
-#s12 .chips { position: absolute; left: 0; display: flex; gap: 18px; white-space: nowrap; }
-#s12 .chips.top { top: 120px; } #s12 .chips.bot { bottom: 120px; }
-#s12 .chip { font-family: ZKG; font-weight: 700; font-size: 24px; padding: 12px 30px; border-radius: 999px;
-  border: 2px solid rgba(244,245,247,.28); color: var(--fg); background: rgba(6,6,7,.6); }
-#s12 .chip.on { background: var(--ice); color: var(--on-ice); border-color: var(--ice); }
-#s12 .chip.ink { background: var(--fg); color: var(--ink); border-color: var(--fg); }
-
-/* ── S13 question ─────────────────────── */
-#s13 .panel { position: absolute; top: -20%; height: 140%; width: 1240px; left: -200px; background: var(--ice); transform: skewX(-22deg); }
-#s13 .hd { position: absolute; left: 140px; top: 50%; transform: translateY(-50%); font-size: 118px; color: var(--on-ice); }
-#s13 .script { position: absolute; right: 170px; bottom: 170px; font-size: 210px; color: var(--fg); transform: rotate(-8deg); }
-
-#s13 .plate { left: 26%; }
-body.v #s13 .plate { left: 0; top: -12%; }
-/* ── S14 end card ─────────────────────── */
-#s14 .wrap { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); display: flex; flex-direction: column; align-items: center; }
-#s14 .hd { font-size: 96px; }
-#s14 .lock { display: flex; align-items: center; gap: 28px; margin-top: 62px; }
-#s14 .lock img { width: 340px; display: block; }
-#s14 .lock .mono { font-size: 20px; color: var(--fg-dim); letter-spacing: .28em; text-transform: none; }
-#s14 svg { width: 520px; height: 70px; margin-top: 30px; }
+/* ── S11 end card ────────────────────── */
+#s11 .wrap { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); display: flex; flex-direction: column; align-items: center; }
+#s11 .min { font-size: 92px; letter-spacing: .12em; }
+#s11 .lock { display: flex; align-items: center; gap: 34px; margin-top: 84px; }
+#s11 .lock img { width: 300px; display: block; }
+#s11 .lock .bar { width: 1px; height: 30px; background: rgba(244,245,247,.25); }
+#s11 .lock .mono { color: var(--fg-dim); letter-spacing: .3em; text-transform: none; font-size: 17px; }
+#s11 svg { width: 420px; height: 40px; margin-top: 46px; }
 
 /* ════ vertical re-layout ════ */
-body.v #s1 .mark { width: 760px; }
-body.v #s1 .dot { left: calc(50% + 380px); top: calc(50% + 50px); }
-body.v #s2 .hd { left: 90px; top: auto; bottom: 360px; transform: none; font-size: 132px; }
-body.v #s2 .shade { background: linear-gradient(0deg, rgba(6,6,7,.9) 0%, rgba(6,6,7,.2) 60%, rgba(6,6,7,0) 100%); }
-body.v #s3 .wrap { left: 90px; }
-body.v #s3 .hd { font-size: 98px; }
+body.v #hud .tl { left: 56px; top: 64px; } body.v #hud .tr { right: 56px; top: 64px; }
+body.v #hud .bl { left: 56px; bottom: 64px; } body.v #hud .br { right: 56px; bottom: 64px; }
+body.v #s1 .mark { width: 640px; }
+body.v #s2 .shade { background: linear-gradient(0deg, rgba(6,6,7,.92) 10%, rgba(6,6,7,.25) 58%, rgba(6,6,7,0)); }
+body.v #s2 .min { left: 96px; top: auto; bottom: 400px; transform: none; font-size: 120px; }
+body.v #s3 .wrap { left: 96px; }
+body.v #s3 .got { font-size: 86px; letter-spacing: .1em; }
 body.v #s3 .rule { width: 880px; }
-body.v #s4 .slab { width: 700px; right: -420px; top: 55%; }
-body.v #s4 .hd { left: 90px; font-size: 74px; }
-body.v #s5 .card { right: 60px; top: 1300px; width: 720px; height: 450px; }
-body.v #s5 .script { left: 90px; top: 520px; font-size: 260px; }
-body.v #s5 svg { left: 120px; top: 830px; width: 800px; }
-body.v #s5 .mono { left: 100px; top: 420px; }
-body.v #s6 .row { flex-direction: column; gap: 20px; }
-body.v #s6 .arr { transform: rotate(90deg); }
-body.v .proof .copy { left: 90px; top: 240px; transform: none; }
-body.v .proof .frame { left: 90px; right: auto; top: auto; bottom: 260px; width: 900px; height: 760px; transform: none; }
-body.v .proof .note { left: 90px; bottom: 120px; }
-body.v #s8 .card { padding: 70px 60px; }
-body.v #s10 .hd { font-size: 76px; }
-body.v #s11 .hd { font-size: 128px; }
-body.v #s12 .slab { width: 940px; right: -640px; }
-body.v #s12 .hd { left: 90px; font-size: 86px; }
-body.v #s12 .chips.top { top: 300px; } body.v #s12 .chips.bot { bottom: 300px; }
-body.v #s13 .panel { left: -40%; width: 160%; top: auto; bottom: -20%; height: 72%; transform: skewY(-12deg); }
-body.v #s13 .hd { left: 90px; top: auto; bottom: 380px; transform: none; font-size: 112px; }
-body.v #s13 .script { right: auto; left: 400px; bottom: auto; top: 420px; font-size: 200px; }
-body.v #s14 .hd { font-size: 88px; }
+body.v #s4 .ita { font-size: 230px; top: 46%; }
+body.v #s4 .sub { font-size: 30px; top: 60%; }
+body.v #sp .frame { left: 90px; right: auto; top: auto; bottom: 330px; width: 900px; height: 760px; margin: 0; }
+body.v #sp .copy { left: 96px; top: 260px; transform: none; height: 400px; }
+body.v #sp .note { left: 96px; bottom: 150px; }
+body.v #sp .lb { padding: 80px 64px; }
+body.v #sp .lb .r { height: 96px; }
+body.v #s8 .copy { left: 96px; top: 300px; transform: none; }
+body.v #s8 .copy .min { font-size: 72px; }
+body.v #s8 .phone { margin-top: -240px; }
+body.v #s9 .min { font-size: 132px; letter-spacing: .08em; }
+body.v #s10 .plate { left: 0; top: -14%; }
+body.v #s10 .shade { background: linear-gradient(0deg, var(--ink) 34%, rgba(6,6,7,.3) 62%, rgba(6,6,7,.05)); }
+body.v #s10 .min { left: 96px; top: auto; bottom: 470px; transform: none; font-size: 112px; }
+body.v #s10 .ita { right: auto; left: 96px; bottom: 230px; font-size: 160px; }
+body.v #s11 .min { font-size: 76px; letter-spacing: .08em; }
+body.v #s11 .lock { flex-direction: column; gap: 26px; }
+body.v #s11 .lock .bar { width: 30px; height: 1px; }
 </style>
 </head>
 <body>
 <div class="stage" id="stage">
 
-  <!-- S1 0.000–0.333 logo + dot -->
+  <!-- S1 0.000–1.333 open -->
   <section class="shot dark" id="s1">
     <img class="mark" src="../../img/logo.svg" alt="IDATSUKA">
-    <i class="dot"></i>
+    <div class="hair"></div>
+    <p class="mono">Play / Rank / Make</p>
   </section>
 
-  <!-- S2 0.333–1.333 hook -->
+  <!-- S2 1.333–2.667 hook -->
   <section class="shot dark" id="s2">
     <img class="plate" src="../src/plates/aurora-1920x1080.jpg" alt="">
-    <div class="fill shade"></div>
-    <h1 class="hd"><span class="ln"><span>その5分、</span></span><span class="ln"><span>まだ退屈<span class="acc-ice">?</span></span></span></h1>
+    <div class="shade"></div>
+    <h1 class="min"><span class="ln"><span>その5分、</span></span><span class="ln"><span>まだ退屈<span class="ice">？</span></span></span></h1>
   </section>
 
-  <!-- S3 1.333–2.000 trio + rule -->
+  <!-- S3 2.667–3.333 trio -->
   <section class="shot light" id="s3">
     <div class="wrap">
       <p class="mono">Play / Rank / Make</p>
-      <h2 class="hd" data-split>遊ぶ。競う。作る<span class="acc-steel">。</span></h2>
+      <h2 class="got" data-split>遊ぶ。競う。作る<span class="steel">。</span></h2>
       <div class="rule"></div>
     </div>
   </section>
 
-  <!-- S4 2.000–2.667 ice plate -->
-  <section class="shot ice" id="s4">
-    <div class="slab"></div>
-    <h2 class="hd"><span class="ln"><span>ブラウザひとつで、</span></span><span class="ln"><span>遊べて、競えて、作れる。</span></span></h2>
+  <!-- S4 3.333–4.667 aside -->
+  <section class="shot dark" id="s4">
+    <div class="glow"></div>
+    <div class="ita">Just play<span class="ice">.</span></div>
+    <p class="sub">ブラウザを開けば、すぐに。</p>
   </section>
 
-  <!-- S5 2.667–3.333 "Just Play." -->
-  <section class="shot light" id="s5">
-    <div class="card"><img src="../../img/game-orbit.svg" alt=""></div>
-    <p class="mono">idatsuka.com / play</p>
-    <div class="script wo">Just Play.</div>
-    <svg class="stroke" viewBox="0 0 900 160"><path pathLength="1" d="M10 110 C 220 60, 520 40, 820 70 M 760 30 L 840 72 L 770 120" stroke="#1d6d8e" stroke-width="7"/></svg>
-  </section>
-
-  <!-- S6 3.333–4.000 Click → Play → Rank -->
-  <section class="shot light" id="s6">
-    <div class="row">
-      <span class="w">Click</span><span class="arr">→</span>
-      <span class="w"><span class="big">Play</span></span><span class="arr">→</span>
-      <span class="w">Rank.</span>
-    </div>
-    <div class="ring"></div>
-    <svg class="cursor" viewBox="0 0 24 24"><path d="M4 2 L4 20 L9 15 L12.5 22 L15.5 20.5 L12 13.5 L19 13.5 Z" fill="#121316" stroke="#fbfbfa" stroke-width="1.2"/></svg>
-  </section>
-
-  <!-- S7 4.000–5.333 01 GAMES -->
-  <section class="shot dark proof" id="s7">
+  <!-- S5–S7 4.667–8.667 proofs 01 / 02 / 03 in one frame -->
+  <section class="shot dark" id="sp">
     <div class="frame">
       <div class="card">
-        <img src="../../img/game-void-runner.svg" alt="">
-        <img src="../../img/game-signal.svg" alt="">
-        <img src="../../img/game-orbit.svg" alt="">
-        <img src="../../img/game-stack.svg" alt="">
-      </div>
-      <div class="rec mono"><i></i>Play</div>
-      <i class="br tl"></i><i class="br tr"></i><i class="br bl"></i><i class="br brr"></i>
-    </div>
-    <div class="copy">
-      <div class="num">01</div>
-      <p class="eyebrow mono">Games</p>
-      <h3 class="hd"><span class="ln"><span>ブラウザで遊べる、</span></span><span class="ln"><span>6本のゲーム。</span></span></h3>
-    </div>
-  </section>
-
-  <!-- S8 5.333–6.667 02 RANKING -->
-  <section class="shot dark proof" id="s8">
-    <div class="frame">
-      <div class="card">
-        <div class="tabs mono"><b>Void Runner</b><span>Signal</span><span>Orbit</span><span>Stack</span></div>
-        <div class="lb">
-          <div class="r"><span>01</span><span>NOVA</span><span data-score="48210">0</span></div>
-          <div class="r"><span>02</span><span>kuro_77</span><span data-score="41980">0</span></div>
-          <div class="r"><span>03</span><span>haru.</span><span data-score="39455">0</span></div>
-          <div class="r"><span>04</span><span>mika</span><span data-score="31020">0</span></div>
-          <div class="r"><span>05</span><span>YOU</span><span data-score="28760">0</span></div>
+        <div class="layer" id="L1">
+          <img class="full" src="../../img/game-void-runner.svg" alt="">
+          <img class="full" src="../../img/game-signal.svg" alt="">
+          <img class="full" src="../../img/game-orbit.svg" alt="">
+          <img class="full" src="../../img/game-stack.svg" alt="">
+        </div>
+        <div class="layer" id="L2">
+          <div class="lb">
+            <div class="tabs"><b>Void Runner</b><span>Signal</span><span>Orbit</span><span>Stack</span></div>
+            <div class="r"><span>01</span><span>NOVA</span><span data-score="48210">0</span></div>
+            <div class="r"><span>02</span><span>kuro_77</span><span data-score="41980">0</span></div>
+            <div class="r"><span>03</span><span>haru.</span><span data-score="39455">0</span></div>
+            <div class="r"><span>04</span><span>mika</span><span data-score="31020">0</span></div>
+            <div class="r"><span>05</span><span>YOU</span><span data-score="28760">0</span></div>
+          </div>
+        </div>
+        <div class="layer" id="L3">
+          <div class="cv"><img src="../../img/store-veil.jpg" alt=""></div>
+          <div class="cv"><img src="../../img/store-utage.jpg" alt=""></div>
+          <div class="cv"><img src="../../img/store-kira.jpg" alt=""></div>
         </div>
       </div>
-      <i class="br tl"></i><i class="br tr"></i><i class="br bl"></i><i class="br brr"></i>
+      <i class="tick a"></i><i class="tick b"></i><i class="tick c"></i><i class="tick d"></i>
+      <div class="cap mono"><span id="capL">Games</span><span id="capR">idatsuka.com</span></div>
     </div>
     <div class="copy">
-      <div class="num acc-ice">02</div>
-      <p class="eyebrow mono">Ranking</p>
-      <h3 class="hd"><span class="ln"><span>スコアで、</span></span><span class="ln"><span>競い合う。</span></span></h3>
+      <div class="num"><div class="roll"><span>01</span><span class="ice">02</span><span>03</span></div></div>
+      <div class="blk" id="B1"><p class="mono">Games</p><h3 class="got"><span class="ln"><span>ブラウザで遊べる、</span></span><span class="ln"><span>6本のゲーム。</span></span></h3></div>
+      <div class="blk" id="B2"><p class="mono">Ranking</p><h3 class="got"><span class="ln"><span>スコアで、</span></span><span class="ln"><span>競い合う。</span></span></h3></div>
+      <div class="blk" id="B3"><p class="mono">Templates</p><h3 class="got"><span class="ln"><span>1ファイルで完成する、</span></span><span class="ln"><span>テンプレート。</span></span></h3></div>
     </div>
-    <p class="note mono">※ ランキング表示はサンプル（架空の名前・スコア）です</p>
+    <p class="note">※ ランキング表示はサンプル（架空の名前・スコア）です</p>
   </section>
 
-  <!-- S9 6.667–8.000 03 TEMPLATES -->
-  <section class="shot dark proof" id="s9">
-    <div class="frame">
-      <div class="card">
-        <div class="cv"><img src="../../img/store-veil.jpg" alt=""></div>
-        <div class="cv"><img src="../../img/store-utage.jpg" alt=""></div>
-        <div class="cv"><img src="../../img/store-kira.jpg" alt=""></div>
-      </div>
-      <div class="rec mono"><i></i>Store</div>
-      <i class="br tl"></i><i class="br tr"></i><i class="br bl"></i><i class="br brr"></i>
-    </div>
+  <!-- S8 8.667–10.000 phone -->
+  <section class="shot dark" id="s8">
+    <div class="glow"></div>
     <div class="copy">
-      <div class="num">03</div>
-      <p class="eyebrow mono">Templates</p>
-      <h3 class="hd"><span class="ln"><span>1ファイルで完成する、</span></span><span class="ln"><span>テンプレート。</span></span></h3>
+      <p class="mono">idatsuka.com</p>
+      <h3 class="min"><span class="ln"><span>スマホでも、</span></span><span class="ln"><span>そのまま。</span></span></h3>
     </div>
-  </section>
-
-  <!-- S10 8.000–9.333 phone -->
-  <section class="shot dark" id="s10">
-    <p class="mono">idatsuka.com</p>
-    <h3 class="hd"><span class="ln"><span>スマホでも、</span></span><span class="ln"><span>そのまま。</span></span></h3>
     <div class="phone"><div class="screen"><i class="island"></i><img src="assets/phone-games.jpg" alt=""></div></div>
-    <div class="script wo">Nice Run!</div>
+    <div class="ita">Nice run.</div>
   </section>
 
-  <!-- S11 9.333–10.000 tagline -->
-  <section class="shot light" id="s11">
-    <h2 class="hd"><span class="ln"><span>完璧より、</span></span><span class="ln"><span>夢中を<span class="acc-steel">。</span></span></span></h2>
+  <!-- S9 10.000–11.333 tagline -->
+  <section class="shot light" id="s9">
+    <h2 class="min"><span class="ln"><span>完璧より、</span></span><span class="ln"><span>夢中を<span class="steel">。</span></span></span></h2>
   </section>
 
-  <!-- S12 10.000–11.333 push-through + chips -->
-  <section class="shot dark" id="s12">
-    <div class="slab"></div>
-    <div class="chips top"></div>
-    <h2 class="hd"><span class="ln"><span>遊ぶことを、</span></span><span class="ln"><span>本気でつくっている。</span></span></h2>
-    <div class="chips bot"></div>
-  </section>
-
-  <!-- S13 11.333–13.333 question -->
-  <section class="shot dark" id="s13">
+  <!-- S10 11.333–13.333 question -->
+  <section class="shot dark" id="s10">
     <img class="plate" src="../src/plates/ring-1920x1080.jpg" alt="">
-    <div class="panel"></div>
-    <h2 class="hd"><span class="ln"><span>今日の5分、</span></span><span class="ln"><span>どう遊ぶ?</span></span></h2>
-    <div class="script wo">Let's Play</div>
+    <div class="shade"></div>
+    <h2 class="min"><span class="ln"><span>今日の5分、</span></span><span class="ln"><span>どう遊ぶ<span class="ice">？</span></span></span></h2>
+    <div class="ita">Let&rsquo;s play.</div>
   </section>
 
-  <!-- S14 13.333–15.000 end card (hold) -->
-  <section class="shot dark" id="s14">
+  <!-- S11 13.333–15.000 end card, held -->
+  <section class="shot dark" id="s11">
     <div class="wrap">
-      <h2 class="hd" data-split>一度、遊んでみよう<span class="acc-ice">。</span></h2>
-      <div class="lock"><img src="../../img/logo.svg" alt="IDATSUKA"><span class="mono">idatsuka.com</span></div>
-      <svg class="stroke" viewBox="0 0 520 70"><path pathLength="1" d="M20 40 C 160 30, 330 26, 490 34 M 450 10 L 494 34 L 452 58" stroke="#9fd6ec" stroke-width="5"/></svg>
+      <h2 class="min" data-split>一度、遊んでみよう<span class="ice">。</span></h2>
+      <div class="lock"><img src="../../img/logo.svg" alt="IDATSUKA"><i class="bar"></i><span class="mono">idatsuka.com</span></div>
+      <svg class="stroke" viewBox="0 0 420 40"><path pathLength="1" d="M10 20 H 400 M 384 8 L 404 20 L 384 32" stroke="#9fd6ec" stroke-width="1.6"/></svg>
     </div>
   </section>
 
-  <div id="wipe"></div>
+  <div id="wipe"><div class="slab"></div><div class="edge"></div></div>
+  <div id="vig"></div>
   <div id="grain"></div>
+  <div id="hud"><span class="tl">IDATSUKA</span><span class="tr">Play / Rank / Make</span><span class="bl"><b>01</b>— 11</span><span class="br">idatsuka.com</span></div>
 </div>
 
 <script>
 (() => {
-const V = new URLSearchParams(location.search).get('ar') === 'v';
-if (V) document.body.classList.add('v');
+const Q = new URLSearchParams(location.search);
+const V = Q.get('ar') === 'v';
+if (V) {
+  document.body.classList.add('v');
+  document.querySelectorAll('img.plate').forEach(i => { i.src = i.getAttribute('src').replace('1920x1080', '1080x1920'); });
+}
 const W = V ? 1080 : 1920, H = V ? 1920 : 1080;
 
-const B = 2 / 3;                       // one beat at 90 BPM
+const B = 2 / 3;                                       // 1 beat @ 90 BPM
 const cl = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
 const expo = x => x >= 1 ? 1 : 1 - Math.pow(2, -10 * x);
-const quart = x => 1 - Math.pow(1 - x, 4);
-const inout = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+const quint = x => 1 - Math.pow(1 - x, 5);
+const inout = x => x < .5 ? 16 * x ** 5 : 1 - Math.pow(-2 * x + 2, 5) / 2;
 const k = (t, a, d, e = expo) => e(cl((t - a) / d));
 const lerp = (a, b, x) => a + (b - a) * x;
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const css = (el, o) => { for (const p in o) el.style[p] = o[p]; };
 
-// split [data-split] headings into chars (keeps nested accent spans)
 $$('[data-split]').forEach(h => {
   const out = [];
   h.childNodes.forEach(n => {
@@ -388,215 +324,161 @@ $$('[data-split]').forEach(h => {
   h.innerHTML = out.join('');
 });
 
-// chip rows for S12
-const CHIPS = ['ゲーム', 'ランキング', 'テンプレート', 'アート', 'ブログ', 'ブラウザ', '1ファイル', 'フレンドコード', 'ビジネス', 'スコア', 'ジェネラティブ', 'ストア'];
-['top', 'bot'].forEach((r, i) => {
-  const row = $(`#s12 .chips.${r}`);
-  row.innerHTML = [...CHIPS, ...CHIPS].map((c, j) => {
-    const cls = (j + i * 3) % 7 === 1 ? 'on' : (j + i * 3) % 7 === 4 ? 'ink' : '';
-    return `<span class="chip ${cls}">${c}</span>`;
-  }).join('');
-});
-
-// headline line reveal: line i rises from its mask at time a + i*gap
-const lines = (sel, t, a, gap = B / 2, d = .32) => $$(sel + ' .ln > span').forEach((s, i) => {
+// line reveal: rise out of the mask with a soft blur that clears
+const lines = (sel, t, a, gap = B / 2, d = .55) => $$(sel + ' .ln > span').forEach((s, i) => {
   const x = k(t, a + i * gap, d);
-  css(s, { transform: `translateY(${(1 - x) * 105}%)` });
+  css(s, { transform: `translateY(${(1 - x) * 70}%)`, filter: `blur(${(1 - x) * 10}px)`, opacity: cl(x * 1.4) });
 });
-// tracking settle per char
-const chars = (sel, t, a, stagger = .022, d = .3, spread = 60) => $$(sel + ' .ch').forEach((c, i, all) => {
+// per-character settle (tracking closes, blur clears)
+const chars = (sel, t, a, stagger = .03, d = .5, spread = 30) => $$(sel + ' .ch').forEach((c, i, all) => {
   const x = k(t, a + i * stagger, d);
   const mid = (all.length - 1) / 2;
-  css(c, { opacity: cl(x * 1.6), transform: `translateX(${(i - mid) * spread * (1 - x)}px)` });
+  css(c, { opacity: cl(x * 1.3), filter: `blur(${(1 - x) * 8}px)`, transform: `translateX(${(i - mid) * spread * (1 - x)}px)` });
 });
-// write-on (clip from left)
-const writeOn = (el, t, a, d, extra = '') => {
+const writeOn = (el, t, a, d) => {
   const x = k(t, a, d, inout);
-  css(el, { clipPath: `inset(-30% ${(1 - x) * 100}% -30% -10%)` });
+  css(el, { clipPath: `inset(-30% ${(1 - x) * 100}% -30% -10%)`, opacity: 1 });
 };
-const draw = (path, t, a, d) => {
-  const x = k(t, a, d, quart);
-  css(path, { strokeDasharray: '1', strokeDashoffset: String(1 - x) });
-};
-const push = (el, t, a, b, from = 1, to = 1.04) => css(el, { transform: `scale(${lerp(from, to, cl((t - a) / (b - a)))})` });
+const draw = (p, t, a, d) => css(p, { strokeDasharray: '1', strokeDashoffset: String(1 - k(t, a, d, quint)) });
+const drift = (el, t, a, b, s0 = 1, s1 = 1.035, extra = '') =>
+  css(el, { transform: `${extra} scale(${lerp(s0, s1, cl((t - a) / (b - a)))})` });
 
-// slash wipe: bands sweep right→left (or left→right), covering the frame at t0
-function wipe(t, t0, colors, dir = -1, d = .34) {
-  const host = $('#wipe');
-  colors.forEach((c, i) => {
-    let b = host.children[i];
-    if (!b) { b = document.createElement('div'); b.className = 'band'; host.appendChild(b); }
-  });
-  const bands = [...host.children];
-  bands.forEach((b, i) => {
-    if (i >= colors.length) return;
-    const start = t0 - d / 2 + i * .05;
-    const x = (t - start) / d;
-    if (x <= 0 || x >= 1) return;
-    const e = inout(x);
-    const bw = W * 1.5;
-    // left edge travels from W+H*.45 (fully off right) to -bw-H*.45 (fully off left)
-    const off = H * .45;
-    let left = lerp(W + off, -bw - off, e);
-    if (dir > 0) left = lerp(-bw - off, W + off, e);
-    css(b, { display: 'block', background: colors[i], left: left + 'px', width: bw + 'px', transform: 'skewX(-22deg)', zIndex: i });
-  });
+// ink slab with an ice leading edge, sweeping across and covering the frame at t0
+function wipe(t, t0, dir = -1, d = .5) {
+  const x = (t - (t0 - d / 2)) / d;
+  if (x <= 0 || x >= 1) return false;
+  const e = inout(x), slant = H * .42, bw = W + slant * 2;
+  const host = $('#wipe'), slab = $('.slab', host), edge = $('.edge', host);
+  // phase 1 (x<.5): slab grows in from one side; phase 2: it leaves from the other side
+  let l, r;
+  if (dir < 0) { l = e < .5 ? lerp(W + slant, -slant, e * 2) : -slant; r = e < .5 ? W + slant : lerp(W + slant, -slant, (e - .5) * 2); }
+  else { r = e < .5 ? lerp(-slant, W + slant, e * 2) : W + slant; l = e < .5 ? -slant : lerp(-slant, W + slant, (e - .5) * 2); }
+  css(host, { display: 'block' });
+  css(slab, { left: l + 'px', width: Math.max(0, r - l) + 'px', transform: 'skewX(-18deg)' });
+  const ex = e < .5 ? (dir < 0 ? l : r) : (dir < 0 ? r : l);
+  css(edge, { left: ex + 'px', transform: 'skewX(-18deg)', opacity: e > .02 && e < .98 ? 1 : 0 });
+  return true;
 }
 
+const T = { s2: 2 * B, s3: 4 * B, s4: 5 * B, sp: 7 * B, s8: 13 * B, s9: 15 * B, s10: 17 * B, s11: 20 * B };
+
 const SHOTS = [
-  ['#s1', 0, B / 2, t => {
-    const s = $('#s1');
-    css($('.mark', s), { opacity: k(t, 0, .12), transform: `translate(-50%,-50%) scale(${lerp(1.06, 1, k(t, 0, .3))})` });
-    const d = k(t, .08, .16);
-    css($('.dot', s), { transform: `scale(${d})` });
+  ['#s1', 0, T.s2, t => {
+    css($('#s1 .hair'), { transform: `scaleX(${k(t, .08, .6, quint)})` });
+    const m = k(t, .22, .7);
+    css($('#s1 .mark'), { opacity: m, filter: `blur(${(1 - m) * 12}px)`, transform: `translate(-50%,-50%) scale(${lerp(1.05, 1, m)})` });
+    css($('#s1 .mono'), { opacity: k(t, .62, .5) * .9, letterSpacing: `${lerp(.7, .36, k(t, .62, .7))}em` });
   }],
-  ['#s2', B / 2, 2 * B, t => {
-    push($('#s2 .plate'), t, B / 2, 2 * B, 1.0, 1.06);
-    lines('#s2', t, B / 2, B / 2, .26);
+  ['#s2', T.s2, T.s3, t => {
+    drift($('#s2 .plate'), t, T.s2, T.s3, 1.0, 1.06);
+    lines('#s2', t, T.s2 + .02, B / 2, .55);
   }],
-  ['#s3', 2 * B, 3 * B, t => {
-    chars('#s3', t, 2 * B, .018, .3, V ? 30 : 46);
-    css($('#s3 .rule'), { transform: `scaleX(${k(t, 2 * B + .16, .34, quart)})` });
-    css($('#s3 .mono'), { opacity: k(t, 2 * B + .05, .2) });
+  ['#s3', T.s3, T.s4, t => {
+    chars('#s3', t, T.s3, .02, .42, V ? 18 : 26);
+    css($('#s3 .rule'), { transform: `scaleX(${k(t, T.s3 + .18, .45, quint)})` });
+    css($('#s3 .mono'), { opacity: k(t, T.s3, .3) });
   }],
-  ['#s4', 3 * B, 4 * B, t => {
-    lines('#s4', t, 3 * B + .06, .12, .3);
-    css($('#s4 .slab'), { transform: `skewX(-22deg) translateX(${(1 - k(t, 3 * B, .4)) * 260}px)` });
+  ['#s4', T.s4, T.sp, t => {
+    writeOn($('#s4 .ita'), t, T.s4 + .1, .7);
+    css($('#s4 .ita'), { transform: `translate(-50%,-50%) scale(${lerp(1.02, 1, cl((t - T.s4) / (T.sp - T.s4)))})` });
+    const s = k(t, T.s4 + .6, .5);
+    css($('#s4 .sub'), { opacity: s, filter: `blur(${(1 - s) * 6}px)` });
   }],
-  ['#s5', 4 * B, 5 * B, t => {
-    const a = 4 * B;
-    css($('#s5 .card'), { transform: `translateY(-50%) rotate(${lerp(9, 4, k(t, a, .4))}deg) scale(${lerp(.9, 1, k(t, a, .4))})` });
-    writeOn($('#s5 .script'), t, a + .04, .42);
-    draw($('#s5 path'), t, a + .4, .24);
-    css($('#s5 .mono'), { opacity: k(t, a, .2) });
+  ['#sp', T.sp, T.s8, t => proofs(t)],
+  ['#s8', T.s8, T.s9, t => {
+    const a = T.s8, up = k(t, a, .7);
+    const ph = $('#s8 .phone');
+    const px = V ? 0 : 300, py = V ? 150 : 0;
+    css(ph, { transform: `translate(${px}px, ${py + (1 - up) * 520}px) rotate(${(1 - up) * 4}deg)` });
+    css($('#s8 .screen img'), { transform: `translateY(${-k(t, a + .35, .95, inout) * 760}px)` });
+    lines('#s8', t, a + .12, .16, .55);
+    css($('#s8 .copy .mono'), { opacity: k(t, a + .05, .4) });
+    const it = $('#s8 .ita');
+    css(it, V ? { left: '560px', top: '820px' } : { left: '1230px', top: '170px' });
+    writeOn(it, t, a + .55, .55);
   }],
-  ['#s6', 5 * B, 6 * B, t => {
-    const a = 5 * B;
-    const big = $('#s6 .big');
-    const pop = k(t, a + .14, .26);
-    css(big, { transform: `scale(${lerp(1, 1.8, pop)})` });
-    const row = $('#s6 .row');
-    css(row, { opacity: k(t, a, .1) });
-    // cursor glides to "Play" and clicks
-    const r = big.getBoundingClientRect(), st = $('#stage').getBoundingClientRect();
-    const cx = r.left - st.left + r.width * .6, cy = r.top - st.top + r.height * .85;
-    const m = k(t, a, .16, quart);
-    css($('#s6 .cursor'), { left: lerp(cx + 260, cx, m) + 'px', top: lerp(cy + 220, cy, m) + 'px',
-                            transform: `scale(${t > a + .14 && t < a + .22 ? .85 : 1})` });
-    const rg = cl((t - a - .14) / .4);
-    css($('#s6 .ring'), { left: cx - 80 + 'px', top: cy - 80 + 'px', opacity: rg > 0 && rg < 1 ? 1 - rg : 0,
-                          transform: `scale(${lerp(.2, 1.6, quart(rg))})` });
+  ['#s9', T.s9, T.s10, t => lines('#s9', t, T.s9 + .02, B / 2, .6)],
+  ['#s10', T.s10, T.s11, t => {
+    drift($('#s10 .plate'), t, T.s10, T.s11, 1.02, 1.09);
+    lines('#s10', t, T.s10 + .2, B / 2, .6);
+    writeOn($('#s10 .ita'), t, T.s10 + B * 1.5, .75);
   }],
-  ['#s7', 6 * B, 8 * B, t => proof('#s7', t, 6 * B, 8 * B, s => {
-    $$('#s7 .card img').forEach((im, i) => css(im, { opacity: t >= 6 * B + i * B / 2 ? 1 : 0 }));
-  })],
-  ['#s8', 8 * B, 10 * B, t => proof('#s8', t, 8 * B, 10 * B, () => {
-    $$('#s8 .lb .r').forEach((r, i) => {
-      const x = k(t, 8 * B + .18 + i * .07, .3);
-      css(r, { opacity: x, transform: `translateX(${(1 - x) * 60}px)` });
-      const sc = $('[data-score]', r);
-      const n = Math.round(+sc.dataset.score * quart(cl((t - 8 * B - .2 - i * .07) / .7)));
-      sc.textContent = n.toLocaleString('en-US');
-    });
-  })],
-  ['#s9', 10 * B, 12 * B, t => proof('#s9', t, 10 * B, 12 * B, () => {
-    const f = k(t, 10 * B + .12, .5);
-    const spread = V ? 230 : 250;
-    $$('#s9 .cv').forEach((c, i) => {
-      const o = i - 1;
-      css(c, { transform: `translate(-50%,-50%) translateX(${o * spread * f}px) rotate(${o * 9 * f}deg) translateY(${Math.abs(o) * 30 * f}px)`,
-               zIndex: i === 1 ? 3 : 1 });
-    });
-  })],
-  ['#s10', 12 * B, 14 * B, t => {
-    const a = 12 * B;
-    const ph = $('#s10 .phone');
-    const up = k(t, a, .45);
-    const px = V ? 0 : 300, py = V ? 230 : 0;
-    css(ph, { transform: `translate(-50%,-50%) translate(${px}px, ${py + (1 - up) * 700}px) rotate(${(1 - up) * 6}deg)` });
-    const sc = k(t, a + .3, 1.0, inout);
-    css($('#s10 .screen img'), { transform: `translateY(${-sc * 880}px)` });
-    const s = $('#s10 .script');
-    css(s, V ? { left: '470px', top: '760px' } : { left: '1220px', top: '170px' });
-    writeOn(s, t, a + .5, .45);
-    css($('#s10 .mono'), V ? { left: '90px', top: '200px', opacity: k(t, a + .05, .2) } : { left: '160px', top: '380px', opacity: k(t, a + .05, .2) });
-    css($('#s10 .hd'), V ? { left: '90px', top: '250px' } : { left: '160px', top: '430px' });
-    lines('#s10', t, a + .1, .12, .3);
-  }],
-  ['#s11', 14 * B, 15 * B, t => lines('#s11', t, 14 * B, B / 2, .24)],
-  ['#s12', 15 * B, 17 * B, t => {
-    const a = 15 * B;
-    // headline is carried in by the push-through: slides from the right with the band
-    const inX = (1 - k(t, a - .02, .4)) * (W * .55);
-    css($('#s12 .hd'), { transform: `translateY(-50%) translateX(${inX}px)` });
-    css($('#s12 .slab'), { transform: `skewX(-22deg) translateX(${(1 - k(t, a, .5)) * 500}px)` });
-    $$('#s12 .chips').forEach((row, i) => {
-      const dir = i ? 1 : -1;
-      css(row, { transform: `translateX(${(i ? -1400 : -200) + dir * (t - a) * 260}px)`, opacity: k(t, a + .1, .25) });
-    });
-  }],
-  ['#s13', 17 * B, 20 * B, t => {
-    const a = 17 * B;
-    push($('#s13 .plate'), t, a, 20 * B, 1.02, 1.1);
-    css($('#s13 .panel'), { transform: (V ? 'skewY(-12deg)' : 'skewX(-22deg)') + ` translate${V ? 'Y' : 'X'}(${(1 - k(t, a, .4)) * (V ? 900 : -1300)}px)` });
-    lines('#s13', t, a + .12, B / 2, .3);
-    writeOn($('#s13 .script'), t, a + 1.0, .55);
-  }],
-  ['#s14', 20 * B, 15.01, t => {
-    const a = 20 * B;
-    chars('#s14', t, a + .02, .03, .32, V ? 18 : 26);
-    const l = k(t, a + .42, .4);
-    css($('#s14 .lock'), { opacity: l, transform: `translateY(${(1 - l) * 18}px)` });
-    draw($('#s14 path'), t, a + .7, .45);
+  ['#s11', T.s11, 15.01, t => {
+    chars('#s11', t, T.s11 + .05, .045, .6, V ? 10 : 16);
+    const l = k(t, T.s11 + .55, .7);
+    css($('#s11 .lock'), { opacity: l, filter: `blur(${(1 - l) * 6}px)` });
+    draw($('#s11 path'), t, T.s11 + .85, .7);
   }],
 ];
 
-function proof(sel, t, a, b, inner) {
-  const s = $(sel);
-  const f = $('.frame', s);
-  const e = k(t, a, .32);
-  const base = V ? '' : 'translateY(-50%) ';
-  css(f, { transform: `${base}scale(${lerp(.9, 1, e) * lerp(1, 1.025, cl((t - a) / (b - a)))})`, opacity: cl(.45 + e * 2) });
-  const br = lerp(60, 0, k(t, a + .05, .35));
-  $$('.br', f).forEach((c, i) => {
-    const sx = i % 2 ? 1 : -1, sy = i < 2 ? -1 : 1;
-    css(c, { transform: `translate(${sx * br}px, ${sy * br}px)` });
+function proofs(t) {
+  const a = T.sp, seg = 2 * B;
+  const i = cl(Math.floor((t - a) / seg), 0, 2), lt = t - a - i * seg;
+  // frame enters once, then breathes; ticks tighten on every cut
+  const f = $('#sp .frame'), e = k(t, a, .55);
+  css(f, { opacity: e, transform: `translateY(${(1 - e) * 40}px) scale(${lerp(1, 1.02, cl((t - a) / (3 * seg)))})` });
+  const tk = lerp(22, 0, k(lt, 0, .45));
+  $$('#sp .tick').forEach((c, j) => css(c, { transform: `translate(${(j % 2 ? 1 : -1) * tk}px, ${(j < 2 ? -1 : 1) * tk}px)` }));
+  // content layers crossfade on the cut
+  ['#L1', '#L2', '#L3'].forEach((id, j) => {
+    const on = j === i ? k(lt, 0, .22) : (j === i - 1 ? 1 - k(lt, 0, .22) : 0);
+    css($(id), { opacity: on });
   });
-  const rec = $('.rec i', f);
-  if (rec) css(rec, { opacity: Math.floor((t - a) / (B / 2)) % 2 ? .25 : 1 });
-  const n = $('.num', s);
-  const nx = k(t, a, .26);
-  css(n, { transform: `translateY(${(1 - nx) * 80}px)`, opacity: cl(.35 + nx) });
-  css($('.eyebrow', s), { opacity: k(t, a + .1, .2) });
-  lines(sel, t, a + .1, .1, .3);
-  const note = $('.note', s); if (note) css(note, { opacity: k(t, a + .3, .3) });
-  inner && inner();
+  $('#capL').textContent = ['Games', 'Ranking', 'Templates'][i];
+  // number rolls
+  const r = i + (i > 0 ? k(lt, 0, .45) - 1 : 0);
+  css($('#sp .roll'), { transform: `translateY(${-r * 150}px)`, opacity: k(t, a, .4) });
+  ['#B1', '#B2', '#B3'].forEach((id, j) => {
+    css($(id), { display: j === i ? 'block' : 'none' });
+    if (j === i) { css($(id + ' .mono'), { opacity: k(lt, .05, .35) }); lines(id, t, a + i * seg + .08, .12, .5); }
+  });
+  // layer 1: game screens change on the half beat
+  const gi = Math.min(3, Math.floor((t - a) / (B / 2)));
+  $$('#L1 img').forEach((im, j) => css(im, { opacity: j <= gi ? 1 : 0 }));
+  // layer 2: rows + counters
+  $$('#L2 .r').forEach((row, j) => {
+    const x = i === 1 ? k(lt, .12 + j * .06, .5) : (i > 1 ? 1 : 0);
+    css(row, { opacity: x, transform: `translateY(${(1 - x) * 14}px)` });
+    const sc = $('[data-score]', row);
+    const n = i === 1 ? Math.round(+sc.dataset.score * quint(cl((lt - .15 - j * .06) / .9))) : +sc.dataset.score;
+    sc.textContent = n.toLocaleString('en-US');
+  });
+  // layer 3: covers fan out
+  const fan = i === 2 ? k(lt, .1, .8) : 0;
+  $$('#L3 .cv').forEach((c, j) => {
+    const o = j - 1;
+    css(c, { transform: `translate(-50%,-50%) translateX(${o * (V ? 250 : 230) * fan}px) rotate(${o * 7 * fan}deg) translateY(${Math.abs(o) * 24 * fan}px)`, zIndex: j === 1 ? 3 : 1 });
+  });
+  css($('#sp .note'), { opacity: i === 1 ? k(lt, .3, .4) : 0 });
+}
+
+// HUD: shot index + colour that follows the plate underneath
+const IDX = [[0, 1], [T.s2, 2], [T.s3, 3], [T.s4, 4], [T.sp, 5], [T.sp + 2 * B, 6], [T.sp + 4 * B, 7], [T.s8, 8], [T.s9, 9], [T.s10, 10], [T.s11, 11]];
+function hud(t) {
+  const n = IDX.filter(([a]) => t >= a).pop()[1];
+  const light = (t >= T.s3 && t < T.s4) || (t >= T.s9 && t < T.s10);
+  const end = t >= T.s11;
+  css($('#vig'), { opacity: light ? .22 : 1 });
+  css($('#hud'), { color: light ? 'rgba(18,19,22,.55)' : 'rgba(244,245,247,.5)', opacity: end ? 1 - k(t, T.s11, .3) : k(t, .5, .6) });
+  $('#hud .bl b').textContent = String(n).padStart(2, '0');
 }
 
 function seek(t) {
   SHOTS.forEach(([sel, a, b, fn]) => {
-    const el = $(sel);
     const on = t >= a && t < b;
-    el.classList.toggle('on', on);
+    $(sel).classList.toggle('on', on);
     if (on) fn(t);
   });
-  $$('#wipe .band').forEach(b => b.style.display = 'none');
-  // 2.000: ice leads, ink trails (white plate → ice plate)
-  wipe(t, 3 * B, ['#9fd6ec', '#060607']);
-  // 10.000: push-through (paper → ink/ice)
-  wipe(t, 15 * B, ['#060607', '#9fd6ec']);
-  // 11.333: ice sweeps back left→right into the question
-  wipe(t, 17 * B, ['#9fd6ec', '#060607'], 1);
-  // grain jitter
+  css($('#wipe'), { display: 'none' });
+  wipe(t, T.s4) || wipe(t, T.s10, 1);
+  hud(t);
   const g = Math.floor(t * 24);
   css($('#grain'), { transform: `translate(${(g * 37) % 60 - 30}px, ${(g * 53) % 60 - 30}px)` });
 }
 
 window.__KT = { seek, ready: document.fonts.ready.then(() => Promise.all($$('img').map(i => i.complete ? 1 : new Promise(r => { i.onload = i.onerror = r; })))) };
-const q = new URLSearchParams(location.search);
-if (q.has('t')) window.__KT.ready.then(() => seek(+q.get('t')));
-else if (!q.has('render')) {
-  // live preview loop
+if (Q.has('t')) window.__KT.ready.then(() => seek(+Q.get('t')));
+else if (!Q.has('render')) {
   const t0 = performance.now();
   window.__KT.ready.then(() => { const tick = () => { seek(((performance.now() - t0) / 1000) % 15); requestAnimationFrame(tick); }; tick(); });
 }
